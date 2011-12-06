@@ -1,0 +1,5 @@
+/* JSON syntax error */
+{"a1" : "x",
+ "a2" : "yz",
+ [1, 2, 3]
+}

@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<article xmlns:r="http://www.r-project.org"
+         xmlns:xi="http://www.w3.org/2003/XInclude">
+
+<articleinfo>
+
+<title>JSON, null and <r:na/></title>
+
+<author><firstname>Duncan</firstname><surname>Temple Lang</surname>
+  <affiliation><orgname>University of California at Davis</orgname>
+               <orgdiv>Department of Statistics</orgdiv>
+  </affiliation>
+</author>
+</articleinfo>
+
+<section>
+<title>Limitations of JSON regarding the meaning of null</title>
+
+<para>
+JavaScript Object Notation (JSON) is a convenient format for
+representing data and facilitates transferring data between
+applications. It is widely used in different applications, Web
+services and other contexts.  As such, it is useful for R to be able
+to import and export data in this format.  Unfortunately, JSON is a
+little too simple and cannot faithfully represent all of the types and
+values in R.  Most specifically, there is no way to support <r:na/>,
+<r:var>Inf</r:var> or <r:keyword>NaN</r:keyword>.  Typically, these
+values are represented in JSON as "null".  However, that is also used
+to represent a null object.  So there is ambiguity in how we interpret
+null in JSON. 
+We don't know whether it is <r:na/>, NaN, Inf or <r:null/> in R.
+This many-to-one mapping results in a loss of information.
+</para>
+<para>
+In spite of the shortcomings of the format, we can still work with 
+JSON. However, how we convert null values to R and how we
+convert <r:na/> values from R is not automatic and uniquely defined.
+For that reason, the caller must control how these are mapped.
+We provide some mechanisms to do this in the 
+<r:func>fromJSON</r:func> and <r:func>toJSON</r:func> functions.
+</para>
+<para>
+When converting R objects to JSON via <r:func>toJSON</r:func>,
+one can specify how to map <r:na/> values to JSON.
+One provides a value for the parameter <r:arg>.na</r:arg>
+to control this. 
+For example, suppose we want to transform the R list
+<r:code>
+x = list(1, 2, NA, c(TRUE, NA, FALSE))
+</r:code>
+to JSON and want <r:na/> values to map  to null.
+We can achieve this with
+<r:code>
+toJSON(x, .na = "null")
+</r:code>
+</para>
+<para>
+In some applications, we represent a missing value with a fixed number that is unlikely
+to occur in actual data, e.g. -99999.
+We can map <r:na/> values to such a number with
+<r:code>
+toJSON(list(1, 2, list(NA)), .na = -99999)
+</r:code>
+</para>
+<para>
+Now consider  round-tripping <r:na/>, e.g.
+<r:code>
+o = toJSON ( NA )
+<r:output>
+[1] "[ null ]"
+</r:output>
+fromJSON( o )
+<r:output><![CDATA[
+[[1]]
+NULL
+]]></r:output>
+</r:code>
+So we have lost information.
+</para>
+
+
+<para>
+We can correct this loss of information by
+specifying how to map null values in JSON
+to R values. We use the <r:arg>nullValue</r:arg>
+<r:code>
+fromJSON( toJSON ( NA ), nullValue = NA)
+</r:code>
+Again, here we as the caller of <r:func>fromJSON</r:func>
+(and also <r:func>toJSON</r:func>) we are providing
+information about how to transfer the null value from JSON to R.
+Only we know what it means in this case.
+If we knew that the null corresponded to <r:var>Inf</r:var>,
+we could  specify that: 
+<r:code>
+ fromJSON( "[null]", nullValue = Inf)
+</r:code>
+</para>
+<para>
+Where this mechanism breaks down is when we have multiple
+null values in our JSON content and they map to different
+R values, e.g. <r:null/>, <r:na/> and NaN.
+The <r:arg>nullValue</r:arg> parameter is a global replacement for
+null entries in the JSON.  To adaptively process these null 
+entries in a context specific manner, we have to use a customized
+parser.  We can do this by providing an R function as the
+callback handler for the JSON parser.
+</para>
+
+
+</section>
+</article>

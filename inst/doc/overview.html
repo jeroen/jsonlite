@@ -1,0 +1,536 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>JavaScript Object Notation (JSON) and R The RJSONIO package</title><link rel="stylesheet" type="text/css" href="/Users/duncan/Classes/StatComputing/XDynDocs/inst/CSS/OmegaTech.css"></link><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"></meta><meta name="description" content="The JavaScript Object Notation (JSON) format is becoming widely used as a means of exchanging data. It is used in Web Services, client server applications and to some extent as a means of serializing data for use between applications. We describe an R package that facilitates both importing data from JSON into R and also exporting R objects as JSON content. The package is quite simple but the architecture allows R programmers to customize several aspects of the computations."></meta><meta name="keywords" content="Input/Output, application independent data format, JavaScript, Web Services"></meta><script xmlns="" type="text/javascript" src="http://www.omegahat.org/DynDocs/JavaScript/toggleHidden.js"></script>
+</head><body class="yui-skin-sam">
+<script xmlns="" type="text/javascript"><!--
+var toggleCodeIds = [
+ 
+   "id36294058", 
+   "id36294068", 
+   "id36294076", 
+   "id36294086", 
+   "id36294102", 
+   "id36294106", 
+   "id36294116", 
+   "id36294168", 
+   "id36294193", 
+   "id36294211", 
+   "id36294223", 
+   "id36294282", 
+   "id36294294", 
+   "id36294315", 
+   "id36294320"
+];
+--></script><p xmlns=""></p>
+<div class="article" title="JavaScript Object Notation (JSON) and R The RJSONIO package"><div class="titlepage"><div><div><h2 class="title"><a id="id36046792"></a>JavaScript Object Notation (JSON) and R
+<br xmlns:xd="http://www.xsldoc.org" xmlns="">The <a xmlns="" href="http://www.omegahat.org/RJSONIO">RJSONIO</a> package</h2></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span></h3><div class="affiliation"><span class="orgname">University of California at Davis<br></br></span></div><code class="email">&lt;<a class="email" href="mailto:duncan@r-project.org">duncan@r-project.org</a>&gt;</code></div></div></div><div><div class="abstract" title="Abstract"><p class="title"><strong>Abstract</strong></p><p>
+The JavaScript Object Notation (JSON) format is becoming widely used
+as a means of exchanging data.  It is used in Web Services, client
+server applications and to some extent as a means of serializing data
+for use between applications.  We describe an R package that
+facilitates both importing data from JSON into R and also exporting R
+objects as JSON content.  The package is quite simple but the
+architecture allows R programmers to customize several aspects of the
+computations.
+</p></div></div></div><hr></hr></div><div class="section" title="Things To Fix"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id36293701"></a>Things To Fix</h2></div></div></div><p>
+</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>Character Encoding</p></li><li class="listitem"><p>Base64 Encoding</p></li></ol></div><p>
+</p></div><div class="section" title="JavaScript Object Notation"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id36293723"></a>JavaScript Object Notation</h2></div></div></div><p>
+Purpose  of JSON and the need to be able to deal with it in R.
+Common uses.
+REST, inserting objects in to JavaScript code e.g. HTML documents.
+ECMAScript and ActionScript for Flash.
+</p><p>
+Comparison with XML.
+Not a competition, just different purposes and strengths.
+</p><p>
+<em><span class="comment">Basics of the package: <i xmlns="" class="rfunc"><a href="Help//fromJSON.html" title="">fromJSON()</a></i> and
+<i xmlns="" class="rfunc"><a href="Help//toJSON.html" title="">toJSON()</a></i>.</span></em> The <a xmlns="" href="http://www.omegahat.org/RJSONIO">RJSONIO</a>
+package offers two primary operations - transforming JSON content into
+R objects and serializing R objects to JSON format.  This allows us to
+import and export JSON from R.  The two functions that do this are
+<i xmlns="" class="rfunc"><a href="Help//fromJSON.html" title="">fromJSON()</a></i> and <i xmlns="" class="rfunc"><a href="Help//toJSON.html" title="">toJSON()</a></i>.
+<i xmlns="" class="rfunc"><a href="Help//fromJSON.html" title="">fromJSON()</a></i> can read JSON content
+from a file or a general connection, or from a string in memory.
+The latter is convenient when we obtain the JSON content
+from some other computation such as a Web request and the content
+is already in memory.
+</p><p>
+Character encoding
+</p><p>
+Before developing the <a xmlns="" href="http://www.omegahat.org/RJSONIO">RJSONIO</a> package, we used <i xmlns=""><a href="http://cran.r-project.org/web/packages/rjson/index.html">rjson</a></i>
+[<span class="citation"><a class="biblioref" href="#bib:rjson">rjson</a></span>] when
+serializing R objects into JavaScript code within HTML pages.  This
+worked very well for small objects but was too slow for large objects.
+<a xmlns="" href="http://www.omegahat.org/RJSONIO">RJSONIO</a> solves some of the speed issues, primarily
+by vectorizing the code that generates the content.  We developed the
+<a xmlns="" href="http://www.omegahat.org/RJSONIO">RJSONIO</a> package to be a direct substitute for
+<i xmlns=""><a href="http://cran.r-project.org/web/packages/rjson/index.html">rjson</a></i> so code that used the latter would not need to be
+changed to use <a xmlns="" href="http://www.omegahat.org/RJSONIO">RJSONIO</a>. So we can think of
+<a xmlns="" href="http://www.omegahat.org/RJSONIO">RJSONIO</a> as a second-generation of
+<i xmlns=""><a href="http://cran.r-project.org/web/packages/rjson/index.html">rjson</a></i> with a focus on efficiency which was not
+warranted when <i xmlns=""><a href="http://cran.r-project.org/web/packages/rjson/index.html">rjson</a></i> was being developed as means to
+effect entirely new facilities for R.
+</p><p>
+<a xmlns="" href="http://www.omegahat.org/RJSONIO">RJSONIO</a> also changes the approach used to parse
+JSON content into R. Firstly, it uses a C library -
+<span style="color: red">&lt;proj&gt;libjson&lt;/proj&gt;</span> [<span class="citation"><a class="biblioref" href="#bib:libjson">libjson</a></span>].  This should yield two
+benefits. Firstly, it should be faster than pure interepreted R
+code. Secondly, it relies on code that is used developed by others and
+used in other applications.  The benefit of this is that we do not
+have to maintain it and we benefit from any updates as they are made
+in the <span style="color: red">&lt;proj&gt;libjson&lt;/proj&gt;</span> project.  Relying on <span style="color: red">&lt;proj&gt;libjson&lt;/proj&gt;</span>
+means that we also suffer from its deficiencies and bugs and do not
+have the flexibility to design things as we want. The hope is that
+<span style="color: red">&lt;dso&gt;libjson&lt;/dso&gt;</span> is used in other projects so that bugs
+will be identified by a larger audience than if we had developed the
+code ourselves for use only in R.  Unfortunately, this may not be the case.
+Since we use <span style="color: red">&lt;dso&gt;libjson&lt;/dso&gt;</span>, it
+would appear we have an additional dependency which users must
+satisfy.  However, to simplify installation for users, we have
+included a copy of the <span style="color: red">&lt;proj&gt;libjson&lt;/proj&gt;</span> code. We use that version
+only if we cannot find a version of <span style="color: red">&lt;dso&gt;libjson&lt;/dso&gt;</span> on the local
+machine to which we are installing the source package.  This means
+that R users can elect to use newer versions of <span style="color: red">&lt;dso&gt;libjson&lt;/dso&gt;</span> but
+do not have to.
+</p><p>
+While <a xmlns="" href="http://www.omegahat.org/RJSONIO">RJSONIO</a> acts as a direct replacement
+for <i xmlns=""><a href="http://cran.r-project.org/web/packages/rjson/index.html">rjson</a></i>, it also offers additional features and controls.
+</p><p>
+The remainder of this paper is organized as follows.
+We start with a brief description of the simple but general
+JSON format. In <a class="xref" href="#sec:examples" title="Examples">the section called &#8220;Examples&#8221;</a>, we
+illustrate how to read JSON content into R 
+in three different contexts: read local JSON files from Kiva.org, 
+parsing results from a request to the Twitter API,
+and interacting with CouchDB, a simple client-server database.
+We then discuss how to serialize R objects in JSON format.
+In section <a class="xref" href="#sec:customizingParser" title="Customizing the Parser">the section called &#8220;Customizing the Parser&#8221;</a>,
+we discuss how one can customize the parsing of JSON content.
+We end with some notes about how the package could be extended
+and made more general.
+</p></div><div class="section" title="The JSON Format"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id36293889"></a>The JSON Format</h2></div></div></div><p>
+The JSON format is quite simple and reflects the basic data structures
+in JavaScript and other programming languages.
+We'll start with scalar values.
+Logical values are represented by 
+<span style="color: red">&lt;js:value&gt;true&lt;/js:value&gt;</span> and <span style="color: red">&lt;js:value&gt;false&lt;/js:value&gt;</span>.
+There is no distinction in JSON between
+an integer and a real valued number.
+Scientific notation, e.g., 123e10 and 123E-5 is supported.
+Strings are enclosed within pairs of ", i.e. the double quote character.
+</p><p>
+Arrays are ordered collections of values.
+Each element is separated by a comma (,).
+Associative arrays have names for each of the elements.
+These are equivalent to named lists in R although the order
+is not guaranteed.
+Regular arrays are enclosed by <code xmlns="" class="jsVar">[ ]</code> pairs,
+again with elements being separated by a comma.
+Associative arrays are enclosed within <code xmlns="" class="jsVar">{ }</code>.
+Each element is given in the form <code xmlns="" class="jsVar">name: value</code>.
+The <code xmlns="" class="jsVar">name</code> term should be enclosed within quotes.
+Not all JSON parsers insist on this (including <span style="color: red">&lt;dso&gt;libjson&lt;/dso&gt;</span>
+and hence <a xmlns="" href="http://www.omegahat.org/RJSONIO">RJSONIO</a>), but it is good practice
+to ensure these names are quoted.
+</p><p>
+Each element in an associative or regular  array can be an arbitrary 
+JSON object. This allows us to nest values so that we can have
+an array whose elements are arrays, associative arrays and scalar values.
+</p><p>
+The final element of the format is the literal value <span style="color: red">&lt;js:null&gt;&lt;/js:null&gt;</span>.
+It represent the null object in <b xmlns="" class="proglang">JavaScript</b> and is a special constant object there,
+useful for comparing the value of a variable to this special state.
+In some senses, it corresponds to <i xmlns=""><code>NULL</code></i> in R. 
+However, it might also map to an empty vector.
+</p><p>
+The format is very simple Note that it does not have support for 
+mathematical terms such as infinity, pi, e.
+Nor does it have the notion of a <b xmlns:r="http://www.r-project.org" xmlns:s="http://cm.bell-labs.com/stat/S4" xmlns:py="http://www.python.org" xmlns:perl="http://www.perl.org" xmlns:c="http://www.C.org" xmlns:vb="http://www.visualbasic.com" xmlns:omegahat="http://www.omegahat.org" xmlns:bioc="http://www.bioconductor.org" xmlns:java="http://www.java.com" xmlns:sql="http://www.sql.org" xmlns=""><a href="library/base/html/NA.html">NA</a></b>, the missing value in R.
+</p><p>
+Valid JSON requires that the top-level content be either
+an array or an object. This means that simple literal values
+such as "2" or 'abc' are not valid, but
+<code xmlns="" class="jsVar">"[2]"</code> and <code xmlns="" class="jsVar">"{xyz: 'abc'}"</code> are valid.
+</p><p>
+How do we map <span style="color: red">&lt;js:null&gt;&lt;/js:null&gt;</span> to a value in R?
+How do we map empty vectors in R to JSON?
+</p><p>
+JSON is written as plain text. It would appear that we cannot
+include binary content such as an image.
+There is however a way around this. We can take arbitrary
+binary content and convert it to text using base-64 encoding
+commonly used to include binary content in email messages.
+There are several implementation of functions 
+that convert to and from base64 encoding in various R packages
+include <i xmlns=""><a href="http://cran.r-project.org/web/packages/caTools/index.html">caTools</a></i>, <a xmlns="" href="http://www.omegahat.org/RCurl">RCurl</a>
+and <i xmlns=""><a href="http://cran.r-project.org/web/packages/readMzXmlData/index.html">readMzXmlData</a></i>. 
+</p><p>
+While we can easily include binary content in JSON using
+base64 encoding, it is imperative that the consumer
+of that JSON content be aware that the content is base64
+and so can decode it appropriately.  Unfortunately, 
+JSON doesn't provide a standard or convenient mechanism for identifying
+meta-data about elements of the content.
+</p><p>
+Valid JavaScript and can be evaluated. Security concerns.
+</p></div><div class="section" title="Examples"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="sec:examples"></a>Examples</h2></div></div></div><div class="section" title="Reading Non-Rectangular Data"><div class="titlepage"><div><div><h3 class="title"><a id="id36294018"></a>Reading Non-Rectangular Data</h3></div></div></div><p>
+While many data sets come to us as rectangular
+tables made up of rows and columns
+corresponding to observations 
+each with the same number of variables.
+This works reasonably well, but is not rich
+enough for many more complex data structures.
+
+We may have repeated measurements for different
+observational units and so not the same number of 
+variables in each "row". 
+For each observation, we might have hierarchical
+structures such as their address or
+location. We could collapse this into separate
+variables at the top-level, but this
+might be a different format for different types of
+observational units. 
+So in short, we need a richer format to represent
+raw data before we project it into a rectangular
+format or data frame in R			
+</p><p>
+An example of a moderately complex data set 
+is the dump of the Kiva database from
+Kiva.org. Kiva is an non-profit organization 
+that connects lenders and borrowers on-line 
+to provide micro-loans for people in developing countries.
+They make several details of loans, borrowers and lenders
+available both via a Web Service API and also 
+via serializing their database. The provide this serialization
+in both XML and JSON formats. 
+The data can be downloaded from
+<a class="ulink" href="http://build.kiva.org/" target="_top">http://build.kiva.org/</a>,
+specifically <a class="ulink" href="http://s3.kiva.org/snapshots/kiva_ds_json.zip" target="_top">http://s3.kiva.org/snapshots/kiva_ds_json.zip</a>.
+We download and extract the files and this produces
+two directories, one for lenders and another for loans.
+Each of these contains a collection of files with the .json extension
+each numbered from 1 to the number of files in that directory.
+</p><p>
+We'll look at the loan files.
+We can read one of these files with 
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294058"><div><pre class="rcode" title="R code">
+loans1 = fromJSON("loans/1.json")
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+The result in <b xmlns="" class="$" title="">loans1</b> is a list with two elements.
+The first is named "header" and provides information about the
+contents of the file, e.g. the number of loans, the date it was serialized.
+The second element ("loans") contains the data for each loan.
+Strangely, there are 795 repeated elements which we can identify
+by examining the "id" element. This has nothing to do with JSON
+but the way the data were dumped from the database.
+The same occurs in the XML version.
+So we remove the duplicates with:
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294068"><div><pre class="rcode" title="R code">
+w = duplicated(sapply(loans1$loans, `[[`, "id"))
+loans1$loans = loans1$loans[ ! w ]
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+</p><p>
+Now we can look at each loan. We can look at the types of each
+element:
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294076"><div><pre class="rcode" title="R code">
+table(unlist(lapply(loans1$loans, function(x) sapply(x, class))))
+<pre class="routput">
+character      list   logical   numeric 
+     8003      5000        22      5963 
+</pre>
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+So each element has 5 lists, e.g. description, terms, location, borrowers.
+The location is made up of several fields identifying the town and country
+and also latitude and longitude  in a separate list named "geo":
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294086"><div><pre class="rcode" title="R code">
+loans1$loans[[1]]$location
+<pre class="routput">
+$country_code
+[1] "UG"
+
+$country
+[1] "Uganda"
+
+$town
+[1] "Tororo"
+
+$geo
+$geo$level
+[1] "town"
+
+$geo$pairs
+[1] "0.75 34.083333"
+
+$geo$type
+[1] "point"
+</pre>
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+How we chose to represent and work with this data in R
+depends on what we want to do with it.
+</p><p>
+The lenders data can be read in the same manner. It has a simpler
+structure with all but one variable for each lender
+being a simple scalar. Not all lenders have all variables so
+we have a ragged array again. However, we could easily put this
+data into rectangular form by having <b xmlns:r="http://www.r-project.org" xmlns:s="http://cm.bell-labs.com/stat/S4" xmlns:py="http://www.python.org" xmlns:perl="http://www.perl.org" xmlns:c="http://www.C.org" xmlns:vb="http://www.visualbasic.com" xmlns:omegahat="http://www.omegahat.org" xmlns:bioc="http://www.bioconductor.org" xmlns:java="http://www.java.com" xmlns:sql="http://www.sql.org" xmlns=""><a href="library/base/html/NA.html">NA</a></b> values.
+</p><p>
+Comparison with XML and speed for overall processing
+or XPath to get sub-elements.
+XQuery also.
+</p></div><div class="section" title="Web Services"><div class="titlepage"><div><div><h3 class="title"><a id="WebServices"></a>Web Services</h3></div></div></div><p>
+JSON is commonly used in Web Services,
+specifically as the result format
+in REST (Representational State Transfer) services.
+The idea is that we make an HTTP request to query 
+information we want.
+We specify a URL and possibly additional arguments
+to parameterize our request.
+Let's use the <a class="ulink" href="https://dev.twitter.com/docs/api" target="_top">Twitter API</a>
+as an example.
+Twitter allows us to query the  the 20 most recent public "statues" or activities
+on Twitter.
+We send a request to the URL 
+<a class="ulink" href="http://api.twitter.com/1/statuses/public_timeline" target="_top">http://api.twitter.com/1/statuses/public_timeline</a>.
+We can control the format of the result by appending
+one of the strings "xml", "json", "rss" or "atom",
+separated by a period.
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294168"><div><pre class="rcode" title="R code">
+url = "http://api.twitter.com/1/statuses/public_timeline"
+txt = getURLContent(sprintf("%s.json", url))
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+This returns a string containing the JSON content.
+This object also has attributes that identify
+the content type ("application/json")
+and the character encoding. These are extracted from the 
+header of the HTTP response.
+<sup>[<a id="id36294174" href="#ftn.id36294174" class="footnote">1</a>]</sup>
+</p><p>
+Now that we have the JSON content as a string, we can convert it to 
+R values via <i xmlns="" class="rfunc"><a href="Help//fromJSON.html" title="">fromJSON()</a></i>.
+We do this with
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294193"><div><pre class="rcode" title="R code">
+tweets = fromJSON(tt, asText = TRUE)
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+We use the <i xmlns="" class="rarg">asText</i> argument
+to ensure the function does not confuse the 
+value as the name of a file.  The function
+will typically guess correctly, but since we know
+we have the JSON content as a string, it is
+good practice to indicate this to <i xmlns="" class="rfunc"><a href="Help//fromJSON.html" title="">fromJSON()</a></i>.
+</p><p>
+The result is an R list with twenty elements.
+Each element is also a list with 19 named elements:
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294211"><div><pre class="rcode" title="R code">
+names(tweets[[1]])
+<pre class="routput">
+ [1] "place"                     "in_reply_to_user_id"      
+ [3] "user"                      "in_reply_to_status_id"    
+ [5] "text"                      "id_str"                   
+ [7] "favorited"                 "created_at"               
+ [9] "in_reply_to_status_id_str" "geo"                      
+[11] "in_reply_to_screen_name"   "id"                       
+[13] "in_reply_to_user_id_str"   "source"                   
+[15] "contributors"              "coordinates"              
+[17] "retweeted"                 "retweet_count"            
+[19] "truncated"                
+</pre>
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+The "user" element is also a list:
+
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294223"><div><pre class="rcode" title="R code">
+names(tweets[[1]]$user)
+<pre class="routput">
+ [1] "statuses_count"                    
+ [2] "notifications"                     
+ [3] "profile_text_color"                
+ [4] "protected"                         
+ [5] "default_profile"                   
+ [6] "profile_sidebar_fill_color"        
+ [7] "location"                          
+ [8] "name"                              
+ [9] "profile_background_tile"           
+[10] "listed_count"                      
+[11] "contributors_enabled"              
+[12] "profile_background_image_url_https"
+[13] "utc_offset"                        
+[14] "url"                               
+[15] "id_str"                            
+[16] "following"                         
+[17] "verified"                          
+[18] "favourites_count"                  
+[19] "profile_link_color"                
+[20] "profile_image_url_https"           
+[21] "description"                       
+[22] "created_at"                        
+[23] "profile_sidebar_border_color"      
+[24] "time_zone"                         
+[25] "profile_image_url"                 
+[26] "is_translator"                     
+[27] "default_profile_image"             
+[28] "profile_use_background_image"      
+[29] "id"                                
+[30] "show_all_inline_media"             
+[31] "geo_enabled"                       
+[32] "friends_count"                     
+[33] "profile_background_color"          
+[34] "followers_count"                   
+[35] "screen_name"                       
+[36] "profile_background_image_url"      
+[37] "follow_request_sent"               
+[38] "lang"                              
+</pre>
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+
+</p><p>
+Compelling example: NYTimes? What others?
+Gloss over the RCurl requests.
+</p></div><div class="section" title="CouchDB"><div class="titlepage"><div><div><h3 class="title"><a id="id36294235"></a>CouchDB</h3></div></div></div><p>
+Mention that others have built an R-CouchDB interface.
+</p></div></div><div class="section" title="Creating JSON Content from R"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id36294246"></a>Creating JSON Content from R</h2></div></div></div><p>
+To this point, we have seen how we can consume or import JSON
+content in R. We now turn our attention to how we 
+create JSON content from R and so export it to other applications.
+Basically we want to generate text that we store as a string
+or write to a connection and which consists of JSON content.
+Any R programmer can create arbitrary JSON content  using R commands
+such as <i xmlns="" class="rfunc"><a href="Help//paste.html" title="">paste()</a></i>, <i xmlns="" class="rfunc"><a href="Help//sprintf.html" title="">sprintf()</a></i> and <i xmlns="" class="rfunc"><a href="Help//cat.html" title="">cat()</a></i>
+and character vectors or connections (including <i xmlns="" class="rfunc"><a href="Help//textConnection.html" title="">textConnection()</a></i>).
+We focus here however on serializing arbitrary R objects in JSON format
+so that the information can be restored within another  JSON-enabled application.
+The basic function that takes an R object and serializes it to a JSON string
+is <i xmlns="" class="rfunc"><a href="Help//toJSON.html" title="">toJSON()</a></i>.
+This function takes an R object and serializes its elements.
+Basically, this maps R vectors (logical, integer, numeric, character)
+to either a dictionary (or object in JSON terms) or a regular array. 
+If the R vector has a names, we preserve these and use a dictionary.
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294282"><div><pre class="rcode" title="R code">
+x = c(a = 1, b = 10, c = 20)
+toJSON(x)
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+There are occasions when we have  names on an R object, but 
+we want the resulting JSON value to be a simple array.
+We can use the <i xmlns="" class="rarg">.withNames</i> parameter to control this.
+Passing a value of <i xmlns=""><code>FALSE</code></i> causes the names to be ignored and a regular array 
+to be created, e.g.
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294294"><div><pre class="rcode" title="R code">
+x = c(a = 1, b = 10, c = 20)
+toJSON(x, .withNames = FALSE)
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+</p><p>
+There are methods for serializing R objects to JSON for various
+classes of R objects.  These allow us to customize how some R objects
+are translated to JSON. 
+For example, a matrix in R is
+merely a one-dimensional vector with a <span style="color: red">&lt;r:attr&gt;dim&lt;/r:attr&gt;</span> attribute
+that allows R to treat as a two or more dimensional object. As a
+result, by default, it would be serialized as a single long vector in column-wise
+order.  However, a matrix might be represented in
+<b xmlns="" class="proglang">JavaScript</b> as an array of row arrays, i.e. a top-level container in
+which element is itself a one-dimensional array for a given row.  
+So we define a method to handle <i xmlns=""><a href="Help/matrix-class.html">matrix</a></i> objects in R.
+It is defined as 
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294315"><div><pre class="rcode" title="R code">
+setMethod("toJSON", "matrix",
+    function(x, container = length(x) &gt; 1 || 
+                                length(names(x)) &gt; 0, 
+             collapse = "\n", ..., .level = 1L, 
+             .withNames = length(x) &gt; 0 &amp;&amp; length(names(x)) &gt; 0) {
+      tmp = paste(apply(x, 1, toJSON), 
+                  collapse = sprintf(",%s", collapse))
+      if(!container)
+        return(tmp)
+
+       if(.withNames)
+         paste("{", paste(dQuote(names(x)), tmp, sep = ": "), "}")
+       else
+         paste("[", tmp, "]")
+    })
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+With this defined, the code
+</p><div xmlns="" class="codeToggle"><div class="unhidden" id="id36294320"><div><pre class="rcode" title="R code">
+toJSON(matrix(1:10, 5, 2))
+</pre></div></div></div>
+<div xmlns="" class="clearFloat"></div>
+<p>
+yields
+</p><pre xmlns="" class="routput">
+[ [ 1, 6 ],
+  [ 2, 7 ],
+  [ 3, 8 ],
+  [ 4, 9 ],
+  [ 5, 10 ] ]
+</pre>
+<p>
+</p><p>
+<i xmlns="" class="rfunc"><a href="Help//toJSON.html" title="">toJSON()</a></i> and its methods could be extended to write to
+a connection.  The default connection could be a
+<i xmlns="" class="rfunc"><a href="Help//textConnection.html" title="">textConnection()</a></i> and if this was not specified
+(i.e. missing in the initial call), the string rather than the
+connection would be returned.
+This would allow us to avoid collecting the JSON text in memory for
+an entire object and to emit/flush content to a connection as it was generated.
+This would save memory and could be important for large objects.
+</p></div><div class="section" title="Customizing the Parser"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="sec:customizingParser"></a>Customizing the Parser</h2></div></div></div><p>
+We can provide our own handlers to process each element
+as it is encountered by the JSON parser.
+This is similar to the SAX style of parsing for XML.
+</p></div><div class="section" title="Future Directions"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id36294355"></a>Future Directions</h2></div></div></div><p>
+At present, we omit/drop attributes on R objects when serializing to
+JSON.  We use the length, dim and names for vectors, but ignore them
+for other types of R objects and ignore any other attributes entirely.
+To serialize to R Attributes on R objects.  We could use either an
+empty name or .Data for the data part of an object and then
+"attributes" to identify the list of attributes.
+</p><p>
+We cannot serialize R functions easily to JavaScript
+as they do not make a great deal of sense in that language. Instead,
+we can serialize the source code for a function as a string.
+This loses information, and this is very important if the
+function has a non-standard environment.
+We have also experimented with approaches to translating the  R syntax
+to JavaScript code and possibly R code to JavaScript
+in an effort to simplify authoring JavaScript code for use in, e.g.,
+Web  pages. 
+</p><p>
+The <span style="color: red">&lt;dso&gt;libjson&lt;/dso&gt;</span> parser expects the entire 
+JSON content to be in memory when it starts to read,
+i.e. passed as a single string. We would like to be able
+to have the parser read from a file or connection
+and access additional bytes of the input stream as it requires them.
+This would reduce the memory required as we wouldn't have to 
+load the file into memory ahead  of time.  Instead, we would retain
+a smaller buffer of content that is being processed.
+</p><p>
+We have developed a bi-directional interface between the JavaScript
+interpreter SpiderMonkey used in the Mozilla/Firefox browser.  This
+allows us to pass R objects to JavaScript and vice verse using C-level
+references. However, we can also transfer objects by value between the
+two languages using <a xmlns="" href="http://www.omegahat.org/RJSONIO">RJSONIO</a> with very little
+infrastructure.
+</p></div><div class="bibliography" title="Bibliography"><div class="titlepage"><div><div><h2 class="title"><a id="id36294317"></a>Bibliography</h2></div></div></div><div class="biblioentry" title="libjson"><a id="bib:libjson"></a><p>[1] <span class="title"><em>libjson</em>. </span><span class="author"><span class="firstname">Johnathan</span> <span class="surname">Wallace</span>. </span><a class="ulink" href="http://libjson.sourceforge.net" target="_top">http://libjson.sourceforge.net</a></p></div><div class="biblioentry" title="The rjson package"><a id="bib:rjson"></a><p>[2] <span class="title"><em>The <i xmlns=""><a href="http://cran.r-project.org/web/packages/rjson/index.html">rjson</a></i> package</em>. </span><span class="author"><span class="firstname">Alex</span> <span class="surname">Couture-Beil</span>. </span><span class="pubdate">2011-6-26. </span></p></div></div><div class="footnotes"><br></br><hr width="100" align="left"></hr><div class="footnote"><p><sup>[<a id="ftn.id36294174" href="#id36294174" class="para">1</a>] </sup>
+In older versions of <a xmlns="" href="http://www.omegahat.org/RCurl">RCurl</a>, this was returned
+as a binary object. Now, <a xmlns="" href="http://www.omegahat.org/RCurl">RCurl</a> recognizes 
+the content type "application/json" as text.
+</p></div></div></div></body></html>

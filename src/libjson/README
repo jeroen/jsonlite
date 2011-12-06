@@ -1,0 +1,3 @@
+Copy the .cpp files from libjson/Source/
+Leave the header files in that directory.
+Remove the documentation and any files in  Objects/

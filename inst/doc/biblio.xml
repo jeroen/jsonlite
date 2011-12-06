@@ -1,0 +1,21 @@
+<bibliography 
+         xmlns:r="http://www.r-project.org" 
+         xmlns:omg="http://www.omegahat.org"
+         xmlns:bioc="http://www.bioconductor.org"
+         xmlns:js="http://www.r-project.org" 
+	 xmlns:ltx="http://www.ctan.org"
+         xmlns:jsx="http://www.ecmascript.org">
+
+<biblioentry id="bib:libjson">
+<title>libjson</title>
+<author><firstname>Johnathan</firstname><surname>Wallace</surname></author>
+<ulink url="http://libjson.sourceforge.net"/>
+</biblioentry>
+
+<biblioentry id="bib:rjson">
+<title>The <r:pkg>rjson</r:pkg> package</title>
+<author><firstname>Alex</firstname><surname>Couture-Beil</surname></author>
+<pubdate>2011-6-26</pubdate>
+</biblioentry>
+
+</bibliography>

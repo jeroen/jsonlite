@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../../Projects/org/omegahat/Docs/XSL/Todo.xsl" ?> 
+
+<topics xmlns:r="http://www.r-project.org">
+
+<items>
+
+<item>
+Swap in the latest version of libjson (e.g. 7.0)
+<br/>
+We should allow the package to be built against
+an existing installed libjson.
+</item>
+
+<item>
+Perhaps allow objects with homogeneous elements to be converted
+to named vectors, e.g. servlet-mapping in web.json
+</item>
+
+<item status="done">
+<r:code>
+fromJSON("inst/sampleData/menu.json")
+</r:code>
+takes the elements in menuitem and condenses them into a matrix
+and discards the names.
+<br/>
+Put in a check on names in <r:func>condense</r:func>
+</item>
+
+<item>
+Put in a pure C routine to read the content.
+Mimic the R basicJSONHandler$update function. 
+</item>
+</items>

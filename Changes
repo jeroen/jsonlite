@@ -1,0 +1,192 @@
+
+RJSONIO
+
+
+Version 0.96-0
+
+  *  Added encoding argument for fromJSON() and that encoding is preserved on the resulting strings. Thanks to Tony Breyal for pointing out the issue.
+
+
+
+Version 0.95-0
+
+  *  In fromJSON(), when nullValue is (the logical NA) we attempt to simplify vectors with JSON null values.
+
+
+
+Version 0.94-0
+
+  *  Added simplifyWithNames to fromJSON() for controlling whether we attempt to collapse collections of values read from JSON if they have names. This can be used to collapse unnamed vectors, but leave named lists that would otherwise be collapsed to vectors.
+
+
+
+Version 0.93-0
+
+  *  Added support in fromJSON() for collapsing particular types of elements, i.e. logicals, numbers or characters via StrictLogical, StrictNumeric and StrictCharacter. This allows "strict" collapsing, but for different types, while leaving others as lists. These can be combined.
+
+
+
+Version 0.92-0
+
+  *  Added to the ability to control whether we simplify the content using simplify = Strict or or .
+
+
+
+Version 0.91-0
+
+  *  Added .escapeEscapes to toJSON() to allow the caller to preserve new lines and tabs symbolically or not. Thanks to Antonio Piccolboni for the report about the issue.
+
+
+
+Version 0.9-0
+
+  *  Added .na parameter to the toJSON() function and methods so that the caller can control how values are mapped to JSON. This defaults to "null" so that the resulting JSON is well-formed. However, users should explicitly think about how values (and Inf and NaN) are mapped to JSON in order to avoid ambiguity and faithfully serialize their data in a meaningful manner.
+
+  *  Added a nullValue parameter to fromJSON() to allow the caller to provide an R object that will be used when we encounter a JSON null value. This can be used for example to map null to in R.
+
+  *  Added more support for simplifying lists to vectors of different types. In the future, I might add a simplify = "strict" mode that would only collapse vectors if all the elements were of the same type, not just compatible types. In other words, [true, 1 ] would not collapse to c(1, 1) in R.
+
+
+
+Version 0.8-2
+
+  *  Corrected what toJSON() does with new lines (\n) and avoid the escaping of the \. Thanks to Antonio Piccolboni for the report.
+
+
+
+Version 0.8-1
+
+  *  Corrections to the libjson C/C++ code from Brian Ripley.
+
+
+
+Version 0.8-0
+
+  *  Added a .withNames parameter to toJSON() so that the caller can explicitly control whether an R object with names is written as an associative array or as a simple array.
+
+
+  *  Added a simplify parameter to fromJSON() that controls whether we collapse lists of homogeneous element types to an R vector.
+
+
+
+Version 0.7-3
+
+  *  Added .withNames parameter for toJSON() which allows the caller to control whether we ignore or use any names. Defaults to use the names if they are present.
+
+
+
+Version 0.7-3
+
+  *  Honor the collapse argument in more places to allow avoiding new line characters being inserted.
+
+
+
+Version 0.7-2
+
+  *  Copied compiler flags for libjson code into Makevars.win
+
+
+
+Version 0.7-1
+
+  *  Correction for toJSON() method for handling of \ in strings so that they round-trip and work in other JSON tools. Thanks to Patrick Perry.
+
+
+
+Version 0.7-0
+
+  *  Round-tripping from JSON to R and back behaves a lot more consistently. Thanks to Kevin Coombes for the examples/tests. Next, we will add functionality to customize serialization of .
+
+  *  Change to the default value of container of toJSON() so that this is when at the top-level or initial call to toJSON().
+
+  *  We now know the type of the top-most node so can correctly handle empty associative arrays, etc.
+
+
+
+Version 0.6-0
+
+  *  Updated the libjson source code in the package to libjson 7.0.1. This removes a bug in parsing numbers of the form 3.14E4. Found by Jeroen Ooms.
+
+  *  Added configuration so that we can use a libjson installed on the system. This avoids issues of using older versions of libjson shipped with this package.
+
+
+
+Version 0.5-0
+
+  *  Enhancements to disambiguate serializing empty lists from as empty arrays or associative arrays. See also emptyNamedList to map to {}.
+
+  *  Method for identifying an R scalar that should be mapped to a JSON array via the AsIs class and I() function.
+
+  *  toJSON() honors these also ensuring transformation from JSON to R to JSON preserves the same structure.
+
+  *  Both changes thanks to suggestions by Keith Bonawitz.
+
+
+
+Version 0.4-2
+
+  *  Fixed significant memory leaks found by Keith Bonawitz
+
+
+
+Version 0.4-1
+
+  *  Tidied up C++ code from libjsonio to avoid a warning about no argument to initializeFetch() when compiling the C++ code.
+
+  *  Fixed a C routine (R_fromJSON) that did not return a value.
+
+
+
+Version 0.4-0
+
+  *  fromJSON() now uses libjson for the native parsing and a C routine to transform the resulting tree into R. This leads to a considerable speedup in parsing documents, approximately a factor of 200 over the customizable, event driven mechanism in earlier versions and still available in this package via the basicJSONHandler() function and fromJSON().
+
+
+
+Version 0.3-4
+
+  *  Refinement of handling large integers that do not fit into a 4 byte int. Tested on Windows.
+
+
+
+Version 0.3-3
+
+  *  Handle large integers that do not fit into a 4 byte int. Return as numeric values.
+
+
+
+Version 0.3-1
+
+  *  Convert factors to character vectors in toJSON() and then serialize.
+
+
+
+Version 0.2-4
+
+  *  Handles UTF-8 content as input. We convert the text to raw and then integer values.
+
+
+
+Version 0.2-3
+
+  *  (Minor) Change to the C code to make it compile on Windows.
+
+
+
+Version 0.2-2
+
+  *  named atomic/primitive vectors serialized as associative arrays rather than simple arrays.
+
+
+
+Version 0.2-1
+
+  *  names on R objects from associative arrays from JSON were in reverse order.
+
+
+
+Version 0.2-0
+
+  *  Scalar, by default, values are represented in JSON as scalars and not arrays of length 1. One can control this via the container parameter in toJSON().
+
+

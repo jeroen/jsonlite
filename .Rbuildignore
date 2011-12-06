@@ -1,0 +1,6 @@
+GNUmakefile
+.*/autom4te.*
+config.log
+config.status
+Objects.*
+purdy.R

@@ -1,0 +1,17 @@
+useDynLib(RJSONIO)
+
+export(toJSON)
+exportMethods(toJSON)
+
+export(emptyNamedList)
+
+export(fromJSON)
+exportMethods(fromJSON)
+exportPattern("^JSON_T")
+export(asJSVars)
+
+export(basicJSONHandler)
+
+
+export(Strict, StrictNumeric, StrictCharacter, StrictLogical)
+

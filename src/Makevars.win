@@ -1,0 +1,4 @@
+PKG_CPPFLAGS=-I. -Ilibjson -Ilibjson/Source -DNDEBUG=1 -DJSON_NO_EXCEPTIONS=1
+
+
+

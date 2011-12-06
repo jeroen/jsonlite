@@ -1,0 +1,8 @@
+#!/bin/sh
+
+CPP="@CPP_FILES@"
+
+if test -n "$CPP" ; then 
+  echo "Removing the CPP files copied from libjson into src: $CPP"
+  (cd src ; rm $CPP)
+fi

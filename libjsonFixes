@@ -1,0 +1,10 @@
+libjson/Source/JSONDefs is not readable when installed
+ 
+  cd libjson
+  chmod a+rx Source
+  chmod a+rx Source/JSONDefs
+
+The makefile doesn't work for SHARED=1 on OS X.
+  -Wl,-soname,$(libname_shared_major_version)
+  
+  ldconfig

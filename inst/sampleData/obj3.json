@@ -1,0 +1,6 @@
+/* JSON syntax error */
+{"a1" : "x",
+ "a2" : "yz",
+ "logical" : true,
+ "logicalArray" : [true, false]
+}

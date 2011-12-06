@@ -1,0 +1,241 @@
+<changelog xmlns:r="http://www.r-project.org"
+	   xmlns:omg="http://www.omegahat.org"
+           xmlns:env="http://www.shell.org">
+<omg:pkg>RJSONIO</omg:pkg>
+
+<version num="0.96-0">
+<change>
+Added encoding argument for <r:func>fromJSON</r:func> and that encoding is preserved on
+the resulting strings. Thanks to Tony Breyal for pointing out the issue.
+</change>
+</version>
+
+<version num="0.95-0">
+<change>
+In <r:func>fromJSON</r:func>, when <r:arg>nullValue</r:arg> is <r:na/> (the logical NA)
+we attempt to simplify vectors with JSON null values.
+</change>
+</version>
+
+<version num="0.94-0">
+<change>
+Added <r:arg>simplifyWithNames</r:arg> to <r:func>fromJSON</r:func> for controlling whether we attempt to collapse
+collections of values read from JSON if they have names.  This can be used to collapse unnamed
+vectors, but leave named lists that would otherwise be collapsed to vectors.
+</change>
+</version>
+
+<version num="0.93-0">
+<change>
+Added support in fromJSON<r:func></r:func> for collapsing particular types of elements,
+i.e. logicals, numbers or characters via 
+ <r:var>StrictLogical</r:var>, <r:var>StrictNumeric</r:var> and <r:var>StrictCharacter</r:var>.
+This allows "strict" collapsing, but for different types, while leaving others as lists.
+These can be combined.
+</change>
+</version>
+
+<version num="0.92-0">
+<change>
+Added to the ability to control whether we simplify the content using simplify = Strict or <r:true/> or <r:false/>.
+</change>
+</version>
+
+<version num="0.91-0">
+<change>
+Added <r:arg>.escapeEscapes</r:arg> to <r:func>toJSON</r:func> to allow the caller
+to preserve new lines and tabs symbolically or not. Thanks to Antonio Piccolboni for the report about the issue.
+</change>
+</version>
+
+<version num="0.9-0">
+<change>
+Added <r:arg>.na</r:arg> parameter to the <r:func>toJSON</r:func> function and methods
+so that the caller can control how <r:na/> values are mapped to JSON.
+This defaults to "null" so that the resulting JSON is well-formed.
+However, users should explicitly think  about how <r:na/> values 
+(and Inf and NaN) are mapped to JSON in order to avoid ambiguity and
+faithfully serialize their data in a meaningful manner.
+</change>
+<change>
+Added a <r:arg>nullValue</r:arg> parameter to <r:func>fromJSON</r:func>
+to allow the caller to provide an R object that will be used
+when we encounter a JSON null value. 
+This can be used for example to map null to <r:na/> in R.
+</change>
+<change>
+Added more support for simplifying lists to vectors of different types. 
+In the future, I might add a simplify = "strict" mode that would
+only collapse vectors if all the elements were of the same type,
+not just compatible types. In other words,
+ [true, 1 ] would not collapse to c(1, 1) in R.
+</change>
+</version>
+
+<version num="0.8-2">
+<change>
+Corrected what toJSON() does with new lines (\n) and avoid the escaping of the \. Thanks to 
+Antonio Piccolboni for the report.
+</change>
+</version>
+
+<version num="0.8-1">
+<change>
+Corrections to the libjson C/C++ code from Brian Ripley.
+</change>
+</version>
+
+<version num="0.8-0">
+<change>
+Added a <r:arg>.withNames</r:arg> parameter to <r:func>toJSON</r:func>
+so that the caller can explicitly control whether an R object with names
+is written as an associative array or as a simple array.
+</change>
+
+<change>
+Added a <r:arg>simplify</r:arg> parameter to <r:func>fromJSON</r:func> 
+that controls whether we collapse lists of homogeneous element types
+to an R vector.
+</change>
+</version>
+
+<version num="0.7-3">
+<change>
+Added .withNames parameter for <r:func>toJSON</r:func> which allows the
+caller to control whether we ignore or use any names. Defaults to 
+use the names if they are present.
+</change>
+</version>
+
+<version num="0.7-3">
+<change>
+Honor the collapse argument in more places to allow avoiding new line characters being
+inserted.
+</change>
+</version>
+
+<version num="0.7-2">
+<change>
+Copied compiler flags for libjson code into Makevars.win
+</change>
+</version>
+
+<version num="0.7-1">
+<change>
+Correction for toJSON() method for handling of \ in strings so that they round-trip and work in other JSON tools.
+     Thanks to Patrick Perry.
+</change>
+</version>
+
+<version num="0.7-0">
+<change>
+Round-tripping from JSON to R and back behaves a lot more consistently.
+Thanks to Kevin Coombes for the examples/tests.<br/>
+Next, we will add functionality to customize serialization of <r:na/>.
+</change>
+<change>
+Change to the default value of <r:arg>container</r:arg> of <r:func>toJSON</r:func> so that 
+this is  <r:true/> when at the top-level or initial call to <r:func>toJSON</r:func>.
+</change>
+<change>
+We now know the type of the top-most node so can correctly handle empty 
+associative arrays, etc.
+</change>
+</version>
+
+<version num="0.6-0">
+<change>
+ Updated the libjson source code in the package to libjson 7.0.1.
+     This removes a bug in parsing numbers of the form 3.14E4. Found
+     by Jeroen Ooms.
+</change>
+<change>
+Added configuration so that we can use a libjson installed on the system.
+   This avoids issues of using older versions of libjson shipped with this package.
+</change>
+</version>
+
+<version num="0.5-0">
+<change>Enhancements to disambiguate serializing empty lists from as empty arrays or associative 
+arrays.  See also emptyNamedList to map to {}. 
+</change>
+<change>Method for identifying an R scalar that should be mapped to a JSON array via the 
+AsIs class and I() function.
+</change>
+<change>toJSON() honors these also ensuring transformation from JSON to R to JSON
+preserves the same structure.
+</change>
+<change>
+     Both changes thanks to suggestions by Keith Bonawitz.
+</change>
+</version>
+
+<version num="0.4-2">
+<change>Fixed significant memory leaks found by Keith Bonawitz</change>
+</version>
+
+<version num="0.4-1">
+<change>Tidied up C++ code from libjsonio to avoid a warning about no
+     argument to initializeFetch() when compiling the C++ code.
+</change>
+<change>Fixed a C routine (R_fromJSON) that did not return a value.</change>
+</version>
+
+<version num="0.4-0">
+<change>
+<r:func>fromJSON</r:func> now uses libjson for the native parsing
+and a C routine to transform the resulting tree into R.
+This leads to a considerable speedup in parsing documents,
+approximately a factor of 200 over the customizable, event
+driven mechanism in earlier versions and still available 
+in this package via the <r:func>basicJSONHandler</r:func>
+function and <r:func>fromJSON</r:func>.
+</change>
+</version>
+
+<version num="0.3-4">
+<change>Refinement of handling large integers that do not fit into a 4 byte int.
+Tested on Windows.
+</change>
+</version>
+
+<version num="0.3-3">
+<change>Handle large integers that do not fit into a 4 byte int. Return as numeric values.</change>
+</version>
+
+<version num="0.3-1">
+<change>Convert factors to character vectors in <r:func>toJSON</r:func> and then serialize.</change>
+</version>
+
+<version num="0.2-4">
+<change>Handles UTF-8 content  as input. We convert the text to raw and then integer
+values.
+</change>
+</version>
+
+<version num="0.2-3">
+<change>(Minor) Change to the C code to make it compile on Windows.</change>
+</version>
+
+<version num="0.2-2">
+<change>
+named atomic/primitive vectors serialized as associative arrays rather
+than simple arrays.
+</change>
+</version>
+
+<version num="0.2-1">
+<change>
+names on R objects from associative arrays from JSON were in reverse order.
+</change>
+</version>
+
+<version num="0.2-0">
+<change>
+Scalar, by default, values are represented in JSON as scalars and not
+arrays of length 1.  One can control this via the
+<r:arg>container</r:arg> parameter in <r:func>toJSON</r:func>.
+</change>
+</version>
+
+</changelog>

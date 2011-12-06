@@ -1,0 +1,20 @@
+#!/bin/sh
+
+CPP="JSONChildren.cpp
+JSONDebug.cpp
+JSONIterators.cpp
+JSONMemory.cpp
+JSONNode.cpp
+JSONNode_Mutex.cpp
+JSONStream.cpp
+JSONValidator.cpp
+JSONWorker.cpp
+JSONWriter.cpp
+JSON_Base64.cpp
+internalJSONNode.cpp
+libjson.cpp"
+
+if test -n "$CPP" ; then 
+  echo "Removing the CPP files copied from libjson into src: $CPP"
+  (cd src ; rm $CPP)
+fi
