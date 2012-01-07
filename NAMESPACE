@@ -12,6 +12,8 @@ export(asJSVars)
 
 export(basicJSONHandler)
 
+export(isValidJSON)
+exportMethods(isValidJSON)
 
 export(Strict, StrictNumeric, StrictCharacter, StrictLogical)
 

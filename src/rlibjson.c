@@ -258,6 +258,7 @@ int setType(int cur, int newType)
 }
 
 
+
 SEXP
 R_libjson_version()
 {
@@ -267,4 +268,15 @@ R_libjson_version()
 	                     (int) __LIBJSON_PATCH__);
 
     return(ScalarString(mkChar(buf)));
+}
+
+
+SEXP
+R_isValidJSON(SEXP input)
+{
+    const char *txt;
+    int status = 0;
+    txt = CHAR(STRING_ELT(input, 0));
+    status = json_is_valid(txt);
+    return(ScalarLogical(status));
 }

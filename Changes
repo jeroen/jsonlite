@@ -2,6 +2,12 @@
 RJSONIO
 
 
+Version 0.97-0
+
+  *  Add isValidJSON() to test whether the JSON content is valid. Suggested by Jeroen Ooms.
+
+
+
 Version 0.96-0
 
   *  Added encoding argument for fromJSON() and that encoding is preserved on the resulting strings. Thanks to Tony Breyal for pointing out the issue.

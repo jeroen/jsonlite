@@ -3,6 +3,13 @@
            xmlns:env="http://www.shell.org">
 <omg:pkg>RJSONIO</omg:pkg>
 
+<version num="0.97-0">
+<change>
+Add <r:func>isValidJSON</r:func> to test whether the JSON content is
+valid.  Suggested by Jeroen Ooms.
+</change>
+</version>
+
 <version num="0.96-0">
 <change>
 Added encoding argument for <r:func>fromJSON</r:func> and that encoding is preserved on
