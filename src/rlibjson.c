@@ -308,6 +308,13 @@ R_json_stream_push(SEXP r_stream, SEXP r_txt)
 
 SEXP expr;
 
+SEXP
+R_json_node_type(SEXP r_ref)
+{
+    JSONNODE *node = (JSONNODE *) R_ExternalPtrAddr(r_ref);
+    return(ScalarInteger( (int) json_type(node)));
+}
+
 void
 R_stream_callback(JSONNODE *node) //, void *data)
 {
