@@ -306,7 +306,11 @@ R_json_stream_push(SEXP r_stream, SEXP r_txt)
 }
 #endif
 
+#define NEW_JSON_NEW_STREAM
+
+#ifndef NEW_JSON_NEW_STREAM
 SEXP expr;
+#endif
 
 SEXP
 R_json_node_type(SEXP r_ref)
@@ -316,9 +320,15 @@ R_json_node_type(SEXP r_ref)
 }
 
 void
-R_stream_callback(JSONNODE *node) //, void *data)
+#ifdef NEW_JSON_NEW_STREAM
+R_stream_callback(JSONNODE *node, void *data)
+#else
+R_stream_callback(JSONNODE *node) 
+#endif
 {
-//    SEXP expr = (SEXP) data;
+#ifdef NEW_JSON_NEW_STREAM
+    SEXP expr = (SEXP) data;
+#endif
     SEXP ref;
     ref = CAR(CDR(expr));
     R_SetExternalPtrAddr(ref, node);
@@ -344,13 +354,19 @@ R_json_stream_parse(SEXP str, SEXP fun)
 {
     JSONSTREAM *stream;
     SEXP nodeRef;
+#ifdef NEW_JSON_NEW_STREAM 
+    SEXP expr;
+#endif    
 
     PROTECT(expr = allocVector(LANGSXP, 2));
     SETCAR(expr, fun);
     nodeRef = makeNodeRef(NULL);
     SETCAR(CDR(expr), nodeRef);
-//    stream = json_new_stream(R_stream_callback, NULL, expr);
+#ifdef NEW_JSON_NEW_STREAM 
+    stream = json_new_stream(R_stream_callback, NULL, expr);
+#else
     stream = json_new_stream(R_stream_callback);
+#endif
     json_stream_push(stream, CHAR(STRING_ELT(str, 0)));
     UNPROTECT(1);
     return(R_NilValue);

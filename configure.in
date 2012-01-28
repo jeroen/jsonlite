@@ -36,6 +36,7 @@ fi
 
 echo "USE_LOCAL = \"$USE_LOCAL\""
 
+
 if test -n "$USE_LOCAL" &&  ! test "$USE_LOCAL" = "" && ! test "$USE_LOCAL" = "yes"  && test -n "$LIBJSON_PREFIX" ; then
   LIBJSON_CFLAGS=-I${LIBJSON_PREFIX}/include
   LIBJSON_LIBS="-L${LIBJSON_PREFIX}/lib -ljson"
@@ -47,11 +48,17 @@ else
        echo "        ****************"
        exit 1;
    fi
-   echo "Using local libjson code. Copying files"
+   if test -z "${LIBJSON_SRC}" ; then
+      LIBJSON_SRC="src/libjson/Source"
+      LIBJSON_CFLAGS="-I. -Ilibjson -Ilibjson/Source"
+   else
+      LIBJSON_CFLAGS="-I${LIBJSON_SRC}/.. -I${LIBJSON_SRC}"
+   fi
+   echo "Using local libjson code. Copying files from ${LIBJSON_SRC}"
    echo "`pwd`"
-   CPP_FILES=`(cd src/libjson/Source/; ls *.cpp)`
-   cp src/libjson/Source/*.cpp src/
-   LIBJSON_CFLAGS="-I. -Ilibjson -Ilibjson/Source"
+   CPP_FILES=`(cd ${LIBJSON_SRC}; ls *.cpp)`
+   echo "$CPP_FILES"
+   cp ${LIBJSON_SRC}/*.cpp src/
 fi
 
 AC_SUBST(CPP_FILES)
