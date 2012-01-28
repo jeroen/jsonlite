@@ -280,3 +280,72 @@ R_isValidJSON(SEXP input)
     status = json_is_valid(txt);
     return(ScalarLogical(status));
 }
+
+
+
+
+/******************/
+
+#if 0
+
+SEXP
+R_json_new_stream(SEXP fun, SEXP pullFun)
+{
+    JSONSTREAM *stream;
+    stream = json_new_stream();
+}
+
+SEXP
+R_json_stream_push(SEXP r_stream, SEXP r_txt)
+{
+    JSONSTREAM *stream;
+    stream = R_getStreamRef(r_stream);
+
+    json_stream_push(stream, CHAR(STRING_ELT(r_txt, 0)));
+    return(ScalarLogical(1));
+}
+#endif
+
+SEXP expr;
+
+void
+R_stream_callback(JSONNODE *node) //, void *data)
+{
+//    SEXP expr = (SEXP) data;
+    SEXP ref;
+    ref = CAR(CDR(expr));
+    R_SetExternalPtrAddr(ref, node);
+    Rf_eval(expr, R_GlobalEnv);
+}
+
+
+SEXP 
+makeNodeRef(JSONNODE *node)
+{
+    SEXP ans;
+    PROTECT(ans = R_MakeExternalPtr(node, Rf_install("JSONNODE"), R_NilValue));
+    SET_CLASS(ans, ScalarString(mkChar("JSONNODE")));
+    UNPROTECT(1);
+    return(ans);
+
+}
+
+
+
+SEXP
+R_json_stream_parse(SEXP str, SEXP fun)
+{
+    JSONSTREAM *stream;
+    SEXP nodeRef;
+
+    PROTECT(expr = allocVector(LANGSXP, 2));
+    SETCAR(expr, fun);
+    nodeRef = makeNodeRef(NULL);
+    SETCAR(CDR(expr), nodeRef);
+//    stream = json_new_stream(R_stream_callback, NULL, expr);
+    stream = json_new_stream(R_stream_callback);
+    json_stream_push(stream, CHAR(STRING_ELT(str, 0)));
+    UNPROTECT(1);
+    return(R_NilValue);
+}
+
