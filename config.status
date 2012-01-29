@@ -525,7 +525,7 @@ JSONWriter.cpp\
 JSON_Base64.cpp\
 internalJSONNode.cpp\
 libjson.cpp,g
-s,@LIBJSON_CFLAGS@,|#_!!_#|-I/Users/duncan/Downloads/libjson/Source/.. -I/Users/duncan/Downloads/libjson/Source -DNEW_JSON_NEW_STREAM,g
+s,@LIBJSON_CFLAGS@,|#_!!_#|-I. -Ilibjson -Ilibjson/Source -DNEW_JSON_NEW_STREAM,g
 s,@LIBJSON_LIBS@,|#_!!_#|,g
 s,@LIBOBJS@,|#_!!_#|,g
 s,@LTLIBOBJS@,|#_!!_#|,g

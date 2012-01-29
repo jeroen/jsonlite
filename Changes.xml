@@ -5,15 +5,16 @@
 
 <version num="0.98-0">
 <change>
+Update default libjson code to version 7.4.0.
+</change>
+<change>
 Changes to configuration to allow the use of a version
 of libjson that is not installed but not in the RJSONIO
-package directory itself.
+package directory itself. Use the environment variable
+<env>LIBJSON_SRC</env>.
 </change>
 <change>
 Configuration determines version of libjson and adapts compilation flags accordingly.
-</change>
-<change>
-Update default libjson code to version 7.4.0.
 </change>
 </version>
 
