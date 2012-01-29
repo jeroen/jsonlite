@@ -39,7 +39,7 @@ void jsonChildren::inc(void) json_nothrow {
 		  #endif
 		  array = json_realloc<JSONNode*>(array, mycapacity);
 	   }
-    }   
+    }
 }
 
 
@@ -66,14 +66,14 @@ void jsonChildren::inc(json_index_t amount) json_nothrow {
 		  #endif
 		  array = json_realloc<JSONNode*>(array, mycapacity);
 	   }
-    }   
+    }
 }
 
 //actually deletes everything within the vector, this is safe to do on an empty or even a null array
 void jsonChildren::deleteAll(void) json_nothrow {
     JSON_ASSERT(this != 0, JSON_TEXT("Children is null deleteAll"));
     json_foreach(this, runner){
-        JSON_ASSERT(*runner, JSON_TEXT("a null pointer within the children"));
+        JSON_ASSERT(*runner != JSON_TEXT('\0'), JSON_TEXT("a null pointer within the children"));
 	   JSONNode::deleteJSONNode(*runner);  //this is why I can't do forward declaration
     }
 }
@@ -89,7 +89,7 @@ void jsonChildren::doerase(JSONNode ** position, json_index_t number) json_nothr
 		  JSON_ASSERT((long long)position - (long long)array >= 0, JSON_TEXT("doing negative allocation"));
 	   #endif
     } else {
-	   memmove(position, position + number, (mysize - (position - array) - number) * sizeof(JSONNode *));
+	   std::memmove(position, position + number, (mysize - (position - array) - number) * sizeof(JSONNode *));
 	   mysize -= number;
     }
 }

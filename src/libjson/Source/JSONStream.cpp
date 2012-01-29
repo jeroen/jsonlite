@@ -2,15 +2,19 @@
 
 #ifdef JSON_STREAM
 #include "JSONWorker.h"
+#include "JSONValidator.h"
 
 
-JSONStream::JSONStream(json_stream_callback_t call_p) json_nothrow : call(call_p), buffer() {}
+JSONStream::JSONStream(json_stream_callback_t call_p, json_stream_e_callback_t call_e, void * callbackIdentifier) json_nothrow : state(true), call(call_p), err_call(call_e), buffer(), callback_identifier(callbackIdentifier) {}
 
-JSONStream::JSONStream(const JSONStream & orig) json_nothrow : call(orig.call), buffer(orig.buffer){}
+JSONStream::JSONStream(const JSONStream & orig) json_nothrow : state(orig.state), call(orig.call), err_call(orig.err_call), buffer(orig.buffer), callback_identifier(orig.callback_identifier){}
 
 JSONStream & JSONStream::operator =(const JSONStream & orig) json_nothrow {
+	err_call = orig.err_call;
     call = orig.call;
+	state = orig.state;
     buffer = orig.buffer;
+	callback_identifier = orig.callback_identifier;
     return *this;
 }
 
@@ -19,9 +23,11 @@ JSONStream & JSONStream::operator =(const JSONStream & orig) json_nothrow {
 #else
     JSONStream & JSONStream::operator << (const json_string & str) json_nothrow {
 #endif
-    buffer += str;
-    parse();
-    return *this;
+		if (state){
+			buffer += str;
+			parse();
+		}
+		return *this;
 }
 
 
@@ -31,13 +37,13 @@ JSONStream & JSONStream::operator =(const JSONStream & orig) json_nothrow {
 		  if (json_unlikely(*p == JSON_TEXT('\0'))) return json_string::npos;\
 	   }\
 	   break;
-	   
-	   
+
+
 #define NULLCASE_STREAM()\
     case JSON_TEXT('\0'):\
 	   return json_string::npos;\
 
-	   
+
 #define BRACKET_STREAM(left, right)\
     case left: {\
 	   size_t brac = 1;\
@@ -56,7 +62,7 @@ JSONStream & JSONStream::operator =(const JSONStream & orig) json_nothrow {
 	   break;}\
     case right:\
 	   return json_string::npos;
-	   
+
 size_t JSONStream::FindNextRelevant(json_char ch, const json_string & value_t, const size_t pos) json_nothrow {
     const json_char * start = value_t.c_str();
     for (const json_char * p = start + pos; *p; ++p){
@@ -70,6 +76,7 @@ size_t JSONStream::FindNextRelevant(json_char ch, const json_string & value_t, c
     return json_string::npos;
 }
 
+#include <iostream>
 void JSONStream::parse(void) json_nothrow {
     size_t pos = buffer.find_first_of(JSON_TEXT("{["));
     if (json_likely(pos != json_string::npos)){
@@ -78,16 +85,38 @@ void JSONStream::parse(void) json_nothrow {
 		  START_MEM_SCOPE
 			 JSONNode temp(JSONWorker::parse(buffer.substr(pos, end - pos + 1)));
 			 #ifndef JSON_LIBRARY
-				call(temp);
+				call(temp, getIdentifier());
 			 #else
-				call(&temp);
+				call(&temp, getIdentifier());
 			 #endif
 		  END_MEM_SCOPE
 		  json_string::iterator beginning = buffer.begin();
 		  buffer.erase(beginning, beginning + end);
 		  parse();
 	   }
+	   #ifdef JSON_SAFE
+			else {
+				//verify that what's in there is at least valid so far
+				#ifndef JSON_VALIDATE
+					#error In order to use safe mode and streams, JSON_VALIDATE needs to be defined			
+				#endif
+				
+				json_auto<json_char> s;
+				#if defined JSON_DEBUG || defined JSON_SAFE
+					json_char c;
+					s.set(JSONWorker::RemoveWhiteSpace(json_string(buffer.c_str() + pos), c, false));
+				#else
+					s.set(JSONWorker::RemoveWhiteSpace(json_string(buffer.c_str() + pos), false));
+				#endif
+				
+				
+				if (!JSONValidator::isValidPartialRoot(s.ptr)){
+					if (err_call) err_call(getIdentifier());
+					state = false;
+				}
+			}
+	   #endif
     }
 }
-	   
+
 #endif

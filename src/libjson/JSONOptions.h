@@ -11,7 +11,7 @@
  *  JSON_LIBRARY must be declared if libjson is compiled as a static or dynamic 
  *  library.  This exposes a C-style interface, but none of the inner workings of libjson
  */
-#define JSON_LIBRARY
+//#define JSON_LIBRARY
 
 
 /*
@@ -94,7 +94,7 @@
  *  JSON_BINARY is used to support binary, which is base64 encoded and decoded by libjson,
  *  if this option is not turned on, no base64 support is included
  */
-//#define JSON_BINARY
+#define JSON_BINARY
 
 
 /*
@@ -102,14 +102,14 @@
  *  and decoding.  This may be useful if you want to obfuscate your json, or send binary data over
  *  a network
  */
-//#define JSON_EXPOSE_BASE64
+#define JSON_EXPOSE_BASE64
 
 
 /*
  *  JSON_ITERATORS turns on all of libjson's iterating functionality.  This would usually
  *  only be turned off while compiling for use with C
  */
-//#define JSON_ITERATORS
+#define JSON_ITERATORS
 
 
 /*
@@ -117,7 +117,7 @@
  *  your json into a stream, which will automatically hit a callback when full nodes are
  *  completed
  */
-//#define JSON_STREAM
+#define JSON_STREAM
 
 
 /*
@@ -136,6 +136,16 @@
  *  nodes.  It also exposes bulk delete functions.
  */
 //#define JSON_MEMORY_MANAGE
+
+
+/*
+ *	JSON_MEMORY_POOL Turns on libjson's iteraction with mempool++.  It is more efficient that simply
+ *	connecting mempool++ to the callbacks because it integrates things internally and uses a number
+ *	of memory pools.  This value tells libjson how large of a memory pool to start out with.  500KB 
+ *	should suffice for most cases.  libjson will distribute that within the pool for the best
+ *	performance depending on other settings.
+ */
+//#define JSON_MEMORY_POOL 524288
 
 
 /*
@@ -213,7 +223,7 @@
  *  parsing json that has comments in it as it simply ignores them, but with this option
  *  it keeps the comments and allows you to insert further comments
  */
-//#define JSON_COMMENTS
+#define JSON_COMMENTS
 
 
 /*
@@ -233,16 +243,24 @@
 
 
 /*
- *  JSON_VALIDATE turns on validation features of libjson.  This option requires JSON_SAFE
+ *  JSON_ARRAY_SIZE_ON_ON_LINE allows you to put small arrays of primitives all on one line
+ *  in a write_formatted.  This is common for tuples, like coordinates.  If must be defined 
+ *  as an integer
  */
-//#define JSON_VALIDATE
+//#define JSON_ARRAY_SIZE_ON_ONE_LINE 2
+
+
+/*
+ *  JSON_VALIDATE turns on validation features of libjson.
+ */
+#define JSON_VALIDATE
 
 
 /*
  *  JSON_CASE_INSENSITIVE_FUNCTIONS turns on funtions for finding child nodes in a case-
  *  insenititve way
  */
-//#define JSON_CASE_INSENSITIVE_FUNCTIONS
+#define JSON_CASE_INSENSITIVE_FUNCTIONS
 
 
 /*
@@ -262,6 +280,13 @@
 
 
 /*
+ *  JSON_INT_TYPE lets you change the int type for as_int.  If you ommit this option, the default
+ *  long will be used
+ */
+//#define JSON_INT_TYPE long
+
+
+/*
  *  JSON_STRING_HEADER allows you to change the type of string that libjson uses both for the
  *  interface and internally.  It must implement most of the STL string interface, but not all
  *  of it.  Things like wxString or QString should wourk without much trouble
@@ -278,7 +303,7 @@
 
 
 /*
- *  JSON_NO_EXCEPTIONS turns off any exception trhowing by the library.  It may still use exceptions
+ *  JSON_NO_EXCEPTIONS turns off any exception throwing by the library.  It may still use exceptions
  *  internally, but the interface will never throw anything.
  */
 //#define JSON_NO_EXCEPTIONS
@@ -290,6 +315,31 @@
  *  over to the new equivalents
  */
 #define JSON_DEPRECATED_FUNCTIONS
+
+
+/*
+ *  JSON_CASTABLE allows you to call as_bool on a number and have it do the 0 or not 0 check,
+ *  it also allows you to ask for a string from a number, or boolean, and have it return the right thing.
+ *  Without this option, those types of requests are undefined.  It also exposes the as_array, as_node, and cast 
+ *  functions
+ */
+#define JSON_CASTABLE
+
+
+/*
+ *  JSON_SECURITY_MAX_NEST_LEVEL is a security measure added to make prevent against DoS attacks
+ *  This only affects validation, as if you are worried about security attacks, then you are
+ *  most certainly validating json before sending it to be parsed.  This option allows you to limitl how many
+ *  levels deep a JSON Node can go.  128 is a good depth to start with
+ */
+#define JSON_SECURITY_MAX_NEST_LEVEL 128
+
+
+/*
+ *  JSON_SECURITY_MAX_STRING_LENGTH is another security measure, preventing DoS attacks with very long
+ *  strings of JSON.  32MB is the default value for this, this allows large images to be embedded
+ */
+#define JSON_SECURITY_MAX_STRING_LENGTH 33554432
 
 #endif
 

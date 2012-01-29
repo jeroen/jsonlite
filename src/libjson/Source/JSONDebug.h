@@ -54,9 +54,5 @@
     #define JSON_FAIL(msg)
 #endif
 
-#include <string>
-static const json_string EMPTY_JSON_STRING;
-static const std::string EMPTY_STD_STRING;
-
 #endif
 

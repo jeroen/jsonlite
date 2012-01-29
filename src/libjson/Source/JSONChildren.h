@@ -23,7 +23,7 @@ using namespace std;
  of holding JSONNode children.  It acts the same way as a vector, it has a automatically
  expanding array.  On destruction, this container automatically destroys everything contained
  in it as well, so that you libjson doesn't have to do that.
- 
+
  T is JSONNode*, I can't define it that way directly because JSONNode uses this container, and because
  the container deletes the children automatically, forward declaration can't be used
  */
@@ -44,16 +44,16 @@ class JSONNode;  //forward declaration
 class jsonChildren {
 public:
     //starts completely empty and the array is not allocated
-    jsonChildren(void) json_nothrow : array(0), mysize(0), mycapacity(0) { 
+    jsonChildren(void) json_nothrow : array(0), mysize(0), mycapacity(0) {
 	   addAllocCount();
     }
-    
+
     #ifdef JSON_LESS_MEMORY
-	   jsonChildren(JSONNode** ar, json_index_t si, json_index_t ca) json_nothrow : array(ar), mysize(si), mycapacity(ca) { 
+	   jsonChildren(JSONNode** ar, json_index_t si, json_index_t ca) json_nothrow : array(ar), mysize(si), mycapacity(ca) {
 		  addAllocCount();
 	   }
     #endif
-    
+
     //deletes the array and everything that is contained within it (using delete)
     childrenVirtual ~jsonChildren(void) json_nothrow {
 	   if (json_unlikely(array != 0)){  //the following function calls are safe, but take more time than a check here
@@ -62,31 +62,31 @@ public:
 	   }
 	   subAllocCount();
     }
-    
+
     #ifdef JSON_UNIT_TEST
 	   void addAllocCount(void);
 	   void subAllocCount(void);
     #endif
-    
+
     //increase the size of the array
     void inc(json_index_t amount) json_nothrow;
     void inc(void) json_nothrow;
-    
+
     //Adds something to the vector, doubling the array if necessary
     void push_back(JSONNode * item) json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null push_back"));
 	   inc();
 	   array[mysize++] = item;
     }
-    
+
     //Adds something to the front of the vector, doubling the array if necessary
     void push_front(JSONNode * item) json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null push_front"));
 	   inc();
-	   memmove(array + 1, array, mysize++ * sizeof(JSONNode *));
+	   std::memmove(array + 1, array, mysize++ * sizeof(JSONNode *));
 	   array[0] = item;
     }
-    
+
     //gets an item out of the vector by it's position
     inline JSONNode * operator[] (json_index_t position) const json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null []"));
@@ -95,25 +95,25 @@ public:
 	   JSON_ASSERT(array != 0, JSON_TEXT("Array is null"));
 	   return array[position];
     }
-    
+
     //returns the allocated capacity, but keep in mind that some might not be valid
     inline json_index_t capacity() const json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null capacity"));
 	   return mycapacity;
     }
-    
+
     //returns the number of valid objects within the vector
     inline json_index_t size() const json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null size"));
 	   return mysize;
     }
-    
+
     //tests whether or not the vector is empty
     inline bool empty() const json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null empty"));
 	   return mysize == 0;
     }
-    
+
     //clears (and deletes) everything from the vector and sets it's size to 0
     inline void clear() json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null clear"));
@@ -124,31 +124,31 @@ public:
 	   }
 	   JSON_ASSERT(mysize == 0, JSON_TEXT("mysize is not zero after clear"));
     }
-    
+
     //returns the beginning of the array
     inline JSONNode ** begin(void) const json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null begin"));
 	   return array;
     }
-    
+
     //returns the end of the array
     inline JSONNode ** end(void) const json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null end"));
 	   return array + mysize;
     }
-    
+
     //makes sure that even after shirnking and expanding, the iterator is in same relative position
     struct iteratorKeeper {
     public:
 	   #ifdef JSON_LIBRARY
-		  iteratorKeeper(jsonChildren * pthis, JSONNode ** & position) json_nothrow : 
+		  iteratorKeeper(jsonChildren * pthis, JSONNode ** & position) json_nothrow :
 			 myRelativeOffset((json_index_t)(position - pthis -> array)),
 	   #else
-		  iteratorKeeper(jsonChildren * pthis, JSONNode ** & position, bool reverse = false) json_nothrow : 
+		  iteratorKeeper(jsonChildren * pthis, JSONNode ** & position, bool reverse = false) json_nothrow :
 			 myRelativeOffset(reverse ? (json_index_t)(pthis -> array + (size_t)pthis -> mysize - position) : (json_index_t)(position - pthis -> array)),
 			 myReverse(reverse),
 	   #endif
-			 myChildren(pthis), 
+			 myChildren(pthis),
 			 myPos(position){}
 
 	   ~iteratorKeeper(void) json_nothrow {
@@ -165,7 +165,7 @@ public:
     private:
 	   iteratorKeeper(const iteratorKeeper &);
 	   iteratorKeeper & operator = (const iteratorKeeper &);
-	   
+
 	   json_index_t myRelativeOffset;
 	   jsonChildren * myChildren;
 	   JSONNode ** & myPos;
@@ -173,18 +173,18 @@ public:
 		  bool myReverse BITS(1);
 	   #endif
     };
-    
+
     //This function DOES NOT delete the item it points to
     inline void erase(JSONNode ** & position) json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null erase"));
 	   JSON_ASSERT(array != 0, JSON_TEXT("erasing something from a null array 1"));
 	   JSON_ASSERT(position >= array, JSON_TEXT("position is beneath the start of the array 1"));
 	   JSON_ASSERT(position <= array + mysize, JSON_TEXT("erasing out of bounds 1"));
-	   memmove(position, position + 1, (mysize-- - (position - array) - 1) * sizeof(JSONNode *));
+	   std::memmove(position, position + 1, (mysize-- - (position - array) - 1) * sizeof(JSONNode *));
 	   iteratorKeeper ik(this, position);
 	   shrink();
     }
-    
+
     //This function DOES NOT delete the item it points to
     inline void erase(JSONNode ** & position, json_index_t number) json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null erase 2"));
@@ -192,8 +192,8 @@ public:
 	   iteratorKeeper ik(this, position);
 	   shrink();
     }
-    
-    
+
+
     //This function DOES NOT delete the item it points to
     inline void erase(JSONNode ** position, json_index_t number, JSONNode ** & starter) json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null erase 3"));
@@ -201,7 +201,7 @@ public:
 	   iteratorKeeper ik(this, starter);
 	   shrink();
     }
-    
+
     #ifdef JSON_LIBRARY
 	   void insert(JSONNode ** & position, JSONNode * item) json_nothrow{
     #else
@@ -219,7 +219,7 @@ public:
 		  #endif
 		  inc();
 	   }
-	   memmove(position + 1, position, (mysize++ - (position - array)) * sizeof(JSONNode *));
+	   std::memmove(position + 1, position, (mysize++ - (position - array)) * sizeof(JSONNode *));
 	   *position = item;
     }
 
@@ -232,11 +232,11 @@ public:
 		  inc(num);
 	   }
 	   const size_t ptrs = ((JSONNode **)(array + mysize)) - position;
-	   memmove(position + num, position, ptrs * sizeof(JSONNode *));
-	   memcpy(position, items, num * sizeof(JSONNode *));
+	   std::memmove(position + num, position, ptrs * sizeof(JSONNode *));
+	   std::memcpy(position, items, num * sizeof(JSONNode *));
 	   mysize += num;
     }
-    
+
     inline void reserve(json_index_t amount) json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null reserve"));
 	   JSON_ASSERT(array == 0, JSON_TEXT("reserve is not meant to expand a preexisting array"));
@@ -246,7 +246,7 @@ public:
     }
 
     static void reserve2(jsonChildren *& mine, json_index_t amount) json_nothrow;
-		  
+
     //shrinks the array to only as large as it needs to be to hold everything within it
     inline childrenVirtual void shrink() json_nothrow {
 	   JSON_ASSERT(this != 0, JSON_TEXT("Children is null shrink"));
@@ -257,21 +257,21 @@ public:
 		  } else {  //need to shrink it, using realloc
 			 JSON_ASSERT(array != 0, JSON_TEXT("shrinking a null array that is not size 0"));
 			 array = json_realloc<JSONNode*>(array, mysize);
-	   #endif  
+	   #endif
 	   }
 	   mycapacity = mysize;
     }
-		  
-		  
+
+
     inline static void deleteChildren(jsonChildren * ptr) json_nothrow {
 	   #ifdef JSON_MEMORY_CALLBACKS
 		  ptr -> ~jsonChildren();
 		  libjson_free<jsonChildren>(ptr);
 	   #else
 		  delete ptr;
-	   #endif     
+	   #endif
     }
-		  
+
     inline static jsonChildren * newChildren(void) {
 	   #ifdef JSON_MEMORY_CALLBACKS
 		  return new(json_malloc<jsonChildren>(1)) jsonChildren();
@@ -279,20 +279,20 @@ public:
 		  return new jsonChildren();
 	   #endif
     }
-		  
+
     JSONNode ** array;  //the expandable array
-    
+
     json_index_t mysize;	     //the number of valid items
     json_index_t mycapacity;   //the number of possible items
 JSON_PROTECTED
     //to make sure it's not copyable
     jsonChildren(const jsonChildren &);
     jsonChildren & operator = (const jsonChildren &);
-    
+
     void deleteAll(void) json_nothrow json_hot;  //implemented in JSONNode.cpp
     void doerase(JSONNode ** position, json_index_t number) json_nothrow;
 };
-    
+
 #ifdef JSON_LESS_MEMORY
     class jsonChildren_Reserved : public jsonChildren {
     public:
@@ -301,7 +301,7 @@ JSON_PROTECTED
 		  deleteChildren(orig);
 		  addAllocCount();
 	   }
-	   jsonChildren_Reserved(const jsonChildren_Reserved & orig) json_nothrow  : jsonChildren(orig.array, orig.mysize, orig.mycapacity), myreserved(orig.myreserved){ 
+	   jsonChildren_Reserved(const jsonChildren_Reserved & orig) json_nothrow  : jsonChildren(orig.array, orig.mysize, orig.mycapacity), myreserved(orig.myreserved){
 		  addAllocCount();
 	   }
 	   inline virtual ~jsonChildren_Reserved() json_nothrow {
@@ -317,7 +317,7 @@ JSON_PROTECTED
 			 array = json_realloc<JSONNode*>(array, mysize);
 		  }
 	   }
-	   
+
 	   #ifdef JSON_LESS_MEMORY
 		  inline static jsonChildren * newChildren_Reserved(jsonChildren * orig, json_index_t siz) json_nothrow {
 			 #ifdef JSON_MEMORY_CALLBACKS

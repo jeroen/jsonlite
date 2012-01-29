@@ -1,15 +1,21 @@
 #include "JSONWorker.h"
 
+bool used_ascii_one = false;  //used to know whether or not to check for intermediates when writing, once flipped, can't be unflipped
+inline json_char ascii_one(void) json_nothrow {
+	used_ascii_one = true;
+	return JSON_TEXT('\1');
+}
+
 #ifdef JSON_READ_PRIORITY
 
 JSONNode JSONWorker::parse(const json_string & json) json_throws(std::invalid_argument) {
     json_auto<json_char> s;
     #if defined JSON_DEBUG || defined JSON_SAFE
 	   json_char lastchar;
-	   s.set(RemoveWhiteSpace(json, lastchar));
+	   s.set(RemoveWhiteSpace(json, lastchar, true));
 	   return _parse_unformatted(s.ptr, lastchar);
     #else
-	   s.set(RemoveWhiteSpace(json));
+	   s.set(RemoveWhiteSpace(json, true));
 	   return _parse_unformatted(s.ptr);
     #endif
 }
@@ -17,11 +23,11 @@ JSONNode JSONWorker::parse(const json_string & json) json_throws(std::invalid_ar
 JSONNode JSONWorker::parse_unformatted(const json_string & json) json_throws(std::invalid_argument) {
     #if defined JSON_DEBUG || defined JSON_SAFE
 	   #ifndef JSON_NO_EXCEPTIONS
-		  JSON_ASSERT_SAFE((json[0] == '{') || (json[0] == '['), JSON_TEXT("Not JSON!"), throw std::invalid_argument(EMPTY_STD_STRING););
+		  JSON_ASSERT_SAFE((json[0] == JSON_TEXT('{')) || (json[0] == JSON_TEXT('[')), JSON_TEXT("Not JSON!"), throw std::invalid_argument(json_global(EMPTY_STD_STRING)););
 	   #else
-		  JSON_ASSERT_SAFE((json[0] == '{') || (json[0] == '['), JSON_TEXT("Not JSON!"), return JSONNode(JSON_NULL););
+		  JSON_ASSERT_SAFE((json[0] == JSON_TEXT('{')) || (json[0] == JSON_TEXT('[')), JSON_TEXT("Not JSON!"), return JSONNode(JSON_NULL););
 	   #endif
-	   json_char temp = (json[0] == '{') ? '}' : ']';
+	   json_char temp = (json[0] == JSON_TEXT('{')) ? JSON_TEXT('}') : JSON_TEXT(']');
 	   return _parse_unformatted(json.c_str(), temp);
     #else
 	   return _parse_unformatted(json.c_str());
@@ -30,40 +36,40 @@ JSONNode JSONWorker::parse_unformatted(const json_string & json) json_throws(std
 
 #if defined JSON_DEBUG || defined JSON_SAFE
 JSONNode JSONWorker::_parse_unformatted(const json_char * json, json_char & lastchar) json_throws(std::invalid_argument) {
-#else  
+#else
 JSONNode JSONWorker::_parse_unformatted(const json_char * json) json_throws(std::invalid_argument) {
 #endif
     #ifdef JSON_COMMENTS
 	   json_char firstchar = *json;
 	   json_string _comment;
 	   json_char * runner = (json_char*)json;
-	   if (json_unlikely(firstchar == '\5')){  //multiple comments will be consolidated into one
+	   if (json_unlikely(firstchar == JSON_TEMP_COMMENT_IDENTIFIER)){  //multiple comments will be consolidated into one
 		  newcomment:
-		  while(*(++runner) != '\5'){
+		  while(*(++runner) != JSON_TEMP_COMMENT_IDENTIFIER){
 			 JSON_ASSERT(*runner, JSON_TEXT("Removing white space failed"));
 			 _comment += *runner;
-		  } 
+		  }
 		  firstchar = *(++runner); //step past the trailing tag
-		  if (json_unlikely(firstchar == '\5')){
-			 _comment += '\n';
+		  if (json_unlikely(firstchar == JSON_TEMP_COMMENT_IDENTIFIER)){
+			 _comment += JSON_TEXT('\n');
 			 goto newcomment;
 		  }
 	   }
     #else
 	   const json_char firstchar = *json;
     #endif
-    
+
     switch (firstchar){
-        case '{':
-        case '[':
+        case JSON_TEXT('{'):
+        case JSON_TEXT('['):
 		  #if defined JSON_DEBUG || defined JSON_SAFE
-			 if (firstchar == '['){
-				if (json_unlikely(lastchar != ']')){
+			 if (firstchar == JSON_TEXT('[')){
+				if (json_unlikely(lastchar != JSON_TEXT(']'))){
 				    JSON_FAIL(JSON_TEXT("Missing final ]"));
 				    break;
 				}
 			 } else {
-				if (json_unlikely(lastchar != '}')){
+				if (json_unlikely(lastchar != JSON_TEXT('}'))){
 				    JSON_FAIL(JSON_TEXT("Missing final }"));
 				    break;
 				}
@@ -80,7 +86,7 @@ JSONNode JSONWorker::_parse_unformatted(const json_char * json) json_throws(std:
 
     JSON_FAIL(JSON_TEXT("Not JSON!"));
     #ifndef JSON_NO_EXCEPTIONS
-	   throw std::invalid_argument(EMPTY_STD_STRING);
+	   throw std::invalid_argument(json_global(EMPTY_STD_STRING));
     #else
 	   return JSONNode(JSON_NULL);
     #endif
@@ -121,8 +127,8 @@ JSONNode JSONWorker::_parse_unformatted(const json_char * json) json_throws(std:
 	   break;}\
     case right:\
 	   return json_string::npos;
-    
-    
+
+
 
 #ifdef JSON_READ_PRIORITY
     size_t JSONWorker::FindNextRelevant(json_char ch, const json_string & value_t, const size_t pos) json_nothrow {
@@ -140,7 +146,7 @@ JSONNode JSONWorker::_parse_unformatted(const json_char * json) json_throws(std:
 #endif
 
 #ifdef JSON_COMMENTS
-    #define COMMENT_DELIMITER() *runner++ = '\5'
+    #define COMMENT_DELIMITER() *runner++ = JSON_TEMP_COMMENT_IDENTIFIER
     #define AND_RUNNER ,runner
     inline void SingleLineComment(const json_char * & p, json_char * & runner) json_nothrow {
 	   //It is okay to add two '\5' characters here because at minimun the # and '\n' are replaced, so it's at most the same size
@@ -163,62 +169,67 @@ inline void SingleLineComment(const json_char * & p) json_nothrow {
 
 #ifdef JSON_READ_PRIORITY
 #if defined JSON_DEBUG || defined JSON_SAFE
-    json_char * JSONWorker::RemoveWhiteSpace(const json_string & value_t, json_char & last) json_nothrow  {
+    json_char * JSONWorker::RemoveWhiteSpace(const json_string & value_t, json_char & last, bool escapeQuotes) json_nothrow  {
 #else
-    json_char * JSONWorker::RemoveWhiteSpace(const json_string & value_t) json_nothrow {
+    json_char * JSONWorker::RemoveWhiteSpace(const json_string & value_t, bool escapeQuotes) json_nothrow {
 #endif
 	   json_char * result;
 	   json_char * runner = result = json_malloc<json_char>(value_t.length() + 1);  //dealing with raw memory is faster than adding to a json_string
-	   JSON_ASSERT(result, JSON_TEXT("Out of memory"));
-	   for(const json_char * p = value_t.c_str(); *p; ++p){
-		  switch(*p){
-			 case JSON_TEXT(' '):   //defined as white space
-			 case JSON_TEXT('\t'):  //defined as white space
-			 case JSON_TEXT('\n'):  //defined as white space
-			 case JSON_TEXT('\r'):  //defined as white space
-				break;
-			 #ifndef JSON_STRICT
-				case JSON_TEXT('/'):  //a C comment
-				    if (*(++p) == JSON_TEXT('*')){  //a multiline comment
-					   COMMENT_DELIMITER();
-					   while ((*(++p) != JSON_TEXT('*')) || (*(p + 1) != JSON_TEXT('/'))){
-						  JSON_ASSERT_SAFE(*p, JSON_TEXT("Null terminator inside of a multiline quote"), COMMENT_DELIMITER(); goto endofloop;);
-						  *runner++ = *p;
-					   }
-					   ++p;
-					   COMMENT_DELIMITER();
-					   break;
-				    }
-				    //Should be a single line C comment, so let it fall through to use the bash comment stripper
-				    JSON_ASSERT_SAFE(*p == JSON_TEXT('/'), JSON_TEXT("stray / character, not quoted, or a comment"), goto endofloop;);
-				case JSON_TEXT('#'):  //a bash comment
-				    SingleLineComment(p AND_RUNNER);
-				    break;
-			 #endif
-			 case JSON_TEXT('\"'):  //a quote
-				*runner++ = JSON_TEXT('\"');
-				while(*(++p) != JSON_TEXT('\"')){  //find the end of the quotation, as white space is preserved within it
-				    JSON_ASSERT_SAFE(*p, JSON_TEXT("Null terminator inside of a quotation"), goto endofloop;);
-				    switch(*p){
-					   case JSON_TEXT('\\'):
-						  *runner++ = JSON_TEXT('\\');
-						  *runner++ = (*++p == JSON_TEXT('\"')) ? JSON_TEXT('\1') : *p;  //an escaped quote will reak havoc will all of my searching functions, so change it into an illegal character in JSON for convertion later on
-						  break;
-					   default:
-						  *runner++ = *p;
-						  break;
-				    }
-				}
-				//no break, let it fall through so that the trailing quote gets added
-			 default:
-				JSON_ASSERT_SAFE((json_uchar)*p >= 32, JSON_TEXT("Invalid JSON character detected (lo)"), goto endofloop;);
-				JSON_ASSERT_SAFE((json_uchar)*p <= 126, JSON_TEXT("Invalid JSON character detected (hi)"), goto endofloop;);
-				*runner++ = *p;
-				break;
-		  }
-	   }
+	   JSON_ASSERT(result != 0, json_global(ERROR_OUT_OF_MEMORY));
 	   #ifdef JSON_SAFE
-		  endofloop:
+	   try {
+	   #endif
+		   for(const json_char * p = value_t.c_str(); *p; ++p){
+			  switch(*p){
+				 case JSON_TEXT(' '):   //defined as white space
+				 case JSON_TEXT('\t'):  //defined as white space
+				 case JSON_TEXT('\n'):  //defined as white space
+				 case JSON_TEXT('\r'):  //defined as white space
+					break;
+				 #ifndef JSON_STRICT
+					case JSON_TEXT('/'):  //a C comment
+						if (*(++p) == JSON_TEXT('*')){  //a multiline comment
+						   COMMENT_DELIMITER();
+						   while ((*(++p) != JSON_TEXT('*')) || (*(p + 1) != JSON_TEXT('/'))){
+							  JSON_ASSERT_SAFE(*p, JSON_TEXT("Null terminator inside of a multiline quote"), COMMENT_DELIMITER(); throw false;);
+							  *runner++ = *p;
+						   }
+						   ++p;
+						   COMMENT_DELIMITER();
+						   break;
+						}
+						//Should be a single line C comment, so let it fall through to use the bash comment stripper
+						JSON_ASSERT_SAFE(*p == JSON_TEXT('/'), JSON_TEXT("stray / character, not quoted, or a comment"), throw false;);
+					case JSON_TEXT('#'):  //a bash comment
+						SingleLineComment(p AND_RUNNER);
+						break;
+				 #endif
+				 case JSON_TEXT('\"'):  //a quote
+					*runner++ = JSON_TEXT('\"');
+					while(*(++p) != JSON_TEXT('\"')){  //find the end of the quotation, as white space is preserved within it
+						JSON_ASSERT_SAFE(*p, JSON_TEXT("Null terminator inside of a quotation"), throw false;);
+						switch(*p){
+						   case JSON_TEXT('\\'):
+							  *runner++ = JSON_TEXT('\\');
+                              if (escapeQuotes){
+                                    *runner++ = (*++p == JSON_TEXT('\"')) ? ascii_one() : *p;  //an escaped quote will reak havoc will all of my searching functions, so change it into an illegal character in JSON for convertion later on
+                              }
+							  break;
+						   default:
+							  *runner++ = *p;
+							  break;
+						}
+					}
+					//no break, let it fall through so that the trailing quote gets added
+				 default:
+					JSON_ASSERT_SAFE((json_uchar)*p >= 32, JSON_TEXT("Invalid JSON character detected (lo)"), throw false;);
+					JSON_ASSERT_SAFE((json_uchar)*p <= 126, JSON_TEXT("Invalid JSON character detected (hi)"), throw false;);
+					*runner++ = *p;
+					break;
+			  }
+		   }
+	   #ifdef JSON_SAFE
+	   } catch(...){}
 	   #endif
 	   #if defined JSON_DEBUG || defined JSON_SAFE
 		  last = *(runner - 1);
@@ -227,60 +238,62 @@ inline void SingleLineComment(const json_char * & p) json_nothrow {
 	   return result;
     }
 #endif
-	   
-json_string JSONWorker::RemoveWhiteSpaceAndComments(const json_string & value_t) json_nothrow {
+
+json_string JSONWorker::RemoveWhiteSpaceAndComments(const json_string & value_t, bool escapeQuotes) json_nothrow {
     json_string result;
     result.reserve(value_t.length());
-    for(const json_char * p = value_t.c_str(); *p; ++p){
-	   switch(*p){
-		  case JSON_TEXT(' '):   //defined as white space
-		  case JSON_TEXT('\t'):  //defined as white space
-		  case JSON_TEXT('\n'):  //defined as white space
-		  case JSON_TEXT('\r'):  //defined as white space
-			 break;
-		  #ifndef JSON_STRICT
-			 case JSON_TEXT('/'):  //a C comment
-				if (*(++p) == JSON_TEXT('*')){  //a multiline comment
-				    while ((*(++p) != JSON_TEXT('*')) || (*(p + 1) != JSON_TEXT('/'))){
-					   JSON_ASSERT_SAFE(*p, JSON_TEXT("Null terminator inside of a multiline quote"), goto endofloop;);
-				    }
-				    ++p;
-				    break;
-				}
-				//Should be a single line C comment, so let it fall through to use the bash comment stripper
-				JSON_ASSERT_SAFE(*p == JSON_TEXT('/'), JSON_TEXT("stray / character, not quoted, or a comment"), goto endofloop;);
-			 case JSON_TEXT('#'):  //a bash comment
-				SingleLineComment(p);
-				break;
-		  #endif
-		  case JSON_TEXT('\"'):  //a quote
-			 result += JSON_TEXT('\"');
-			 while(*(++p) != JSON_TEXT('\"')){  //find the end of the quotation, as white space is preserved within it
-				JSON_ASSERT_SAFE(*p, JSON_TEXT("Null terminator inside of a quotation"), goto endofloop;);
-				switch(*p){
-				    case JSON_TEXT('\\'):
-					   result += JSON_TEXT('\\');
-					   result += (*++p == JSON_TEXT('\"')) ? JSON_TEXT('\1') : *p;  //an escaped quote will reak havoc will all of my searching functions, so change it into an illegal character in JSON for convertion later on
-					   break;
-				    default:
-					   result += *p;
-					   break;
-				}
-			 }
-			 //no break, let it fall through so that the trailing quote gets added
-		  default:
-			 JSON_ASSERT_SAFE((json_uchar)*p >= 32, JSON_TEXT("Invalid JSON character detected (lo)"), goto endofloop;);
-			 JSON_ASSERT_SAFE((json_uchar)*p <= 126, JSON_TEXT("Invalid JSON character detected (hi)"), goto endofloop;);
-			 result += *p;
-			 break;
-	   }
-    }
-    #ifdef JSON_SAFE
-	   endofloop:
-    #endif
+	try {
+		for(const json_char * p = value_t.c_str(); *p; ++p){
+		   switch(*p){
+			  case JSON_TEXT(' '):   //defined as white space
+			  case JSON_TEXT('\t'):  //defined as white space
+			  case JSON_TEXT('\n'):  //defined as white space
+			  case JSON_TEXT('\r'):  //defined as white space
+				 break;
+			  #ifndef JSON_STRICT
+				 case JSON_TEXT('/'):  //a C comment
+					if (*(++p) == JSON_TEXT('*')){  //a multiline comment
+						while ((*(++p) != JSON_TEXT('*')) || (*(p + 1) != JSON_TEXT('/'))){
+						   if (json_unlikely(*p == JSON_TEXT('\0'))) throw false;
+						}
+						++p;
+						break;
+					}
+					//Should be a single line C comment, so let it fall through to use the bash comment stripper
+					JSON_ASSERT_SAFE(*p == JSON_TEXT('/'), JSON_TEXT("stray / character, not quoted, or a comment"), throw false;);
+				 case JSON_TEXT('#'):  //a bash comment
+					SingleLineComment(p);
+					break;
+			  #endif
+			  case JSON_TEXT('\"'):  //a quote
+				 result += JSON_TEXT('\"');
+				 while(*(++p) != JSON_TEXT('\"')){  //find the end of the quotation, as white space is preserved within it
+					switch(*p){
+						case JSON_TEXT('\\'):
+						   result += JSON_TEXT('\\');
+                            if (escapeQuotes){
+                                result += (*++p == JSON_TEXT('\"')) ? ascii_one() : *p;  //an escaped quote will reak havoc will all of my searching functions, so change it into an illegal character in JSON for convertion later on
+                            }
+						   break;
+						case '\0':
+							throw false;
+						default:
+						   result += *p;
+						   break;
+					}
+				 }
+				 //no break, let it fall through so that the trailing quote gets added
+			  default:
+				 JSON_ASSERT_SAFE((json_uchar)*p >= 32, JSON_TEXT("Invalid JSON character detected (lo)"), throw false;);
+				 JSON_ASSERT_SAFE((json_uchar)*p <= 126, JSON_TEXT("Invalid JSON character detected (hi)"), throw false;);
+				 result += *p;
+				 break;
+		   }
+		}
+	} catch (...){}
     return result;
 }
-	
+
 #ifdef JSON_READ_PRIORITY
 /*
  These three functions analyze json_string literals and convert them into std::strings
@@ -335,7 +348,7 @@ json_char JSONWorker::Hex(const json_char * & pos) json_nothrow {
     /*
 	takes the numeric value of the next two characters and convert them
 	\u0058 becomes 0x58
-	
+
 	In case of \u, it's SpecialChar's responsibility to move past the first two chars
 	as this method is also used for \x
 	*/
@@ -356,7 +369,7 @@ json_char JSONWorker::Hex(const json_char * & pos) json_nothrow {
     //combine them
     return (json_char)((hi << 4) | lo);
 }
-    
+
 #ifndef JSON_STRICT
     inline json_char FromOctal(const json_char * & str) json_nothrow {
 	   JSON_ASSERT(json_strlen(str) > 3, JSON_TEXT("Octal will go out of bounds"));
@@ -409,7 +422,7 @@ void JSONWorker::SpecialChar(const json_char * & pos, json_string & res) json_no
 		  case JSON_TEXT('x'):   //hexidecimal ascii code
 			 res += Hex(++pos);
 			 break;
-		  
+
 		  #ifdef __GNUC__
 			 case JSON_TEXT('0') ... JSON_TEXT('7'):
 		  #else
@@ -444,14 +457,14 @@ void JSONWorker::SpecialChar(const json_char * & pos, json_string & res) json_no
 		  flag -> _string_encoded = x;
 	   }
     }
-    
+
     json_string JSONWorker::FixString(const json_string & value_t, const internalJSONNode * flag, bool which) json_nothrow {
     #define setflag(x) doflag(flag, which, x)
 #else
     json_string JSONWorker::FixString(const json_string & value_t, bool & flag) json_nothrow {
     #define setflag(x) flag = x
 #endif
-		  
+
     //Do things like unescaping
     setflag(false);
     json_string res;
@@ -477,13 +490,13 @@ void JSONWorker::SpecialChar(const json_char * & pos, json_string & res) json_no
 		  JSON_ASSERT(sizeof(unsigned int) == 4, JSON_TEXT("size of unsigned int is not 32-bit"));
 		  JSON_ASSERT(sizeof(unsigned short) == 2, JSON_TEXT("size of unsigned short is not 16-bit"));
 		  JSON_ASSERT(sizeof(json_uchar) == 4, JSON_TEXT("json_char is not 32-bit"));
-		  
+
 		  //Compute the high surrogate
 		  unsigned short HiSurrogate = 0xD800 | (((unsigned short)((unsigned int)((C >> 16) & 31)) - 1) << 6) | ((unsigned short)C) >> 10;
-		  
+
 		  //compute the low surrogate
 		  unsigned short LoSurrogate = (unsigned short) (0xDC00 | ((unsigned short)C) & 1023);
-		  
+
 		  json_string res;
 		  res += toUTF8(HiSurrogate);
 		  res += toUTF8(LoSurrogate);
@@ -585,13 +598,13 @@ inline void JSONWorker::NewNode(const internalJSONNode * parent, const json_stri
 		  json_string _comment;
 		  START_MEM_SCOPE
 			 const json_char * runner = ((array) ? value.c_str() : name.c_str());
-			 if (json_unlikely(*runner == '\5')){  //multiple comments will be consolidated into one
+			 if (json_unlikely(*runner == JSON_TEMP_COMMENT_IDENTIFIER)){  //multiple comments will be consolidated into one
 				newcomment:
-				while(*(++runner) != '\5'){
+				while(*(++runner) != JSON_TEMP_COMMENT_IDENTIFIER){
 				    JSON_ASSERT(*runner, JSON_TEXT("Removing white space failed"));
 				    _comment += *runner;
-				} 
-				if (json_unlikely(*(++runner) == '\5')){ //step past the trailing tag
+				}
+				if (json_unlikely(*(++runner) == JSON_TEMP_COMMENT_IDENTIFIER)){ //step past the trailing tag
 				    _comment += '\n';
 				    goto newcomment;
 				}
@@ -622,34 +635,34 @@ void JSONWorker::DoArray(const internalJSONNode * parent, const json_string & va
     JSON_ASSERT(!value_t.empty(), JSON_TEXT("DoArray is empty"));
     JSON_ASSERT_SAFE(value_t[0] == JSON_TEXT('['), JSON_TEXT("DoArray is not an array"), parent -> Nullify(); return;);
     if (json_unlikely(value_t.length() <= 2)) return;  // just a [] (blank array)
-    
+
     #ifdef JSON_SAFE
 	   json_string newValue;  //share this so it has a reserved buffer
     #endif
     size_t starting = 1;  //ignore the [
-    
+
     //Not sure what's in the array, so we have to use commas
     for(size_t ending = FindNextRelevant(JSON_TEXT(','), value_t, 1);
 	   ending != json_string::npos;
 	   ending = FindNextRelevant(JSON_TEXT(','), value_t, starting)){
-	   
+
 	   #ifdef JSON_SAFE
 		  newValue.assign(value_t.begin() + starting, value_t.begin() + ending);
 		  JSON_ASSERT_SAFE(FindNextRelevant(JSON_TEXT(':'), newValue, 0) == json_string::npos, JSON_TEXT("Key/Value pairs are not allowed in arrays"), parent -> Nullify(); return;);
-		  NewNode(parent, EMPTY_JSON_STRING, newValue, true);
+		  NewNode(parent, json_global(EMPTY_JSON_STRING), newValue, true);
 	   #else
-		  NewNode(parent, EMPTY_JSON_STRING, json_string(value_t.begin() + starting, value_t.begin() + ending), true);
+		  NewNode(parent, json_global(EMPTY_JSON_STRING), json_string(value_t.begin() + starting, value_t.begin() + ending), true);
 	   #endif
 		  starting = ending + 1;
     }
     //since the last one will not find the comma, we have to add it here, but ignore the final ]
-	   
+
     #ifdef JSON_SAFE
 	   newValue.assign(value_t.begin() + starting, value_t.end() - 1);
 	   JSON_ASSERT_SAFE(FindNextRelevant(JSON_TEXT(':'), newValue, 0) == json_string::npos, JSON_TEXT("Key/Value pairs are not allowed in arrays"), parent -> Nullify(); return;);
-	   NewNode(parent, EMPTY_JSON_STRING, newValue, true);
+	   NewNode(parent, json_global(EMPTY_JSON_STRING), newValue, true);
     #else
-	   NewNode(parent, EMPTY_JSON_STRING, json_string(value_t.begin() + starting, value_t.end() - 1), true);
+	   NewNode(parent, json_global(EMPTY_JSON_STRING), json_string(value_t.begin() + starting, value_t.end() - 1), true);
     #endif
 }
 
@@ -660,7 +673,7 @@ void JSONWorker::DoNode(const internalJSONNode * parent, const json_string & val
     JSON_ASSERT(!value_t.empty(), JSON_TEXT("DoNode is empty"));
     JSON_ASSERT_SAFE(value_t[0] == JSON_TEXT('{'), JSON_TEXT("DoNode is not an node"), parent -> Nullify(); return;);
     if (json_unlikely(value_t.length() <= 2)) return;  // just a {} (blank node)
-    
+
     size_t name_ending = FindNextRelevant(JSON_TEXT(':'), value_t, 1);  //find where the name ends
     JSON_ASSERT_SAFE(name_ending != json_string::npos, JSON_TEXT("Missing :"), parent -> Nullify(); return;);
     json_string name(value_t.begin() + 1, value_t.begin() + name_ending - 1);	  //pull the name out
@@ -668,7 +681,7 @@ void JSONWorker::DoNode(const internalJSONNode * parent, const json_string & val
 	    name_starting = 1;  //ignore the {
 	    value_ending != json_string::npos;
 	    value_ending = FindNextRelevant(JSON_TEXT(','), value_t, name_ending)){
-	   
+
 	   NewNode(parent, name, json_string(value_t.begin() + name_ending + 1, value_t.begin() + value_ending), false);
 	   name_starting = value_ending + 1;
 	   name_ending = FindNextRelevant(JSON_TEXT(':'), value_t, name_starting);

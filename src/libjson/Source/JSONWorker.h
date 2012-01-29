@@ -5,7 +5,7 @@
 
 class JSONWorker {
 public:
-    static json_string RemoveWhiteSpaceAndComments(const json_string & value_t) json_nothrow json_read_priority;
+    static json_string RemoveWhiteSpaceAndComments(const json_string & value_t, bool escapeQuotes) json_nothrow json_read_priority;
 
     #ifdef JSON_READ_PRIORITY
 	   static JSONNode parse(const json_string & json) json_throws(std::invalid_argument) json_read_priority;
@@ -16,13 +16,13 @@ public:
 	   #else
 		  static JSONNode _parse_unformatted(const json_char * json) json_throws(std::invalid_argument) json_read_priority;
 	   #endif
-    
+
 	   #if defined JSON_DEBUG || defined JSON_SAFE
-		  static json_char * RemoveWhiteSpace(const json_string & value_t, json_char & last) json_nothrow json_read_priority;
+		  static json_char * RemoveWhiteSpace(const json_string & value_t, json_char & last, bool escapeQuotes) json_nothrow json_read_priority;
 	   #else
-		  static json_char * RemoveWhiteSpace(const json_string & value_t) json_nothrow json_read_priority;
+		  static json_char * RemoveWhiteSpace(const json_string & value_t, bool escapeQuotes) json_nothrow json_read_priority;
 	   #endif
-	   
+
 	   static void DoArray(const internalJSONNode * parent, const json_string & value_t) json_nothrow json_read_priority;
 	   static void DoNode(const internalJSONNode * parent, const json_string & value_t) json_nothrow json_read_priority;
 
@@ -36,7 +36,7 @@ public:
 		  static json_string FixString(const json_string & value_t, bool & flag) json_nothrow json_read_priority;
 	   #endif
     #endif
-    
+
     #if defined(JSON_READ_PRIORITY) || defined(JSON_STREAM)
 	   static size_t FindNextRelevant(json_char ch, const json_string & value_t, const size_t pos) json_nothrow json_read_priority;
     #endif

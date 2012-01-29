@@ -4,10 +4,10 @@
 #ifdef JSON_STDERROR
     #include <iostream>  //need std::cerr
 #else
+    #include "JSONSingleton.h"
     //otherwise, use a callback to tell the end user what happened
-    json_error_callback_t ErrorCallback = 0;
     void JSONDebug::register_callback(json_error_callback_t callback) json_nothrow {
-	   ErrorCallback = callback;
+        JSONSingleton<json_error_callback_t>::set(callback);
     }
 #endif
 
@@ -20,7 +20,7 @@ void JSONDebug::_JSON_FAIL(const json_string & msg) json_nothrow {
 		  std::cerr << std::string(msg.begin(), msg.end()) << std::endl;
 	   #endif
     #else
-	   if (json_likely(ErrorCallback != 0)){  //only do anything if the callback is registered
+	   if (json_error_callback_t ErrorCallback = JSONSingleton<json_error_callback_t>::get()){  //only do anything if the callback is registered
 		  #ifdef JSON_LIBRARY
 			 ErrorCallback(msg.c_str());
 		  #else

@@ -14,7 +14,7 @@
 #include "JSONDefs/Strings_Defs.h"
 
 #define __LIBJSON_MAJOR__ 7
-#define __LIBJSON_MINOR__ 0
+#define __LIBJSON_MINOR__ 4
 #define __LIBJSON_PATCH__ 1
 #define __LIBJSON_VERSION__ (__LIBJSON_MAJOR__ * 10000 + __LIBJSON_MINOR__ * 100 + __LIBJSON_PATCH__)
 
@@ -26,15 +26,27 @@
 #define JSON_NODE '\5'
 
 #ifdef __cplusplus
-    #ifdef JSON_STRING_HEADER
-	   #include JSON_STRING_HEADER
-    #endif
+	#if defined(JSON_MEMORY_CALLBACKS) || defined(JSON_MEMORY_POOL)
+		#include "JSONAllocator.h"
+	#else
+		#define json_allocator std::allocator
+	#endif
+
+	#ifdef JSON_STRING_HEADER
+		#include JSON_STRING_HEADER
+	#else
+		typedef std::basic_string<json_char, std::char_traits<json_char>, json_allocator<json_char> > json_string;
+	#endif
 #endif
+#define JSON_MAP(x, y) std::map<x, y, std::less<x>, json_allocator<std::pair<const x, y> > >
 
 #ifdef JSON_NO_EXCEPTIONS
     #define json_throw(x)
-    #define json_try 
-    #define json_catch(exception, code) 
+    #define json_try
+    #define json_catch(exception, code)
+	#ifdef JSON_SAFE
+		#error, JSON_NO_EXCEPTIONS is not permitted with JSON_SAFE
+	#endif
 #else
     #define json_throw(x) throw(x)
     #define json_try try
@@ -75,7 +87,11 @@
     #define BITS(x)
     #define START_MEM_SCOPE
     #define END_MEM_SCOPE
-    typedef double json_number;
+    //#ifdef JSON_ISO_STRICT
+	   typedef double json_number;
+    //#else
+	   //typedef long double json_number;
+    //#endif
     #define JSON_FLOAT_THRESHHOLD 0.00001
 #endif
 
@@ -99,6 +115,15 @@
     typedef int json_bool_t;
 #endif
 
+#ifdef JSON_INT_TYPE
+    typedef JSON_INT_TYPE json_int_t;
+#else
+    typedef long json_int_t;
+#endif
+
+#define JSONSTREAM_SELF (void*)-1
+typedef void (*json_stream_e_callback_t)(void * identifier);
+
 typedef void (*json_mutex_callback_t)(void *);
 typedef void (*json_free_t)(void *);
 #ifndef JSON_LIBRARY
@@ -109,7 +134,7 @@ typedef void (*json_free_t)(void *);
     typedef JSONNODE** JSONNODE_ITERATOR;
     #ifdef JSON_STREAM
 	   #define JSONSTREAM void
-	   typedef void (*json_stream_callback_t)(JSONNODE *);
+	    typedef void (*json_stream_callback_t)(JSONNODE *, void * identifier);
     #endif
     typedef void * (*json_malloc_t)(unsigned long);
     typedef void * (*json_realloc_t)(void *, unsigned long);
@@ -150,5 +175,7 @@ typedef void (*json_free_t)(void *);
 	   #error, JSON_VALIDATE also requires JSON_READ_PRIORITY
     #endif
 #endif
+
+#define JSON_TEMP_COMMENT_IDENTIFIER JSON_TEXT('#')
 
 #endif
