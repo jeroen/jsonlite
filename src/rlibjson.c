@@ -363,11 +363,13 @@ R_json_stream_parse(SEXP str, SEXP fun)
     SETCAR(expr, fun);
     nodeRef = makeNodeRef(NULL);
     SETCAR(CDR(expr), nodeRef);
+
 #ifdef NEW_JSON_NEW_STREAM 
     stream = json_new_stream(R_stream_callback, NULL, expr);
 #else
     stream = json_new_stream(R_stream_callback);
 #endif
+
     json_stream_push(stream, CHAR(STRING_ELT(str, 0)));
     UNPROTECT(1);
     return(R_NilValue);

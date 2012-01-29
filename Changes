@@ -2,6 +2,16 @@
 RJSONIO
 
 
+Version 0.98-0
+
+  *  Update default libjson code to version 7.4.0.
+
+  *  Changes to configuration to allow the use of a version of libjson that is not installed but not in the RJSONIO package directory itself. Use the environment variable LIBJSON_SRC.
+
+  *  Configuration determines version of libjson and adapts compilation flags accordingly.
+
+
+
 Version 0.97-0
 
   *  Add isValidJSON() to test whether the JSON content is valid. Suggested by Jeroen Ooms.

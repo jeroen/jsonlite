@@ -30,8 +30,8 @@ Kernel configured for up to 4 processors.
 Processor type: i486 (Intel 80486)
 Processors active: 0 1 2 3
 Primary memory available: 8.00 gigabytes
-Default processor set: 235 tasks, 1010 threads, 4 processors
-Load average: 1.58, Mach factor: 2.41
+Default processor set: 249 tasks, 1132 threads, 4 processors
+Load average: 2.23, Mach factor: 2.01
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -100,10 +100,9 @@ ac_cv_env_target_alias_value=
 ## Output variables. ##
 ## ----------------- ##
 
-DATE='07 Jan 2012'
+DATE='29 Jan 2012'
 DEFS='-DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" '
-ECHO_C=''
-ECHO_N='-n'
+ECHO_C='ECHO_N=''
 ECHO_T=''
 LIBOBJS=''
 LIBS=''
@@ -116,8 +115,8 @@ PACKAGE_VERSION=''
 PATH_SEPARATOR=':'
 PKG_NAME='RJSONIO'
 SHELL='/bin/sh'
-TAR_FILE='RJSONIO_0.97-0.tar.gz'
-VERSION='0.97-0'
+TAR_FILE='RJSONIO_0.98-0.tar.gz'
+VERSION='0.98-0'
 bindir='${exec_prefix}/bin'
 build_alias=''
 datadir='${prefix}/share'
