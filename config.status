@@ -510,12 +510,14 @@ s,@CPPFLAGS@,|#_!!_#| -I/usr/local/include,g
 s,@ac_ct_CC@,|#_!!_#|gcc,g
 s,@EXEEXT@,|#_!!_#|,g
 s,@OBJEXT@,|#_!!_#|o,g
-s,@CPP_FILES@,|#_!!_#|JSONChildren.cpp\
+s,@CPP_FILES@,|#_!!_#|JSONAllocator.cpp\
+JSONChildren.cpp\
 JSONDebug.cpp\
 JSONIterators.cpp\
 JSONMemory.cpp\
 JSONNode.cpp\
 JSONNode_Mutex.cpp\
+JSONPreparse.cpp\
 JSONStream.cpp\
 JSONValidator.cpp\
 JSONWorker.cpp\
@@ -523,7 +525,7 @@ JSONWriter.cpp\
 JSON_Base64.cpp\
 internalJSONNode.cpp\
 libjson.cpp,g
-s,@LIBJSON_CFLAGS@,|#_!!_#|-I. -Ilibjson -Ilibjson/Source,g
+s,@LIBJSON_CFLAGS@,|#_!!_#|-I/Users/duncan/Downloads/libjson/Source/.. -I/Users/duncan/Downloads/libjson/Source -DNEW_JSON_NEW_STREAM,g
 s,@LIBJSON_LIBS@,|#_!!_#|,g
 s,@LIBOBJS@,|#_!!_#|,g
 s,@LTLIBOBJS@,|#_!!_#|,g

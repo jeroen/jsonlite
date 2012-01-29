@@ -54,6 +54,13 @@ else
    else
       LIBJSON_CFLAGS="-I${LIBJSON_SRC}/.. -I${LIBJSON_SRC}"
    fi
+   MINOR_VERSION=`grep 'define __LIBJSON_MINOR__' $LIBJSON_SRC/JSONDefs.h | sed -e 's/.* __LIBJSON_MINOR__ //'`
+   if test "$MINOR_VERSION" = "0" ; then
+     LIBJSON_CFLAGS="${LIBJSON_CFLAGS} -DJSON_NO_EXCEPTIONS=1"
+   else
+     LIBJSON_CFLAGS="${LIBJSON_CFLAGS} -DNEW_JSON_NEW_STREAM"
+   fi
+   echo "Minor Version: $MINOR_VERSION"
    echo "Using local libjson code. Copying files from ${LIBJSON_SRC}"
    echo "`pwd`"
    CPP_FILES=`(cd ${LIBJSON_SRC}; ls *.cpp)`

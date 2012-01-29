@@ -284,6 +284,8 @@ R_isValidJSON(SEXP input)
 
 
 
+
+
 /******************/
 
 #if 0
@@ -306,7 +308,6 @@ R_json_stream_push(SEXP r_stream, SEXP r_txt)
 }
 #endif
 
-#define NEW_JSON_NEW_STREAM
 
 #ifndef NEW_JSON_NEW_STREAM
 SEXP expr;

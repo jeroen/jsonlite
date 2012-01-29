@@ -1,11 +1,13 @@
 #!/bin/sh
 
-CPP="JSONChildren.cpp
+CPP="JSONAllocator.cpp
+JSONChildren.cpp
 JSONDebug.cpp
 JSONIterators.cpp
 JSONMemory.cpp
 JSONNode.cpp
 JSONNode_Mutex.cpp
+JSONPreparse.cpp
 JSONStream.cpp
 JSONValidator.cpp
 JSONWorker.cpp

@@ -139,9 +139,12 @@ function(content, handler = NULL,
 setMethod("fromJSON", "connection",
 function(content, handler = NULL, default.size = 100,
          depth = 150L, allowComments = TRUE, asText = isContent(content),
-            data = NULL, maxChar = c(0L, nchar(content)), maxNumLines = -1L, simplify = Strict, nullValue = NULL, simplifyWithNames = TRUE, encoding = NA_character_, ...)  
+            data = NULL, maxChar = c(0L, nchar(content)), 
+             simplify = Strict, nullValue = NULL, simplifyWithNames = TRUE, encoding = NA_character_,
+             maxNumLines = -1L, ...)  
 {
-  txt = paste(readLines(content, maxNumLines), collapse = "")
+  txt = paste(readLines(content, maxNumLines), collapse = "\n")
+browser()  
   fromJSON(I(txt), handler, default.size, depth, allowComments, asText = TRUE, data = data, maxNumLines = maxNumLines,
              simplify = simplify, ..., nullValue = nullValue, simplifyWithNames = simplifyWithNames, encoding = encoding)
 })
