@@ -4,3 +4,10 @@ config.log
 config.status
 Objects.*
 purdy.R
+.*.bbl
+.*.blg
+.*.aux
+.*.out
+.*.log
+
+

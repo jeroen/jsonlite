@@ -26,8 +26,8 @@ protected:														\
 #define json_global(NAME) jsonSingleton ## NAME::getValue()
 
 #include <string>
-json_global_decl(json_string, EMPTY_JSON_STRING, );
-json_global_decl(std::string, EMPTY_STD_STRING, );
+json_global_decl(json_string, EMPTY_JSON_STRING, "");
+json_global_decl(std::string, EMPTY_STD_STRING, "");
 
 json_global_decl(json_string, CONST_TRUE, JSON_TEXT("true"));
 json_global_decl(json_string, CONST_FALSE, JSON_TEXT("false"));
