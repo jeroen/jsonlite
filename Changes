@@ -1,6 +1,10 @@
 
 RJSONIO
 
+Version 0.98-1
+
+  *  Compilation issues fixed for new libjson code on Solaris and Windows. Thanks to Brian Ripley for Solaris
+     corrections.
 
 Version 0.98-0
 
