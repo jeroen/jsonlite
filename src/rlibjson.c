@@ -95,12 +95,26 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
  	   case JSON_STRING:
 	   {
 //XXX Garbage collection
-	       char *tmp = json_as_string(i);
+#if 0 //def JSON_UNICODE
+	       wchar_t *wtmp = json_as_string(i);
+	       char *tmp;
+	       int len = wcslen(wtmp);
+	       int size = sizeof(char) * (len * MB_LEN_MAX + 1);
+	       tmp = (char *)malloc(size);
+	       if (tmp == NULL) {
+                   PROBLEM "Cannot allocate memory"
+                   ERROR;
+               }
+	       wcstombs(tmp, wtmp, size);
+#else
+    char *tmp = json_as_string(i);
+//    tmp = reEnc(tmp, CE_BYTES, CE_UTF8, 1);
+#endif
                    // do we need to strdup here?
 #if 0
 	       el = ScalarString(mkChar(tmp));
 #else
-               el = ScalarString(mkCharCE(tmp, charEncoding));
+	       el = ScalarString(mkCharCE(tmp, charEncoding));
 #endif
 	       elType = setType(elType, STRSXP);
 	       json_free(tmp);
