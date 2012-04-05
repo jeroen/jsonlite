@@ -28,7 +28,7 @@
     class JSONDebug {
     public:
 	   #ifndef JSON_STDERROR
-		  static void register_callback(json_error_callback_t callback) json_nothrow json_cold;
+		  static json_error_callback_t register_callback(json_error_callback_t callback) json_nothrow json_cold;
 	   #endif
 	   static void _JSON_FAIL(const json_string & msg) json_nothrow json_cold;
 	   static void _JSON_ASSERT(bool condition, const json_string & msg) json_nothrow json_cold;

@@ -14,8 +14,8 @@
 #include "JSONDefs/Strings_Defs.h"
 
 #define __LIBJSON_MAJOR__ 7
-#define __LIBJSON_MINOR__ 4
-#define __LIBJSON_PATCH__ 1
+#define __LIBJSON_MINOR__ 6
+#define __LIBJSON_PATCH__ 0
 #define __LIBJSON_VERSION__ (__LIBJSON_MAJOR__ * 10000 + __LIBJSON_MINOR__ * 100 + __LIBJSON_PATCH__)
 
 #define JSON_NULL '\0'
@@ -68,7 +68,7 @@
     #endif
 #else
     #ifdef __GNUC__
-	   #ifdef JSON_ISO_STRICT
+	   #ifdef __STRICT_ANSI__
 		  #warning, Using -ansi GCC option, but JSON_ISO_STRICT not on, turning it on for you
 		  #define JSON_ISO_STRICT
 	   #endif
@@ -76,23 +76,29 @@
 #endif
 
 
+#ifdef JSON_NUMBER_TYPE
+	typedef JSON_NUMBER_TYPE json_number
+	#define JSON_FLOAT_THRESHHOLD 0.00001
+#else
+	#ifdef JSON_LESS_MEMORY
+		typedef float json_number;
+		#define JSON_FLOAT_THRESHHOLD 0.00001f
+	#else
+		typedef double json_number;
+		#define JSON_FLOAT_THRESHHOLD 0.00001
+	#endif
+#endif
+
+
 #ifdef JSON_LESS_MEMORY
     /* PACKED and BITS stored in compiler specific headers */
     #define START_MEM_SCOPE {
     #define END_MEM_SCOPE }
-    typedef float json_number;
-    #define JSON_FLOAT_THRESHHOLD 0.00001f
 #else
     #define PACKED(x)
     #define BITS(x)
     #define START_MEM_SCOPE
     #define END_MEM_SCOPE
-    //#ifdef JSON_ISO_STRICT
-	   typedef double json_number;
-    //#else
-	   //typedef long double json_number;
-    //#endif
-    #define JSON_FLOAT_THRESHHOLD 0.00001
 #endif
 
 #if defined JSON_DEBUG || defined JSON_SAFE
@@ -159,8 +165,8 @@ typedef void (*json_free_t)(void *);
 #endif
 
 #ifdef JSON_UNIT_TEST
-    #define JSON_PRIVATE
-    #define JSON_PROTECTED
+    #define JSON_PRIVATE public:
+    #define JSON_PROTECTED public:
 #else
     #define JSON_PRIVATE private:
     #define JSON_PROTECTED protected:

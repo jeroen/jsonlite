@@ -62,7 +62,13 @@ JSON_PRIVATE
 		return callback_identifier;
 	}
 	
-    size_t FindNextRelevant(json_char ch, const json_string & value_t, const size_t pos) json_nothrow;
+	#if (JSON_READ_PRIORITY == HIGH) && (!(defined(JSON_LESS_MEMORY)))
+		template<json_char ch>
+		static size_t FindNextRelevant(const json_string & value_t, const size_t pos) json_nothrow json_read_priority;
+	#else
+		static size_t FindNextRelevant(json_char ch, const json_string & value_t, const size_t pos) json_nothrow json_read_priority;
+	#endif
+	
     void parse(void) json_nothrow;
     json_string buffer;
     json_stream_callback_t call;

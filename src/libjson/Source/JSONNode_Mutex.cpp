@@ -9,12 +9,16 @@ void * global_mutex = 0;
 void * manager_mutex = 0;
 
 struct AutoLock {
+public:
     AutoLock(void) json_nothrow {
 	   json_lock_callback(manager_mutex);
     }
     ~AutoLock(void) json_nothrow {
 	   json_unlock_callback(manager_mutex);
     }
+private:
+    AutoLock(const AutoLock &);
+    AutoLock & operator = (const AutoLock &);
 };
 
 #ifdef JSON_MUTEX_MANAGE
@@ -22,6 +26,7 @@ struct AutoLock {
 
     //make sure that the global mutex is taken care of too
     struct auto_global {
+    public:
 	   auto_global(void) json_nothrow {}
 	   ~auto_global(void) json_nothrow {
 		  if (global_mutex){
@@ -29,6 +34,9 @@ struct AutoLock {
 			 json_destroy(global_mutex);
 		  }
 	   }
+    private:
+        auto_global(const auto_global &);
+        auto_global & operator = (const auto_global &);
     };
     auto_global cleanupGlobal;
 #endif

@@ -3,7 +3,9 @@
 
 #ifdef JSON_MEMORY_POOL
 
-#include "../mempool++/mempool.h"
+#include "../Dependencies/mempool++/mempool.h"
+
+//this macro expands to the number of bytes a pool gets based on block size and number of 32s of the total pool it gets
 #define jsonPoolPart(bytes_per_block, thirty_seconds_of_mem) bytes_per_block, ((thirty_seconds_of_mem * JSON_MEMORY_POOL / 32) / bytes_per_block)
 
 #ifdef JSON_PREPARSE

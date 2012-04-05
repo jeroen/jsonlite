@@ -15,6 +15,8 @@ class JSONAllocatorRelayer {
 public:
 #ifdef JSON_UNIT_TEST
     static size_t getAllocationCount(void);
+	static size_t getAllocationByteCount(void);
+	static size_t getDeallocationCount(void);
 #endif
 	static void * alloc(size_t bytes) json_nothrow json_hot;
 	static void dealloc(void * ptr) json_nothrow json_hot;

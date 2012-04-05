@@ -90,7 +90,7 @@ internalJSONNode::internalJSONNode(const json_string & name_t, const json_string
     incinternalAllocCount();
 
     #ifdef JSON_STRICT
-	   JSON_ASSERT_SAFE(!value_t.empty(), JSON_TEXT("empty node"), Nullify(NOTVALID); return;);
+	   JSON_ASSERT_SAFE(!value_t.empty(), JSON_TEXT("empty node"), Nullify(); return;);
     #else
 	   if (json_unlikely(value_t.empty())){
 		  _type = JSON_NULL;
@@ -100,9 +100,6 @@ internalJSONNode::internalJSONNode(const json_string & name_t, const json_string
     #endif
 
     _string = value_t;
-    #ifdef JSON_LESS_MEMORY
-	   JSON_ASSERT(_string.capacity() == _string.length(), JSON_TEXT("_string object too large"));
-    #endif
 
     const json_char firstchar = value_t[0];
     #if defined JSON_DEBUG || defined JSON_SAFE
@@ -151,6 +148,7 @@ internalJSONNode::internalJSONNode(const json_string & name_t, const json_string
             break;
     }
 }
+
 #endif
 
 
@@ -194,7 +192,7 @@ internalJSONNode::~internalJSONNode(void) json_nothrow {
 //This one is used by as_int and as_float, so even non-readers need it
 void internalJSONNode::FetchNumber(void) const json_nothrow {
     #ifdef JSON_STRICT
-	   _value._number = NumberToString::_atof(_string.c_str())
+		_value._number = NumberToString::_atof(_string.c_str());
     #else
 	   #ifdef JSON_UNICODE
 		  const size_t len = _string.length();
@@ -259,7 +257,8 @@ void internalJSONNode::FetchNumber(void) const json_nothrow {
 void internalJSONNode::Set(const json_string & val) json_nothrow {
     makeNotContainer();
     _type = JSON_STRING;
-    _string = shrinkString(val);
+    _string = val;
+	shrinkString(_string);
     _string_encoded = true;
     SetFetched(true);
 }
@@ -714,6 +713,7 @@ internalJSONNode * internalJSONNode::newInternal(const json_string & name_t, con
 		return new internalJSONNode(name_t, value_t);
 	#endif
 }
+	
 #endif
 	
 internalJSONNode * internalJSONNode::newInternal(const internalJSONNode & orig) {

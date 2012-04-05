@@ -124,7 +124,7 @@
 #
 
 # JSON source files to build
-objects        = internalJSONNode.o JSONAllocator.o JSON_Base64.o JSONChildren.o \
+objects        = internalJSONNode.o JSONAllocator.o JSONChildren.o \
                  JSONDebug.o JSONIterators.o JSONMemory.o JSONNode.o \
                  JSONNode_Mutex.o JSONPreparse.o JSONStream.o JSONValidator.o \
                  JSONWorker.o JSONWriter.o libjson.o 
@@ -145,7 +145,7 @@ libname_debug    = $(libname)_dbg
 suffix_shared    = so
 suffix_static    = a
 major_version    = 7
-minor_version    = 4.1
+minor_version    = 6.0
 objdir           = Objects
 
 
@@ -246,9 +246,9 @@ install: banner install_headers $(lib_target)
 	cd $(inst_path) ; \
 	ln -sf $(lib_target) $(libname_shared_major_version) ; \
 	ln -sf $(libname_shared_major_version) $(libname_shared)
-ifneq ($(OS),Darwin)
+	ifneq ($(OS),Darwin)
 		ldconfig
-endif
+	endif
 	@echo "Install shared library: Done."
 else
 install: banner install_headers $(lib_target)

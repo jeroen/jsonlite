@@ -521,8 +521,15 @@ public:
     #endif
 
     #ifdef JSON_WRITE_PRIORITY
-	   json_string write(void) const json_nothrow json_write_priority;
-	   json_string write_formatted(void) const json_nothrow json_write_priority;
+		#ifdef JSON_LESS_MEMORY
+			#define DEFAULT_APPROX_SIZE 8
+			#define DEFAULT_APPROX_SIZE_FORMATTED 16
+		#else
+			#define DEFAULT_APPROX_SIZE 1024
+			#define DEFAULT_APPROX_SIZE_FORMATTED 2048
+		#endif
+	   json_string write(size_t approxsize = DEFAULT_APPROX_SIZE) const json_nothrow json_write_priority;
+	   json_string write_formatted(size_t approxsize = DEFAULT_APPROX_SIZE_FORMATTED) const json_nothrow json_write_priority;
     #endif
 
     #ifdef JSON_DEBUG
@@ -929,16 +936,22 @@ inline void JSONNode::decRef(void) json_nothrow { //decrements internal's counte
 #endif
 
 #ifdef JSON_WRITE_PRIORITY
-    inline json_string JSONNode::write(void) const json_nothrow {
-	   JSON_CHECK_INTERNAL();
-	   JSON_ASSERT_SAFE(type() == JSON_NODE || type() == JSON_ARRAY, JSON_TEXT("Writing a non-writable node"), return json_global(EMPTY_JSON_STRING););
-	   return internal -> Write(0xFFFFFFFF, true);
+    inline json_string JSONNode::write(size_t approxsize) const json_nothrow {
+	    JSON_CHECK_INTERNAL();
+	    JSON_ASSERT_SAFE(type() == JSON_NODE || type() == JSON_ARRAY, JSON_TEXT("Writing a non-writable node"), return json_global(EMPTY_JSON_STRING););
+		json_string result;
+		result.reserve(approxsize);
+		internal -> Write(0xFFFFFFFF, true, result);
+		return result;
     }
 
-    inline json_string JSONNode::write_formatted(void) const json_nothrow {
-	   JSON_CHECK_INTERNAL();
-	   JSON_ASSERT_SAFE(type() == JSON_NODE || type() == JSON_ARRAY, JSON_TEXT("Writing a non-writable node"), return json_global(EMPTY_JSON_STRING););
-	   return internal -> Write(0, true);
+    inline json_string JSONNode::write_formatted(size_t approxsize) const json_nothrow {
+	    JSON_CHECK_INTERNAL();
+	    JSON_ASSERT_SAFE(type() == JSON_NODE || type() == JSON_ARRAY, JSON_TEXT("Writing a non-writable node"), return json_global(EMPTY_JSON_STRING););
+		json_string result;
+		result.reserve(approxsize);
+		internal -> Write(0, true, result);
+		return result;
     }
 
 #endif

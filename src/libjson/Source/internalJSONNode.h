@@ -8,6 +8,7 @@
 #ifdef JSON_DEBUG
     #include <climits>  //to check int value
 #endif
+#include "JSONSharedString.h"
 
 #ifdef JSON_LESS_MEMORY
     #ifdef __GNUC__
@@ -199,14 +200,14 @@ public:
     #endif
 
     #ifdef JSON_WRITE_PRIORITY
-	   json_string WriteName(bool formatted, bool arrayChild) const json_nothrow json_write_priority;
+		void DumpRawString(json_string & output) const json_nothrow json_write_priority;
+	   void WriteName(bool formatted, bool arrayChild, json_string & output) const json_nothrow json_write_priority;
 	   #ifdef JSON_ARRAY_SIZE_ON_ONE_LINE
-		  json_string WriteChildrenOneLine(unsigned int indent) const json_nothrow json_write_priority;
+		  void WriteChildrenOneLine(unsigned int indent, json_string & output) const json_nothrow json_write_priority;
 	   #endif
-	   json_string WriteChildren(unsigned int indent) const json_nothrow json_write_priority;
-	   json_string WriteComment(unsigned int indent) const json_nothrow json_write_priority;
-	   json_string Write(unsigned int indent, bool arrayChild) const json_nothrow json_write_priority;
-	   json_string getValueAsString(void) const json_nothrow json_write_priority;
+	   void WriteChildren(unsigned int indent, json_string & output) const json_nothrow json_write_priority;
+	   void WriteComment(unsigned int indent, json_string & output) const json_nothrow json_write_priority;
+	   void Write(unsigned int indent, bool arrayChild, json_string & output) const json_nothrow json_write_priority;
     #endif
 
 
@@ -355,9 +356,6 @@ inline void internalJSONNode::setname(const json_string & newname) json_nothrow 
 
 #ifdef JSON_COMMENTS
     inline void internalJSONNode::setcomment(const json_string & comment) json_nothrow {
-	   #ifdef JSON_LESS_MEMORY
-		  JSON_ASSERT(comment.capacity() == comment.length(), JSON_TEXT("comment object too large"));
-	   #endif
 	   _comment = comment;
     }
 
@@ -369,7 +367,7 @@ inline void internalJSONNode::setname(const json_string & newname) json_nothrow 
 inline bool internalJSONNode::IsEqualTo(const json_string & val) const json_nothrow {
     if (type() != JSON_STRING) return false;
     Fetch();
-    return val == _string;
+    return _string == val;
 }
 
 inline bool internalJSONNode::IsEqualTo(bool val) const json_nothrow {

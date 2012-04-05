@@ -14,13 +14,13 @@
 #ifdef JSON_COMMENTS
 	json_string extractComment(json_string::const_iterator & ptr, json_string::const_iterator & end);
 	json_string extractComment(json_string::const_iterator & ptr, json_string::const_iterator & end){
+		json_string::const_iterator start;
 		json_string result;
 looplabel:
 		if (json_unlikely(((ptr != end) && (*ptr == JSON_TEMP_COMMENT_IDENTIFIER)))){
-			++ptr;
-			for(; (ptr != end) && (*(ptr) != JSON_TEMP_COMMENT_IDENTIFIER); ++ptr){
-				result += *ptr;
-			}
+			start = ++ptr;
+			for(; (ptr != end) && (*(ptr) != JSON_TEMP_COMMENT_IDENTIFIER); ++ptr){}
+			result += json_string(start, ptr);
 			if (json_unlikely(ptr == end)) return result;
 			++ptr;
 			if (json_unlikely(((ptr != end) && (*ptr == JSON_TEMP_COMMENT_IDENTIFIER)))){
@@ -28,8 +28,7 @@ looplabel:
 				goto looplabel;
 			}
 		}
-		
-		return result;  //recursive allows for multiple comments in a row
+		return result;
 	}
 	#define GET_COMMENT(x, y, name) json_string name = extractComment(x, y)
 	#define RETURN_NODE(node, name){\
@@ -58,10 +57,14 @@ inline bool isHex(json_char c) json_nothrow {
 		  ((c >= JSON_TEXT('a')) && (c <= JSON_TEXT('f'))));
 }
 
+#ifdef JSON_STRICT
+	#include "NumberToString.h"
+#endif
+
 json_number FetchNumber(const json_string & _string) json_nothrow;
 json_number FetchNumber(const json_string & _string) json_nothrow {
     #ifdef JSON_STRICT
-	   return NumberToString::_atof(_string.c_str())
+	   return NumberToString::_atof(_string.c_str());
     #else
 	   #ifdef JSON_UNICODE
 		  const size_t len = _string.length();
@@ -84,7 +87,7 @@ json_number FetchNumber(const json_string & _string) json_nothrow {
 			 json_auto<char> temp(len + 1);
 			 size_t res = std::wcstombs(temp.ptr, _string.c_str(), len);
 		  #endif
-		  temp.ptr[res] = '\0';
+		  temp.ptr[res] = JSON_TEXT('\0');
 		  return (json_number)std::atof(temp.ptr);
 	   #else
 		  return (json_number)std::atof(_string.c_str());
@@ -129,9 +132,8 @@ JSONNode JSONPreparse::isValidNumber(json_string::const_iterator & ptr, json_str
 			 case JSON_TEXT('E'):
 				scientific = true;
 				++ptr;
+				if (ptr == end) throw false;
 				switch(*ptr){
-				    case JSON_TEXT('\0'):
-					   throw false;
 				    case JSON_TEXT('-'):
 				    case JSON_TEXT('+'):
 				    case JSON_TEXT('0'):

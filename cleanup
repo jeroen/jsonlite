@@ -12,7 +12,6 @@ JSONStream.cpp
 JSONValidator.cpp
 JSONWorker.cpp
 JSONWriter.cpp
-JSON_Base64.cpp
 internalJSONNode.cpp
 libjson.cpp"
 

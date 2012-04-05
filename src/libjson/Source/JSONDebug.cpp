@@ -6,8 +6,10 @@
 #else
     #include "JSONSingleton.h"
     //otherwise, use a callback to tell the end user what happened
-    void JSONDebug::register_callback(json_error_callback_t callback) json_nothrow {
+    json_error_callback_t JSONDebug::register_callback(json_error_callback_t callback) json_nothrow {
+		json_error_callback_t res = JSONSingleton<json_error_callback_t>::get();
         JSONSingleton<json_error_callback_t>::set(callback);
+		return res;
     }
 #endif
 
@@ -37,3 +39,4 @@ void JSONDebug::_JSON_ASSERT(bool condition, const json_string & msg) json_nothr
     }
 }
 #endif
+

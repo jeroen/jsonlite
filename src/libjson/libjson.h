@@ -191,11 +191,11 @@
 
     namespace libjson {	   
 	   #ifdef JSON_EXPOSE_BASE64
-		  inline static json_string encode64(const unsigned char * binary, size_t bytes) json_nothrow json_cold {
+		  inline static json_string encode64(const unsigned char * binary, size_t bytes) json_nothrow {
 			 return JSONBase64::json_encode64(binary, bytes);
 		  }
 
-		  inline static std::string decode64(const json_string & encoded) json_nothrow json_cold {
+		  inline static std::string decode64(const json_string & encoded) json_nothrow {
 			 return JSONBase64::json_decode64(encoded);
 		  }
 	   #endif
@@ -220,6 +220,7 @@
 					return str;
 				#endif
 			}
+			
 			inline static json_string to_json_string(const std::string & str){
 				#if defined(JSON_UNICODE) ||defined(JSON_MEMORY_CALLBACKS) || defined(JSON_MEMORY_POOL)
 					return json_string(str.begin(), str.end());		
@@ -240,12 +241,8 @@
 		  //if json is invalid, it throws a std::invalid_argument exception
 		  inline static JSONNode parse(const json_string & json) json_throws(std::invalid_argument) {
 			 #ifdef JSON_PREPARSE
-				#if defined JSON_DEBUG || defined JSON_SAFE
-					json_char temp;
-					json_auto<json_char> buffer(JSONWorker::RemoveWhiteSpace(json, temp, false));
-				#else
-					json_auto<json_char> buffer(JSONWorker::RemoveWhiteSpace(json, false));
-				#endif
+				size_t len;
+				json_auto<json_char> buffer(JSONWorker::RemoveWhiteSpace(json, len, false));
 				return JSONPreparse::isValidRoot(buffer.ptr);
 			 #else
 				return JSONWorker::parse(json);
@@ -268,7 +265,9 @@
 					   return false;
 				    }
 				#endif
-				return JSONValidator::isValidRoot(JSONWorker::RemoveWhiteSpaceAndComments(json, false).c_str());
+				json_auto<json_char> s;
+				s.set(JSONWorker::RemoveWhiteSpaceAndCommentsC(json, false));
+				return JSONValidator::isValidRoot(s.ptr);
 			 }
 
 			 inline static bool is_valid_unformatted(const json_string & json) json_nothrow {

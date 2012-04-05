@@ -15,15 +15,12 @@
 #if defined(JSON_MEMORY_CALLBACKS) || defined(JSON_MEMORY_POOL)
     class JSONMemory {
     public:
-	   #ifdef __GNUC__
 		  static void * json_malloc(size_t siz) json_malloc_attr;
 	      static void * json_realloc(void * ptr, size_t siz) json_malloc_attr;
-	   #else
-		  static void * json_malloc(size_t siz) json_nothrow;
-   		  static void * json_realloc(void * ptr, size_t siz) json_nothrow;
-	   #endif
 	   static void json_free(void * ptr) json_nothrow;
 	   static void registerMemoryCallbacks(json_malloc_t mal, json_realloc_t real, json_free_t fre) json_nothrow json_cold;
+    private:
+        JSONMemory(void);
     };
 
     template <typename T> static inline T * json_malloc(size_t count) json_malloc_attr;
@@ -81,6 +78,7 @@
     #include <map>
     class JSONNode;
     struct auto_expand {
+    public:
 	   auto_expand(void) json_nothrow : mymap(){}
 	   ~auto_expand(void) json_nothrow { purge(); }
 	   void purge(void) json_nothrow;
@@ -92,9 +90,13 @@
 		  mymap.erase(i);
 	   }
 	   JSON_MAP(void *, void *) mymap;
+    private:
+        auto_expand(const auto_expand &);
+        auto_expand & operator = (const auto_expand &);
     };
 
     struct auto_expand_node {
+    public:
 	   auto_expand_node(void) json_nothrow : mymap(){}
 	   ~auto_expand_node(void) json_nothrow { purge(); }
 	   void purge(void) json_nothrow ;
@@ -105,11 +107,15 @@
 		  if(json_likely(i != mymap.end())) mymap.erase(i);
 	   }
 	   JSON_MAP(void *, JSONNode *) mymap;
+    private:
+        auto_expand_node(const auto_expand_node &);
+        auto_expand_node & operator = (const auto_expand_node &);
     };
 
     #ifdef JSON_STREAM
 	   class JSONStream;
 	   struct auto_expand_stream {
+        public:
 		  auto_expand_stream(void) json_nothrow : mymap(){}
 		  ~auto_expand_stream(void) json_nothrow { purge(); }
 		  void purge(void) json_nothrow ;
@@ -120,6 +126,9 @@
 			 if(json_likely(i != mymap.end())) mymap.erase(i);
 		  }
 		  JSON_MAP(void *, JSONStream *) mymap;
+        private:
+            auto_expand_stream(const auto_expand_stream &);
+            auto_expand_stream & operator = (const auto_expand_stream &);
 	   };
     #endif
 #endif
@@ -153,13 +162,10 @@ static inline void clearString(json_string & str) json_nothrow {
 }
 
 //Shrinks a string
-#ifdef JSON_LESS_MEMORY
-    static inline json_string shrinkString(const json_string & str) json_nothrow {
-	   if (str.capacity() == str.length()) return str;
-	   return json_string(str.c_str());
-    }
-#else
-    #define shrinkString(str) str
-#endif
+static inline void shrinkString(json_string & str) json_nothrow {
+    #ifdef JSON_LESS_MEMORY
+        if (str.capacity() != str.length()) str = json_string(str.begin(), str.end());
+    #endif
+}
 
 #endif

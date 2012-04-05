@@ -5,6 +5,8 @@ if test -z "${JSON_DIR}" ; then
   exit 1;
 fi
 
+cp -r $JSON_DIR/Dependencies .
+
 cd src/libjson
 cp $JSON_DIR/libjson.h .
 cp $JSON_DIR/JSONOptions.h .

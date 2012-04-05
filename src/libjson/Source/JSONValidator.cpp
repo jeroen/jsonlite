@@ -24,6 +24,16 @@ bool JSONValidator::isValidNumber(const json_char * & ptr) json_nothrow {
 		  case JSON_TEXT('+'):
 	   #endif
 	   case JSON_TEXT('-'):
+		#ifdef JSON_STRICT
+			switch(*(ptr + 1)){
+				case '.':
+				case 'e':
+				case 'E':
+				case '\0':
+					return false;
+			}
+			break;
+		#endif
 	   case JSON_TEXT('1'):
 	   case JSON_TEXT('2'):
 	   case JSON_TEXT('3'):
@@ -269,7 +279,7 @@ bool JSONValidator::isValidString(const json_char * & ptr) json_nothrow {
 				    if (json_unlikely(!isHex(*++ptr))) return false;
 				    if (json_unlikely(!isHex(*++ptr))) return false;
 				    break;
-				#ifndef JSON_OCTAL
+				#ifdef JSON_OCTAL
 				    #ifdef __GNUC__
 				    case JSON_TEXT('0') ... JSON_TEXT('7'):  //octal
 				    #else
@@ -381,10 +391,10 @@ bool JSONValidator::isValidPartialRoot(const json_char * json) json_nothrow {
 	const json_char * ptr = json;
     switch(*ptr){
 		case JSON_TEXT('{'):
-                    JSON_ASSERT_SAFE(!isValidObject(++ptr  DEPTH_ARG(1)), JSON_TEXT("Partial Object seems to be valid"), {1;});
+			JSON_ASSERT_SAFE(!isValidObject(++ptr  DEPTH_ARG(1)), JSON_TEXT("Partial Object seems to be valid"), );
 			return *ptr == JSON_TEXT('\0');
 		case JSON_TEXT('['):
-                    JSON_ASSERT_SAFE(!isValidArray(++ptr  DEPTH_ARG(1)), JSON_TEXT("Partial Object seems to be valid"), {1;});
+			JSON_ASSERT_SAFE(!isValidArray(++ptr  DEPTH_ARG(1)), JSON_TEXT("Partial Object seems to be valid"), );
 			return *ptr == JSON_TEXT('\0');
     }
     return false;

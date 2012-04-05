@@ -37,6 +37,14 @@
 		  return (json_char *)std::memcpy(json_malloc<json_char>(len), str.c_str(), len);
 	   #endif
     }
+	
+	inline json_char * alreadyCString(json_char * str) json_nothrow {
+		#ifdef JSON_MEMORY_MANAGE
+		   return (json_char *)json_global(STRING_HANDLER).insert(str);
+	    #else
+			return str;
+		#endif
+	}
 
     /*
 	   stuff that's in namespace libjson
@@ -93,7 +101,7 @@
 
     json_char * json_strip_white_space(json_const json_char * json){
 	   JSON_ASSERT_SAFE(json, JSON_TEXT("null ptr to json_strip_white_space"), return 0;);
-	   return toCString(JSONWorker::RemoveWhiteSpaceAndComments(TOCONST_CSTR(json), false));
+	   return alreadyCString(JSONWorker::RemoveWhiteSpaceAndCommentsC(TOCONST_CSTR(json), false));
     }
 
     #ifdef JSON_VALIDATE
@@ -109,18 +117,20 @@
 	   json_bool_t json_is_valid(json_const json_char * json){
 		  JSON_ASSERT_SAFE(json, JSON_TEXT("null ptr to json_is_valid"), return (json_bool_t)false;);
 		  #ifdef JSON_SECURITY_MAX_STRING_LENGTH
-			 if (json_unlikely(strlen(json) > JSON_SECURITY_MAX_STRING_LENGTH)){
+			 if (json_unlikely(json_strlen(json) > JSON_SECURITY_MAX_STRING_LENGTH)){
 				JSON_FAIL(JSON_TEXT("Exceeding JSON_SECURITY_MAX_STRING_LENGTH"));
 				return false;
 			 }
 		  #endif
-		  return (json_bool_t)JSONValidator::isValidRoot(JSONWorker::RemoveWhiteSpaceAndComments(json, false).c_str());
+		  json_auto<json_char> s;
+		  s.set(JSONWorker::RemoveWhiteSpaceAndCommentsC(json, false));
+		  return (json_bool_t)JSONValidator::isValidRoot(s.ptr);
 	   }
 
 	   json_bool_t json_is_valid_unformatted(json_const json_char * json){
 		  JSON_ASSERT_SAFE(json, JSON_TEXT("null ptr to json_is_valid_unformatted"), return (json_bool_t)true;);
 		  #ifdef JSON_SECURITY_MAX_STRING_LENGTH
-			 if (json_unlikely(strlen(json) > JSON_SECURITY_MAX_STRING_LENGTH)){
+			 if (json_unlikely(json_strlen(json) > JSON_SECURITY_MAX_STRING_LENGTH)){
 				JSON_FAIL(JSON_TEXT("Exceeding JSON_SECURITY_MAX_STRING_LENGTH"));
 				return false;
 			 }
