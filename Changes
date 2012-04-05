@@ -1,6 +1,10 @@
 
 RJSONIO
 
+Version 0.99-0
+
+  *  Incorporated libjson_7.6.0 which has support for escaped content (e.g. \x).
+
 Version 0.98-1
 
   *  Compilation issues fixed for new libjson code on Solaris and Windows. Thanks to Brian Ripley for Solaris
