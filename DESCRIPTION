@@ -21,3 +21,5 @@ License: BSD
 Depends: methods 
 Author: Duncan Temple Lang
 Maintainer: Duncan Temple Lang <duncan@r-project.org>
+Collate:  readJSON.R asVars.R isValid.R json.R simpleHandler.R
+

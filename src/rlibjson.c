@@ -159,8 +159,8 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
         homogeneous = allSame ||  ( (numNumbers + numStrings + numLogicals + numNulls) == len);
         if(simplify == NONE) {
 	} else if(allSame && 
-                   (numNumbers == len && (simplify & STRICT_NUMERIC)) ||
-	        	  ((numLogicals == len) && (simplify & STRICT_LOGICAL)) ||
+ 		   (numNumbers == len && (simplify & STRICT_NUMERIC)) ||
+  		      ((numLogicals == len) && (simplify & STRICT_LOGICAL)) ||
 		      ( (numStrings == len) && (simplify & STRICT_CHARACTER))) {
    	       ans = makeVector(ans, len, elType, nullValue);
 	} else if((simplify == ALL && homogeneous) || (simplify == STRICT && allSame)) {
@@ -389,3 +389,20 @@ R_json_stream_parse(SEXP str, SEXP fun)
     return(R_NilValue);
 }
 
+
+SEXP
+R_jsonPrettyPrint(SEXP r_content, SEXP r_encoding)
+{
+    const char *str = CHAR(STRING_ELT(r_content, 0));
+    JSONNODE *node;
+    json_char *ans;
+    
+    node = json_parse(str);
+    if(!node) {
+	PROBLEM "couldn't parse the JSON content"
+	    ERROR;
+    }
+
+    ans = json_write_formatted(node);
+    return(ScalarString(mkCharCE(ans, INTEGER(r_encoding)[0])));
+}

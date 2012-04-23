@@ -40,7 +40,7 @@
 toJSON(x, container = .level == 1L || length(x) > 1 || length(names(x)) > 0, 
         collapse = "\n", ..., .level = 1L,
          .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null",
-         .escapeEscapes = TRUE )
+         .escapeEscapes = TRUE, pretty = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -74,7 +74,16 @@ toJSON(x, container = .level == 1L || length(x) > 1 || length(names(x)) > 0,
    new line and tab characters are serialized.  If this is \code{TRUE},
    we preserve them symbolically by escaping the \\.
    Otherwise, we replace them with their literal value.
-  }
+ }
+ \item{pretty}{a logical value that controls if extra processing is done
+   on the result to make it indented for easier human-readability.
+   At present, this reparses the generated JSON content and
+   re-formats it (using libjson).  This means that there
+   can be three copies of the data in memory simultaneously -
+   the original data, the JSON text and the pretty-printed
+   version of the JSON text.  For large objects, this can
+   require a lot of memory.
+ }
 }
 
 \value{
