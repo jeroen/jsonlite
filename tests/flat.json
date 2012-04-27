@@ -1,0 +1,12 @@
+{ "a" : 1,
+  "b" :  [true, false]
+}
+
+{ "x" : 2,
+  "y" : ["a", "b", "c"]
+}
+
+{ "foo" : true,
+  "bar" : [ [1, 2], [3, 4]],
+  "foobar":  "a string"
+}
