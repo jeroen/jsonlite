@@ -15,6 +15,8 @@
 \alias{toJSON,NULL-method}
 \alias{toJSON,factor-method}
 \alias{toJSON,AsIs-method}
+\alias{toJSON,environment-method}
+
 
 \alias{emptyNamedList}
 

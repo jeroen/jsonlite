@@ -37,7 +37,8 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
     len = json_size(n);
     char startType = parentType; // was 127
     
-    int isNullHomogeneous = (TYPEOF(nullValue) == LGLSXP || TYPEOF(nullValue) == REALSXP || TYPEOF(nullValue) == STRSXP || TYPEOF(nullValue) == INTSXP);
+    int isNullHomogeneous = (TYPEOF(nullValue) == LGLSXP || TYPEOF(nullValue) == REALSXP ||
+                                TYPEOF(nullValue) == STRSXP || TYPEOF(nullValue) == INTSXP);
     int numStrings = 0;
     int numLogicals = 0;
     int numNumbers = 0;
