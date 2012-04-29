@@ -31,10 +31,11 @@ setGeneric("fromJSON",
 setMethod("fromJSON", c("AsIs", handler = "NULL"),
 function(content,  handler = NULL, default.size = 100, depth = 150L,
 	 allowComments = TRUE,  asText = isContent(content),
-            data = NULL, maxChar = c(0L, nchar(content)), simplify = Strict, nullValue = NULL, simplifyWithNames = TRUE,  encoding = NA_character_, ...)
+            data = NULL, maxChar = c(0L, nchar(content)), simplify = Strict, nullValue = NULL, simplifyWithNames = TRUE,  encoding = NA_character_, stringFun = NULL, ...)
 {
    enc = mapEncoding(if(is.na(encoding)) Encoding(content) else encoding)
-  .Call("R_fromJSON", content, as.integer(sum(simplify)), nullValue, as.logical(simplifyWithNames), enc)  
+  .Call("R_fromJSON", content, as.integer(sum(simplify)), nullValue, as.logical(simplifyWithNames), enc,
+             stringFun)  
 })
 
 mapEncoding =

@@ -1,7 +1,10 @@
 #include <libjson/libjson.h>
 #include <Rdefines.h>
+#include <Rinternals.h>
 
-SEXP processJSONNode(JSONNODE *node, int parentType, int simplify, SEXP nullValue, int simplifyWithNames, cetype_t);
+SEXP processJSONNode(JSONNODE *node, int parentType, int simplify, SEXP nullValue, int simplifyWithNames, cetype_t, SEXP strFun);
+
+typedef char * (*StringRoutine)(const char *);
 
 typedef enum {NONE, ALL, STRICT_LOGICAL = 2, STRICT_NUMERIC = 4, STRICT_CHARACTER = 8, STRICT = 14} SimplifyStyle;
 
@@ -20,20 +23,38 @@ R_json_parse(SEXP str)
 }
 
 SEXP
-R_fromJSON(SEXP r_str, SEXP simplify, SEXP nullValue, SEXP simplifyWithNames, SEXP encoding)
+R_fromJSON(SEXP r_str, SEXP simplify, SEXP nullValue, SEXP simplifyWithNames, SEXP encoding,
+            SEXP r_stringFun)
 {
     const char * str = CHAR(STRING_ELT(r_str, 0));
     JSONNODE *node;
     SEXP ans;
+    int nprotect = 0;
+
+    if(r_stringFun != R_NilValue) {
+	if(TYPEOF(r_stringFun) == CLOSXP) {
+	    SEXP e;
+	    PROTECT(e = allocVector(LANGSXP, 2));
+	    nprotect++;
+	    SETCAR(e, r_stringFun);
+	    r_stringFun = e;
+	}
+    } else
+	r_stringFun = NULL;
+
     node = json_parse(str);
     ans = processJSONNode(node, json_type(node), INTEGER(simplify)[0], nullValue, LOGICAL(simplifyWithNames)[0],
- 			  INTEGER(encoding)[0]);
+ 			  INTEGER(encoding)[0], r_stringFun);
     json_delete(node);
+    if(nprotect)
+	UNPROTECT(nprotect);
+
     return(ans);
 }
 
 SEXP 
-processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int simplifyWithNames, cetype_t charEncoding)
+processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int simplifyWithNames, cetype_t charEncoding,
+                 SEXP r_stringCall)
 {
     
     if (n == NULL){
@@ -87,7 +108,7 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
 	       break;
    	   case JSON_ARRAY:
   	   case JSON_NODE:
-	       el = processJSONNode(i, type, simplify, nullValue, simplifyWithNames, charEncoding);
+	       el = processJSONNode(i, type, simplify, nullValue, simplifyWithNames, charEncoding, r_stringCall);
 	       if(Rf_length(el) > 1)
 		   elType = VECSXP;
 	       else
@@ -122,15 +143,32 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
     char *tmp = json_as_string(i);
 //    tmp = reEnc(tmp, CE_BYTES, CE_UTF8, 1);
 #endif
+
+
+    if(r_stringCall != NULL && TYPEOF(r_stringCall) == EXTPTRSXP) {
+	char *tmp1;
+	StringRoutine fun;
+	fun = (StringRoutine) R_ExternalPtrAddr(r_stringCall);
+	tmp1 = fun(tmp);
+	if(tmp1 != tmp)
+	    json_free(tmp);
+    } else {
+	el = ScalarString(mkCharCE(tmp, charEncoding));
+	if(r_stringCall != NULL) {
+	    SETCAR(CDR(r_stringCall), el);
+	    el = Rf_eval(r_stringCall, R_GlobalEnv);
+	}
+    }
+
                    // do we need to strdup here?
 #if 0
-	       el = ScalarString(mkChar(tmp));
-#else
 	       el = ScalarString(mkCharCE(tmp, charEncoding));
 #endif
-	       elType = setType(elType, STRSXP);
 	       json_free(tmp);
-	       numStrings++;
+	       if(TYPEOF(el) == STRSXP) {
+		   elType = setType(elType, STRSXP);
+		   numStrings++;
+	       }
 	   }
 	       break;
 	default:
