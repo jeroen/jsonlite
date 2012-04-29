@@ -8,6 +8,17 @@ typedef enum {NONE, ALL, STRICT_LOGICAL = 2, STRICT_NUMERIC = 4, STRICT_CHARACTE
 int setType(int cur, int newType);
 SEXP makeVector(SEXP l, int len, int type, SEXP nullValue);
 
+/* Simple routine to return the parsed JSONNODE pointer.
+   This would be the start of allowing the caller to manipulate the tree
+   directly. */
+SEXP
+R_json_parse(SEXP str)
+{
+    JSONNODE *node;
+    node = json_parse(CHAR(STRING_ELT(str, 0)));
+    return(R_MakeExternalPtr(node, Rf_install("JSONNODE"), R_NilValue));
+}
+
 SEXP
 R_fromJSON(SEXP r_str, SEXP simplify, SEXP nullValue, SEXP simplifyWithNames, SEXP encoding)
 {
