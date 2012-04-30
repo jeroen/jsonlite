@@ -37,14 +37,12 @@ function(content,  handler = NULL, default.size = 100, depth = 150L,
    enc = mapEncoding(if(is.na(encoding)) Encoding(content) else encoding)
    if(!is.null(stringFun)) {
        if(!is.function(stringFun)) {
-           stringFunType = is(stringFun, "AsIs") || is(stringFun, "SEXPRoutine")
-           stringFunType = if(stringFunType) c("SEXP_STR_ROUTINE" = 1L) else c("NATIVE_STR_ROUTINE" = 0L)
-
+           stringFunType = getStringRoutineType(stringFun)
            if(is.character(stringFun))
              stringFun = getNativeSymbolInfo(stringFun)
            if(is(stringFun, "NativeSymbolInfo"))
-               stringFun = stringFun$address
-           else
+             stringFun = stringFun$address
+           else if( typeof(stringFun) != "externalptr")
              stop("stringFun needs to be a function or identify a native routine")
        } else 
           stringFunType = c("R_FUNCTION" = 2L)
@@ -349,4 +347,16 @@ function(val, strict = FALSE)
   }
 
   val
+}
+
+getStringRoutineType = 
+function(stringFun)
+{
+  if(is.function(stringFun))
+     return(c("R_FUNCTION" =  3L))
+
+  if(is(stringFun, "AsIs") || is(stringFun, "NativeStringRoutine"))
+      c("NATIVE_STR_ROUTINE" = 0L)
+  else 
+      c("SEXP_STR_ROUTINE" = 1L) 
 }

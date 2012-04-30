@@ -111,6 +111,23 @@ fromJSON(content, handler = NULL,
   encoding.
   The default for this value is to use the same encoding as the input content.}
    \item{\dots}{additional parameters for methods.}
+  \item{stringFun}{an R function or a compiled routine (by address or name).
+    The purpose of this is to process every string as it is encountered in the 
+   JSON content and to either convert return it as-is, or to convert it to 
+    a suitable R value.  This, for example, might convert strings of the form
+    "/new Date(2313213)/" or "/Date(12312312)/".  
+   The result is placed in the 
+   R object being generated from the JSON content where the original string would appear.
+   So this allows us to handle strings with a special meaning.
+
+   If this is an R function, it is passed a single argument - the value of the string - and it can return that or
+   any other R object, presumably derived from that original string. 
+   If a compiled routine is specified, it can be one of two types. 
+   Both take a simple C string.  
+   The default type returns a \code{SEXP}, i.e. an R object.
+   If the class of \code{stringFun} is either \code{AsIs} or \code{NativeStringRoutine},
+   then that routine must return a C string.
+  }
 }
 
 \value{

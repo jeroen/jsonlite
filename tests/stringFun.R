@@ -3,22 +3,25 @@ jtxt = '[ 1, "abc", "xyz"]'
 jdate = '[ 1, "/Date(1335746208)/", "xyz"]'
 jnewdate = '[ 1, "/new Date(1335746208)/", "xyz"]'
 
-fromJSON(jtxt, stringFun = getNativeSymbolInfo("dummyStringOperation")$address)
 
-fromJSON(jtxt, stringFun = getNativeSymbolInfo("dummyStringOperation"))
-fromJSON(jtxt, stringFun = "dummyStringOperation")
 
-fromJSON(jtxt, stringFun = "dummyStringOperation", simplify = TRUE)
+a = fromJSON(jtxt, stringFun = I(getNativeSymbolInfo("dummyStringOperation")$address))
+b = fromJSON(jtxt, stringFun = I(getNativeSymbolInfo("dummyStringOperation")))
+c = fromJSON(jtxt, stringFun = I("dummyStringOperation"))
+d = fromJSON(jtxt, stringFun = structure("dummyStringOperation", class = "NativeStringRoutine"))
+
+e = fromJSON(jtxt, stringFun = I("dummyStringOperation"), simplify = TRUE)
 
 
 ans = fromJSON(jtxt, stringFun = structure("R_json_dateStringOp", class = "SEXPRoutine"))
 sapply(ans, class) == c("numeric", "character", "character")
+ans = fromJSON(jtxt, stringFun = "R_json_dateStringOp")
 
 ans = fromJSON(jtxt, stringFun = structure("R_json_dateStringOp", class = "SEXPRoutine"), simplify = TRUE)
 
+ # process jdate
 ans = fromJSON(jdate, stringFun = structure("R_json_dateStringOp", class = "SEXPRoutine"))
-
-ans = fromJSON(jdate, stringFun = I("R_json_dateStringOp"))
+ans = fromJSON(jdate, stringFun = "R_json_dateStringOp")
 
 
   # process strings by just returning them.
@@ -43,9 +46,9 @@ stopifnot(is.logical(ans))
 #
 jtxt = '[ 1, "/new Date(12312313)", "/Date(12312313)"]'
 ans = fromJSON(jtxt)
-stopifnot(is.character(ans))
 
-ans = fromJSON(jtxt, stringFun = I("R_json_dateStringOp"))
+
+ans = fromJSON(jtxt, stringFun = "R_json_dateStringOp")
 stopifnot(all(mapply(is, ans, c("numeric", "POSIXct", "POSIXct"))))
 
 
