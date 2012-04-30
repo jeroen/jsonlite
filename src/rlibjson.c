@@ -2,9 +2,15 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 
-SEXP processJSONNode(JSONNODE *node, int parentType, int simplify, SEXP nullValue, int simplifyWithNames, cetype_t, SEXP strFun);
 
+typedef enum { NATIVE_STR_ROUTINE,  SEXP_STR_ROUTINE, R_FUNCTION, GARBAGE} StringFunctionType;
+
+typedef SEXP (*SEXPStringRoutine)(const char *, cetype_t encoding);
 typedef char * (*StringRoutine)(const char *);
+
+SEXP processJSONNode(JSONNODE *node, int parentType, int simplify, SEXP nullValue,
+                      int simplifyWithNames, cetype_t, SEXP strFun,  StringFunctionType str_fun_type);
+
 
 typedef enum {NONE, ALL, STRICT_LOGICAL = 2, STRICT_NUMERIC = 4, STRICT_CHARACTER = 8, STRICT = 14} SimplifyStyle;
 
@@ -24,12 +30,13 @@ R_json_parse(SEXP str)
 
 SEXP
 R_fromJSON(SEXP r_str, SEXP simplify, SEXP nullValue, SEXP simplifyWithNames, SEXP encoding,
-            SEXP r_stringFun)
+            SEXP r_stringFun, SEXP r_str_type)
 {
     const char * str = CHAR(STRING_ELT(r_str, 0));
     JSONNODE *node;
     SEXP ans;
     int nprotect = 0;
+    StringFunctionType str_fun_type = GARBAGE;
 
     if(r_stringFun != R_NilValue) {
 	if(TYPEOF(r_stringFun) == CLOSXP) {
@@ -39,12 +46,13 @@ R_fromJSON(SEXP r_str, SEXP simplify, SEXP nullValue, SEXP simplifyWithNames, SE
 	    SETCAR(e, r_stringFun);
 	    r_stringFun = e;
 	}
-    } else
+	str_fun_type = INTEGER(r_str_type)[0];
+    } else 
 	r_stringFun = NULL;
 
     node = json_parse(str);
     ans = processJSONNode(node, json_type(node), INTEGER(simplify)[0], nullValue, LOGICAL(simplifyWithNames)[0],
- 			  INTEGER(encoding)[0], r_stringFun);
+ 			  INTEGER(encoding)[0], r_stringFun, str_fun_type);
     json_delete(node);
     if(nprotect)
 	UNPROTECT(nprotect);
@@ -54,7 +62,7 @@ R_fromJSON(SEXP r_str, SEXP simplify, SEXP nullValue, SEXP simplifyWithNames, SE
 
 SEXP 
 processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int simplifyWithNames, cetype_t charEncoding,
-                 SEXP r_stringCall)
+                 SEXP r_stringCall, StringFunctionType str_fun_type)
 {
     
     if (n == NULL){
@@ -108,7 +116,7 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
 	       break;
    	   case JSON_ARRAY:
   	   case JSON_NODE:
-	       el = processJSONNode(i, type, simplify, nullValue, simplifyWithNames, charEncoding, r_stringCall);
+	       el = processJSONNode(i, type, simplify, nullValue, simplifyWithNames, charEncoding, r_stringCall, str_fun_type);
 	       if(Rf_length(el) > 1)
 		   elType = VECSXP;
 	       else
@@ -146,14 +154,23 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
 
 
     if(r_stringCall != NULL && TYPEOF(r_stringCall) == EXTPTRSXP) {
-	char *tmp1;
-	StringRoutine fun;
-	fun = (StringRoutine) R_ExternalPtrAddr(r_stringCall);
-	tmp1 = fun(tmp);
-	if(tmp1 != tmp)
-	    json_free(tmp);
+        if(str_fun_type == SEXP_STR_ROUTINE) {
+	    SEXPStringRoutine fun;
+	    fun = (SEXPStringRoutine) R_ExternalPtrAddr(r_stringCall);	    
+	    el = fun(tmp, charEncoding);
+	} else {
+	    char *tmp1;
+	    StringRoutine fun;
+	    fun = (StringRoutine) R_ExternalPtrAddr(r_stringCall);
+	    tmp1 = fun(tmp);
+	    if(tmp1 != tmp)
+		json_free(tmp);
+	    tmp = tmp1;
+	    el = ScalarString(mkCharCE(tmp, charEncoding));
+	}
     } else {
 	el = ScalarString(mkCharCE(tmp, charEncoding));
+    	     /* Call the R function if there is one. */
 	if(r_stringCall != NULL) {
 	    SETCAR(CDR(r_stringCall), el);
 	    el = Rf_eval(r_stringCall, R_GlobalEnv);
@@ -455,4 +472,31 @@ R_jsonPrettyPrint(SEXP r_content, SEXP r_encoding)
 
     ans = json_write_formatted(node);
     return(ScalarString(mkCharCE(ans, INTEGER(r_encoding)[0])));
+}
+
+
+char *
+dummyStringOperation(const char *value)
+{
+    fprintf(stderr, "[dummyStringOperation] %s\n", value);
+    return(value);
+}
+
+SEXP
+R_json_dateStringOp(const char *value, cetype_t encoding)
+{
+    if(strncmp(value, "/Date(", 6)  == 0) {
+        double num;
+	sscanf(value + 6, "%lf)/", &num);
+
+	SEXP ans, classNames;
+        PROTECT(ans = ScalarReal(num));
+	PROTECT(classNames = NEW_CHARACTER(2));
+	SET_STRING_ELT(classNames, 0, mkChar("POSIXct"));
+	SET_STRING_ELT(classNames, 1, mkChar("POSIXt"));
+	SET_CLASS(ans, classNames);
+        UNPROTECT(2);
+	return(ans);
+    } else
+       return(ScalarString(mkCharCE(value, encoding)));
 }

@@ -34,8 +34,23 @@ function(content,  handler = NULL, default.size = 100, depth = 150L,
             data = NULL, maxChar = c(0L, nchar(content)), simplify = Strict, nullValue = NULL, simplifyWithNames = TRUE,  encoding = NA_character_, stringFun = NULL, ...)
 {
    enc = mapEncoding(if(is.na(encoding)) Encoding(content) else encoding)
+   if(!is.null(stringFun)) {
+       if(!is.function(stringFun)) {
+           stringFunType = is(stringFun, "AsIs") || is(stringFun, "SEXPRoutine")
+           stringFunType = if(stringFunType) c("SEXP_STR_ROUTINE" = 1L) else c("NATIVE_STR_ROUTINE" = 0L)
+
+           if(is.character(stringFun))
+             stringFun = getNativeSymbolInfo(stringFun)
+           if(is(stringFun, "NativeSymbolInfo"))
+               stringFun = stringFun$address
+           else
+             stop("stringFun needs to be a function or identify a native routine")
+       } else 
+          stringFunType = c("R_FUNCTION" = 2L)
+   }
+
   .Call("R_fromJSON", content, as.integer(sum(simplify)), nullValue, as.logical(simplifyWithNames), enc,
-             stringFun)  
+             stringFun, stringFunType)  
 })
 
 mapEncoding =
