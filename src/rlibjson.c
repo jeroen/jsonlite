@@ -177,16 +177,26 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
 	}
     }
 
-                   // do we need to strdup here?
-#if 0
-	       el = ScalarString(mkCharCE(tmp, charEncoding));
-#endif
 	       json_free(tmp);
-	       if(TYPEOF(el) == STRSXP) {
-		   elType = setType(elType, STRSXP);
+	       
+	       elType = setType(elType, 
+   				     /* If we have a class, not a primitive type */
+                                  Rf_length(getAttrib(el, Rf_install("class"))) ? LISTSXP : TYPEOF(el));
+               if(r_stringCall != NULL && str_fun_type != NATIVE_STR_ROUTINE) {
+		   switch(TYPEOF(el)) {
+			  case REALSXP:
+   			     numNumbers++;
+			  break;
+			  case LGLSXP:
+   			     numLogicals++;
+			  break;
+			  case STRSXP:
+   			     numStrings++;
+			  break;
+		   }
+	       } else if(TYPEOF(el) == STRSXP) 
 		   numStrings++;
-	       }
-	   }
+      }
 	       break;
 	default:
 	    PROBLEM "shouldn't be here"
@@ -485,9 +495,15 @@ dummyStringOperation(const char *value)
 SEXP
 R_json_dateStringOp(const char *value, cetype_t encoding)
 {
-    if(strncmp(value, "/Date(", 6)  == 0) {
+    int withNew = 0, noNew = 0;
+
+    if( (noNew = (strncmp(value, "/Date(", 6)  == 0)) ||
+          (withNew = strncmp(value, "/new Date(", 10)) == 0) {
         double num;
-	sscanf(value + 6, "%lf)/", &num);
+	if(noNew) 
+   	   sscanf(value + 6, "%lf)/", &num);
+	else
+   	   sscanf(value + 10, "%lf)/", &num);
 
 	SEXP ans, classNames;
         PROTECT(ans = ScalarReal(num));

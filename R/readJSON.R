@@ -33,6 +33,7 @@ function(content,  handler = NULL, default.size = 100, depth = 150L,
 	 allowComments = TRUE,  asText = isContent(content),
             data = NULL, maxChar = c(0L, nchar(content)), simplify = Strict, nullValue = NULL, simplifyWithNames = TRUE,  encoding = NA_character_, stringFun = NULL, ...)
 {
+   stringFunType = c("GARBAGE" = 4L)
    enc = mapEncoding(if(is.na(encoding)) Encoding(content) else encoding)
    if(!is.null(stringFun)) {
        if(!is.function(stringFun)) {
