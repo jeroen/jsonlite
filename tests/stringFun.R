@@ -47,7 +47,6 @@ stopifnot(is.logical(ans))
 jtxt = '[ 1, "/new Date(12312313)", "/Date(12312313)"]'
 ans = fromJSON(jtxt)
 
-
 ans = fromJSON(jtxt, stringFun = "R_json_dateStringOp")
 stopifnot(all(mapply(is, ans, c("numeric", "POSIXct", "POSIXct"))))
 

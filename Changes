@@ -1,5 +1,9 @@
-
 RJSONIO
+
+Version 1.0-0
+
+  *  Added stringFun as parameter in fromJSON() to allow processing of each string value as it is 
+     encountered.  This can be used to convert strings to arbitrary R objects.
 
 Version 0.99-0
 
