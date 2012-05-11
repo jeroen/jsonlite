@@ -485,10 +485,12 @@ R_jsonPrettyPrint(SEXP r_content, SEXP r_encoding)
 }
 
 
-char *
+const char *
 dummyStringOperation(const char *value)
 {
+#ifdef TEST_DUMMY_STRING_OP
     fprintf(stderr, "[dummyStringOperation] %s\n", value);
+#endif
     return(value);
 }
 

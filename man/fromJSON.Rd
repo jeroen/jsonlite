@@ -126,7 +126,9 @@ fromJSON(content, handler = NULL,
    Both take a simple C string.  
    The default type returns a \code{SEXP}, i.e. an R object.
    If the class of \code{stringFun} is either \code{AsIs} or \code{NativeStringRoutine},
-   then that routine must return a C string.
+   then that routine must return a C string, i.e. a char *. This will
+   then be converted to an R character vector of length 1, using the
+   default encoding given by \code{encoding}.
   }
 }
 
@@ -252,6 +254,45 @@ if(require(rjson)) {
 
   fromJSON(js, simplifyWithNames = FALSE)
   fromJSON(js, simplifyWithNames = TRUE)
+
+#######
+#  stringFun
+txt = '{ "magnitude": 3.8, 
+         "longitude": -125.012, 
+         "latitude": 40.382,
+         "date":  "new Date(1335515917000)", 
+         "when": "/Date(1335515917000)/", 
+         "country": "USA", 
+         "verified": true
+       }'
+
+convertJSONDate = 
+function(x)
+{
+   if(grepl("/?(new )?Date\\\\(", x)) {
+      val = gsub(".*Date\\\\(([0-9]+)\\\\).*", "\\1", x)
+      structure(as.numeric(val)/1000, class = c("POSIXct", "POSIXt"))
+   } else
+      x
+}
+
+fromJSON(txt, stringFun = convertJSONDate)
+
+ #  A C routine for converting dates
+jtxt = '[ 1, "/new Date(12312313)", "/Date(12312313)"]'
+ans = fromJSON(jtxt)
+ans = fromJSON(jtxt, stringFun = "R_json_dateStringOp")
+
+ # A C routine that returns a char * - leaves strings as is
+c = fromJSON(jtxt, stringFun = I("dummyStringOperation"))
+c = fromJSON(jtxt, stringFun = I(getNativeSymbolInfo("dummyStringOperation")))
+c = fromJSON(jtxt, stringFun =
+                     I(getNativeSymbolInfo("dummyStringOperation")$address))
+
+  # I() or class = "NativeStringRoutine".
+c = fromJSON(jtxt, stringFun =
+                      structure("dummyStringOperation",
+                                class = "NativeStringRoutine"))
 }
 \keyword{IO}
 \keyword{programming}
