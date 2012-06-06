@@ -175,6 +175,7 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
 	    SETCAR(CDR(r_stringCall), el);
 	    el = Rf_eval(r_stringCall, R_GlobalEnv);
 	}
+	/* XXX compute with elType. */
     }
 
 	       json_free(tmp);

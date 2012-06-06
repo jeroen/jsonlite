@@ -39,10 +39,10 @@
   as an array of length 1 in JSON
 }
 \usage{
-toJSON(x, container = .level == 1L || length(x) > 1 || length(names(x)) > 0, 
+toJSON(x, container = asIs || .level == 1L || length(x) > 1 || length(names(x)) > 0, 
         collapse = "\n", ..., .level = 1L,
          .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null",
-         .escapeEscapes = TRUE, pretty = FALSE)
+         .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -86,6 +86,13 @@ toJSON(x, container = .level == 1L || length(x) > 1 || length(names(x)) > 0,
    version of the JSON text.  For large objects, this can
    require a lot of memory.
  }
+ \item{asIs}{a logical value that, if \code{TRUE} causes
+   R vectors of length 1 to be represented as arrays in JSON,
+   but if \code{FALSE} to be represented as scalars, where appropriate
+   (i.e. not the top level of the JSON content).  This avoids having
+   to explicitly mark sub-elements in an R object as being of class
+   \code{AsIs}.
+  }
 }
 
 \value{
@@ -177,6 +184,21 @@ toJSON(x, container = .level == 1L || length(x) > 1 || length(names(x)) > 0,
 
   # if we want to expand the new lines and tab characters
  cat(toJSON(x), .escapeEscapes = FALSE)
+
+
+  # illustration of the asIs argument
+  cat(toJSON(list(a = 1, b = 2L, c = TRUE,
+                  d = c(1, 3),
+                  e = "abc"), asIs = TRUE))
+
+  cat(toJSON(list(a = 1, b = 2L, c = TRUE,
+                  d = c(1, 3),
+                  e = "abc"), asIs = FALSE))
+
+   # extra level
+  cat(toJSON(list(a = c(x = 1), b = 2L, c = TRUE,
+                  d = list(1, 3),
+                  e = "abc"), asIs = FALSE, pretty = TRUE))
 }
 
 \keyword{IO}
