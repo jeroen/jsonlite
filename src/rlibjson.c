@@ -1,18 +1,4 @@
-#include <libjson/libjson.h>
-#include <Rdefines.h>
-#include <Rinternals.h>
-
-
-typedef enum { NATIVE_STR_ROUTINE,  SEXP_STR_ROUTINE, R_FUNCTION, GARBAGE} StringFunctionType;
-
-typedef SEXP (*SEXPStringRoutine)(const char *, cetype_t encoding);
-typedef char * (*StringRoutine)(const char *);
-
-SEXP processJSONNode(JSONNODE *node, int parentType, int simplify, SEXP nullValue,
-                      int simplifyWithNames, cetype_t, SEXP strFun,  StringFunctionType str_fun_type);
-
-
-typedef enum {NONE, ALL, STRICT_LOGICAL = 2, STRICT_NUMERIC = 4, STRICT_CHARACTER = 8, STRICT = 14} SimplifyStyle;
+#include "Rlibjson.h"
 
 int setType(int cur, int newType);
 SEXP makeVector(SEXP l, int len, int type, SEXP nullValue);
@@ -380,13 +366,14 @@ R_isValidJSON(SEXP input)
 
 /******************/
 
-#if 0
+#ifdef R_JSON_STREAM
 
 SEXP
 R_json_new_stream(SEXP fun, SEXP pullFun)
 {
     JSONSTREAM *stream;
     stream = json_new_stream();
+    return(R_MakeExternalPtr(stream, Rf_install("JSON_STREAM"), R_NilValue));
 }
 
 SEXP
