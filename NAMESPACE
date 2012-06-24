@@ -17,3 +17,4 @@ exportMethods(isValidJSON)
 
 export(Strict, StrictNumeric, StrictCharacter, StrictLogical)
 
+export(readJSONStream)

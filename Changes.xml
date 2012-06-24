@@ -3,6 +3,15 @@
            xmlns:env="http://www.shell.org">
 <omg:pkg>RJSONIO</omg:pkg>
 
+<version num="0.99-0">
+<change>
+Implemented reading JSON from a connection
+using a "pull" mechanism which reads from the connection
+as more content is needed by the parser. This avoids
+having all the content in memory before parsing.
+</change>
+</version>
+
 <version num="0.98-0">
 <change>
 Update default libjson code to version 7.4.0.

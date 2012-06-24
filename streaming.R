@@ -40,3 +40,40 @@ ans = .Call("R_json_parser_test_stream_chunk_con", e)
 all.equal(ans, val)
 
 
+####################
+
+library(RJSONIO)
+val = list(a = 1:100, b = 100:1, c = rnorm(1000))
+xx = toJSON(val, digits = 16)
+
+con = textConnection(xx)
+e = substitute(readLines(con, n = 1), list(con = con))
+
+ans = .Call("R_json_parser_init_from_con",  e, NULL)
+all.equal(ans, val)
+
+  #  With a callback
+library(RJSONIO)
+val = list(a = 1:100, b = 100:1, c = rnorm(1000))
+xx = toJSON(val, digits = 16)
+
+con = textConnection(xx)
+e = substitute(readLines(con, n = 1), list(con = con))
+
+f = function(x)
+       print(x)
+ 
+ans = .Call("R_json_parser_init_from_con",  e, f)
+all.equal(ans, val)
+
+
+library(RJSONIO)
+xx = '[1,2, 3]{"a": [true, false]}'
+con = textConnection(xx)
+e = substitute(readLines(con, n = 1), list(con = con))
+
+f = function(x)
+       print(sum(unlist(x)))
+ 
+ans = .Call("R_json_parser_init_from_con",  e, f)
+
