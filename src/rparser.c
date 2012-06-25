@@ -66,7 +66,7 @@ R_json_parser_callback(JSONNODE *node, void *userdata)
     } else {
 //    SETCAR( CDR(e), ScalarInteger(json_type(node)));
        PROTECT(tmp);
-       PROTECT(ans = R_makeJSONRef(node));
+       PROTECT(ans = tmp); // R_makeJSONRef(node));
        SETCAR( CDR(data->call), ans);
 
        ans = Rf_eval(data->call, R_GlobalEnv);
@@ -84,7 +84,6 @@ getData(SEXP call, JSONSTREAM *stream, int *numBytes)
     SEXP r_str;
     int num;
 
-//fprintf(stderr, "getData\n");
 
     PROTECT(r_str = Rf_eval(call, R_GlobalEnv));
     if( (num = Rf_length(r_str)) ) {
@@ -100,12 +99,15 @@ getData(SEXP call, JSONSTREAM *stream, int *numBytes)
 
 
 #if R_DEBUG_STREAM
-fprintf(stderr, "# %d to %d\n   '%s'", (int) strlen(ptr), *numBytes, ptr);
+fprintf(stderr, "# %d to %d\n   '%s'\n", (int) strlen(ptr), *numBytes, ptr);
 #endif
+
 #ifdef CHECK_CONTENT
 fprintf(out, "%s", ptr);
 #endif
+
 	json_stream_push(stream, ptr);
+
     } else {
 #if 0
        fprintf(stderr, "finished reading data with %d bytes\n", *numBytes);
@@ -146,9 +148,10 @@ R_json_parser_init_from_con(SEXP conCall, SEXP cbCall,
     int nprotect = 0;
     ParserCallback callback;
 
+         /* If the callback is an external pointer, use that as the callback for the top-level JSONNODE objects */
     if(TYPEOF(cbCall) == EXTPTRSXP)
         callback = R_ExternalPtrAddr(cbCall);
-    else
+    else 			/* otherwise use our own callback to process the JSONNODE */
 	callback = R_json_parser_callback;
 
     stream = json_new_stream(callback, errorCB, &cb);
@@ -170,7 +173,7 @@ R_json_parser_init_from_con(SEXP conCall, SEXP cbCall,
 	SETCAR(cb.call, cbCall);
 	nprotect++;
     } else
-      cb.call =  cbCall;
+	cb.call =  cbCall;  // expression.
 
     if(TYPEOF(conCall) == STRSXP) {
 	FILE *f;
@@ -197,7 +200,6 @@ R_json_parser_init_from_con(SEXP conCall, SEXP cbCall,
     }
 #endif
 
-
     json_delete_stream(stream);
 
     return(cb.result ? cb.result : R_NilValue);
@@ -206,7 +208,7 @@ R_json_parser_init_from_con(SEXP conCall, SEXP cbCall,
 
 
 
-#if 0
+#if 1
 
 SEXP top = NULL;
 
@@ -304,6 +306,7 @@ R_json_parser_test_stream_chunk(SEXP r_filename)
     tmp[blocksize] = '\0';
     while(cur < len) {
 	strncpy(tmp, str + cur, blocksize);
+
 #ifdef R_DEBUG_STREAM
 fprintf(stderr, "%d) %s\n", count++, tmp);
 #endif
@@ -311,6 +314,7 @@ fprintf(stderr, "%d) %s\n", count++, tmp);
 	cur += blocksize;
     }
 
+    json_delete_stream(stream);
     R_ReleaseObject(top);
     return(top);
 }
@@ -330,6 +334,8 @@ R_json_parser_test_stream_chunk_con(SEXP r_getData)
     
     int n = 0;
     while(getData(r_getData, stream, &n)) {}
+
+    json_delete_stream(stream);
 
     R_ReleaseObject(top);
     return(top);

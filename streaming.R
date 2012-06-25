@@ -14,6 +14,8 @@ ans = .Call("R_json_parser_test_stream_str", xx)
 ans = .Call("R_json_parser_test_stream_chunk", xx)
 all.equal(val, ans)
 
+z = replicate(100, {ans = .Call("R_json_parser_test_stream_chunk", xx); all.equal(val, ans)})
+
 
 
 
@@ -25,6 +27,7 @@ con = textConnection(xx)
 getData = function()  readLines(con, n = 1)
 
 ans = .Call("R_json_parser_test_stream_chunk_con", quote(getData()))
+all.equal(ans, val)
 
 
 
@@ -46,11 +49,14 @@ library(RJSONIO)
 val = list(a = 1:100, b = 100:1, c = rnorm(1000))
 xx = toJSON(val, digits = 16)
 
+z = replicate(40, {
 con = textConnection(xx)
 e = substitute(readLines(con, n = 1), list(con = con))
-
-ans = .Call("R_json_parser_init_from_con",  e, NULL)
+ans = .Call("R_json_parser_init_from_con",  e, NULL,  14L, NULL, TRUE)
 all.equal(ans, val)
+})
+
+table(z)
 
   #  With a callback
 library(RJSONIO)
@@ -63,7 +69,7 @@ e = substitute(readLines(con, n = 1), list(con = con))
 f = function(x)
        print(x)
  
-ans = .Call("R_json_parser_init_from_con",  e, f)
+ans = .Call("R_json_parser_init_from_con",  e, f, 14L, NULL, TRUE)
 all.equal(ans, val)
 
 
