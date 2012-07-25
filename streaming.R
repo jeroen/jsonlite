@@ -14,7 +14,7 @@ ans = .Call("R_json_parser_test_stream_str", xx)
 ans = .Call("R_json_parser_test_stream_chunk", xx)
 all.equal(val, ans)
 
-z = replicate(100, {ans = .Call("R_json_parser_test_stream_chunk", xx); all.equal(val, ans)})
+z = replicate(400, {ans = .Call("R_json_parser_test_stream_chunk", xx); all.equal(val, ans)})
 
 
 

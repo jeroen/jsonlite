@@ -2,8 +2,17 @@ RJSONIO
 
 Version 1.0-0
 
+  *  toJSON() for S4 objects adds , separating slots that was omitted.
+
+  *  Force the values of container and .withNames in the toJSON() generic to fix a bug
+     that caused vectors of length 1 with names to appear as scalars and so lose the names.
+     Thanks to Igor Elbert.
+
   *  Added stringFun as parameter in fromJSON() to allow processing of each string value as it is 
      encountered.  This can be used to convert strings to arbitrary R objects.
+
+  *  Initial implementation of parsing streaming data from a file or connection.
+     Unreliable at present.
 
 Version 0.99-0
 

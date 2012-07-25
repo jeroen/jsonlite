@@ -29,7 +29,7 @@ fromJSON(content, handler = NULL,
            asText = isContent(content), data = NULL,
             maxChar = c(0L, nchar(content)), simplify = Strict,
              nullValue = NULL, simplifyWithNames = TRUE,
-              encoding = NA_character_, ...)
+              encoding = NA_character_, stringFun = NULL, ...)
 }
 
 \arguments{
@@ -162,7 +162,7 @@ fromJSON(content, handler = NULL,
   m = matrix(1:27, 9, 3)
   txt = toJSON(m)
   con = textConnection(txt)
-  identical(m, fromJSON(con))
+  identical(m, fromJSON(con)) # not true! fromJSON() returns just a list.
 
     # Use a connection and move the cursor ahead to skip over some lines.
   f = system.file("sampleData", "obj1.json", package = "RJSONIO")

@@ -13,6 +13,8 @@ setGeneric("toJSON",
            .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0,
             .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE)   {
 
+  container; .withNames  # force these values.
+  
   ans <- standardGeneric("toJSON")
 
   if(pretty)
@@ -34,10 +36,11 @@ setMethod("toJSON", "ANY",
            function(x, container = asIs || .level == 1L || length(x) > 1  || length(names(x)) > 0, collapse = "\n", ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
 
              if(isS4(x)) {
-               paste("{", paste(dQuote(slotNames(x)), sapply(slotNames(x), function(id)
-                                                                             toJSON(slot(x, id), ..., .level = .level + 1L,
-                                                                                    .na = .na, .escapeEscapes = .escapeEscapes, asIs = asIs)),
-                                 sep = ": "),
+               paste("{", paste(dQuote(slotNames(x)), sapply(slotNames(x),
+                                                              function(id)
+                                                                 toJSON(slot(x, id), ..., .level = .level + 1L,
+                                                                        .na = .na, .escapeEscapes = .escapeEscapes, asIs = asIs)),
+                                 sep = ": ", collapse = ","),
                      "}", collapse = collapse)
              } else {
 #cat(class(x), "\n")

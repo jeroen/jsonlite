@@ -52,6 +52,7 @@ readJSONStream(con, cb = NULL, simplify = Strict, nullValue = NULL,
   specifically the method for a connection.
 }
 \examples{
+\dontrun{
 xx = '[1,2, 3]{"a": [true, false]}'
 con = textConnection(xx)
 
@@ -76,7 +77,7 @@ function() {
 g = gen()
 con = textConnection(xx)
 readJSONStream(con, g$update)
-
+}
 }
 \keyword{IO}
 
