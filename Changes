@@ -14,6 +14,8 @@ Version 1.0-0
   *  Initial implementation of parsing streaming data from a file or connection.
      Unreliable at present.
 
+  *  Changes to libjson source for missing arguments in C++ macros.
+
 Version 0.99-0
 
   *  Incorporated libjson_7.6.0 which has support for escaped content (e.g. \x).
