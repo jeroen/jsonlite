@@ -6,3 +6,4 @@ a = new("A")
 toJSON(a)
 
 toJSON(list(a, a))
+
