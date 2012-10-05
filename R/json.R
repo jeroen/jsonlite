@@ -211,9 +211,11 @@ setMethod("toJSON", "list",
 
              if(all(sapply(els, is.name)))
                names(els) = NULL
-
+             
              if(!container)
                return(els)
+
+             els = unlist(els)
              
              if(.withNames)
                 paste(sprintf("{%s", collapse),
