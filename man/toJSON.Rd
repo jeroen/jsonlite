@@ -39,10 +39,10 @@
   as an array of length 1 in JSON
 }
 \usage{
-toJSON(x, container = asIs || .level == 1L || length(x) > 1 || length(names(x)) > 0, 
+toJSON(x, container = isContainer(x, asIs, .level), 
         collapse = "\n", ..., .level = 1L,
          .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null",
-         .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE)
+         .escapeEscapes = TRUE, pretty = FALSE, asIs = NA)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

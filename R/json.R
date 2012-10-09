@@ -8,10 +8,16 @@ dQuote =
 function(x)
   paste('"', x, '"', sep = "")
 
+isContainer =
+function(x, asIs, .level)
+  (is.na(asIs) && .level == 1) || (!is.na(asIs) && asIs) ||
+       .level == 1L || length(x) > 1  || length(names(x)) > 0 || is.list(x)
+
 setGeneric("toJSON",
-  function(x, container = asIs || .level == 1L || length(x) > 1  || length(names(x)) > 0, collapse = "\n", ...,
+  function(x, container = isContainer(x, asIs, .level),
+           collapse = "\n", ...,
            .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0,
-            .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE)   {
+            .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA)   {
 
   container; .withNames  # force these values.
   
@@ -24,16 +30,19 @@ setGeneric("toJSON",
   })
 
 
+
 setMethod("toJSON", "NULL",
-           function(x, container = asIs || .level == 1L || length(x) > 1  || length(names(x)) > 0, collapse = "\n", ...,
+           function(x, container = isContainer(x, asIs, .level), collapse = "\n", ...,
                      .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null",
-                      .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
+                      .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
              if(container) "[ null ] " else "null"
            })
 
 
 setMethod("toJSON", "ANY",
-           function(x, container = asIs || .level == 1L || length(x) > 1  || length(names(x)) > 0, collapse = "\n", ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
+           function(x, container =  isContainer(x, asIs, .level), collapse = "\n", ...,
+                       .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0,
+                      .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
 
              if(isS4(x)) {
                paste("{", paste(dQuote(slotNames(x)), sapply(slotNames(x),
@@ -59,7 +68,10 @@ setMethod("toJSON", "ANY",
 
 
 setMethod("toJSON", "integer",
-           function(x, container = asIs || .level == 1L || length(x) > 1 || length(names(x)) > 1, collapse = "\n  ", ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
+           function(x, container =  isContainer(x, asIs, .level),
+                      collapse = "\n  ", ..., .level = 1L,
+                      .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null",
+                       .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
 
              if(any(nas <- is.na(x)))
                  x[nas] = .na
@@ -76,7 +88,9 @@ setMethod("toJSON", "integer",
 setOldClass("hexmode")
 
 setMethod("toJSON", "hexmode",
-           function(x, container = asIs || .level == 1L || length(x) > 1 || length(names(x)) > 0, collapse = "\n   ", ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
+           function(x, container =  isContainer(x, asIs, .level), collapse = "\n   ", ...,
+                     .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0,
+                       .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
 
              
              tmp = paste("0x", format(x), sep = "")
@@ -94,13 +108,17 @@ setMethod("toJSON", "hexmode",
 
 
 setMethod("toJSON", "factor",
-           function(x, container = asIs || .level == 1L || length(x) > 1 || length(names(x)) > 0, collapse = "\n", ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", pretty = FALSE, asIs = FALSE) {
+           function(x, container =  isContainer(x, asIs, .level),
+                     collapse = "\n", ..., .level = 1L,
+                     .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", pretty = FALSE, asIs = NA) {
 
              toJSON(as.character(x), container, collapse, ..., .level = .level, .na = .na, .escapeEscapes = .escapeEscapes, asIs = asIs)
            })
 
 setMethod("toJSON", "logical",
-           function(x, container = asIs || .level == 1L || length(x) > 1 || length(names(x)) > 0, collapse = "\n", ..., .level = 1L, .na = "null", pretty = FALSE, asIs = FALSE) {
+           function(x, container =  isContainer(x, asIs, .level),
+                     collapse = "\n", ..., .level = 1L,
+                     .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", pretty = FALSE, asIs = NA) {
              tmp = ifelse(x, "true", "false")
              if(any(nas <- is.na(tmp)))
                  tmp[nas] = .na             
@@ -115,7 +133,9 @@ setMethod("toJSON", "logical",
            })
 
 setMethod("toJSON", "numeric",
-           function(x, container = asIs || .level == 1L || length(x) > 1 || length(names(x)) > 0, collapse = "\n", digits = 5, ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
+           function(x, container =  isContainer(x, asIs, .level), collapse = "\n", digits = 5, ...,
+                      .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0,
+                        .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
 
              tmp = formatC(x, digits = digits)
              if(any(nas <- is.na(x)))
@@ -133,7 +153,7 @@ setMethod("toJSON", "numeric",
 
 
 setMethod("toJSON", "character",
-           function(x, container = asIs || .level == 1L || length(x) > 1 || length(names(x)) > 0, collapse = "\n", digits = 5, ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
+           function(x, container =  isContainer(x, asIs, .level), collapse = "\n", digits = 5, ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
 # Don't do this: !             tmp = gsub("\\\n", "\\\\n", x)
 
 #             if(length(x) == 0)    return("[ ]")
@@ -167,12 +187,12 @@ setMethod("toJSON", "character",
 # Symbols.
 # names can't be NA
 setMethod("toJSON", "name",
-           function(x, container = asIs || .level == 1L || length(x) > 1 || length(names(x)) > 0, collapse = "\n", ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
+           function(x, container =  isContainer(x, asIs, .level), collapse = "\n", ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
              as.character(x)
            })
 
 setMethod("toJSON", "name",
-           function(x, container = asIs || .level == 1L || length(x) > 1  || length(names(x)) > 0, collapse = "\n", ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
+           function(x, container =  isContainer(x, asIs, .level), collapse = "\n", ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
              
                sprintf('"%s"', as.character(x))
            })
@@ -180,15 +200,15 @@ setMethod("toJSON", "name",
 
 setOldClass("AsIs")
 setMethod("toJSON", "AsIs",
-           function(x, container = asIs || length(x) > 1 || length(names(x)) > 0, collapse = "\n", ..., .level=1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, asIs = FALSE) {
+           function(x, container =  isContainer(x, asIs, .level), collapse = "\n", ..., .level=1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, asIs = NA) {
               toJSON(structure(x, class = class(x)[-1]), container = TRUE, collapse = collapse, ..., .level = .level + 1L, .withNames = .withNames, .na = .na, .escapeEscapes = .escapeEscapes, asIs = asIs)
            })
 
 
 
 setMethod("toJSON", "matrix",
-           function(x, container = asIs || length(x) > 1 || length(names(x)) > 0, collapse = "\n", ...,
-                    .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
+           function(x, container =  isContainer(x, asIs, .level), collapse = "\n", ...,
+                    .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
              tmp = paste(apply(x, 1, toJSON, .na = .na, ..., .escapeEscapes = .escapeEscapes), collapse = sprintf(",%s", collapse))
              if(!container)
                return(tmp)
@@ -200,8 +220,9 @@ setMethod("toJSON", "matrix",
            })
 
 setMethod("toJSON", "list",
-           function(x, container = is.list(x) || .level == 1L || length(x) > 1 || length(names(x)) > 0, collapse = "\n", ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
+           function(x, container = isContainer(x, asIs, .level), collapse = "\n", ..., .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
                 # Degenerate case.
+#browser()
              if(length(x) == 0) {
                           # x = structure(list(), names = character()) gives {}
                 return(if(is.null(names(x))) "[]" else "{}")
@@ -211,7 +232,9 @@ setMethod("toJSON", "list",
 
              if(all(sapply(els, is.name)))
                names(els) = NULL
-             
+             if(missing(container) && is.na(asIs))
+                container = TRUE
+               
              if(!container)
                return(els)
 
@@ -238,9 +261,9 @@ function(txt)
 
 
 setMethod("toJSON", "environment",
-           function(x, container = asIs || .level == 1L || length(x) > 1 || length(names(x)) > 1, collapse = "\n  ", ...,
+           function(x, container = isContainer(x, asIs, .level), collapse = "\n  ", ...,
                      .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null",
-                      .escapeEscapes = TRUE, pretty = FALSE, asIs = FALSE) {
+                      .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
       toJSON(as.list(x), container, collapse, .level = .level, .withNames = .withNames, .escapeEscapes = .escapeEscapes, asIs = asIs)
            })
 

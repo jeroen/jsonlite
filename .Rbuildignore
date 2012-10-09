@@ -10,5 +10,6 @@ purdy.R
 .*.out
 .*.log
 roebuck.R
+json-asIS-withlevel
 
 
