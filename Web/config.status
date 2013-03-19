@@ -462,9 +462,9 @@ s,@ECHO_N@,,;t t
 s,@ECHO_T@,,;t t
 s,@LIBS@,,;t t
 s,@PKG_NAME@,RJSONIO,;t t
-s,@VERSION@,0.98-0,;t t
-s,@TAR_FILE@,RJSONIO_0.98-0.tar.gz,;t t
-s,@DATE@,29 Jan 2012,;t t
+s,@VERSION@,1.0-2,;t t
+s,@TAR_FILE@,RJSONIO_1.0-2.tar.gz,;t t
+s,@DATE@,19 Mar 2013,;t t
 s,@LIBOBJS@,,;t t
 s,@LTLIBOBJS@,,;t t
 CEOF

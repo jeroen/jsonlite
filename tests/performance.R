@@ -1,3 +1,5 @@
+if(FALSE) {  # This works but takes a lot of time. So leave this out
+             # for default runs.
 library(RJSONIO)
 
 v = rpois(100000, 4)
@@ -95,3 +97,4 @@ system.time({a = fromJSON(x, default.size = 10000)})
 #   user  system elapsed 
 #  3.957   0.116   4.465 
 system.time({a = fromJSON(x, default.size = 100000)})
+}

@@ -164,6 +164,9 @@ setMethod("toJSON", "character",
              if(.escapeEscapes) {
                tmp = gsub("\\t", "\\\\t", tmp)
                tmp = gsub("\\n", "\\\\n", tmp)
+               tmp = gsub("\b", "\\\\b", tmp)               
+               tmp = gsub("\\r", "\\\\r", tmp)
+               tmp = gsub("\\f", "\\\\f", tmp)                              
              }
              tmp = gsub('"', '\\\\"', tmp)
              tmp = dQuote(tmp)

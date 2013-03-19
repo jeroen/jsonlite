@@ -1,5 +1,16 @@
 RJSONIO
 
+Version 1.0-2
+
+  *  Escape \b \r and \f when exporting strings from R to JSON. Thanks to Joe Cheng.
+
+  *  Fix use of snprintf in libjson code to remove the std:: qualifier.
+
+Version 1.0-1
+
+  *  Fixes to the libjson code to make it compile on different machines.
+ 
+
 Version 1.0-0
 
   *  toJSON() for S4 objects adds , separating slots that was omitted.

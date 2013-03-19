@@ -145,7 +145,7 @@ public:
 		  #ifdef _MSC_VER
 			 _snprintf_s(num_str_result, 63, 63, FLOAT_STRING, (EXTRA_LONG double)value); //yes, 63 appears twice using _snprintf_s()
 		  #else
-			 std::snprintf(num_str_result, 63, FLOAT_STRING, (EXTRA_LONG double)value);
+			 snprintf(num_str_result, 63, FLOAT_STRING, (EXTRA_LONG double)value);
 		  #endif
 	   #endif
 	   //strip the trailing zeros
