@@ -1,5 +1,11 @@
 RJSONIO
 
+Version 1.0-3
+
+  *  Removed the limit on the size of the string that was on by default
+     in libjson (via SON_SECURITY_MAX_STRING_LENGTH in JSONOptions.h).
+     Issue identified by Adrian Alexa.
+
 Version 1.0-2
 
   *  Escape \b \r and \f when exporting strings from R to JSON. Thanks to Joe Cheng.
