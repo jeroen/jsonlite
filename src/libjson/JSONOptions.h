@@ -339,7 +339,7 @@
  *  JSON_SECURITY_MAX_STRING_LENGTH is another security measure, preventing DoS attacks with very long
  *  strings of JSON.  32MB is the default value for this, this allows large images to be embedded
  */
-#define JSON_SECURITY_MAX_STRING_LENGTH 33554432
+/* #define JSON_SECURITY_MAX_STRING_LENGTH 33554432 */
 
 #endif
 
