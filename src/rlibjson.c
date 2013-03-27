@@ -223,9 +223,9 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
         homogeneous = allSame ||  ( (numNumbers + numStrings + numLogicals + numNulls) == len);
         if(simplify == NONE) {
 	} else if(allSame && 
- 		   (numNumbers == len && (simplify & STRICT_NUMERIC)) ||
+		  ((numNumbers == len && (simplify & STRICT_NUMERIC)) ||
   		      ((numLogicals == len) && (simplify & STRICT_LOGICAL)) ||
-		      ( (numStrings == len) && (simplify & STRICT_CHARACTER))) {
+		   ( (numStrings == len) && (simplify & STRICT_CHARACTER)))) {
    	       ans = makeVector(ans, len, elType, nullValue);
 	} else if((simplify == ALL && homogeneous) || (simplify == STRICT && allSame)) {
    	       ans = makeVector(ans, len, elType, nullValue);
