@@ -1,9 +1,18 @@
 RJSONIO
 
+Version 1.0-4
+
+  *  Updates for toJSON() for handling array, table and function objects.
+     These don't fail (with infinite recursion) but may not be what is desired
+     for a particular application.
+     Identified by Stavros Macrakis
+
+  *  Added a warning about +/- Inf values in a vector.
+
 Version 1.0-3
 
   *  Removed the limit on the size of the string that was on by default
-     in libjson (via SON_SECURITY_MAX_STRING_LENGTH in JSONOptions.h).
+     in libjson (via JSON_SECURITY_MAX_STRING_LENGTH in JSONOptions.h).
      Issue identified by Adrian Alexa.
 
 Version 1.0-2

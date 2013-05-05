@@ -38,6 +38,25 @@ setMethod("toJSON", "NULL",
              if(container) "[ null ] " else "null"
            })
 
+setMethod("toJSON", "array",
+           function(x, container =  isContainer(x, asIs, .level), collapse = "\n", ...,
+                       .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0,
+                      .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
+
+             d = dim(x)
+             txt = apply(x, length(d), toJSON, collapse = collapse, ..., .level = .level + 1L, .withNames = .withNames, .na = .na, .escapeEscapes = .escapeEscapes, pretty = pretty, asIs = asIs)
+              paste(c("[", paste(txt, collapse = ", "), "]"), collapse = collapse)
+           })
+
+
+setMethod("toJSON", "function",
+           function(x, container =  isContainer(x, asIs, .level), collapse = "\n", ...,
+                       .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0,
+                      .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
+             toJSON(paste(deparse(x), collapse = collapse), container, collapse, ..., .level = .level, .withNames = .withNames, .na = .na, .escapeEscapes = .escapeEscapes, pretty = pretty, asIs = asIs)
+           })
+
+
 
 setMethod("toJSON", "ANY",
            function(x, container =  isContainer(x, asIs, .level), collapse = "\n", ...,
@@ -71,8 +90,11 @@ setMethod("toJSON", "integer",
            function(x, container =  isContainer(x, asIs, .level),
                       collapse = "\n  ", ..., .level = 1L,
                       .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null",
-                       .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
-
+                       .escapeEscapes = TRUE, pretty = FALSE, asIs = NA)
+          {
+            if(any(is.infinite(x)))
+              warning("non-fininte values in integer vector may not be approriately represented in JSON")
+            
              if(any(nas <- is.na(x)))
                  x[nas] = .na
 
@@ -136,6 +158,9 @@ setMethod("toJSON", "numeric",
            function(x, container =  isContainer(x, asIs, .level), collapse = "\n", digits = 5, ...,
                       .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0,
                         .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
+
+            if(any(is.infinite(x)))
+              warning("non-fininte values in numeric vector may not be approriately represented in JSON")             
 
              tmp = formatC(x, digits = digits)
              if(any(nas <- is.na(x)))
@@ -211,7 +236,8 @@ setMethod("toJSON", "AsIs",
 
 setMethod("toJSON", "matrix",
            function(x, container =  isContainer(x, asIs, .level), collapse = "\n", ...,
-                    .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA) {
+                    .level = 1L, .withNames = length(x) > 0 && length(names(x)) > 0, .na = "null", .escapeEscapes = TRUE, pretty = FALSE, asIs = NA)
+           {
              tmp = paste(apply(x, 1, toJSON, .na = .na, ..., .escapeEscapes = .escapeEscapes), collapse = sprintf(",%s", collapse))
              if(!container)
                return(tmp)
