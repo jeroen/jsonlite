@@ -13,3 +13,5 @@ roebuck.R
 json-asIS-withlevel
 
 
+^.*\.Rproj$
+^\.Rproj\.user$

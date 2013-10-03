@@ -1,7 +1,0 @@
-/* object with arrays and strings */
-{"a1" : ["x", "y"],
- "a2" : [1, 2, 3],
- "a3" : "a string",
- "a4" : true,
- "a 5" : [false, true]
-}
