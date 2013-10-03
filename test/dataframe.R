@@ -1,4 +1,4 @@
-library(encode)
+library(JSONlite)
 
 test <- data.frame(num=rnorm(10));
 test$int <- as.integer(-4:5);
@@ -15,22 +15,20 @@ test$complex <- complex(re=rnorm(10), im=rnorm(10))
 for(i in 1:50) test[sample(nrow(test),1), sample(names(test),1)] <- NA
 test[10,] <- NA;
 
-cat(asJSON(test, pretty=TRUE))
-cat(asJSON(test, Date="epoch", POSIXt="epoch", pretty=TRUE))
-cat(asJSON(test, pretty=TRUE, POSIXt="mongo", raw="mongo"))
-cat(asJSON(test, drop.na=FALSE, pretty=TRUE))
+cat(toJSON(test, pretty=TRUE))
+cat(toJSON(test, Date="epoch", POSIXt="epoch", pretty=TRUE))
+cat(toJSON(test, pretty=TRUE, POSIXt="mongo", raw="mongo"))
+cat(toJSON(test, drop.na=FALSE, pretty=TRUE))
 cat(mongoexport(test))
 
 #should be nearly identical:
-records2df(fromJSON(asJSON(test)), columns=names(test), flatten=FALSE);
+records2df(fromJSON(toJSON(test)), columns=names(test), flatten=FALSE);
 
 #default should be OK:
-records2df(fromJSON(asJSON(test)))
+records2df(fromJSON(toJSON(test)))
 
 #test force
-asJSON(test)
+toJSON(test)
 
 #encode a single column
-decode(encode(test[1]))
-
-
+decode(encode(test[]))

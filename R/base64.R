@@ -8,7 +8,7 @@ base64_decode <- function(input){
 	inputtf <- tempfile();
 	writeLines(input, inputtf);
 	output = tempfile()
-	invisible( .Call( "base64_decode_", inputtf, output, PACKAGE = "encode" ) )
+	invisible( .Call( "base64_decode_", inputtf, output ) )
 	readBin(output, "raw", file.info(output)$size)
 }
 
@@ -17,7 +17,7 @@ base64_encode <- function(input, linesize = 72L ){
 	inputtf <- tempfile();
 	writeBin(input, inputtf)
 	output = tempfile();
-	invisible( .Call( "base64_encode_", inputtf, output, as.integer(linesize), PACKAGE = "encode" ) )
+	invisible( .Call( "base64_encode_", inputtf, output, as.integer(linesize) ) )
 	return(readLines(output));
 }
 

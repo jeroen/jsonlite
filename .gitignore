@@ -1,6 +1,9 @@
 .Rproj.user
 .Rhistory
 .RData
+config.status
+config.log
 src/*.o
 src/*.so
 src/*.dll
+src/*.cpp

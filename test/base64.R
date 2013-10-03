@@ -1,3 +1,3 @@
 #test if raw vectors are serialized properly
-x <- paste(readLines(system.file("DESCRIPTION", package="encode")), collapse="\n")
-identical(x, rawToChar(encode:::base64_decode(encode:::base64_encode(charToRaw(x)))))
+x <- paste(readLines(system.file("DESCRIPTION", package="JSONlite")), collapse="\n")
+identical(x, rawToChar(JSONlite:::base64_decode(JSONlite:::base64_encode(charToRaw(x)))))
