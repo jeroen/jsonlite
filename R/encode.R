@@ -31,7 +31,7 @@
 #'   somemissings = c(1,2,NA,NaN,5, Inf, 7 -Inf, 9, NA),
 #'   myrawvec = charToRaw("This is a test")
 #' );
-#' stopifnot(identical(decode(encode(myobject)), myobject));
+#' identical(decode(encode(myobject)), myobject);
 #'
  
 

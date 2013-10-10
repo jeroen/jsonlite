@@ -8,6 +8,8 @@
   \item{x}{the object to be serialized}
 
   \item{pretty}{does some post pretty printing.}
+
+  \item{...}{arguments passed on to class specific methods}
 }
 \value{
   A valid JSON string
@@ -21,7 +23,7 @@
   www.jsonlint.org
 }
 \examples{
-jsoncars <- asJSON(cars, pretty=TRUE);
+jsoncars <- toJSON(mtcars, pretty=TRUE);
 cat(jsoncars);
 }
 \author{

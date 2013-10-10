@@ -31,4 +31,6 @@ records2df(fromJSON(toJSON(test)))
 toJSON(test)
 
 #encode a single column
-decode(encode(test[]))
+decode(encode(test[9], pretty=T))
+
+cat(encode(test[9], pretty=T))

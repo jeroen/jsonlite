@@ -5,7 +5,7 @@ Description: This package is a fork of the RJSONIO package by Duncan Temple
     Lang. It implements a different mapping between R objects and JSON strings.
     The C code is mostly from Temple Lang, the R code has been rewritten almost
     completely.
-License: GPL
+License: Apache License (== 2.0)
 NeedsCompilation: yes
 Depends:
     methods

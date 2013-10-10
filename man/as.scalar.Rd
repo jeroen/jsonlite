@@ -16,8 +16,8 @@
   encoded as a json primitive instead of an array.
 }
 \examples{
-asJSON(list(foo=123));
-asJSON(list(foo=as.scalar(123)));
+toJSON(list(foo=123));
+toJSON(list(foo=as.scalar(123)));
 }
 \author{
   Jeroen Ooms \email{jeroen.ooms@stat.ucla.edu}

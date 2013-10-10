@@ -6,12 +6,9 @@
 #' @export
 #' @param obj the R object to classified as scalar.
 #' @return The same R object
-#'
 #' @author Jeroen Ooms \email{jeroen.ooms@@stat.ucla.edu}
-#' @examples asJSON(list(foo=123));
-#' asJSON(list(foo=as.scalar(123)));
-#' 
-
+#' @examples toJSON(list(foo=123));
+#' toJSON(list(foo=as.scalar(123)));
 as.scalar <- function(obj){
 	#Lists can never be a scalar (this can arise if a dataframe contains a column with lists)
 	if(is.data.frame(obj)){
