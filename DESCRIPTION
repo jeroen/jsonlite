@@ -1,5 +1,5 @@
 Package: JSONlite
-Version: 0.2
+Version: 1.0
 Title: A fork of the RJSONIO package which uses a different encoding schema
 Description: This package is a fork of the RJSONIO package by Duncan Temple
     Lang. It implements a different mapping between R objects and JSON strings.
