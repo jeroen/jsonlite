@@ -1,13 +1,15 @@
 Package: JSONlite
 Version: 1.0
-Title: A fork of the RJSONIO package which uses a different encoding schema
-Description: This package is a fork of the RJSONIO package by Duncan Temple
-    Lang. It implements a different mapping between R objects and JSON strings.
-    The C code is mostly from Temple Lang, the R code has been rewritten almost
-    completely.
+Title: Convert R objects to JSON and vice versa
 License: Apache License (== 2.0)
 NeedsCompilation: yes
 Depends:
     methods
-Author: Duncan Temple Lang, Jeroen Ooms
+Author: Jeroen Ooms, Duncan Temple Lang
+URL: https://github.com/jeroenooms/JSONlite#readme
+BugReports: http://github.com/jeroenooms/JSONlite/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
+Description: This package is a fork of the RJSONIO package by Duncan Temple
+    Lang. It implements a different mapping between R objects and JSON strings.
+    The C code in this package is mostly from Temple Lang, the R code has been
+    rewritten from scratch.

@@ -1,6 +1,6 @@
 \name{records2df}
 \alias{records2df}
-\title{Convert a list of records to a dataframe}
+\title{Convert a list of records into a dataframe}
 \usage{
   records2df(recordlist, columns, flatten = TRUE)
 }
@@ -17,8 +17,12 @@
   dataframe
 }
 \description{
-  This little helper function is used to go from a list
-  with records, to a dataframe which has a list with
-  columns
+  A helper function to convert a list with records into a
+  dataframe.
+}
+\examples{
+myjson <- toJSON(cars)
+myrecords <- fromJSON(myjson)
+records2df(myrecords);
 }
 

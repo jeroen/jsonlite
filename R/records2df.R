@@ -1,14 +1,21 @@
-#' Convert a list of records to a dataframe
+#' Convert a list of records into a dataframe
 #' 
-#' This little helper function is used to go from a list with records, to a dataframe which has a list with columns
+#' A helper function to convert a list with records into a dataframe.
 #' 
 #' @param recordlist a list of lists representing records (rows)
 #' @param columns optional. Character vector of the names of the fields to extract.
 #' @param flatten if records should be unlisted.
 #' @return dataframe
-#' 
 #' @export
+#' @examples myjson <- toJSON(cars)
+#' myrecords <- fromJSON(myjson)
+#' records2df(myrecords);
 records2df <- function(recordlist, columns, flatten=TRUE) {
+  #internal helper function
+  flatlist <- function(mylist){
+    lapply(rapply(mylist, base::enquote, how="unlist"), eval)
+  }
+  
 	if(length(recordlist)==0 && !missing(columns)){
 		return(as.data.frame(matrix(ncol=length(columns), nrow=0, dimnames=list(NULL,columns))))
 	}	
@@ -46,13 +53,4 @@ records2df <- function(recordlist, columns, flatten=TRUE) {
 	return(outdf);
 }
 
-flatlist <- function(mylist){
-	lapply(rapply(mylist, base::enquote, how="unlist"), eval)
-}
 
-rename <- function(mydf, from, to){
-	index <- which(names(mydf) == from)
-	if(length(index) == 0) stop("Name:", from, "not found in dataframe.")
-	names(mydf)[index] <- to;
-	mydf
-}
