@@ -1,9 +1,3 @@
-#' Export Dates or POSIX to ISO8601 string
-#' 
-#' @param x vector of type Date or POSIXt
-#' @param ... method specific things
-#' @return character vector
-#' @export
 as.iso <- function(x, ...){
 	UseMethod("as.iso");
 }
