@@ -1,5 +1,5 @@
 setOldClass("integer")
 setMethod("asJSON", "integer",
-	function(x, ...) asJSON(as.double(x), digits=0, ...)		
+	function(x, digits, ...) asJSON(as.double(x), digits=0, ...)		
 );
 

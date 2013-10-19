@@ -13,3 +13,5 @@ Description: This package is a fork of the RJSONIO package by Duncan Temple
     Lang. It implements a different mapping between R objects and JSON strings.
     The C code in this package is mostly from Temple Lang, the R code has been
     rewritten from scratch.
+Suggests:
+    testthat

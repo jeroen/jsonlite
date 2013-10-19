@@ -8,7 +8,13 @@
 \usage{
   fromJSON(txt, simplify = NA)
 
-  toJSON(x, pretty = FALSE, ...)
+  toJSON(x, dataframe = c("rows", "columns"),
+    Date = c("ISO8601", "epoch"),
+    POSIXt = c("string", "ISO8601", "epoch", "mongo"),
+    factor = c("string", "integer"),
+    complex = c("string", "list"),
+    raw = c("base64", "mongo"), digits = 5,
+    NA_as_string = TRUE, pretty = FALSE, ...)
 
   serializeJSON(x, ...)
 
@@ -16,6 +22,30 @@
 }
 \arguments{
   \item{x}{the object to be encoded}
+
+  \item{dataframe}{how to encode data.frame objects: must
+  be one of "row" or "column"}
+
+  \item{Date}{how to encode Date objects: must be one of
+  "ISO8601" or "epoch"}
+
+  \item{POSIXt}{how to encode POSIXt (datetime) objects:
+  must be one of "string", "ISO8601", "epoch" or "mongo"}
+
+  \item{factor}{how to encode factor objects: must be one
+  of "string" or "integer"}
+
+  \item{complex}{how to encode complex numbers: must be one
+  of "string" or "list"}
+
+  \item{raw}{how to encode raw objects: must be one of
+  "base64" or "mongo"}
+
+  \item{digits}{max number of digits (after the dot) to
+  print for numeric values}
+
+  \item{NA_as_string}{print numeric NA values as strings.
+  If set to FALSE, NA values turn into null}
 
   \item{pretty}{adds indentation whitespace to JSON output}
 

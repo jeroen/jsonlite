@@ -1,7 +1,14 @@
 setMethod("asJSON", "data.frame",
-	function(x, drop.na=TRUE, container=TRUE, ...) {
+	function(x, drop.na=TRUE, container=TRUE, dataframe=c("rows", "columns"), ...) {
 		#Note: just as in asJSON.list we take the container argument to prevent it form being passed down through ...
 		#This is needed in the rare case that a dataframe contains new dataframes, and hence as.scalar is inappropriate
+    
+    #check how we want to encode
+	  dataframe <-match.arg(dataframe);
+    
+    if(dataframe == "columns"){
+      return(asJSON(as.list(x), drop.na=drop.na, container=container, ...));
+    }
 
 		#if we have no rows, just return: []
 		if(nrow(x) == 0){

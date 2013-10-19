@@ -1,5 +1,5 @@
 setMethod("asJSON", "complex",
-	function(x, digits=5, container=TRUE, complex=c("string", "list"), ...) {
+	function(x, digits=5, container=TRUE, complex=c("string", "list"), NA_as_string, ...) {
 		#validate
 		complex <- match.arg(complex);
 		
@@ -9,7 +9,7 @@ setMethod("asJSON", "complex",
 			if(!container){
 				mystring <- as.scalar(mystring);
 			}
-			return(asJSON(mystring, ...));
+			return(asJSON(mystring, NA_as_string=NA_as_string, ...));
 		} else {
 			mylist <- list(real=Re(x), imaginary=Im(x));
 			

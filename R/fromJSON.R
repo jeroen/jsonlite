@@ -21,6 +21,14 @@
 #' @name JSONlite
 #' @aliases fromJSON
 #' @param x the object to be encoded
+#' @param dataframe how to encode data.frame objects: must be one of "row" or "column"
+#' @param Date how to encode Date objects: must be one of "ISO8601" or "epoch"
+#' @param POSIXt how to encode POSIXt (datetime) objects: must be one of "string", "ISO8601", "epoch" or "mongo"
+#' @param factor how to encode factor objects: must be one of "string" or "integer"
+#' @param complex how to encode complex numbers: must be one of "string" or "list"
+#' @param raw how to encode raw objects: must be one of "base64" or "mongo"
+#' @param digits max number of digits (after the dot) to print for numeric values
+#' @param NA_as_string print numeric NA values as strings. If set to FALSE, NA values turn into null
 #' @param pretty adds indentation whitespace to JSON output 
 #' @param txt a string in json format 
 #' @param simplify simplify arrays to vectors where possible 
@@ -92,8 +100,30 @@ fromJSON <- function(txt, simplify = NA){
 
 #' @rdname JSONlite
 #' @export
-toJSON <- function(x, pretty=FALSE, ...){  
-  asJSON(x, pretty=pretty, ...);
+toJSON <- function(x,
+  dataframe=c("rows", "columns"),
+  Date = c("ISO8601", "epoch"), 
+  POSIXt = c("string", "ISO8601", "epoch", "mongo"),
+  factor = c("string", "integer"), 
+  complex = c("string", "list"),
+  raw = c("base64", "mongo"),
+  digits = 5, 
+  NA_as_string = TRUE,
+  pretty = FALSE,
+  ...
+){  
+  
+  #validate args
+  dataframe <- match.arg(dataframe);
+  Date <- match.arg(Date);
+  POSIXt <- match.arg(POSIXt);
+  factor <- match.arg(factor);
+  complex <- match.arg(complex);  
+  raw <- match.arg(raw);
+  
+  #dispatch
+  asJSON(x, dataframe=dataframe, Date=Date, POSIXt=POSIXt, factor=factor, complex=complex, raw=raw, 
+    digits=digits, NA_as_string=NA_as_string, pretty=pretty, ...);
 }
 
 #maps encoding name to integer
