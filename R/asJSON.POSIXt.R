@@ -5,6 +5,9 @@ setMethod("asJSON", "POSIXt",
     
 		#Validate
 		POSIXt <- match.arg(POSIXt);
+    
+		#empty vector
+		if(!length(x)) return("[]");    
 
 		#Encode based on a schema
 		if(POSIXt == "mongo"){

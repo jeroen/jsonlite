@@ -4,7 +4,7 @@ setMethod("asJSON", "data.frame",
 		#This is needed in the rare case that a dataframe contains new dataframes, and hence as.scalar is inappropriate
     
     #check how we want to encode
-	  dataframe <-match.arg(dataframe);
+	  dataframe <- match.arg(dataframe);
     
     if(dataframe == "columns"){
       return(asJSON(as.list(x), drop.na=drop.na, container=container, ...));

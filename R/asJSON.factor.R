@@ -3,6 +3,9 @@ setMethod("asJSON", "factor",
 		
 		#validate
 		factor <- match.arg(factor);
+    
+		#empty vector
+		if(!length(x)) return("[]");    
 		
 		if(factor == "integer"){
 			#encode factor as enum			

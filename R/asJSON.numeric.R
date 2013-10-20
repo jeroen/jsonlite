@@ -1,5 +1,8 @@
 setMethod("asJSON", "numeric",
 	function(x, container = TRUE, digits = 5, NA_as_string = TRUE, ...) {
+	  #empty vector
+	  if(!length(x)) return("[]");    
+    
 		#pretty format numbers
 		tmp = trim(formatC(x, digits = digits, format="f", drop0trailing=TRUE));
 		

@@ -28,11 +28,11 @@
 #' @param complex how to encode complex numbers: must be one of "string" or "list"
 #' @param raw how to encode raw objects: must be one of "base64" or "mongo"
 #' @param digits max number of digits (after the dot) to print for numeric values
-#' @param NA_as_string print numeric NA values as strings. If set to FALSE, NA values turn into null
+#' @param NA_as_string print numeric NA values as strings. If set to FALSE, numeric NA values turn into null.
+#' @param drop.na Don't include NA values in dataframes. Only used when dataframe="rows".
 #' @param pretty adds indentation whitespace to JSON output 
 #' @param txt a string in json format 
 #' @param simplify simplify arrays to vectors where possible 
-#' @param safe don't evaluate language objects during unseriazing
 #' @param ... arguments passed on to class specific methods
 #' @note All encoded objects should pass the validation at www.jsonlint.org
 #' @references
@@ -107,8 +107,9 @@ toJSON <- function(x,
   factor = c("string", "integer"), 
   complex = c("string", "list"),
   raw = c("base64", "mongo"),
-  digits = 5, 
+  digits = 2, 
   NA_as_string = TRUE,
+  drop.na=TRUE,                 
   pretty = FALSE,
   ...
 ){  
@@ -123,7 +124,7 @@ toJSON <- function(x,
   
   #dispatch
   asJSON(x, dataframe=dataframe, Date=Date, POSIXt=POSIXt, factor=factor, complex=complex, raw=raw, 
-    digits=digits, NA_as_string=NA_as_string, pretty=pretty, ...);
+    digits=digits, NA_as_string=NA_as_string, drop.na=drop.na, pretty=pretty, ...);
 }
 
 #maps encoding name to integer

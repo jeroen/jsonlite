@@ -13,12 +13,13 @@
     POSIXt = c("string", "ISO8601", "epoch", "mongo"),
     factor = c("string", "integer"),
     complex = c("string", "list"),
-    raw = c("base64", "mongo"), digits = 5,
-    NA_as_string = TRUE, pretty = FALSE, ...)
+    raw = c("base64", "mongo"), digits = 2,
+    NA_as_string = TRUE, drop.na = TRUE, pretty = FALSE,
+    ...)
 
-  serializeJSON(x, ...)
+  serializeJSON(x, digits = 8, pretty = FALSE)
 
-  unserializeJSON(txt, safe = TRUE)
+  unserializeJSON(txt)
 }
 \arguments{
   \item{x}{the object to be encoded}
@@ -45,7 +46,10 @@
   print for numeric values}
 
   \item{NA_as_string}{print numeric NA values as strings.
-  If set to FALSE, NA values turn into null}
+  If set to FALSE, numeric NA values turn into null.}
+
+  \item{drop.na}{Don't include NA values in dataframes.
+  Only used when dataframe="rows".}
 
   \item{pretty}{adds indentation whitespace to JSON output}
 
@@ -54,10 +58,12 @@
   \item{simplify}{simplify arrays to vectors where
   possible}
 
-  \item{safe}{don't evaluate language objects during
-  unseriazing}
-
   \item{...}{arguments passed on to class specific methods}
+}
+\value{
+  JSON string
+
+  Unserialized R object
 }
 \description{
   These functions are used to convert R objects into JSON

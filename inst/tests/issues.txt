@@ -1,0 +1,4 @@
+#For timeseries, numeric precision can result in corrupt objects:
+out <- unserializeJSON(serializeJSON(AirPassengers, digits=5))
+all.equal(out, AirPassengers, tolerance=1e-10)
+print(out)

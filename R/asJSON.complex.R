@@ -2,6 +2,9 @@ setMethod("asJSON", "complex",
 	function(x, digits=5, container=TRUE, complex=c("string", "list"), NA_as_string, ...) {
 		#validate
 		complex <- match.arg(complex);
+    
+    #empty vector
+		if(!length(x)) return("[]");
 		
 		if(complex == "string"){
 			mystring <- prettyNum(x=x, digits=digits);

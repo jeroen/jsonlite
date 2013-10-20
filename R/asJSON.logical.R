@@ -1,5 +1,8 @@
 setMethod("asJSON", "logical",
 	function(x, container = TRUE, ...) {
+    
+	  #empty vector
+	  if(!length(x)) return("[]");    
 		
 		#json true/false
 		tmp = ifelse(x, "true", "false");

@@ -10,8 +10,12 @@ URL: https://github.com/jeroenooms/JSONlite#readme
 BugReports: http://github.com/jeroenooms/JSONlite/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
 Description: This package is a fork of the RJSONIO package by Duncan Temple
-    Lang. It implements a different mapping between R objects and JSON strings.
-    The C code in this package is mostly from Temple Lang, the R code has been
-    rewritten from scratch.
+    Lang. It builds on the parser from RJSONIO, but implements a different
+    mapping between R objects and JSON strings. The C code in this package is
+    mostly from Temple Lang, the R code has been rewritten from scratch. In
+    addition to drop-in replacements for fromJSON and toJSON, the package has
+    functions to serialize objects. Furthermore, the package contains a lot of
+    unit tests to make sure that all edge cases are encoded and decoded
+    consistently for use with dynamic data in systems and applications.
 Suggests:
     testthat

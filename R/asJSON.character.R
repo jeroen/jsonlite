@@ -2,9 +2,7 @@ setMethod("asJSON", "character",
 	function(x, container = TRUE, ...) {
 		
 		#0 vector is not handled properly by paste()
-		if(length(x) == 0){
-			return("[ ]")
-		}
+	  if(!length(x)) return("[]");
 		
 		#vectorized escaping
 		tmp <- deparse_vector(x)
