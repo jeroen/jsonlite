@@ -3,6 +3,10 @@ pack <- function(obj, ...) {
   #encode by storage mode
   encoding.mode <- storage.mode(obj);
   
+  if(encoding.mode == "function"){
+    obj <- as.list(obj)
+  }
+  
   #encode recursively
   list(
     mode = as.scalar(encoding.mode), #scalar prevents boxing during asJSON
@@ -18,8 +22,8 @@ pack <- function(obj, ...) {
        "double" = as.vector(unclass(obj), mode = "double"),
        "character" = as.vector(unclass(obj), mode = "character"),
        "list" = unname(lapply(obj, pack, ...)),
+       "function" = unname(lapply(obj, pack, ...)),
        "language" = deparse(unclass(obj)),
-       "function" = unname(lapply(as.list(obj), pack, ...)),
        "name" = deparse(unclass(obj)),
        "symbol" = deparse(unclass(obj)),
        "complex" = obj,
@@ -49,11 +53,15 @@ unpack <- function(obj){
      "name" = makesymbol(x=unlist(obj$value)),  
      "expression" = parse(text=obj$value),
      "language" = as.call(parse(text=unlist(obj$value)))[[1]], #must be a better way?
-     "function" = as.function(lapply(obj$value, unpack)),                     
+     "function" = lapply(obj$value, unpack),                     
      stop("Switch falling through for encode.mode: ", encoding.mode)
   );
   
   attrib <- lapply(obj$attributes, unpack);
   newdata <- list(.Data=mydata);
-  do.call("structure", c(newdata, attrib), quote=TRUE);
+  output <- do.call("structure", c(newdata, attrib), quote=TRUE);
+  if(encoding.mode == "function"){
+    return(as.function(output));
+  }
+  return(output)
 }
