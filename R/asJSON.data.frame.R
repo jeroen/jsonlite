@@ -6,6 +6,11 @@ setMethod("asJSON", "data.frame",
     #check how we want to encode
 	  dataframe <- match.arg(dataframe);
     
+    #coerse pairlist if needed
+    if(is.pairlist(x)){
+      x <- as.vector(x, mode="list");
+    }
+    
     if(dataframe == "columns"){
       return(asJSON(as.list(x), drop.na=drop.na, container=container, ...));
     }

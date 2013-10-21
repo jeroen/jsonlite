@@ -3,6 +3,11 @@ setMethod("asJSON", "list",
 		
 		#We are explicitly taking the container argument to prevent it from being passed down through ... (elipse)
 		#As scalar should never be applied to an entire list (unless it is POSIXlt or so)
+    
+	  #coerse pairlist if needed
+	  if(is.pairlist(x)){
+	    x <- as.vector(x, mode="list");
+	  }    
 			
 		# Emtpy list:
 		if(length(x) == 0) {

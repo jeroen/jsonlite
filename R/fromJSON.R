@@ -13,7 +13,10 @@
 #' 
 #' The \code{serializeJSON} and \code{unserializeJSON} functions also convert R objects to JSON and back, but
 #' use a much more verbose encoding schema which includes all metadata from the object, such that an object 
-#' can be almost perfectly restored from its JSON representation. 
+#' can be almost perfectly restored from its JSON representation. The serializeJSON function bases its encoding
+#' on the storage mode of an object, and almost every storage mode is supported (except for environments). 
+#' However note that JSON is a (non-binary) ascii format and therefore numeric precision is limited by how 
+#' many digits you decide to print.
 #' 
 #' @export fromJSON
 #' @export toJSON
@@ -67,7 +70,7 @@
 #'   myrawvec = charToRaw("This is a test")
 #' );
 #' identical(unserializeJSON(serializeJSON(myobject)), myobject);
-fromJSON <- function(txt, simplify = FALSE){
+fromJSON <- function(txt, simplify = TRUE){
 
   #just hardcoding this for now
   encoding=NA;
@@ -77,25 +80,21 @@ fromJSON <- function(txt, simplify = FALSE){
 	
 	#readLines splits into a vector
 	txt <- paste(txt, collapse="\n")
-	
-	#see RJSONIO for the logic behind these values
-	#simply TRUE or FALSE will do as well.
-	if(is.na(simplify)){
-		StrictLogical = 2L
-		StrictNumeric = 4L
-		StrictCharacter = 8L
-		Strict = StrictNumeric + StrictCharacter + StrictLogical
-		simplify <- Strict
-	}
-	
-	#in case if chineese, etc.
+
+  #in case if chineese, etc.
 	if(is.na(encoding)){
 		encoding <- Encoding(txt)	
 	} 
 	enc <- mapEncoding(encoding);
 	
 	#libjson call
-	.Call("R_fromJSON", txt, as.integer(simplify), NULL, as.logical(simplifyWithNames), enc, NULL, stringFunType = c("GARBAGE" = 4L))  
+	obj <- .Call("R_fromJSON", txt, as.integer(FALSE), NULL, as.logical(simplifyWithNames), enc, NULL, stringFunType = c("GARBAGE" = 4L))  
+  
+  if(isTRUE(simplify)){
+    return(simplify(obj));
+  } else{
+    return(obj);
+  }
 }
 
 #' @rdname JSONlite

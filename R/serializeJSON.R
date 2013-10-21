@@ -12,5 +12,5 @@ serializeJSON <- function(x, digits = 8, pretty = FALSE){
 #' @return Unserialized R object
 #' @rdname JSONlite
 unserializeJSON <- function(txt){
-  unpack(fromJSON(txt));
+  unpack(fromJSON(txt, simplify=FALSE));
 }

@@ -16,6 +16,7 @@ test_that("Serializing Data Objects", {
     complex(real=1:10, imaginary=1001:1010),
     Reaction ~ Days + (1|Subject) + (0+Days|Subject),
     as.name("cars"),
+    as.pairlist(mtcars),
     quote(rnorm(10)),
     expression("to be or not to be"),
     expression(foo),

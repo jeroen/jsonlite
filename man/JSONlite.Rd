@@ -6,7 +6,7 @@
 \alias{unserializeJSON}
 \title{Stringify R objects to JSON and vice versa.}
 \usage{
-  fromJSON(txt, simplify = NA)
+  fromJSON(txt, simplify = TRUE)
 
   toJSON(x, dataframe = c("rows", "columns"),
     Date = c("ISO8601", "epoch"),
@@ -55,8 +55,8 @@
 
   \item{txt}{a string in json format}
 
-  \item{simplify}{simplify arrays to vectors where
-  possible}
+  \item{simplify}{try to collapse homogenous arrays into
+  vectors (instead of lists)}
 
   \item{...}{arguments passed on to class specific methods}
 }
@@ -90,6 +90,12 @@
   use a much more verbose encoding schema which includes
   all metadata from the object, such that an object can be
   almost perfectly restored from its JSON representation.
+  The serializeJSON function bases its encoding on the
+  storage mode of an object, and almost every storage mode
+  is supported (except for environments). However note that
+  JSON is a (non-binary) ascii format and therefore numeric
+  precision is limited by how many digits you decide to
+  print.
 }
 \note{
   All encoded objects should pass the validation at
