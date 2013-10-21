@@ -37,31 +37,35 @@ unpack <- function(obj){
   
   encoding.mode <- obj$mode;
 
-  mydata <- switch(encoding.mode,
-     "NULL" = NULL,
-     "environment" = emptyenv(), #Don't serialize environments for now
-     "S4" = stop("S4 unpacking not yet implemented"),
-     "raw" = base64_decode(unlist(obj$value)),
-     "logical" = as.logical(null2na(obj$value)),
-     "integer" = as.integer(null2na(obj$value)),
-     "numeric" = as.numeric(null2na(obj$value)),
-     "double" = as.double(null2na(obj$value)),
-     "character" = as.character(null2na(obj$value)),
-     "complex" = buildcomplex(obj$value),			
-     "list" = lapply(obj$value, unpack),
-     "symbol" = makesymbol(x=unlist(obj$value)),
-     "name" = makesymbol(x=unlist(obj$value)),  
-     "expression" = parse(text=obj$value),
-     "language" = as.call(parse(text=unlist(obj$value)))[[1]], #must be a better way?
-     "function" = lapply(obj$value, unpack),                     
-     stop("Switch falling through for encode.mode: ", encoding.mode)
-  );
+  newdata <- c(list(
+    ".Data" = switch(encoding.mode,
+       "NULL" = NULL,
+       "environment" = emptyenv(), #Don't serialize environments for now
+       "S4" = stop("S4 unpacking not yet implemented"),
+       "raw" = base64_decode(unlist(obj$value)),
+       "logical" = as.logical(null2na(obj$value)),
+       "integer" = as.integer(null2na(obj$value)),
+       "numeric" = as.numeric(null2na(obj$value)),
+       "double" = as.double(null2na(obj$value)),
+       "character" = as.character(null2na(obj$value)),
+       "complex" = buildcomplex(obj$value),			
+       "list" = lapply(obj$value, unpack),
+       "symbol" = makesymbol(x=unlist(obj$value)),
+       "name" = makesymbol(x=unlist(obj$value)),  
+       "expression" = parse(text=obj$value),
+       "language" = as.call(parse(text=unlist(obj$value)))[[1]], #must be a better way?
+       "function" = lapply(obj$value, unpack),                     
+       stop("Switch falling through for encode.mode: ", encoding.mode)
+    )
+  ), lapply(obj$attributes, unpack));
   
-  attrib <- lapply(obj$attributes, unpack);
-  newdata <- list(.Data=mydata);
-  output <- do.call("structure", c(newdata, attrib), quote=TRUE);
+  #this is for serializing functions arguments: as.list(lm)$data
+  if(identical(newdata[[1]], substitute())){
+    return(substitute());
+  }
+  output <- do.call("structure", newdata, quote=TRUE);
   if(encoding.mode == "function"){
     return(as.function(output));
   }
-  return(output)
+  return(output);
 }

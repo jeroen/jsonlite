@@ -32,7 +32,7 @@
 #' @param drop.na Don't include NA values in dataframes. Only used when dataframe="rows".
 #' @param pretty adds indentation whitespace to JSON output 
 #' @param txt a string in json format 
-#' @param simplify simplify arrays to vectors where possible 
+#' @param simplify try to collapse homogenous arrays into vectors (instead of lists) 
 #' @param ... arguments passed on to class specific methods
 #' @note All encoded objects should pass the validation at www.jsonlint.org
 #' @references
@@ -67,7 +67,7 @@
 #'   myrawvec = charToRaw("This is a test")
 #' );
 #' identical(unserializeJSON(serializeJSON(myobject)), myobject);
-fromJSON <- function(txt, simplify = NA){
+fromJSON <- function(txt, simplify = FALSE){
 
   #just hardcoding this for now
   encoding=NA;
