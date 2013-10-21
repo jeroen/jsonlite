@@ -63,11 +63,17 @@ unpack <- function(obj){
   if(identical(newdata[[1]], substitute())){
     return(substitute());
   }
+  
+  #build the output object
   output <- do.call("structure", newdata, quote=TRUE);
+  
+  #functions are special
   if(encoding.mode == "function"){
     myfn <- as.function(output);
     environment(myfn) <- globalenv();
     return(myfn);   
   }
+  
+  #return
   return(output);
 }
