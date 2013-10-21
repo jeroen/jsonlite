@@ -11,7 +11,8 @@ test_that("Serializing Functions", {
   objects <- list(
     function(x = 0) { x + 1 },
     function(x) { x + 1 },
-    function(x, ...) { x + 1}
+    function(x, ...) { x + 1},
+    lm
   );
     
   
