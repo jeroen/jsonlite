@@ -65,7 +65,9 @@ unpack <- function(obj){
   }
   output <- do.call("structure", newdata, quote=TRUE);
   if(encoding.mode == "function"){
-    return(as.function(output));
+    myfn <- as.function(output);
+    environment(myfn) <- globalenv();
+    return(myfn);   
   }
   return(output);
 }
