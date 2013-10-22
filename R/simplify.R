@@ -2,7 +2,12 @@ simplify <- function(x){
   if(is.list(x)){
     # list can be a dataframe recordlist
     if(is.recordlist(x)){
-      return(records2df(x));
+      mydf <- records2df(x);
+      if("$row" %in% names(mydf)){
+        row.names(mydf) <- mydf[["$row"]];
+        mydf["$row"] <- NULL;
+      }
+      return(mydf);
     }
     
     # or a scalar list (atomic vector)

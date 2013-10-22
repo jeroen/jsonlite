@@ -5,7 +5,10 @@ context("fromJSON datasets")
 test_that("fromJSON datasets", {
   objects <- Filter(is.data.frame, lapply(ls("package:datasets"), get));
   
-  #test all but list
+  #data frames are never identical because:
+  # - attributes 
+  # - factors, times, dates turn into strings
+  # - integers turn into numeric
   lapply(objects, function(object){
     newobject <- fromJSON(toJSON(object))
     expect_that(newobject, is_a("data.frame"));

@@ -12,7 +12,7 @@ setMethod("asJSON", "data.frame",
     }
     
     if(dataframe == "columns"){
-      return(asJSON(as.list(x), drop.na=drop.na, container=container, ...));
+      return(asJSON(as.list(x), drop.na=drop.na, container=container, dataframe="columns", ...));
     }
 
 		#if we have no rows, just return: []
@@ -25,6 +25,11 @@ setMethod("asJSON", "data.frame",
 		for(i in posvars){
 			x[[i]] <- as.POSIXct(x[[i]]);
 		}
+    
+    #Check for row names
+    if(!isTRUE(all(grepl("[0-9]+", row.names(x))))){
+      x <- cbind(data.frame("$row" = row.names(x), check.names=FALSE), x);
+    }
 		
 		#Get a list of rows.
 		#This is the computationally expensive part.

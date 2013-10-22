@@ -40,7 +40,7 @@ records2df <- function(recordlist, columns, flatten=TRUE) {
 	#in case anything contains lists
 	islist <- sapply(s, is.list);
 	if(sum(!islist) > 0){
-		outdf <- data.frame(s[!islist], stringsAsFactors=FALSE);
+		outdf <- data.frame(s[!islist], stringsAsFactors=FALSE, check.names=FALSE);
 	} else {
 		outdf <- as.data.frame(matrix(nrow=length(s[islist][[1]]), ncol=0))
 	}
@@ -51,5 +51,3 @@ records2df <- function(recordlist, columns, flatten=TRUE) {
 	}
 	return(outdf);
 }
-
-
