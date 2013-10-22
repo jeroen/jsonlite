@@ -6,7 +6,6 @@
 #' @param columns optional. Character vector of the names of the fields to extract.
 #' @param flatten if records should be unlisted.
 #' @return dataframe
-#' @export
 #' @examples myjson <- toJSON(cars)
 #' myrecords <- fromJSON(myjson)
 #' records2df(myrecords);

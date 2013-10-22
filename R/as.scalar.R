@@ -3,7 +3,6 @@
 #' Function simply adds class 'scalar' to the object and returns it.
 #' Objects of class 'scalar' of length 1 will be encoded as a json primitive instead of an array.
 #' 
-#' @export
 #' @param obj the R object to classified as scalar.
 #' @return The same R object
 #' @author Jeroen Ooms \email{jeroen.ooms@@stat.ucla.edu}

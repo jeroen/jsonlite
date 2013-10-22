@@ -40,6 +40,7 @@ evaltext <- function(text){
 
 null2na <- function(x){
 	#parse explicitly quoted missing values
+  #If they are actually character strings they will automatically be casted back by unlist.
 	missings <- x %in% c("NA", "Inf", "-Inf", "NaN");
 	x[missings] <- lapply(x[missings], evaltext);
 	

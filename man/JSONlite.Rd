@@ -46,7 +46,7 @@
   print for numeric values}
 
   \item{NA_as_string}{print numeric NA values as strings.
-  If set to FALSE, numeric NA values turn into null.}
+  If set to FALSE, numeric NA values turn into null}
 
   \item{drop.na}{Don't include NA values in dataframes.
   Only used when dataframe="rows".}
@@ -55,8 +55,8 @@
 
   \item{txt}{a string in json format}
 
-  \item{simplify}{try to collapse homogenous arrays into
-  vectors (instead of lists)}
+  \item{simplify}{collapse JSON arrays into vectors and
+  dataframes where possible (insead of lists)}
 
   \item{...}{arguments passed on to class specific methods}
 }

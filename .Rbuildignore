@@ -15,3 +15,5 @@ Objects.*
 .*.log$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+man/as.scalar.Rd
+man/records2df.Rd
