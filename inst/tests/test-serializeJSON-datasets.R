@@ -7,7 +7,6 @@ context("Serializing Datasets")
 test_that("Serializing datasets", {
   library(datasets);
   lapply(as.list(ls("package:datasets")), function(x){
-    object <- get(x, "package:datasets")
     mycall <- call("expect_that", 
       call("unserializeJSON", call("serializeJSON", as.name(x), digits=10)),
       call("equals", as.name(x))
