@@ -1,5 +1,10 @@
 simplify <- function(x){
   if(is.list(x)){
+    if(!length(x)){
+      # In case of fromJSON("[]") returning a list is most neutral.
+      # Because the user can do as.vector(list()) and as.data.frame(list()) which both results in the correct object.
+      return(list())
+    }
     # list can be a dataframe recordlist
     if(is.recordlist(x)){
       mydf <- records2df(x);
@@ -40,15 +45,4 @@ is.recordlist <- function(x){
     all(sapply(x, is.namedlist)) &&
     all(sapply(x, is.scalarlist))
   );
-}
-
-null2na <- function(x){
-  #parse explicitly quoted missing values
-  #If they are actually character strings they will automatically be casted back by unlist.
-  missings <- x %in% c("NA", "Inf", "-Inf", "NaN");
-  x[missings] <- lapply(x[missings], evaltext);
-  
-  #parse 'null' values
-  x[unlist(sapply(x, is.null))] <- NA;
-  return(unlist(x));
 }

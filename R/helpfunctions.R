@@ -38,7 +38,14 @@ evaltext <- function(text){
 	return(eval(parse(text=text)))
 }
 
-null2na <- function(x){
+null2na <- function(x, unlist=TRUE){
+  if(!length(x)){
+    if(isTRUE(unlist)){
+      return(vector());
+    } else {
+      return(list());
+    }
+  }
 	#parse explicitly quoted missing values
   #If they are actually character strings they will automatically be casted back by unlist.
 	missings <- x %in% c("NA", "Inf", "-Inf", "NaN");
@@ -46,5 +53,10 @@ null2na <- function(x){
 	
 	#parse 'null' values
 	x[unlist(sapply(x, is.null))] <- NA;
-	return(unlist(x));
+  if(isTRUE(unlist)){
+    return(unlist(x));
+  } else {
+    return(x);
+  }
+
 }

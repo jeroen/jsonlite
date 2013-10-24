@@ -15,6 +15,14 @@ records2df <- function(recordlist, columns, flatten=TRUE) {
     lapply(rapply(mylist, base::enquote, how="unlist"), eval)
   }
   
+  #only empty records
+  if(!any(sapply(recordlist, length))){
+    return(data.frame(matrix(nrow=length(recordlist), ncol=0)));
+  }
+  
+  #convert NULL values to NA
+  recordlist <- lapply(recordlist, null2na, unlist=FALSE);
+  
 	if(length(recordlist)==0 && !missing(columns)){
 		return(as.data.frame(matrix(ncol=length(columns), nrow=0, dimnames=list(NULL,columns))))
 	}	

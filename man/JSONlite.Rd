@@ -4,7 +4,7 @@
 \alias{serializeJSON}
 \alias{toJSON}
 \alias{unserializeJSON}
-\title{Stringify R objects to JSON and vice versa.}
+\title{Stringify R objects to JSON and vice versa}
 \usage{
   fromJSON(txt, simplify = TRUE)
 

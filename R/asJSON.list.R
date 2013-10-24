@@ -11,7 +11,7 @@ setMethod("asJSON", "list",
 			
 		# Emtpy list:
 		if(length(x) == 0) {
-			return(if(is.null(names(x))) "[]" else "{}")
+			return(if(is.null(names(x))) "[]" else "{}");
 		}
 		
 		# this condition appears when a dataframe contains a column with lists

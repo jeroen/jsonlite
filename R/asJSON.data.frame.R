@@ -2,7 +2,7 @@ setMethod("asJSON", "data.frame",
 	function(x, drop.na=TRUE, container=TRUE, dataframe=c("rows", "columns"), ...) {
 		#Note: just as in asJSON.list we take the container argument to prevent it form being passed down through ...
 		#This is needed in the rare case that a dataframe contains new dataframes, and hence as.scalar is inappropriate
-    
+    #
     #check how we want to encode
 	  dataframe <- match.arg(dataframe);
     
@@ -19,9 +19,9 @@ setMethod("asJSON", "data.frame",
 		if(nrow(x) == 0){
 			return(asJSON(list(), ...));
 		}
-			
+    
 		#Convert POSIXlt to POSIXct before we start messing with lists
-		posvars = which(sapply(x, is, "POSIXlt"));
+		posvars = which(as.logical(sapply(x, is, "POSIXlt")));
 		for(i in posvars){
 			x[[i]] <- as.POSIXct(x[[i]]);
 		}

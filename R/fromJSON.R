@@ -1,4 +1,4 @@
-#' Stringify R objects to JSON and vice versa.
+#' Stringify R objects to JSON and vice versa
 #' 
 #' These functions are used to convert R objects into JSON and back. 
 #' The \code{toJSON} and \code{fromJSON} functions use a class schema with a somewhat untuitive encoding. 
