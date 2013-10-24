@@ -9,7 +9,7 @@ test_that("fromJSON NA values", {
     integers = as.integer(1,2,3),
     num = 3.14,
     logical = FALSE,
-    character = "FOO",
+    character = c("FOO","NA", NA, "NaN"),
     integer = 21L,
     logicalNA = as.logical(NA),
     data.frame(foo=c(1,NA))
