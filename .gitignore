@@ -8,3 +8,7 @@ src/*.so
 src/*.dll
 src/*.cpp
 src/Makevars
+vignettes/*.tex
+vignettes/*.log
+vignettes/*.gz
+vignettes/*.pdf

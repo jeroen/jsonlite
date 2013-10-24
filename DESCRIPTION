@@ -9,6 +9,7 @@ Author: Jeroen Ooms, Duncan Temple Lang
 URL: https://github.com/jeroenooms/JSONlite#readme
 BugReports: http://github.com/jeroenooms/JSONlite/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
+VignetteBuilder: knitr
 Description: This package is a fork of the RJSONIO package by Duncan Temple
     Lang. It builds on the parser from RJSONIO, but implements a different
     mapping between R objects and JSON strings. The C code in this package is
@@ -18,44 +19,4 @@ Description: This package is a fork of the RJSONIO package by Duncan Temple
     unit tests to make sure that all edge cases are encoded and decoded
     consistently for use with dynamic data in systems and applications.
 Suggests:
-    testthat
-Collate:
-    'as.iso.R'
-    'as.scalar.R'
-    'asJSON.AAAgeneric.R'
-    'asJSON.ANY.R'
-    'asJSON.Date.R'
-    'asJSON.NULL.R'
-    'asJSON.POSIXt.R'
-    'asJSON.character.R'
-    'asJSON.classRepresentation.R'
-    'asJSON.complex.R'
-    'asJSON.data.frame.R'
-    'asJSON.factor.R'
-    'asJSON.function.R'
-    'asJSON.int64.R'
-    'asJSON.integer.R'
-    'asJSON.list.R'
-    'asJSON.logical.R'
-    'asJSON.matrix.R'
-    'asJSON.numeric.R'
-    'asJSON.pairlist.R'
-    'asJSON.raw.R'
-    'asJSON.scalar.R'
-    'base64.R'
-    'buildcomplex.R'
-    'builddf.R'
-    'buildfactor.R'
-    'fromJSON.R'
-    'helpfunctions.R'
-    'isValidJSON.R'
-    'jsonPretty.R'
-    'makesymbol.R'
-    'mongoexport.R'
-    'onload.R'
-    'pack.R'
-    'parseDate.R'
-    'parseTimestamp.R'
-    'records2df.R'
-    'serializeJSON.R'
-    'simplify.R'
+    testthat, knitr
