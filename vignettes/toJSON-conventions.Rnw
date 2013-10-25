@@ -38,10 +38,15 @@ The alternative is to use type-based encoding, which \texttt{JSONlite} does in t
 Before continuing, it is important to be aware of the limitations of representing R data structures in JSON. First of all, there are the general limitations to types of objects that can be serialized. Temporary in-memory properties such as connections, file descriptors and (recursive) memory references are always difficult if not impossible to store in a sensible way, regardless of the language or serialization method. This document mostly focusses on R classes that hold  data that can be exchanged with other languages, e.g. vectors, lists, dates, matrices, data frames, etc. We are not overly interested in language level constructs such as expressions, functions, promises, which hold little meaning outside the context of R. Then there are limitations in the format itself. JSON is a human readable, text-based format which does not support binary data, and numbers are stored in their decimal representation. This leads to loss of precision for real numbers, depending on how many digits the user decides to print. Finally, as mentioned earlier, the class based S3 method system allows for consise and practical encoding of the various data structures, but makes that \texttt{fromJSON} is not a perfect inverse function of \texttt{toJSON}, as is the case for e.g. \texttt{serialializeJSON} and \texttt{unserializeJSON}. For example, the JSON reperesentation of an empty vector, empty list or empty data frame are all the same: \texttt{"[ ]"}. In the design of the functions we target consistent behavior, and try to adhere to the principle of being strict on output and tolerant on input. 
 
 \section{Converting R objects to JSON}
+ 
+This section lists options and examples of representing the common R classes in JSON, i.e. the \texttt{toJSON} function in \texttt{JSONlite}. As explained before, we rely on the class based S3 method system in R; hence objects get encoded according to their \texttt{class} value. If an object has multiple \texttt{class} values, R will use the first occuring class which has a \texttt{toJSON} method implemented. If none of the classes of an object has a \texttt{toJSON} method, R will raise an error.
 
-\subsection{Atomic Vectors}
+\subsection{Atomic Vectors and Missing Values}
 
-\subsection{Missing Values}
+The most basic data type in R is the atomic vector. The atomic vector holds an ordered set of values of the same type, where the type is one of \texttt{"logical"} (booleans), \texttt{integer}, \texttt{numeric} (doubles), \texttt{character} (strings), or \texttt{"raw"} (bytes). In addition to usual values, most types can hold one or more "missing values". R is completely vectorized, and has no user level notion of a scalar. A vector can be of length 1, but it will still be a vector. When encoding to JSON, atomic vectors become JSON arrays:
+
+
+
 
 \subsection{Lists}
 
