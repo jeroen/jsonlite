@@ -1,9 +1,9 @@
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Conventions for encoding common R objects into JSON}
+%\VignetteIndexEntry{Conventions for Encoding Common R data Structures in JSON}
 
 \documentclass{article}
 \author{Jeroen Ooms}
-\title{Conventions for encoding common R objects into JSON}
+\title{Conventions for Encoding Common R data Structures in JSON}
 
 \usepackage{url}
 \usepackage{fullpage}
@@ -14,7 +14,7 @@
 
 \section{Introduction}
 
-JSON (JavaScript Object Notation) is a lightweight data-interchange format, and one of the most common methods today for exchange of simple data structures in systems and applications. It is easy for humans to read and write, and easy for machines to parse and generate. The JSON format itself is very simple and completely defined in a single page at \url{http://www.json.org/}. This simplicity allows for directly mapping some universal data structures from any programming language into JSON strings, and vice versa, which is convenient for developers and has contributed to the popularity of the format. Several R packages including \texttt{RJSONIO}, \texttt{rjson} and \texttt{JSONlite} implement some sort of \texttt{toJSON} and \texttt{fromJSON} functions which convert between basic R data structures and JSON.  However, the intuitive mapping in R is limited to lists and vectors; there is no consensus on how some of the other common classes in R, such as factors, matrices and data frames should be mapped to JSON. Furthermore, upon closer inspection, even the universal data structures in R actually do not perfectly map to their JSON counterparts, and leave some ambiguity for edge cases such missing values and vectors of length 0 or 1. These problems have resulted in different behavior between the packages mentioned earlier, and can cause unexpected output for certain special cases, which affects reliability of applications that rely on JSON to get data in and out of R. This document tries to take away some of the ambiguity by highlighting these problems and propose conventions that generalize the mapping to cover all basic classes and edge cases in R.
+JSON (JavaScript Object Notation) is a lightweight data-interchange format, and one of the most common methods today for exchange of simple data structures in systems and applications. It is easy for humans to read and write, and easy for machines to parse and generate. The JSON format itself is very simple and completely defined in a single page at \url{http://www.json.org/}. This simplicity allows for directly mapping some universal data structures from any programming language into JSON strings, and vice versa, which is convenient for developers and has contributed to the popularity of the format. Several R packages including \texttt{RJSONIO}, \texttt{rjson} and \texttt{JSONlite} implement some sort of \texttt{toJSON} and \texttt{fromJSON} functions which convert between basic R data structures and JSON.  However, the intuitive mapping in R is limited to lists and vectors; there is no consensus on how some of the other common classes in R, such as factors, matrices and data frames should be mapped to JSON. Furthermore, upon closer inspection, even the universal data structures in R actually do not perfectly map to their JSON counterparts, and leave some ambiguity for edge cases such as missing values and vectors of length 0 or 1. These problems have resulted in different behavior between the packages mentioned earlier, and can cause unexpected output for certain special cases, which affects reliability of applications that rely on JSON to get data in and out of R. This document tries to take away some of the ambiguity by describing the mapping a more formally and explicitly, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
 
 \subsection{Reference implementation: the \texttt{JSONlite} package}
 
@@ -33,16 +33,21 @@ The \texttt{JSONlite} package actually implements two methods for translating be
 
 The alternative is to use type-based encoding, which \texttt{JSONlite} does in the functions \texttt{serializeJSON} and \texttt{unserializeJSON}. All data structures in R are implemented using a limited number of internal \texttt{SEXP} types, and \texttt{serializeJSON} defines an encoding schema which captures the type, value, and attributes for each object. The result is JSON output which closely resembles the internal structure of the underlying C data types, and which can be perfectly restored to the original R object using \texttt{unserializeJSON}. This method is relatively straightforward to implement, however the disadvantage is that the resulting JSON structure can be very verbose, hard to interpret and cumbersome to generate in the context of another language or system. For most applications this is actually unpractical. Usually, we can make data in R objects more accessible to third parties by defining sensible JSON encoding based on the object class, rather than based on the internal storage type. In this document we will not treat \texttt{serializeJSON} in any further detail, and limit ourselves to the class based \texttt{toJSON} and \texttt{fromJSON}.
 
-\subsection{Limitations of JSON}
+\subsection{Scope and Limitations}
 
-Regardless of the encoding scheme, certain things just can't be encoded:
+Before continuing, it is important to be aware of the limitations of representing R data structures in JSON. First of all, there are the general limitations to types of objects that can be serialized. Temporary in-memory properties such as connections, file descriptors and (recursive) memory references are always difficult if not impossible to store in a sensible way, regardless of the language or serialization method. This document mostly focusses on R classes that hold  data that can be exchanged with other languages, e.g. vectors, lists, dates, matrices, data frames, etc. We are not overly interested in language level constructs such as expressions, functions, promises, which hold little meaning outside the context of R. Then there are limitations in the format itself. JSON is a human readable, text-based format which does not support binary data, and numbers are stored in their decimal representation. This leads to loss of precision for real numbers, depending on how many digits the user decides to print. Finally, as mentioned earlier, the class based S3 method system allows for consise and practical encoding of the various data structures, but makes that \texttt{fromJSON} is not a perfect inverse function of \texttt{toJSON}, as is the case for e.g. \texttt{serialializeJSON} and \texttt{unserializeJSON}. For example, the JSON reperesentation of an empty vector, empty list or empty data frame are all the same: \texttt{"[ ]"}. In the design of the functions we target consistent behavior, and try to adhere to the principle of being strict on output and tolerant on input. 
 
- - numeric precision
- - memory references, recursive objects
- - connections, etc.
+\section{Converting R objects to JSON}
 
-\section{Classes}
+\subsection{Atomic Vectors}
 
+\subsection{Missing Values}
+
+\subsection{Lists}
+
+\subsection{Data frames}
+
+\section{Converting JSON to R objects}
 
 
 
