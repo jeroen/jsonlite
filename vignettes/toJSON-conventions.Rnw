@@ -12,6 +12,10 @@
 
 \maketitle
 
+<<echo=FALSE>>=
+library(JSONlite)
+@
+
 \section{Introduction}
 
 JSON (JavaScript Object Notation) is a lightweight data-interchange format, and one of the most common methods today for exchange of simple data structures in systems and applications. It is easy for humans to read and write, and easy for machines to parse and generate. The JSON format itself is very simple and completely defined in a single page at \url{http://www.json.org/}. This simplicity allows for directly mapping some universal data structures from any programming language into JSON strings, and vice versa, which is convenient for developers and has contributed to the popularity of the format. Several R packages including \texttt{RJSONIO}, \texttt{rjson} and \texttt{JSONlite} implement some sort of \texttt{toJSON} and \texttt{fromJSON} functions which convert between basic R data structures and JSON.  However, the intuitive mapping in R is limited to lists and vectors; there is no consensus on how some of the other common classes in R, such as factors, matrices and data frames should be mapped to JSON. Furthermore, upon closer inspection, even the universal data structures in R actually do not perfectly map to their JSON counterparts, and leave some ambiguity for edge cases such as missing values and vectors of length 0 or 1. These problems have resulted in different behavior between the packages mentioned earlier, and can cause unexpected output for certain special cases, which affects reliability of applications that rely on JSON to get data in and out of R. This document tries to take away some of the ambiguity by describing the mapping a more formally and explicitly, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
@@ -43,7 +47,46 @@ This section lists options and examples of representing the common R classes in 
 
 \subsection{Atomic Vectors and Missing Values}
 
-The most basic data type in R is the atomic vector. The atomic vector holds an ordered set of values of the same type, where the type is one of \texttt{"logical"} (booleans), \texttt{integer}, \texttt{numeric} (doubles), \texttt{character} (strings), or \texttt{"raw"} (bytes). In addition to usual values, most types can hold one or more "missing values". R is completely vectorized, and has no user level notion of a scalar. A vector can be of length 1, but it will still be a vector. When encoding to JSON, atomic vectors become JSON arrays:
+The most basic data type in R is the atomic vector. The atomic vector holds an ordered set of single values of the same type, where the type is one of \texttt{"logical"} (booleans), \texttt{integer}, \texttt{numeric} (doubles), \texttt{character} (strings), or \texttt{"raw"} (bytes). In addition, most types can hold "missing values". R is completely vectorized, and has no user level notion of a scalar. A vector can be of length 1, but it will still be a vector. When encoding to JSON, atomic vectors become JSON arrays:
+
+<<>>=
+x <- c(1, 2, pi)
+cat(toJSON(x))
+@
+
+The JSON array is the only candidate for encoding a vector. However, note that in contrast to a vector, a JSON array can hold values of different types, and therefore is conceptually actually closer to a list in R. 
+
+\subsubsection{Missing Values}
+
+A typical domain specific problem when working with statistical data is how to deal with missing values: a concept foreign to many other languages. The R vector types \texttt{logical}, \texttt{integer}, \texttt{character} and \texttt{double} can hold \texttt{NA} as a value. Vectors of type \texttt{double} can have three additional types of non-standard values: \texttt{NaN}, \texttt{Inf} and \texttt{-Inf}. JSON does not have a native NA type. However because JSON arrays are weak typed, we can quote them in strings. Another option is to use the JSON \texttt{null} type.
+
+
+
+
+\subsubsection{Logical vector}
+
+A logical vector in R can have three values: TRUE, FALSE or NA. In \texttt{JSONlite} these are converted to respectivey \texttt{true}, \texttt{false} and \texttt{null}:
+
+<<>>=
+x <- c(TRUE, FALSE, NA)
+cat(toJSON(x))
+@
+
+When parsing a vector 
+
+\subsubsection{Numeric vector}
+
+Integer and double
+
+\subsubsection{Complex vector}
+
+dfs
+
+\subsubsection{Character vector}
+
+sdf
+
+\subsubsection{Raw, byte vector}
 
 
 
