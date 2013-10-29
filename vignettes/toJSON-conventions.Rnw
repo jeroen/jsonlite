@@ -54,50 +54,156 @@ x <- c(1, 2, pi)
 cat(toJSON(x))
 @
 
-The JSON array is the only candidate for encoding a vector. However, note that in contrast to a vector, a JSON array can hold values of different types, and therefore is conceptually actually closer to a list in R. 
+\noindent The JSON array is the most natural way of encoding an R vector, however the JSON array is actually more general than the R vector. In contrast to a atomic vector, a JSON array can hold values of different types, and therefore is conceptually actually closer to a list in R. 
 
 \subsubsection{Missing Values}
 
-A typical domain specific problem when working with statistical data is how to deal with missing values: a concept foreign to many other languages. The R vector types \texttt{logical}, \texttt{integer}, \texttt{character} and \texttt{double} can hold \texttt{NA} as a value. Vectors of type \texttt{double} can have three additional types of non-standard values: \texttt{NaN}, \texttt{Inf} and \texttt{-Inf}. JSON does not have a native NA type. However because JSON arrays are weak typed, we can quote them in strings. Another option is to use the JSON \texttt{null} type.
-
-
-
-
-\subsubsection{Logical vector}
-
-A logical vector in R can have three values: TRUE, FALSE or NA. In \texttt{JSONlite} these are converted to respectivey \texttt{true}, \texttt{false} and \texttt{null}:
+A typical domain specific problem when working with statistical data is how to deal with missing values: a concept foreign to many other languages. The R vector types \texttt{logical}, \texttt{integer}, \texttt{character} and \texttt{double} can hold \texttt{NA} as a value. Vectors of type \texttt{double} can have three additional types of non finite values: \texttt{NaN}, \texttt{Inf} and \texttt{-Inf}. JSON does not have a native NA type, so these values need to be encoded in some other way. There are two ways to go about this. The first one is to use the native JSON \texttt{null} type. For example:
 
 <<>>=
 x <- c(TRUE, FALSE, NA)
 cat(toJSON(x))
 @
 
-When parsing a vector 
+\noindent The other option is to encode missing values as strings by wrapping them in double quotes:
 
-\subsubsection{Numeric vector}
+<<>>=
+x <- c(1,2,NA,NaN,Inf,10)
+cat(toJSON(x))
+@
 
-Integer and double
+\noindent Both methods have a limitation: the problem with the \texttt{null} type is that there is no way to distinguish between different types of missing values, which is a problem for numeric vectors. The values \texttt{Inf}, and \texttt{NA} have a very different meaning, and we don't want this to get lost in the encoding. The problem with encoding missing values as strings is that this method can not be used for character vectors, because we won't be able to distinguish bewteen the actual string "NA" and the missing value NA. For this reason, \texttt{JSONlite} uses the following defaults:
 
-\subsubsection{Complex vector}
+\begin{itemize}
+ \item Missing values in non-numeric vectors (\texttt{logical}, \texttt{character}) are encoded as \texttt{null} in JSON.
+ \item Missing values in numeric vectors (\texttt{double}, \texttt{integer}, \texttt{complex}) are encoded as strings.
+\end{itemize}
 
-dfs
+\noindent Some examples:
 
-\subsubsection{Character vector}
+<<>>=
+cat(toJSON(c(TRUE, NA, NA, FALSE)))
+cat(toJSON(c("FOO", "BAR", NA, "NA")))
+cat(toJSON(c(3.14, NA, NaN, 21, Inf, -Inf)))
+cat(toJSON(c(3.14, NA, NaN, 21, Inf, -Inf), NA_as_string=FALSE))
+@
 
-sdf
+\subsubsection{Special vector types: dates, times, factor, complex}
 
-\subsubsection{Raw, byte vector}
+Another domain specific problem is presented by common classes which are considered low-level in R, but have no native JSON type. These include dates, POSIX timestamps, factors and complex vectors. In this respect, JSON is subject to the same limitations as text based formats such as CSV. By default, the \texttt{JSONlite} package encodes these types to strings:
+
+<<>>=
+cat(toJSON(Sys.time() + 1:3))
+cat(toJSON(as.Date(Sys.time()) + 1:3))
+cat(toJSON(factor(c("foo", "bar", "foo"))))
+cat(toJSON(complex(real=runif(3), imaginary=rnorm(3))))
+@
+
+\noindent When parsing such JSON using \texttt{fromJSON}, these arrays will turn into character vectors. In order to get back the original types, the user will have to use \texttt{as.POSIXct}, \texttt{as.Date}, \texttt{as.factor} or \texttt{as.complex}, etc.
 
 
+\subsubsection{Special cases: vectors of length 0 or 1}
 
+Two special cases deserve special attention: vectors of length 0 and vectors of length 1. In \texttt{JSONlite} these are encoded respectively as an empty array, and an array of length 1:
+
+<<>>=
+#vectors of length 0 and 1
+cat(toJSON(vector()))
+cat(toJSON(pi))
+
+#vectors of length 0 and 1 in a named list
+cat(toJSON(list(foo=vector())))
+cat(toJSON(list(foo=pi)))
+
+#vectors of length 0 and 1 in an unnamed list
+cat(toJSON(list(vector())))
+cat(toJSON(list(pi)))
+@
+
+\noindent This might seem trivial but these special cases have very different behavior between different JSON packages. For example, in the current implementations, both \texttt{RJSONIO} and \texttt{rjson} encode a vector of length one as a primitive when it appears within a list: 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Other packages make different choices:}
+\hlkwd{cat}\hlstd{(rjson::}\hlkwd{toJSON}\hlstd{(}\hlkwd{list}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{))))}
+\end{alltt}
+\begin{verbatim}
+## {"n":1}
+\end{verbatim}
+\begin{alltt}
+\hlkwd{cat}\hlstd{(rjson::}\hlkwd{toJSON}\hlstd{(}\hlkwd{list}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{))))}
+\end{alltt}
+\begin{verbatim}
+## {"n":[1,2]}
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\noindent When encoding a single dataset, this might seem harmless, but in the context of dynamic data this is inconsisent and prone to cause bugs. For example, imagine an R web service which allows the user to fit a linear model on some data. The R server returns a vector of coefficients encoded in JSON, and the client code then parses the JSON, and then iterates over the array of coefficients to display them in a GUI. All goes well, until the user decides to fit a model with only one predictor, and the application breaks. What happened? The JSON encoder is returning a primitive value, where the client is assuming an array. Unless the client is aware of this special case and has explicitly taken this exception into account, it will proceed as usual and call an interator or loop method on a primitive object, resulting in the obvious errors. For this reason \texttt{JSONlite} uses consistent encoding schemes which do not depend on variable object properties such as its length.
 
 \subsection{Lists}
+
+For the purpose of JSON encoding, two types of lists are distinguished: named lists and unnamed lists. A list in R is considered a named list if it has an attribute called \texttt{"names"}. In practice, a named list is any list for which we can access an element by its name, whereas an unnamed list the elements can only be accessed by their index number:
+
+<<>>=
+mylist1 <- list("foo" = 123, "bar"= 456)
+print(mylist1$bar)
+
+mylist2 <- list(123, 456)
+print(mylist2[[2]])
+@
+
+\subsubsection{Unnamed lists}
+
+The unnamed list is encoded using a JSON array:
+
+<<>>=
+cat(toJSON(list(c(1,2), "test")))
+cat(toJSON(list(c(1,2), list(c(1,2)))))
+@
+
+\noindent Note that both vectors and lists are now encoded using JSON arrays, but we can still distinguish them from their contents: a JSON array which contains primitives is an R vector, whereas a JSON array which contains objects and arrays is a list. For this reason parsing the JSON back in R will result in the correct type in most cases:
+
+<<>>=
+x <- list(c(1,2,NA), "test", FALSE, list(foo="bar"))
+identical(fromJSON(toJSON(x)), x)
+@
+
+\subsubsection{Named lists}
+
+A named list in R gets encoded as a JSON \emph{object}:
+
+<<>>=
+cat(toJSON(list(foo=c(1,2), bar="test")))
+@
+
+\noindent The named list almost perfectly maps to a JSON object with one exception: R list elements can have empty names:
+
+<<>>=
+x <- list(foo=123, "test", TRUE)
+attr(x, "names")
+x$foo
+x[[2]]
+@
+
+\noindent In a JSON object, each element in an object must have a valid name. We use the same solutions as the \texttt{print} method which is to use the indices for elements that do not have a name:
+
+<<>>=
+x <- list(foo=123, "test", TRUE)
+cat(toJSON(x))
+@
+
+
 
 \subsection{Data frames}
 
 \section{Converting JSON to R objects}
 
+Guidelines:
 
+ - try to recover orriginal object
+ - at least as.foo(x) should give very similar object.
 
 
 \end{document}

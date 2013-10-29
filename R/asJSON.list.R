@@ -21,14 +21,17 @@ setMethod("asJSON", "list",
 		}
 		
 		#note we are NOT passing on the container argument.
-		els = sapply(x, asJSON, ...)
+		els = vapply(x, asJSON, character(1), ...);
 		
-		if(all(sapply(els, is.name)))
+		if(all(sapply(els, is.name))){
 			names(els) = NULL
+		}
 		
 		if(length(names(x))) {
+      objnames <- names(x);
+      objnames[objnames==""] <- as.character(1:length(objnames))[objnames==""];
 			return(
-				paste("{", paste(deparse_vector(names(x)), els, sep = " : ", collapse = ", "), "}")
+				paste("{", paste(deparse_vector(objnames), els, sep = " : ", collapse = ", "), "}")
 			);
 		} else {
 			return(
