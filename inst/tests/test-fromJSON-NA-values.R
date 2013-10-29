@@ -12,7 +12,7 @@ test_that("fromJSON NA values", {
     character = c("FOO","NA", NA, "NaN"),
     integer = 21L,
     logicalNA = as.logical(NA),
-    data.frame(foo=c(1,NA))
+    df = data.frame(foo=c(1,NA))
   )
   
   #test all but list
