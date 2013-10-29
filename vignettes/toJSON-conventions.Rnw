@@ -187,7 +187,7 @@ x$foo
 x[[2]]
 @
 
-\noindent In a JSON object, each element in an object must have a valid name. We use the same solutions as the \texttt{print} method which is to use the indices for elements that do not have a name:
+\noindent In a JSON object, each element in an object must have a valid name. We use the same solution as the \texttt{print} method for lists which is to fall back on indices for elements that do not have a proper name:
 
 <<>>=
 x <- list(foo=123, "test", TRUE)
@@ -195,8 +195,9 @@ cat(toJSON(x))
 @
 
 
-
 \subsection{Data frames}
+
+
 
 \section{Converting JSON to R objects}
 
