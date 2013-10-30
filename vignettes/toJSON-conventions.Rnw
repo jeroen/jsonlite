@@ -1,18 +1,24 @@
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Encoding Common R Data Structures in JSON}
 
+%shorthands
 \newcommand{\JSON}{\texttt{JSON}\xspace}
 
+%meta
 \documentclass{article}
 \author{Jeroen Ooms}
 \title{Encoding Common R Data Structures in JSON}
 
+%some packages
 \usepackage{url}
 \usepackage{fullpage}
 \usepackage{setspace}
+
+%extra line spacing
 \usepackage{xspace}
 \setstretch{1.2}
 
+%actual doc
 \begin{document}
 
 \maketitle
