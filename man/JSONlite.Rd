@@ -6,7 +6,7 @@
 \alias{unserializeJSON}
 \title{Stringify R objects to JSON and vice versa}
 \usage{
-  fromJSON(txt, simplify = TRUE)
+  fromJSON(txt, smart = TRUE)
 
   toJSON(x, dataframe = c("rows", "columns"),
     Date = c("ISO8601", "epoch"),
@@ -55,8 +55,9 @@
 
   \item{txt}{a string in json format}
 
-  \item{simplify}{collapse JSON arrays into vectors and
-  dataframes where possible (insead of lists)}
+  \item{smart}{try to convert JSON into vectors and data
+  frames where possible. If set to FALSE, everything is a
+  list.}
 
   \item{...}{arguments passed on to class specific methods}
 }

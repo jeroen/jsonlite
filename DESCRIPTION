@@ -19,4 +19,5 @@ Description: This package is a fork of the RJSONIO package by Duncan Temple
     unit tests to make sure that all edge cases are encoded and decoded
     consistently for use with dynamic data in systems and applications.
 Suggests:
-    testthat, knitr
+    testthat,
+    knitr

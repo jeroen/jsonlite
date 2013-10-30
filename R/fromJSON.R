@@ -35,7 +35,7 @@
 #' @param drop.na Don't include NA values in dataframes. Only used when dataframe="rows".
 #' @param pretty adds indentation whitespace to JSON output 
 #' @param txt a string in json format 
-#' @param simplify collapse JSON arrays into vectors and dataframes where possible (insead of lists) 
+#' @param smart try to convert JSON into vectors and data frames where possible. If set to FALSE, everything is a list.
 #' @param ... arguments passed on to class specific methods
 #' @note All encoded objects should pass the validation at www.jsonlint.org
 #' @references
@@ -70,14 +70,14 @@
 #'   myrawvec = charToRaw("This is a test")
 #' );
 #' identical(unserializeJSON(serializeJSON(myobject)), myobject);
-fromJSON <- function(txt, simplify = TRUE){
+fromJSON <- function(txt, smart = TRUE){
 
   #just hardcoding this for now
   encoding=NA;
   
   #validate arg
-  if(is.na(simplify) || !is.logical(simplify) || length(simplify) != 1){
-    stop("Argument simplify must be one of TRUE or FALSE")
+  if(is.na(smart) || !is.logical(smart) || length(smart) != 1){
+    stop("Argument smart must be TRUE or FALSE")
   }
   
 	#this is always a bad idea
@@ -95,7 +95,7 @@ fromJSON <- function(txt, simplify = TRUE){
 	#libjson call
 	obj <- .Call("R_fromJSON", txt, as.integer(FALSE), NULL, as.logical(simplifyWithNames), enc, NULL, stringFunType = c("GARBAGE" = 4L))  
   
-  if(isTRUE(simplify)){
+  if(isTRUE(smart)){
     return(simplify(obj));
   } else{
     return(obj);
@@ -154,6 +154,3 @@ mapEncoding <- function(encoding){
 	}
 	return(	codes[enc] );
 }
-
-
-
