@@ -56,7 +56,7 @@ Before continuing, it is important to be aware of the limitations of representin
  
 This section lists options and examples of representing the common R classes in \JSON, i.e. the \texttt{toJSON} function in \texttt{JSONlite}. As explained before, we rely on the class based S3 method system in R; hence objects get encoded according to their \texttt{class} value. If an object has multiple \texttt{class} values, R will use the first occurring class which has a \texttt{toJSON} method implemented. If none of the classes of an object has a \texttt{toJSON} method, R will raise an error.
 
-\subsection{Atomic Vectors and Missing Values}
+\subsection{Atomic Vectors}
 
 The most basic data type in R is the atomic vector. The atomic vector holds an ordered set of homogeneous values of type \texttt{"logical"} (booleans), \texttt{integer}, \texttt{numeric} (doubles), \texttt{character} (strings), or \texttt{"raw"} (bytes). Because R is fully vectorized, there is no user level notion of a primitive: any scalar value is considered a vector of length 1. Atomic vectors are encoded using a \JSON array:
 
@@ -110,7 +110,7 @@ cat(toJSON(factor(c("foo", "bar", "foo"))))
 cat(toJSON(complex(real=runif(3), imaginary=rnorm(3))))
 @
 
-\noindent When parsing such \JSON strings, these values will turn appear as character vectors. In order to obtain the original types, the user needs to manually coerce them back to the desired type using e.g. \texttt{as.POSIXct}, \texttt{as.Date}, \texttt{as.factor} or \texttt{as.complex}. In this respect, \JSON is subject to the same limitations as text based formats such as CSV. 
+\noindent When parsing such \JSON strings, these values will appear as character vectors. In order to obtain the original types, the user needs to manually coerce them back to the desired type using e.g. \texttt{as.POSIXct}, \texttt{as.Date}, \texttt{as.factor} or \texttt{as.complex}. In this respect, \JSON is subject to the same limitations as text based formats such as CSV. 
 
 \subsubsection{Special cases: vectors of length 0 or 1}
 
