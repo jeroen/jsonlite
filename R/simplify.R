@@ -20,11 +20,7 @@ simplify <- function(x){
         return(null2na(x)); 
     }
     
-    # or just a recursive list
-    for(i in seq_along(x)){
-      x[[i]] <- Recall(x[[i]]);
-    }
-    return(x);
+    return(lapply(x, simplify))
   } else {
     return(x);
   }
