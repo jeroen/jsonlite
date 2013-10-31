@@ -152,6 +152,52 @@ cat(toJSON(list(pi)))
 
 \noindent When encoding a single data set this might seem harmless, but in the context of dynamic data this inconsistency is almost guaranteed to cause bugs. For example, imagine an R web service which lets the user fit a linear model and sends back the fitted parameter estimates. In this application, the R server returns the vector with coefficients encoded as a \JSON array. The client code then parses the \JSON, and then iterates over the array of coefficients to display them in a GUI. All goes well, until the user decides to fit a model with only one predictor. If the \JSON encoder returns a primitive value where the client is assuming an array, the application will likely break. Any consumer or client would need to be aware of the special case where the vector becomes a primitive, and explicitly take this exception into account when processing the result. Failure to do so might result in client code might proceed as usual and call an iterator or loop method on a primitive value, resulting in the obvious errors. For this reason \texttt{JSONlite} uses consistent encoding schemes which do not depend on variable object properties such as its length. Hence, a vector is always encoded as an array, even when it is of length 0 or 1.
 
+\subsection{Matrices}
+
+Arguably one of the strongest sides of R is its ability to interface libraries for basic linear algebra subroutines (BLAS) such as LAPACK, OpenBLAS, etc. These libraries provide well tuned, high performance implementations of important linear algebra operations to calculate anything from inner products and eigen values to singular value decompositions. These are in turn the building blocks of many higher level statistical methods such as linear regression or principal component analysis. Linear algebra methods operate on \emph{matrices}, making the matrix one of the most central data classes in R. Conceptually, a matrix consists of a 2 dimensional structure of homogeneous values. It is indexed using 2 numbers (or vectors), representing the row and column number of the matrix respectively. 
+
+<<>>=
+x <- matrix(1:12, nrow=3, ncol=4)
+print(x)
+x[2,4]
+@
+
+\noindent Even though the matrix is a 2 dimensional structure, it is stored in memory by R as a single atomic vector with an attribute called \texttt{"dim"} defining the dimensions of the matrix. The product of the dimensions is equal to the length of the vector. 
+
+<<>>=
+attributes(volcano)
+length(volcano)
+@
+
+\noindent Even though the matrix is stored as a single vector, it the way it is printed, indexed and treated otherwise makes it conceptually closer to a set of equal-length homogeneous vectors. For this reason, \texttt{JSONlite} encodes matrices as an array of sub arrays:
+
+<<>>=
+x <- matrix(1:12, nrow=3, ncol=4)
+cat(toJSON(x))
+@
+
+\noindent We hope that this represention will be the most intuitive to interpret, even within languages that do not have a native notion of a matrix. When the JSON string is properly indented (recall that whitespace and linebreaks are optional in JSON), it looks very similar to the way R prints matrices:
+
+\begin{verbatim}
+[ [ 1, 4, 7, 10 ], 
+  [ 2, 5, 8, 11 ], 
+  [ 3, 6, 9, 12 ] ]
+\end{verbatim}
+
+\noindent Because the matrix is implemented in R as an atomic vector, it automatically inherits the conventions mentioned earlier with respect to edge cases and missing values:
+
+<<>>=
+x <- matrix(c(1,2,4,NA), nrow=2)
+cat(toJSON(x))
+cat(toJSON(x, , NA_as_string=FALSE))
+@
+
+
+\subsubsection{Matrix row and column names}
+
+Besides the \texttt{"dim"} attribute, matrices in R can have another attribute: \texttt{"dimnames"}. This attribute holds names for the rows and columns in the matrix. However, this information is not included in the default \JSON encoding for matrices for several reasons. First of all, for objects of class matrix the dimnames attribute is optional and often either row names or columes or both are \texttt{NULL}. This makes it difficult to define a practical encoding that covers all cases with and without row and/or column names. Secondly, the names in matrices are mostly there for annotation only; they are not actually used in calculations. For example, the linear algebra operations mentioned before completely ignore them, and do not include any names in their output, so when using these functions there is little purpose of setting them in the first place. For data sets with records consisting of a set of named columns (fields), R has more natural and flexible class: the dataframe. The \texttt{toJSON} method for this dataframes is described below and is much suitable when we want to refer to rows or fields by a particular name. Any matrix can easy be converted to a dataframe using the \texttt{as.data.frame} function.
+
+
 \subsection{Lists}
 
 The \texttt{list} is the most general purpose data structure in R. It holds an ordered set of elements, including other lists, each of arbitrary type and size. For the purpose of \JSON encoding, two types of lists are distinguished: named lists and unnamed lists. A list is considered a named list if it has an attribute called \texttt{"names"}. In practice, a named list is any list for which we can access an element by its name, whereas elements of an unnamed lists can only be accessed using their index number:
@@ -159,7 +205,6 @@ The \texttt{list} is the most general purpose data structure in R. It holds an o
 <<>>=
 mylist1 <- list("foo" = 123, "bar"= 456)
 print(mylist1$bar)
-
 mylist2 <- list(123, 456)
 print(mylist2[[2]])
 @
@@ -217,7 +262,7 @@ cat(toJSON(x))
 \subsection{Data frame}
 
 
-\subsection{Matrix}
+
 
 
 
