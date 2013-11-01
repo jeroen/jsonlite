@@ -55,9 +55,9 @@ records2df <- function(recordlist, columns, flatten=TRUE) {
     y <- structure(as.list(x)[columns], names=columns);
 
     #replace NULL with NA values in each record
-    lapply(y, function(z) {
-      if(is.null(z)) NA else z;
-    })
+    #lapply(y, function(z) {
+    #  if(is.null(z)) NA else z;
+    #})
   });
   
   #create a list of lists

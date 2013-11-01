@@ -10,16 +10,10 @@
 
   \item{columns}{optional. Character vector of the names of
   the fields to extract.}
-
-  \item{flatten}{if records should be unlisted in the case
-  of nested lists.}
-}
-\value{
-  dataframe
 }
 \description{
-  A helper function to convert a list with records into a
-  dataframe.
+  A helper function to convert a list with records, which
+  are common in JSON datasets, into a dataframe.
 }
 \details{
   Data frames in R are colum based, but most data sets in
@@ -45,8 +39,12 @@
   be unlisted and turn into several columns.
 }
 \examples{
-myjson <- toJSON(cars)
-myrecords <- fromJSON(myjson)
-records2df(myrecords);
+\dontrun{
+library(httr)
+res <- GET("https://api.github.com/users/hadley/repos")
+obj <- fromJSON(rawToChar(res$content), smart=FALSE)
+mydf1 <- records2df(obj, flatten=FALSE)
+mydf2 <- records2df(obj, flatten=TRUE)
+}
 }
 
