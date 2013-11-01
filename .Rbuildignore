@@ -16,7 +16,6 @@ Objects.*
 ^.*\.Rproj$
 ^\.Rproj\.user$
 man/as.scalar.Rd
-man/records2df.Rd
 vignettes/*.tex
 vignettes/*.log
 vignettes/*.gz
