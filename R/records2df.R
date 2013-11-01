@@ -26,52 +26,60 @@
 #' mydf2 <- records2df(obj, flatten=TRUE)
 #' }
 records2df <- function(recordlist, columns, flatten=TRUE) {
-  #internal helper function
-  flatlist <- function(mylist){
-    lapply(rapply(mylist, base::enquote, how="unlist"), eval)
-  }
   
   #only empty records
   if(!any(sapply(recordlist, length))){
     return(data.frame(matrix(nrow=length(recordlist), ncol=0)));
   }
-  
-  #convert NULL values to NA
-  recordlist <- lapply(recordlist, null2na, unlist=FALSE);
-  
+
+  #no records at all
 	if(length(recordlist)==0 && !missing(columns)){
 		return(as.data.frame(matrix(ncol=length(columns), nrow=0, dimnames=list(NULL,columns))))
 	}	
 	
+  #flatten list if set
 	if(isTRUE(flatten)){
-		un <- lapply(recordlist, flatlist);
-	} else {
-		un <- recordlist;
+	  recordlist <- lapply(recordlist, function(mylist){
+		  lapply(rapply(mylist, base::enquote, how="unlist"), eval)
+		});
 	}
-	if(!missing(columns)){
-		ns <- columns;
-	} else {
-		ns <- unique(unlist(lapply(un, names)))
+  
+  #find columns if not specified
+	if(missing(columns)){
+	  columns <- unique(unlist(lapply(recordlist, names)))
 	}
-	
-	un <- lapply(un, function(x) {
-		y <- as.list(x)[ns]
-		names(y) <- ns
-		lapply(y, function(z) if(is.null(z)) NA else z)})
-	s <- lapply(ns, function(x) sapply(un, "[[", x))
-	names(s) <- ns;
-	
-	#in case anything contains lists
-	islist <- sapply(s, is.list);
-	if(sum(!islist) > 0){
-		outdf <- data.frame(s[!islist], stringsAsFactors=FALSE, check.names=FALSE);
-	} else {
-		outdf <- as.data.frame(matrix(nrow=length(s[islist][[1]]), ncol=0))
-	}
-	
-	#append lists
-	for(i in which(islist)){
-		outdf[names(s[i])] <- s[i];
-	}
-	return(outdf);
+  
+  #make new recordlist with requested only requested values
+  recordlist <- lapply(recordlist, function(x) {
+    #a new record with each requested column
+    y <- structure(as.list(x)[columns], names=columns);
+
+    #replace NULL with NA values in each record
+    lapply(y, function(z) {
+      if(is.null(z)) NA else z;
+    })
+  });
+  
+  #create a list of lists
+  columnlist <- lapply(columns, function(x) lapply(recordlist, "[[", x))
+  names(columnlist) <- columns;  
+  
+  #simplify into vectors where possible
+  columnlist <- lapply(columnlist, function(x){
+    if(is.scalarlist(x)){
+      return(null2na(x))
+    } else {
+      return(x);
+    }
+  });
+  
+  #check that all elements have equal length
+  columnlengths <- unlist(vapply(columnlist, length, integer(1)));
+  if(length(unique(columnlengths)) > 1){
+    stop("Elements not of equal length:", columnlengths);
+  }
+  
+  #make into data frame
+  n <- columnlengths[1];
+  return(structure(columnlist, class="data.frame", row.names=1:n));
 }
