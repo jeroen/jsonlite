@@ -19,3 +19,4 @@ man/as.scalar.Rd
 vignettes/*.tex
 vignettes/*.log
 vignettes/*.gz
+vignettes/framed.sty

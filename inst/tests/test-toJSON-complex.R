@@ -1,4 +1,4 @@
-context("Complex")
+context("toJSON Complex")
 
 test_that("Encoding Complex", {
   expect_that(toJSON(complex(real=2, imaginary=2)), equals("[ \"2+2i\" ]"));

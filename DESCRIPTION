@@ -6,7 +6,7 @@ NeedsCompilation: yes
 Depends:
     methods
 Author: Jeroen Ooms, Duncan Temple Lang
-URL: https://github.com/jeroenooms/JSONlite#readme
+URL: http://github.com/jeroenooms/JSONlite#readme
 BugReports: http://github.com/jeroenooms/JSONlite/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
 VignetteBuilder: knitr

@@ -1,8 +1,8 @@
-\name{records2df}
-\alias{records2df}
+\name{simplifyDataFrame}
+\alias{simplifyDataFrame}
 \title{Convert a list of records into a dataframe}
 \usage{
-  records2df(recordlist, columns, flatten = TRUE)
+  simplifyDataFrame(recordlist, columns, flatten = TRUE)
 }
 \arguments{
   \item{recordlist}{a list of lists representing records
@@ -26,11 +26,13 @@
 
   The \code{column} argument is a vector specifying which
   fields (list elements) need to be extracted and turned
-  data frame columns. If this argument is not specified,
-  each unique field appearing in any of the records will
-  used. Note that this can lead to very large data frames
-  with lots of \code{NA} values when the data contains
-  different fields for each record.
+  data frame columns. These columns are then guaranteed to
+  be in the output data frame, even in the case when none
+  of records contained this field. If this argument is not
+  specified, each unique field appearing in any of the
+  records will used. Note that this can lead to very large
+  data frames with lots of \code{NA} values when the data
+  contains different fields for each record.
 
   Finally, something that is common in the case of JSON
   datasets is that records have again lists nested in them.
@@ -42,9 +44,9 @@
 \dontrun{
 library(httr)
 res <- GET("https://api.github.com/users/hadley/repos")
-obj <- fromJSON(rawToChar(res$content), smart=FALSE)
-mydf1 <- records2df(obj, flatten=FALSE)
-mydf2 <- records2df(obj, flatten=TRUE)
+obj <- fromJSON(rawToChar(res$content))
+mydf1 <- simplifyDataFrame(obj, flatten=FALSE)
+mydf2 <- simplifyDataFrame(obj, flatten=TRUE)
 }
 }
 

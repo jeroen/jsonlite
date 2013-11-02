@@ -1,4 +1,4 @@
-context("Logical")
+context("toJSON Logical")
 
 test_that("Encoding Logical", {
   expect_that(toJSON(TRUE), equals("[ true ]"));

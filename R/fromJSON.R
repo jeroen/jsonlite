@@ -70,33 +70,14 @@
 #'   myrawvec = charToRaw("This is a test")
 #' );
 #' identical(unserializeJSON(serializeJSON(myobject)), myobject);
-fromJSON <- function(txt, smart = TRUE){
-
-  #just hardcoding this for now
-  encoding=NA;
+fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE){
   
-  #validate arg
-  if(is.na(smart) || !is.logical(smart) || length(smart) != 1){
-    stop("Argument smart must be TRUE or FALSE")
-  }
+  #parse JSON
+  obj <- parseJSON(txt);
   
-	#this is always a bad idea
-	simplifyWithNames = FALSE;
-	
-	#readLines splits into a vector
-	txt <- paste(txt, collapse="\n")
-
-  #in case if chineese, etc.
-	if(is.na(encoding)){
-		encoding <- Encoding(txt)	
-	} 
-	enc <- mapEncoding(encoding);
-	
-	#libjson call
-	obj <- .Call("R_fromJSON", txt, as.integer(FALSE), NULL, as.logical(simplifyWithNames), enc, NULL, stringFunType = c("GARBAGE" = 4L))  
-  
-  if(isTRUE(smart)){
-    return(simplify(obj));
+  #post processing
+  if(any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))){
+    return(simplify(obj, simplifyVector=simplifyVector, simplifyDataFrame=simplifyDataFrame, simplifyMatrix=simplifyMatrix));
   } else{
     return(obj);
   }
@@ -125,6 +106,9 @@ toJSON <- function(x,
   factor <- match.arg(factor);
   complex <- match.arg(complex);  
   raw <- match.arg(raw);
+  
+  #force
+  x <- force(x);
     
   #dispatch
   asJSON(x, dataframe=dataframe, Date=Date, POSIXt=POSIXt, factor=factor, complex=complex, raw=raw, 

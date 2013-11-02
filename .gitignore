@@ -13,3 +13,4 @@ vignettes/*.log
 vignettes/*.gz
 vignettes/*.pdf
 man/as.scalar.Rd
+vignettes/framed.sty

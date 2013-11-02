@@ -1,13 +1,14 @@
-simplify <- function(x){
+simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE){
   if(is.list(x)){
     if(!length(x)){
       # In case of fromJSON("[]") returning a list is most neutral.
       # Because the user can do as.vector(list()) and as.data.frame(list()) which both results in the correct object.
       return(list())
     }
+    
     # list can be a dataframe recordlist
-    if(is.recordlist(x)){
-      mydf <- records2df(x);
+    if(isTRUE(simplifyDataFrame) && is.recordlist(x)){
+      mydf <- simplifyDataFrame(x);
       if("$row" %in% names(mydf)){
         row.names(mydf) <- mydf[["$row"]];
         mydf["$row"] <- NULL;
@@ -16,11 +17,25 @@ simplify <- function(x){
     }
     
     # or a scalar list (atomic vector)
-    if(is.null(names(x)) && is.scalarlist(x)){
+    if(isTRUE(simplifyVector) && is.null(names(x)) && is.scalarlist(x)){
         return(null2na(x)); 
     }
     
-    return(lapply(x, simplify))
+    #apply recursively
+    out <- lapply(x, 
+      sys.function(0), 
+      simplifyVector = simplifyVector, 
+      simplifyDataFrame = simplifyDataFrame, 
+      simplifyMatrix = simplifyMatrix
+    );
+    
+    #test for matrix. Note that we have to take another look at x (before null2na on its elements) to differentiate between matrix and vector
+    if(isTRUE(simplifyMatrix) && is.matrixlist(out) && all(unlist(vapply(x, is.scalarlist, logical(1))))){
+      return(do.call(rbind, out));
+    }
+    
+    #return object
+    return(out);
   } else {
     return(x);
   }
@@ -41,4 +56,15 @@ is.recordlist <- function(x){
     all(sapply(x, is.namedlist)) &&
     all(sapply(x, is.scalarlist))
   );
+}
+
+is.matrixlist <- function(x){
+  isTRUE (
+    is.list(x) &&
+    length(x) &&
+    is.null(names(x)) &&
+    all(unlist(vapply(x, function(y) {is.atomic(y)}, logical(1)))) &&
+    (length(unique(unlist(vapply(x, length, integer(1))))) == 1) &&
+    (length(unique(unlist(vapply(x, mode, character(1))))) == 1)
+  )
 }

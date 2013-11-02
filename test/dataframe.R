@@ -22,10 +22,10 @@ cat(toJSON(test, drop.na=FALSE, pretty=TRUE))
 cat(mongoexport(test))
 
 #should be nearly identical:
-records2df(fromJSON(toJSON(test)), columns=names(test), flatten=FALSE);
+simplifyDataFrame(fromJSON(toJSON(test)), columns=names(test), flatten=FALSE);
 
 #default should be OK:
-records2df(fromJSON(toJSON(test)))
+simplifyDataFrame(fromJSON(toJSON(test)))
 
 #test force
 toJSON(test)

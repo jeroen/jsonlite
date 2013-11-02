@@ -1,4 +1,4 @@
-context("Numeric")
+context("toJSON Numeric")
 
 test_that("Encoding Numbers", {
   expect_that(toJSON(35), equals("[ 35 ]"));

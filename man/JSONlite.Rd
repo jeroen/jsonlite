@@ -6,7 +6,8 @@
 \alias{unserializeJSON}
 \title{Stringify R objects to JSON and vice versa}
 \usage{
-  fromJSON(txt, smart = TRUE)
+  fromJSON(txt, simplifyVector = TRUE,
+    simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
   toJSON(x, dataframe = c("rows", "columns"),
     Date = c("ISO8601", "epoch"),
