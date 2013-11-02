@@ -15,8 +15,9 @@ Objects.*
 .*.log$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-man/as.scalar.Rd
-vignettes/*.tex
-vignettes/*.log
-vignettes/*.gz
-vignettes/framed.sty
+man/as.scalar.Rd$
+vignettes/*.tex$
+vignettes/*.log$
+vignettes/*.gz$
+vignettes/framed.sty$
+src/Makevars$
