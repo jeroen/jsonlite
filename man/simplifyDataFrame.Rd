@@ -5,11 +5,14 @@
   simplifyDataFrame(recordlist, columns, flatten = TRUE)
 }
 \arguments{
-  \item{recordlist}{a list of lists representing records
-  (rows).}
+  \item{recordlist}{a list of named lists representing
+  records (rows).}
 
-  \item{columns}{optional. Character vector of the names of
-  the fields to extract.}
+  \item{columns}{character vector with names of the fields
+  to extract. Optional but recommended when available.}
+
+  \item{flatten}{automatically unlist nested lists within
+  the records.}
 }
 \description{
   A helper function to convert a list with records, which

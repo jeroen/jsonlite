@@ -16,8 +16,9 @@
 #' The \code{flatten} argument can be used to control how to deal with these cases. When set to \code{TRUE},
 #' they will be unlisted and turn into several columns. 
 #' 
-#' @param recordlist a list of lists representing records (rows).
-#' @param columns optional. Character vector of the names of the fields to extract. 
+#' @param recordlist a list of named lists representing records (rows).
+#' @param columns character vector with names of the fields to extract. Optional but recommended when available.
+#' @param flatten automatically unlist nested lists within the records. 
 #' @export
 #' @examples \dontrun{
 #' library(httr)

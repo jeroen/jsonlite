@@ -56,9 +56,15 @@
 
   \item{txt}{a string in json format}
 
-  \item{smart}{try to convert JSON into vectors and data
-  frames where possible. If set to FALSE, everything is a
-  list.}
+  \item{simplifyVector}{automatically coerse JSON arrays
+  containing only scalars into a vector}
+
+  \item{simplifyDataFrame}{automatically coerse JSON arrays
+  containing records (JSON objects with scalars) into a
+  data frame. See also \code{\link{simplifyDataFrame}}}
+
+  \item{simplifyMatrix}{automatically coerse JSON arrays
+  with vectors of equal length and mode into a matrix}
 
   \item{...}{arguments passed on to class specific methods}
 }

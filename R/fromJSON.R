@@ -35,7 +35,9 @@
 #' @param drop.na Don't include NA values in dataframes. Only used when dataframe="rows".
 #' @param pretty adds indentation whitespace to JSON output 
 #' @param txt a string in json format 
-#' @param smart try to convert JSON into vectors and data frames where possible. If set to FALSE, everything is a list.
+#' @param simplifyVector automatically coerse JSON arrays containing only scalars into a vector
+#' @param simplifyDataFrame automatically coerse JSON arrays containing records (JSON objects with scalars) into a data frame. See also \code{\link{simplifyDataFrame}}
+#' @param simplifyMatrix automatically coerse JSON arrays with vectors of equal length and mode into a matrix
 #' @param ... arguments passed on to class specific methods
 #' @note All encoded objects should pass the validation at www.jsonlint.org
 #' @references

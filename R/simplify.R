@@ -30,7 +30,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     );
     
     #test for matrix. Note that we have to take another look at x (before null2na on its elements) to differentiate between matrix and vector
-    if(isTRUE(simplifyMatrix) && is.matrixlist(out) && all(unlist(vapply(x, is.scalarlist, logical(1))))){
+    if(isTRUE(simplifyMatrix) && isTRUE(simplifyVector) && is.matrixlist(out) && all(unlist(vapply(x, is.scalarlist, logical(1))))){
       return(do.call(rbind, out));
     }
     
