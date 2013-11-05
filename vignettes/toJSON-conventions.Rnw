@@ -261,7 +261,7 @@ cat(toJSON(x))
 
 \subsection{Data frame}
 
-
+From the user point of view, the \texttt{data frame} is the most central data structure in R. It resembles a tabular data structure in which each column is named and homogeneous. Conceptually it is very similar to a table in relational data bases such as \texttt{MySQL} 
 
 
 
