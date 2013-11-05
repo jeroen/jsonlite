@@ -261,8 +261,20 @@ cat(toJSON(x))
 
 \subsection{Data frame}
 
-From the user point of view, the \texttt{data frame} is the most central data structure in R. It resembles a tabular data structure in which each column is named and homogeneous. Conceptually it is very similar to a table in relational data bases such as \texttt{MySQL} 
+The \texttt{data frame} is perhaps the most central data structure in R from the user point of view. This class holds a tabular data structure in which each column is named and homogeneous. Conceptually it is very similar to a table in relational data bases such as \texttt{MySQL}, where \emph{fields} are referred to as \emph{column names}, and emph{records} are called \emph{row names}. Like a matrix, a data frame can be subsetted with two indices, to extract certain rows and columns of the data:
 
+<<>>=
+is(iris)
+names(iris)
+print(iris[1:3, c(1,5)])
+print(iris[1:3, c("Sepal.Width", "Species")])
+@
+
+\subsubsection{Column based versus row based storage}
+
+Tabular data structures can be implemented in two different ways: in a column based, or row based fasion. A column based structure is a named collection of equal-length, homogenous arrays (vectors). In a row-based structure on the other hand, the table is implemented as a collection of heterogeneous records (rows), each containing a set of key-value pairs representing field values for this particular record. Even though most languages provide flexible and abstracted interfaces that hide such implementation differences from the user, they can have huge implications for performance. A column based structure is efficient for inserting or extracting certain columns of the data, but it is inefficient for manipulating individual rows. For example to insert a single row somewhere in the middle, each of the columns has to be sliced and stiched back together. For row-based implementations, it is the extact other way around: we can easily manipulate a particular record, but to insert/extract a whole column we would need to iteriate over all records in the table and read/modify the appropriate field in each of them.
+
+The data frame in R is implemented in a column based fasion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \texttt{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. R then simply binds these columns together into a matrix \texttt{X} and calls out to a highly optimized fortran subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the QR factorization of \texttt{X}. Many other statistical modelling functions follow similar steps, and are computationally efficient because of the column-based data storage in R. However, unfortunately R is an exception in this respect: most systems, databases, API's, etc are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. 
 
 
 
