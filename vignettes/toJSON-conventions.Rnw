@@ -25,6 +25,12 @@
 
 <<echo=FALSE>>=
 library(JSONlite)
+opts_chunk$set(comment="")
+
+#this replaces tabs by spaces because latex-verbatim doesn't like tabs
+toJSON <- function(...){
+  gsub("\t", "  ", JSONlite::toJSON(...), fixed=TRUE);
+}
 @
 
 \section{Introduction}
@@ -189,7 +195,7 @@ cat(toJSON(x))
 <<>>=
 x <- matrix(c(1,2,4,NA), nrow=2)
 cat(toJSON(x))
-cat(toJSON(x, , NA_as_string=FALSE))
+cat(toJSON(x, NA_as_string=FALSE))
 cat(toJSON(matrix(pi)))
 @
 
@@ -276,15 +282,42 @@ Tabular data structures can be implemented in two different ways: in a column ba
 
 The data frame in R is implemented in a column based fasion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \texttt{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. R then simply binds these columns together into a matrix \texttt{X} and calls out to a highly optimized fortran subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the QR factorization of \texttt{X}. Many other statistical modelling functions follow similar steps, and are computationally efficient because of the column-based data storage in R. However, unfortunately R is an exception in this respect: most systems, databases, API's, etc are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. 
 
+\subsubsection{Row based encoding}
+
+The way data frames are encoded is one of the major differences between JSONlite and the \texttt{toJSON} implementations from other currently available packages. Instead of using the column-based encoding also used for lists, JSONlite encodes data frames by default as an array of records:
+
+<<>>=
+cat(toJSON(iris[1:2,], pretty=TRUE))
+@
+
+\noindent This output looks a bit like a list of named lists. However, there is one major difference: the individual records contain primitives values, which will never appear in lists (remember, a scalar in R is a vector of length 1):
+
+<<>>=
+cat(toJSON(list(list(Species="Foo", Width=21))))
+@
+
+\noindent This leads us to the following convention: when encoding R objects, \JSON primitives are only used for encoding vectors and data-frame rows. Primitives appearing within a \JSON array indicate a vector, and \JSON arrays appearing inside a \JSON object indicate a data-frame row. A \JSON encoded \texttt{list}, (named or unnamed) will never contain \JSON primitives. This is a subtle but important convention that helps to distinguish between R classes from their \JSON resprestation.
+
+\subsubsection{Missing values in data frames}
+
+The section on atomic vectors discussed two methods of encoding missing data appearing in a vector: either using strings or using the native \texttt{null} type. When a missing value appears in a data frame, there is a third option: simply not include this field in the record at hand.
+
+<<>>=
+x <- data.frame(foo=c(FALSE, TRUE,NA,NA), bar=c("Aladdin", NA, NA, "Mario"))
+print(x)
+cat(toJSON(x, pretty=TRUE))
+@
+
+\noindent The default behavior of JSONlite is to omit missing data from records in a data frame. This seems to be the most conventional way of doing things, and we expect is most likely to lead to the correct interpretation of \emph{missingness}, even in languages which have no explicit notion of \texttt{NA}.
 
 
 \section{Converting \JSON to R objects}
 
 Guidelines:
 
- - try to recover original object
+ - when well behaved (arroding to outlined conventions), try to recover original object
  - at least as.foo(x) should give very similar object.
- - smart is optional ;)
+ - 
 
 
 \end{document}

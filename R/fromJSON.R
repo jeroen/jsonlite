@@ -29,7 +29,7 @@
 #' @param POSIXt how to encode POSIXt (datetime) objects: must be one of "string", "ISO8601", "epoch" or "mongo"
 #' @param factor how to encode factor objects: must be one of "string" or "integer"
 #' @param complex how to encode complex numbers: must be one of "string" or "list"
-#' @param raw how to encode raw objects: must be one of "base64" or "mongo"
+#' @param raw how to encode raw objects: must be one of "base64", "hex" or "mongo"
 #' @param digits max number of digits (after the dot) to print for numeric values
 #' @param NA_as_string print numeric NA values as strings. If set to FALSE, numeric NA values turn into null
 #' @param drop.na Don't include NA values in dataframes. Only used when dataframe="rows".
@@ -93,7 +93,7 @@ toJSON <- function(x,
   POSIXt = c("string", "ISO8601", "epoch", "mongo"),
   factor = c("string", "integer"), 
   complex = c("string", "list"),
-  raw = c("base64", "mongo"),
+  raw = c("base64", "hex", "mongo"),
   digits = 2, 
   NA_as_string = TRUE,
   drop.na=TRUE,                 

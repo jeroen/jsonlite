@@ -1,5 +1,5 @@
 setMethod("asJSON", "raw",
-	function(x, raw=c("base64", "mongo"), ...) {
+	function(x, raw=c("base64", "hex", "mongo"), ...) {
 		
 		#validate
 		raw <- match.arg(raw);
@@ -10,8 +10,11 @@ setMethod("asJSON", "raw",
 				"$binary" = as.scalar(base64_encode(x)),
 				"$type" = as.scalar("\x05")
 			)));	
-		} else {
-			return(asJSON(as.scalar(base64_encode(x)), ...));
+		} else if(raw == "hex"){
+      return(asJSON(as.character.hexmode(x), ...))
+    } else { 
+      #no as scalar here!
+			return(asJSON(base64_encode(x), ...));
 		}
 	}
 );

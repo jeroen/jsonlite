@@ -12,5 +12,6 @@ vignettes/*.tex
 vignettes/*.log
 vignettes/*.gz
 vignettes/*.pdf
+vignettes/*.aux
 man/as.scalar.Rd
 vignettes/framed.sty
