@@ -8,7 +8,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     
     # list can be a dataframe recordlist
     if(isTRUE(simplifyDataFrame) && is.recordlist(x)){
-      mydf <- simplifyDataFrame(x);
+      mydf <- simplifyDataFrame(x, flatten=FALSE);
       if("$row" %in% names(mydf)){
         row.names(mydf) <- mydf[["$row"]];
         mydf["$row"] <- NULL;
@@ -53,8 +53,8 @@ is.recordlist <- function(x){
   isTRUE (
     is.list(x) &&
     length(x) && 
-    all(sapply(x, is.namedlist)) &&
-    all(sapply(x, is.scalarlist))
+    all(sapply(x, is.namedlist))# &&
+    #all(sapply(x, is.scalarlist))
   );
 }
 

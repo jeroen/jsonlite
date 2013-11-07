@@ -21,7 +21,7 @@ setMethod("asJSON", "data.frame",
     }
     
     #Convert POSIXlt to POSIXct before we start messing with lists
-    posvars = which(as.logical(sapply(x, is, "POSIXlt")));
+    posvars = which(as.logical(vapply(x, is, integer(1), "POSIXlt")));
     for(i in posvars){
       x[[i]] <- as.POSIXct(x[[i]]);
     }

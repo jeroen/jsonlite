@@ -315,8 +315,9 @@ cat(toJSON(x, pretty=TRUE))
 Something that is a bit unusual in R, but fairly common in \JSON, are records within a data set containing nested lists. Even though not often used, the data frame class in R does allow for a lists columns as well as vector columns, as long as they are all the same length. Because such structures are very common in \JSON, the JSONlite package supports this as well:
 
 <<tidy=FALSE>>=
-x <- data.frame(name=c("Mario", "Bowser", "Peach"), age=c(32, 103, 19));
-x$vehicle <- data.frame(brand=c("Sedan", "Suzuki", "Mini"), year=c(2001, 1984, 2012))
+x <- data.frame(driver=c("Mario","Bowser","Peach"), job=c("Plumber","Koopa","Princess"))
+x$vehicle <- data.frame(model=c("Rapide", "Piranha Prowler", "Royal Racer"));
+x$vehicle$stats <- data.frame(speed=c(41, 55, 34),weight=c(35, 67, 24),drift=c(29,35,32))
 cat(toJSON(x, pretty=TRUE));
 @
 

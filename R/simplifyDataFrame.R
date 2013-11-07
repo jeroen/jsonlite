@@ -76,15 +76,17 @@ simplifyDataFrame <- function(recordlist, columns, flatten=TRUE) {
   columnlist <- lapply(columnlist, function(x){
     if(is.scalarlist(x)){
       return(null2na(x))
+    } else if(is.recordlist(x)) {
+      return(simplifyDataFrame(x, flatten=flatten));
     } else {
       return(x);
     }
   });
   
   #check that all elements have equal length
-  columnlengths <- unlist(vapply(columnlist, length, integer(1)));
+  columnlengths <- unlist(vapply(columnlist, function(z){ifelse(is.data.frame(z), nrow(z), length(z))}, integer(1)));
   if(length(unique(columnlengths)) > 1){
-    stop("Elements not of equal length:", columnlengths);
+    stop("Elements not of equal length: ", paste(columnlengths, collapse=" "));
   }
   
   #make into data frame
