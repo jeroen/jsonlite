@@ -310,19 +310,27 @@ cat(toJSON(x, pretty=TRUE))
 
 \noindent The default behavior of JSONlite is to omit missing data from records in a data frame. This seems to be the most conventional way of doing things, and we expect is most likely to lead to the correct interpretation of \emph{missingness}, even in languages which have no explicit notion of \texttt{NA}.
 
-\subsubsection{Nested lists within records}
+\subsubsection{Nested objects within records}
 
-Something that is a bit unusual in R, but fairly common in \JSON, are records within a data set containing nested lists. Even though not often used, the data frame class in R does allow for a lists columns as well as vector columns, as long as they are all the same length. Because such structures are very common in \JSON, the JSONlite package supports this as well:
+A structure somewhat unusual in R but frequently encountered in \JSON, is a dataset with records containing nested substructures. Such structures do not really fit the vector based paradigm which makes them hard to manipulate in R, and we should probably avoid them where possible. However, nested records are too common in \JSON data to ignore, and with a little work most cases can still map to a data frame quite nicely. The most common scenario is a dataset in which a certain field within each record contains a \emph{subrecord} with additional fields. JSONlite interprets these subrecords as a nested data frame. Whereas the data frame class usually consists of vectors, technically a column can also be list or another data frame with matching dimension (although this does stretch the meaning of the word "column" a bit):
 
 <<tidy=FALSE>>=
-x <- data.frame(driver=c("Bowser","Peach"), job=c("Koopa","Princess"))
-x$vehicle <- data.frame(model=c("Piranha Prowler", "Royal Racer"));
-x$vehicle$stats <- data.frame(speed=c(55, 34), weight=c(67, 24), drift=c(35,32))
+x <- data.frame(driver = c("Bowser", "Peach"), occupation = c("Koopa", "Princess"))
+x$vehicle <- data.frame(model = c("Piranha Prowler", "Royal Racer"))
+x$vehicle$stats <- data.frame(speed = c(55, 34), weight = c(67, 24), drift = c(35, 32))
 str(x)
 cat(toJSON(x, pretty=TRUE));
 @
 
-Watch out for imbalanced records
+\noindent The case of nested subrecords is relatively well behaved. They map nicely to nested dataframes, and if we wish to do so they can easily be flattened into a basic non-nested dataframe for easier manipulation in R:
+
+<<>>=
+myjson <- toJSON(x)
+mydata <- fromJSON(myjson, flatten=TRUE);
+str(mydata)
+@
+
+\noindent Things get more tricky when records include nested arrays.  
 
 <<tidy=FALSE>>=
 x <- data.frame(name=c("Elizabeth", "Jeroen"), age=c(24, 28));
@@ -331,6 +339,11 @@ x$siblings <- list(
 )
 cat(toJSON(x, pretty=TRUE))
 @
+
+\section{Problems}
+
+- Records which contain 
+
 
 \section{Converting \JSON to R objects}
 

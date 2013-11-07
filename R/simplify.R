@@ -1,4 +1,4 @@
-simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE){
+simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, flatten=FALSE){
   if(is.list(x)){
     if(!length(x)){
       # In case of fromJSON("[]") returning a list is most neutral.
@@ -8,7 +8,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     
     # list can be a dataframe recordlist
     if(isTRUE(simplifyDataFrame) && is.recordlist(x)){
-      mydf <- simplifyDataFrame(x, flatten=FALSE);
+      mydf <- simplifyDataFrame(x, flatten=flatten);
       if("$row" %in% names(mydf)){
         row.names(mydf) <- mydf[["$row"]];
         mydf["$row"] <- NULL;
