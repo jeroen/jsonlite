@@ -315,12 +315,22 @@ cat(toJSON(x, pretty=TRUE))
 Something that is a bit unusual in R, but fairly common in \JSON, are records within a data set containing nested lists. Even though not often used, the data frame class in R does allow for a lists columns as well as vector columns, as long as they are all the same length. Because such structures are very common in \JSON, the JSONlite package supports this as well:
 
 <<tidy=FALSE>>=
-x <- data.frame(driver=c("Mario","Bowser","Peach"), job=c("Plumber","Koopa","Princess"))
-x$vehicle <- data.frame(model=c("Rapide", "Piranha Prowler", "Royal Racer"));
-x$vehicle$stats <- data.frame(speed=c(41, 55, 34),weight=c(35, 67, 24),drift=c(29,35,32))
+x <- data.frame(driver=c("Bowser","Peach"), job=c("Koopa","Princess"))
+x$vehicle <- data.frame(model=c("Piranha Prowler", "Royal Racer"));
+x$vehicle$stats <- data.frame(speed=c(55, 34), weight=c(67, 24), drift=c(35,32))
+str(x)
 cat(toJSON(x, pretty=TRUE));
 @
 
+Watch out for imbalanced records
+
+<<tidy=FALSE>>=
+x <- data.frame(name=c("Elizabeth", "Jeroen"), age=c(24, 28));
+x$siblings <- list(
+  data.frame(name="Ricardo", age=27), data.frame(name=c("Erik", "Marcel"), age=c(27, 25))
+)
+cat(toJSON(x, pretty=TRUE))
+@
 
 \section{Converting \JSON to R objects}
 
