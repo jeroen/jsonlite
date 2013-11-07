@@ -280,7 +280,7 @@ print(iris[1:3, c("Sepal.Width", "Species")])
 
 Generally speaking, tabular data structures can be implemented in two different ways: in a column based, or row based fasion. A column based structure consists of a named collection of equal-length, homogenous arrays representing the table columns. In a row-based structure on the other hand, the table is implemented as a set of heterogeneous associative arrays representing table rows with field values for each particular record. Even though most languages provide flexible and abstracted interfaces that hide such implementation differences from the user, they can have huge implications for performance. A column based structure is efficient for inserting or extracting certain columns of the data, but it is inefficient for manipulating individual rows. For example to insert a single row somewhere in the middle, each of the columns has to be sliced and stiched back together. For row-based implementations, it is the extact other way around: we can easily manipulate a particular record, but to insert/extract a whole column we would need to iteriate over all records in the table and read/modify the appropriate field in each of them.
 
-The data frame in R is implemented in a column based fasion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \texttt{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. R then simply binds these columns together into a matrix \texttt{X} and calls out to a highly optimized fortran subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the QR factorization of \texttt{X}. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in R. However, unfortunately R is an exception in this respect: most systems, databases, API's, etc are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. 
+The data frame in R is implemented in a column based fasion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \texttt{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. R simply binds the specified columns together into a matrix \texttt{X} and calls out to a highly optimized fortran subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the QR factorization of \texttt{X}. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in R. However, unfortunately R is an exception in this respect: many other languages, systems, databases, API's, etc are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. The remaining of this section discusses the details of mapping record based \JSON data structues into our beloved column-based data frames.
 
 \subsubsection{Row based data frame encoding}
 
@@ -300,7 +300,7 @@ cat(toJSON(list(list(Species="Foo", Width=21))))
 
 \subsubsection{Missing values in data frames}
 
-The section on atomic vectors discussed two methods of encoding missing data appearing in a vector: either using strings or using the native \texttt{null} type. When a missing value appears in a data frame, there is a third option: simply not include this field in \JSON record:
+The section on atomic vectors discussed two methods of encoding missing data appearing in a vector: either using strings or using the \JSON \texttt{null} type. When a missing value appears in a data frame, there is a third option: simply not include this field in \JSON record:
 
 <<>>=
 x <- data.frame(foo=c(FALSE, TRUE,NA,NA), bar=c("Aladdin", NA, NA, "Mario"))
@@ -308,7 +308,7 @@ print(x)
 cat(toJSON(x, pretty=TRUE))
 @
 
-\noindent The default behavior of JSONlite is to omit missing data from records in a data frame. This seems to be the most conventional way of doing things, and we expect is most likely to lead to the correct interpretation of \emph{missingness}, even in languages which have no explicit notion of \texttt{NA}.
+\noindent The default behavior of JSONlite is to omit missing data from records in a data frame. This seems to be the most conventional way of doing things, and we expect this encoding will most likely lead to the correct interpretation of \emph{missingness}, even in languages which have no explicit notion of \texttt{NA}.
 
 \subsubsection{Nested objects within records}
 
@@ -322,15 +322,24 @@ str(x)
 cat(toJSON(x, pretty=TRUE));
 @
 
-\noindent The case of nested subrecords is relatively well behaved. They map nicely to nested dataframes, and if we wish to do so they can easily be flattened into a basic non-nested dataframe for easier manipulation in R:
+\noindent The case of nested subrecords is relatively well behaved. They map nicely to nested dataframes, and can be flattened into a basic non-nested dataframe for easier manipulation. Building on the previous example:
 
 <<>>=
 myjson <- toJSON(x)
-mydata <- fromJSON(myjson, flatten=TRUE);
-str(mydata)
+str(fromJSON(myjson, flatten=FALSE));
+str(fromJSON(myjson, flatten=TRUE));
 @
 
-\noindent Things get more tricky when records include nested arrays.  
+\noindent Things get difficult when records include nested arrays. It works but we can't really flatten them (test this!!)
+
+<<>>=
+x <- data.frame(name=c("Elizabeth", "Jeroen"), age=c(24, 28));
+x$siblings <- list("ricardo", c("Erik", "Marcel"))
+cat(toJSON(x, pretty=TRUE))
+fromJSON(toJSON(x))
+@
+
+Something else we commonly see is a field containing an entire new dataset (a set of records):
 
 <<tidy=FALSE>>=
 x <- data.frame(name=c("Elizabeth", "Jeroen"), age=c(24, 28));
@@ -338,11 +347,15 @@ x$siblings <- list(
   data.frame(name="Ricardo", age=27), data.frame(name=c("Erik", "Marcel"), age=c(27, 25))
 )
 cat(toJSON(x, pretty=TRUE))
+str(fromJSON(toJSON(x)))
 @
+
+
 
 \section{Problems}
 
-- Records which contain 
+- Unnamed lists containing different structures
+- Array of records with different fields names (i.e. not really a table)
 
 
 \section{Converting \JSON to R objects}

@@ -30,6 +30,7 @@ setMethod("asJSON", "list",
 		if(length(names(x))) {
       objnames <- names(x);
       objnames[objnames==""] <- as.character(1:length(objnames))[objnames==""];
+      objnames <- make.unique(objnames);
 			return(
 				paste("{", paste(deparse_vector(objnames), els, sep = " : ", collapse = ", "), "}")
 			);
