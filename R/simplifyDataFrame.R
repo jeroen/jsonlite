@@ -27,7 +27,7 @@
 #' mydf1 <- simplifyDataFrame(obj, flatten=FALSE)
 #' mydf2 <- simplifyDataFrame(obj, flatten=TRUE)
 #' }
-simplifyDataFrame <- function(recordlist, columns, flatten=TRUE) {
+simplifyDataFrame <- function(recordlist, columns, flatten=FALSE) {
   
   #no records at all
 	if(!length(recordlist)){
@@ -46,6 +46,7 @@ simplifyDataFrame <- function(recordlist, columns, flatten=TRUE) {
   #flatten list if set
   #must be a more efficient way to do this.
   #also 'null' values get lost (although they might come back later)
+  #also breaks when records contain nested lists of variable length
 	if(isTRUE(flatten)){
 	  recordlist <- lapply(recordlist, function(mylist){
 		  lapply(rapply(mylist, base::enquote, how="unlist"), eval)
@@ -72,9 +73,10 @@ simplifyDataFrame <- function(recordlist, columns, flatten=TRUE) {
   columnlist <- lapply(columns, function(x) lapply(recordlist, "[[", x))
   names(columnlist) <- columns;  
   
-  #simplify into vectors where possible
+  #simplify vectors and nested data frames
   columnlist <- lapply(columnlist, simplify, simplifyVector = TRUE, 
     simplifyDataFrame=TRUE, simplifyMatrix=FALSE, flatten=flatten);
+ 
   #columnlist <- lapply(columnlist, function(x){
   #  if(is.scalarlist(x)){
   #    return(null2na(x))
@@ -87,11 +89,11 @@ simplifyDataFrame <- function(recordlist, columns, flatten=TRUE) {
   
   #check that all elements have equal length
   columnlengths <- unlist(vapply(columnlist, function(z){ifelse(is.data.frame(z), nrow(z), length(z))}, integer(1)));
-  if(length(unique(columnlengths)) > 1){
+  n <- unique(columnlengths);
+  if(length(n) > 1){
     stop("Elements not of equal length: ", paste(columnlengths, collapse=" "));
   }
   
   #make into data frame
-  n <- columnlengths[1];
   return(structure(columnlist, class="data.frame", row.names=1:n));
 }

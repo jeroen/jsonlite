@@ -267,7 +267,7 @@ cat(toJSON(x))
 
 \subsection{Data frame}
 
-The \texttt{data frame} is perhaps the most central data structure in R from the user point of view. This class holds a tabular data structure in which each column is named and homogeneous. Conceptually it is very similar to a table in relational data bases such as \texttt{MySQL}, where \emph{fields} are referred to as \emph{column names}, and \emph{records} are called \emph{row names}. Like a matrix, a data frame can be subsetted with two indices, to extract certain rows and columns of the data:
+The \texttt{data frame} is perhaps the most central data structure in R from the user point of view. This class holds a tabular data structure in which each column is named and (usually) homogeneous. Conceptually it is very similar to a table in relational data bases such as \texttt{MySQL}, where \emph{fields} are referred to as \emph{column names}, and \emph{records} are called \emph{row names}. Like a matrix, a data frame can be subsetted with two indices, to extract certain rows and columns of the data:
 
 <<>>=
 is(iris)
@@ -276,13 +276,13 @@ print(iris[1:3, c(1,5)])
 print(iris[1:3, c("Sepal.Width", "Species")])
 @
 
-\subsubsection{Column based versus row based storage}
+\subsubsection{Column based versus row based tables}
 
-Generally speaking, tabular data structures can be implemented in two different ways: in a column based, or row based fasion. A column based structure consists of a named collection of equal-length, homogenous arrays representing the table columns. In a row-based structure on the other hand, the table is implemented as a set of heterogeneous associative arrays representing table rows with field values for each particular record. Even though most languages provide flexible and abstracted interfaces that hide such implementation differences from the user, they can have huge implications for performance. A column based structure is efficient for inserting or extracting certain columns of the data, but it is inefficient for manipulating individual rows. For example to insert a single row somewhere in the middle, each of the columns has to be sliced and stiched back together. For row-based implementations, it is the extact other way around: we can easily manipulate a particular record, but to insert/extract a whole column we would need to iteriate over all records in the table and read/modify the appropriate field in each of them.
+Generally speaking, tabular data structures can be implemented in two different ways: in a column based, or row based fasion. A column based structure consists of a named collection of equal-length, homogenous arrays representing the table columns. In a row-based structure on the other hand, the table is implemented as a set of heterogeneous associative arrays representing table rows with field values for each particular record. Even though most languages provide flexible and abstracted interfaces that hide such implementation details from the user, they can have huge implications for performance. A column based structure is efficient for inserting or extracting certain columns of the data, but it is inefficient for manipulating individual rows. For example to insert a single row somewhere in the middle, each of the columns has to be sliced and stiched back together. For row-based implementations, it is the extact other way around: we can easily manipulate a particular record, but to insert/extract a whole column we would need to iteriate over all records in the table and read/modify the appropriate field in each of them.
 
-The data frame in R is implemented in a column based fasion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \texttt{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. R simply binds the specified columns together into a matrix \texttt{X} and calls out to a highly optimized fortran subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the QR factorization of \texttt{X}. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in R. However, unfortunately R is an exception in this respect: many other languages, systems, databases, API's, etc are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. The remaining of this section discusses the details of mapping record based \JSON data structues into our beloved column-based data frames.
+The data frame in R is implemented in a column based fasion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \texttt{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. R simply binds the specified columns together into a matrix \texttt{X} and calls out to a highly optimized fortran subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the QR factorization of \texttt{X}. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in R. However, unfortunately R is an exception in its preference for column-based storage: many other languages, systems, databases, API's, etc are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. The remaining of this section discusses details and challenges of consistently mapping record based \JSON data as frequently encountered in the wild, into column-based data frames which are convenient for statistical computing.
 
-\subsubsection{Row based data frame encoding}
+\subsubsection{Row based data frame encodingin JSONlite}
 
 The way data frames are encoded is one of the major differences between JSONlite and the \texttt{toJSON} implementations from other currently available packages. Instead of using the column-based encoding also used for lists, JSONlite encodes data frames by default as an array of records:
 
@@ -296,7 +296,7 @@ cat(toJSON(iris[1:2,], pretty=TRUE))
 cat(toJSON(list(list(Species="Foo", Width=21))))
 @
 
-\noindent This leads us to the following convention: when encoding R objects, \JSON primitives only appear in vectors and data-frame rows. Primitive values within a \JSON array indicate a vector, and \JSON primitives appearing inside a \JSON object indicate a data-frame row. A \JSON encoded \texttt{list}, (named or unnamed) will never contain \JSON primitives. This is a subtle but important convention that allows us to distinguish between R classes from their \JSON resprestation, without explicitly encoding any metadata.
+\noindent This leads us to the following convention: when encoding R objects, \JSON primitives only appear in vectors and data-frame rows. Primitive values within a \JSON array indicate a vector, and \JSON primitives appearing inside a \JSON object indicate a data-frame row. A \JSON encoded \texttt{list}, (named or unnamed) will never contain \JSON primitives. This is a subtle but important convention that helps to distinguish between R classes from their \JSON resprestation, without explicitly encoding any metadata.
 
 \subsubsection{Missing values in data frames}
 
@@ -310,7 +310,7 @@ cat(toJSON(x, pretty=TRUE))
 
 \noindent The default behavior of JSONlite is to omit missing data from records in a data frame. This seems to be the most conventional way of doing things, and we expect this encoding will most likely lead to the correct interpretation of \emph{missingness}, even in languages which have no explicit notion of \texttt{NA}.
 
-\subsubsection{Nested objects within records}
+\subsubsection{Relational data: nested records}
 
 A structure somewhat unusual in R but frequently encountered in \JSON, is a dataset with records containing nested substructures. Such structures do not really fit the vector based paradigm which makes them hard to manipulate in R, and we should probably avoid them where possible. However, nested records are too common in \JSON data to ignore, and with a little work most cases can still map to a data frame quite nicely. The most common scenario is a dataset in which a certain field within each record contains a \emph{subrecord} with additional fields. JSONlite interprets these subrecords as a nested data frame. Whereas the data frame class usually consists of vectors, technically a column can also be list or another data frame with matching dimension (although this does stretch the meaning of the word "column" a bit):
 
@@ -322,7 +322,7 @@ str(x)
 cat(toJSON(x, pretty=TRUE));
 @
 
-\noindent The case of nested subrecords is relatively well behaved. They map nicely to nested dataframes, and can be flattened into a basic non-nested dataframe for easier manipulation. Building on the previous example:
+\noindent \JSON data containing nested records are often generated from a \emph{relational} database. The \JSON field containing a subrecord is created from a \emph{foreign key} pointing to a record in an external table which were joined into a nested structure. The nested subrecord represents a \emph{one-to-one} or \emph{many-to-one} relation between the parent and child table, and can quite naturally be stored in R using a nested data frame. In the example above, the \texttt{vehicle} field points to a table of verhicles, which in turn contains a \texttt{stats} field pointing to a table of stats. When there is exactly one subrecord for each record, we can decide to \emph{flatten} the structure into a single non-nested data frame.
 
 <<>>=
 myjson <- toJSON(x)
@@ -330,27 +330,30 @@ str(fromJSON(myjson, flatten=FALSE));
 str(fromJSON(myjson, flatten=TRUE));
 @
 
-\noindent Things get difficult when records include nested arrays. It works but we can't really flatten them (test this!!)
+\subsubsection{Relational data: nested tables}
 
-<<>>=
-x <- data.frame(name=c("Elizabeth", "Jeroen"), age=c(24, 28));
-x$siblings <- list("ricardo", c("Erik", "Marcel"))
-cat(toJSON(x, pretty=TRUE))
-fromJSON(toJSON(x))
-@
-
-Something else we commonly see is a field containing an entire new dataset (a set of records):
+The one-to-one relation discussed above is relatively easy to model in R, because easy records contains exactly one subrecord. Therefore we can use either a nested dataframe, or flatten the data frame. However, things get more difficult when \JSON records contain a field with an array. Such a structure appears when tables have a \emph{one-to-many} relation. A standard textbook example is the relation between authors and titles. In the simple case, the field contains an array of primitives:
 
 <<tidy=FALSE>>=
-x <- data.frame(name=c("Elizabeth", "Jeroen"), age=c(24, 28));
-x$siblings <- list(
-  data.frame(name="Ricardo", age=27), data.frame(name=c("Erik", "Marcel"), age=c(27, 25))
-)
-cat(toJSON(x, pretty=TRUE))
-str(fromJSON(toJSON(x)))
+x <- data.frame(author = c("Homer", "Virgil", "Jeroen"))
+x$poems <- list(c("Iliad", "Odyssey"), c("Eclogues", "Georgics", "Aeneid"), vector());
+names(x)
+cat(toJSON(x, pretty = TRUE))
 @
 
+\noindent However in practice, the one-to-many relation often results in fields containing a \emph{set of records}. In R, the only way to model this is as a column containing a list of data frames, one for each row:
 
+<<tidy=FALSE>>=
+x <- data.frame(author = c("Homer", "Virgil", "Jeroen"))
+x$poems <- list(
+  data.frame(title=c("Iliad", "Odyssey"), year=c(-1194, -800)),
+  data.frame(title=c("Eclogues", "Georgics", "Aeneid"), year=c(-44, -29, -19)),
+  data.frame()
+)
+cat(toJSON(x, pretty=TRUE))
+@
+
+\noindent Because R doesn't have native support for relational data, there is no natural way to model these structures. The best we can do is a column containing a list of data frames. This allows us to access the data, but we can't flatten it. Also this structure does not guarantee that each of these subtables contains the same fields, as would be the case in an actual relational data base. 
 
 \section{Problems}
 
