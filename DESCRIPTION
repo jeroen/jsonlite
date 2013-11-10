@@ -20,4 +20,5 @@ Description: This package is a fork of the RJSONIO package by Duncan Temple
     consistently for use with dynamic data in systems and applications.
 Suggests:
     testthat,
-    knitr
+    knitr,
+    reshape2

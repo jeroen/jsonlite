@@ -13,6 +13,7 @@
 \usepackage{url}
 \usepackage{fullpage}
 \usepackage{setspace}
+\usepackage{booktabs}
 
 %extra line spacing
 \usepackage{xspace}
@@ -202,7 +203,34 @@ cat(toJSON(matrix(pi)))
 
 \subsubsection{Matrix row and column names}
 
-Besides the \texttt{"dim"} attribute, matrices in R can have another attribute: \texttt{"dimnames"}. This attribute holds names for the rows and columns in the matrix. However, we decided not to include this information in the default \JSON encoding for matrices for several reasons. First of all, for objects of class matrix the dimnames attribute is optional and often either row or column names or both are \texttt{NULL}. This makes it difficult to define a practical encoding that covers all cases with and without row and/or column names. Secondly, the names in matrices are mostly there for annotation only; they are not actually used in calculations. For example, the linear algebra operations mentioned before completely ignore them, and do not include any names in their output. So when using matrices for linear algebra, there is often little purpose of setting names in the first place. For data sets with records consisting of a set of named columns (fields), R has more natural and flexible class: the data-frame. The \texttt{toJSON} method for data-frames is described below and is much suitable when we want to refer to rows or fields by a particular name. Any matrix can easily be converted to a dataframe using the \texttt{as.data.frame} function.
+Besides the \texttt{"dim"} attribute, matrices in R can have another attribute: \texttt{"dimnames"}. This attribute holds names for the rows and columns in the matrix. However, we decided not to include this information in the default \JSON encoding for matrices for several reasons. First of all, for objects of class matrix the dimnames attribute is optional and often either row or column names or both are \texttt{NULL}. This makes it difficult to define a practical encoding that covers all cases with and without row and/or column names. Secondly, the names in matrices are mostly there for annotation only; they are not actually used in calculations. For example, the linear algebra operations mentioned before completely ignore them, and do not include any names in their output. So when using matrices for linear algebra, there is often little purpose of setting names in the first place. 
+
+When row and column names of a matrix contain vital information, chances are they are actually variable values themselves, and the matrix is not the most appropriate structure to store this data. It might be useful to transform the data into a more appropriate structure. Wickham (2013) calls this tidying the data and outlines best practices on structuring data in. The example below is taken from Wickham (2013). A matrix structured below is practical for printing, but not for manipulating the data. The main variable, treatment, is put in the header:
+
+<<>>=
+x <- matrix(c(NA,1,2,5,4,3), nrow=3)
+row.names(x) <- c("Joe", "Jane", "Mary");
+colnames(x) <- c("Treatment A", "Treatment B")
+print(x)
+@
+
+\noindent In this case might want to melt the data, before converting it to \JSON:
+
+<<>>=
+library(reshape2)
+y <- melt(x, varnames=c("Subject", "Treatment"))
+print(y)
+@
+
+\noindent Tidy date will most likely result in a practical \JSON representation. Compare the encoding of the original and tidy data:
+
+<<>>=
+cat(toJSON(x))
+cat(toJSON(as.data.frame(x), pretty=TRUE))
+cat(toJSON(y, pretty=TRUE))
+@
+
+For data sets with records consisting of a set of named columns (fields), R has more natural and flexible class: the data-frame. The \texttt{toJSON} method for data-frames is described below and is much suitable when we want to refer to rows or fields by a particular name. Any matrix can easily be converted to a dataframe using the \texttt{as.data.frame} function.
 
 
 \subsection{Lists}
