@@ -9,5 +9,5 @@ parseJSON <- function(txt){
   encoding <- mapEncoding(Encoding(txt));
   
   #libjson call
-  .Call("R_fromJSON", txt, as.integer(FALSE), NULL, simplifyWithNames, encoding, NULL, stringFunType = c("GARBAGE" = 4L))    
+  .Call("R_fromJSON", PACKAGE="JSONlite", txt, as.integer(FALSE), NULL, simplifyWithNames, encoding, NULL, stringFunType = c("GARBAGE" = 4L))    
 }
