@@ -1,5 +1,5 @@
 setMethod("asJSON", "complex",
-	function(x, digits=5, container=TRUE, complex=c("string", "list"), NA_as_string = TRUE, ...) {
+	function(x, digits=5, container=TRUE, complex=c("string", "list"), na="string", ...) {
 		#validate
 		complex <- match.arg(complex);
     
@@ -8,13 +8,14 @@ setMethod("asJSON", "complex",
 		
 		if(complex == "string"){
 			mystring <- prettyNum(x=x, digits=digits);
-      if(!isTRUE(NA_as_string)){
-			  mystring[is.na(x)] <- NA;
-      }
+      if(na == "null"){
+        mystring[is.na(x)] <- NA;        
+      } 
+      
 			if(!container){
 				mystring <- as.scalar(mystring);
 			}
-			return(asJSON(mystring, ...));
+			return(asJSON(mystring, na="null", ...));
 		} else {
 			mylist <- list(real=Re(x), imaginary=Im(x));
 			
@@ -26,7 +27,7 @@ setMethod("asJSON", "complex",
 			}
 			
 			#return
-			return(asJSON(mylist, NA_as_string=NA_as_string, ...));
+			return(asJSON(mylist, na=na, ...));
 		}
 	}
 );

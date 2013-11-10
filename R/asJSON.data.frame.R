@@ -1,10 +1,11 @@
 setMethod("asJSON", "data.frame",
-  function(x, drop.na=TRUE, container=TRUE, dataframe=c("rows", "columns"), raw, ...) {
+  function(x, na=c("default", "null", "string"), container=TRUE, dataframe=c("rows", "columns"), raw, ...) {
     #Note: just as in asJSON.list we take the container argument to prevent it form being passed down through ...
     #This is needed in the rare case that a dataframe contains new dataframes, and hence as.scalar is inappropriate
     #
     #check how we want to encode
     dataframe <- match.arg(dataframe);
+    na <- match.arg(na);
     
     #coerse pairlist if needed
     if(is.pairlist(x)){
@@ -12,7 +13,7 @@ setMethod("asJSON", "data.frame",
     }
     
     if(dataframe == "columns"){
-      return(asJSON(as.list(x), drop.na=drop.na, container=container, dataframe="columns", raw="hex", ...));
+      return(asJSON(as.list(x), na=na, container=container, dataframe="columns", raw="hex", ...));
     }
 
     #if we have no rows, just return: []
@@ -39,7 +40,7 @@ setMethod("asJSON", "data.frame",
     }
 
     #don't explicitly encode missing values in records (just drop them)
-    if(isTRUE(drop.na)){
+    if(na == "default"){
       out <- lapply(out, function(record) {
         na_values <- vapply(record, function(z){isTRUE(is.na(z))}, logical(1));
         return(as.list(record[1, !na_values, drop=FALSE]));
@@ -59,6 +60,6 @@ setMethod("asJSON", "data.frame",
     }    
     
     #pass on to asJSON.list
-    return(asJSON(out, raw="hex", ...));
+    return(asJSON(out, raw="hex", na=na, ...));
   }
 );

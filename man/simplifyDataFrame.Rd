@@ -2,7 +2,7 @@
 \alias{simplifyDataFrame}
 \title{Convert a list of records into a dataframe}
 \usage{
-  simplifyDataFrame(recordlist, columns, flatten = TRUE)
+  simplifyDataFrame(recordlist, columns, flatten = FALSE)
 }
 \arguments{
   \item{recordlist}{a list of named lists representing

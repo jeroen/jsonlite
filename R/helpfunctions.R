@@ -20,7 +20,7 @@ givename <- function(obj){
 #vectorized deparse
 deparse_vector <- function(x){
 	stopifnot(is.character(x))
-	unlist(lapply(as.list(x), deparse))
+	vapply(as.list(x), deparse, character(1));
 }
 
 #trim whitespace

@@ -1,5 +1,5 @@
 setMethod("asJSON", "numeric",
-	function(x, container = TRUE, digits = 5, NA_as_string = TRUE, ...) {
+	function(x, container = TRUE, digits = 5, na="string", ...) {
 	  #empty vector
 	  if(!length(x)) return("[]");    
     
@@ -8,7 +8,7 @@ setMethod("asJSON", "numeric",
 		
 		#in numeric variables, NA, NaN, Inf are replaced by character strings
 		if(any(missings <- !is.finite(x))){
-			if(NA_as_string){
+			if(na %in% c("default", "string")){
 				tmp[missings] <- wrapinquotes(tmp[missings]);
 			} else {
 				tmp[missings] <- "null";

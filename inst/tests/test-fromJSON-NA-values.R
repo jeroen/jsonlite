@@ -5,13 +5,12 @@ test_that("fromJSON NA values", {
   objects <- list(
     numbers = c(1,2, NA, NaN, Inf, -Inf, 3.14),
     logical = c(TRUE, FALSE, NA),
-    character = c("Foo", NA, "Bar"),
     integers = as.integer(1,2,3),
     num = 3.14,
-    logical = FALSE,
+    bool = FALSE,
     character = c("FOO","NA", NA, "NaN"),
     integer = 21L,
-    logicalNA = as.logical(NA),
+    boolNA = as.logical(NA),
     df = data.frame(foo=c(1,NA))
   )
   

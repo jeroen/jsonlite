@@ -31,8 +31,7 @@
 #' @param complex how to encode complex numbers: must be one of "string" or "list"
 #' @param raw how to encode raw objects: must be one of "base64", "hex" or "mongo"
 #' @param digits max number of digits (after the dot) to print for numeric values
-#' @param NA_as_string print numeric NA values as strings. If set to FALSE, numeric NA values turn into null
-#' @param drop.na Don't include NA values in dataframes. Only used when dataframe="rows".
+#' @param na how to print NA values. One of "default", "null" or "string"
 #' @param pretty adds indentation whitespace to JSON output 
 #' @param txt a string in json format 
 #' @param simplifyVector automatically coerse JSON arrays containing only scalars into a vector
@@ -83,60 +82,4 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = TRUE, simpl
   } else{
     return(obj);
   }
-}
-
-#' @rdname JSONlite
-#' @export
-toJSON <- function(x,
-  dataframe=c("rows", "columns"),
-  Date = c("ISO8601", "epoch"), 
-  POSIXt = c("string", "ISO8601", "epoch", "mongo"),
-  factor = c("string", "integer"), 
-  complex = c("string", "list"),
-  raw = c("base64", "hex", "mongo"),
-  digits = 2, 
-  NA_as_string = TRUE,
-  drop.na=TRUE,                 
-  pretty = FALSE,
-  ...
-){  
-  
-  #validate args
-  dataframe <- match.arg(dataframe);
-  Date <- match.arg(Date);
-  POSIXt <- match.arg(POSIXt);
-  factor <- match.arg(factor);
-  complex <- match.arg(complex);  
-  raw <- match.arg(raw);
-  
-  #force
-  x <- force(x);
-    
-  #dispatch
-  asJSON(x, dataframe=dataframe, Date=Date, POSIXt=POSIXt, factor=factor, complex=complex, raw=raw, 
-    digits=digits, NA_as_string=NA_as_string, drop.na=drop.na, pretty=pretty, ...);
-}
-
-#maps encoding name to integer
-mapEncoding <- function(encoding){
-	if(is.na(encoding)){
-		return(0L);
-	}
-	
-	codes <- c(
-			"unknown" = 0L, 
-			"native" = 0L, 
-			"utf8" = 1L,  
-			"utf-8" = 1L, 
-			"latin1" = 2L, 
-			"bytes" = 3L, 
-			"symbol" = 5L, 
-			"any" = 99L
-	);
-	
-	enc = pmatch(tolower(encoding), names(codes))
-	if(is.na(enc)) {
-		stop("unrecognized encoding:", encoding);
-	}
-	return(	codes[enc] );
 }
