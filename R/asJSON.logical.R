@@ -1,5 +1,5 @@
 setMethod("asJSON", "logical",
-	function(x, container = TRUE, ...) {
+	function(x, container = TRUE, na="null", ...) {
     
 	  #empty vector
 	  if(!length(x)) return("[]");    
@@ -7,10 +7,10 @@ setMethod("asJSON", "logical",
 		#json true/false
 		tmp = ifelse(x, "true", "false");
 
-		#logical values can have NA (but not Inf/NaN). We encode NA as null
+		#logical values can have NA (but not Inf/NaN). Default is to encode as null.
 		if(any(missings <- is.na(x))){
-			tmp[missings] <- "null";
-		}		
+			tmp[missings] <- ifelse(identical(na, "string"), "\"NA\"", "null");
+		}
 		
 		#wrap in container
 		if(container) {

@@ -57,5 +57,18 @@ test_that("Encoding POSIXt object in a list", {
   }));
 });
 
+test_that("POSIXt NA values", {
+  newobj <- list(
+    c(objects[[1]], NA),
+    c(objects[[2]], NA)
+  );
+  lapply(newobj, function(object){
+    expect_that(toJSON(object), equals("[ \"2013-06-17 22:33:44\", null ]"));
+    expect_that(toJSON(object, na="string"), equals("[ \"2013-06-17 22:33:44\", \"NA\" ]"));
+    expect_that(toJSON(data.frame(foo=object)), equals("[ { \"foo\" : \"2013-06-17 22:33:44\" },{} ]"));
+    expect_that(toJSON(data.frame(foo=object), na="null"), equals("[ { \"foo\" : \"2013-06-17 22:33:44\" },{ \"foo\" : null } ]"));
+    expect_that(toJSON(data.frame(foo=object), na="string"), equals("[ { \"foo\" : \"2013-06-17 22:33:44\" },{ \"foo\" : \"NA\" } ]")); 
+  });
+});
 
 
