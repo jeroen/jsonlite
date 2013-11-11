@@ -13,7 +13,7 @@ pack <- function(obj, ...) {
   
   #encode recursively
   list(
-    mode = as.scalar(encoding.mode), #scalar prevents boxing during asJSON
+    type = as.scalar(encoding.mode), #scalar prevents boxing during asJSON
     attributes = givename(lapply(attributes(obj), pack, ...)),
     value = switch(encoding.mode,
        "NULL" = obj,
@@ -40,7 +40,7 @@ pack <- function(obj, ...) {
 
 unpack <- function(obj){
   
-  encoding.mode <- obj$mode;
+  encoding.mode <- obj$type;
 
   newdata <- c(list(
     ".Data" = switch(encoding.mode,
