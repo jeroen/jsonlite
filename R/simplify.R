@@ -1,4 +1,4 @@
-simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, homoList=FALSE, flatten=FALSE){
+simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, homoList = TRUE, flatten=FALSE){
   if(is.list(x)){
     if(!length(x)){
       # In case of fromJSON("[]") returning a list is most neutral.
@@ -34,9 +34,27 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
       return(do.call(rbind, out));
     }
     
-    #try to enfoce homoList here
-    if(isTRUE(homoList)){
-      
+    #try to enfoce homoList on unnamed lists
+    if(isTRUE(homoList) && is.null(names(out))) {
+      #coerse empty lists, caused by the ambiguous fromJSON("[]")
+      isemptylist <- vapply(out, identical, logical(1), list());
+      if(any(isemptylist) & !all(isemptylist)){
+        #if all the others look like data frames, coerse to data frames!
+        if(all(vapply(out[!isemptylist], is.data.frame, logical(1)))) {
+          for(i in which(isemptylist)){
+            out[[i]] <- data.frame();  
+          }
+          return(out);
+        }
+        
+        #if all others look like atomic vectors, unlist all
+        if(all(vapply(out[!isemptylist], is.atomic, logical(1)))) {
+          for(i in which(isemptylist)){
+            out[[i]] <- vector(mode=typeof(out[[which(!isemptylist)[1]]]));  
+          }
+          return(out);
+        }
+      }
     }
     
     #return object

@@ -25,13 +25,13 @@ test_that("recover nested data frames", {
 
 test_that("recover lists in data frames", {
   x <- data.frame(author = c("Homer", "Virgil", "Jeroen"));
-  x$poems = list(c("Iliad", "Odyssey"), c("Eclogues", "Georgics", "Aeneid"), list());
+  x$poems = list(c("Iliad", "Odyssey"), c("Eclogues", "Georgics", "Aeneid"), character());
                
   y <- data.frame(author = c("Homer", "Virgil", "Jeroen"));
   y$poems = list(
     data.frame(title=c("Iliad", "Odyssey"), year=c(-1194, -800)),
     data.frame(title=c("Eclogues", "Georgics", "Aeneid"), year=c(-44, -29, -19)),
-    list()
+    data.frame()
   );
   
   z <- list(x=x, y=y);
