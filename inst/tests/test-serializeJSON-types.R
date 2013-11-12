@@ -22,7 +22,10 @@ test_that("Serializing Data Objects", {
     expression(foo),
     parse(text="rnorm(10);"),    
     call("rnorm", n=10),
-    emptyenv()
+    emptyenv(),
+    `if`, #builtin
+    `list`, #special
+    getNamespace("graphics") #namespace
   ) 
   
   #test all but list

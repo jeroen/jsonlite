@@ -12,7 +12,7 @@ base64_decode <- function(input){
 	readBin(output, "raw", file.info(output)$size)
 }
 
-base64_encode <- function(input, linesize = 72L ){
+base64_encode <- function(input, linesize = 1e9 ){
 	stopifnot(is.raw(input));
 	inputtf <- tempfile();
 	writeBin(input, inputtf)

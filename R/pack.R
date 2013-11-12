@@ -3,14 +3,12 @@ pack <- function(obj, ...) {
   #encode by storage mode
   encoding.mode <- typeof(obj);
   
-  if(encoding.mode == "pairlist"){
-    obj <- as.vector(obj, mode="list")
-  }  
-  
+  #needed because formals become attributes, etc
   if(encoding.mode == "closure"){
     obj <- as.list(obj)
   }
   
+  #special exception
   if(encoding.mode == "environment" && isNamespace(obj)){
     encoding.mode <- "namespace";
   }
@@ -25,7 +23,7 @@ pack <- function(obj, ...) {
        "externalptr" = NULL,
        "namespace" = lapply(as.list(getNamespaceInfo(obj, "spec")), as.scalar),
        "S4" = pack(attributes(getClass(class(obj)))$slots, ...), #the value is the class defintion. The slots are in the attributes.
-       "raw" = base64_encode(unclass(obj)),
+       "raw" = as.scalar(base64_encode(unclass(obj))),
        "logical" = as.vector(unclass(obj), mode = "logical"),
        "integer" = as.vector(unclass(obj), mode = "integer"),
        "numeric" = as.vector(unclass(obj), mode = "numeric"),
@@ -33,10 +31,10 @@ pack <- function(obj, ...) {
        "character" = as.vector(unclass(obj), mode = "character"),
        "complex" = as.vector(unclass(obj), mode = "complex"),
        "list" = unname(lapply(obj, pack, ...)),
-       "pairlist" = unname(lapply(obj, pack, ...)),             
+       "pairlist" = unname(lapply(as.vector(obj, mode="list"), pack, ...)),             
        "closure" = unname(lapply(obj, pack, ...)),
-       "builtin" = deparse(unclass(obj)),
-       "special" = deparse(unclass(obj)),
+       "builtin" = as.scalar(base64_encode(serialize(unclass(obj), NULL))),
+       "special" = as.scalar(base64_encode(serialize(unclass(obj), NULL))),
        "language" = deparse(unclass(obj)),
        "name" = deparse(unclass(obj)),
        "symbol" = deparse(unclass(obj)),
@@ -57,7 +55,7 @@ unpack <- function(obj){
        "namespace" = getNamespace(obj$value$name),
        "externalptr" = NULL, #see below fixNativeSymbol
        "S4" = stop("S4 unpacking not yet implemented"),
-       "raw" = base64_decode(unlist(obj$value)),
+       "raw" = base64_decode(obj$value),
        "logical" = as.logical(null2na(obj$value)),
        "integer" = as.integer(null2na(obj$value)),
        "numeric" = as.numeric(null2na(obj$value)),
@@ -69,9 +67,9 @@ unpack <- function(obj){
        "symbol" = makesymbol(x=unlist(obj$value)),
        "name" = makesymbol(x=unlist(obj$value)),  
        "expression" = parse(text=obj$value),
-       "language" = as.call(parse(text=unlist(obj$value)))[[1]], #must be a better way?
-       "special" = try(eval(parse(text=obj$value), envir=baseenv())), #this might be unsafe
-       "builtin" = try(eval(parse(text=obj$value), envir=baseenv())), #this might be unsafe
+       "language" = as.call(parse(text=unlist(obj$value)))[[1]],
+       "special" = unserialize(base64_decode(obj$value)),
+       "builtin" = unserialize(base64_decode(obj$value)),
        "closure" = lapply(obj$value, unpack),                     
        stop("Switch falling through for encode.mode: ", encoding.mode)
     )
