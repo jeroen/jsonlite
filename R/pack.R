@@ -11,6 +11,10 @@ pack <- function(obj, ...) {
     obj <- as.list(obj)
   }
   
+  if(encoding.mode == "environment" && isNamespace(obj)){
+    encoding.mode <- "namespace";
+  }
+  
   #encode recursively
   list(
     type = as.scalar(encoding.mode), #scalar prevents boxing during asJSON
@@ -19,6 +23,7 @@ pack <- function(obj, ...) {
        "NULL" = obj,
        "environment" = NULL,
        "externalptr" = NULL,
+       "namespace" = lapply(as.list(getNamespaceInfo(obj, "spec")), as.scalar),
        "S4" = pack(attributes(getClass(class(obj)))$slots, ...), #the value is the class defintion. The slots are in the attributes.
        "raw" = base64_encode(unclass(obj)),
        "logical" = as.vector(unclass(obj), mode = "logical"),
@@ -49,6 +54,7 @@ unpack <- function(obj){
     ".Data" = switch(encoding.mode,
        "NULL" = NULL,
        "environment" = emptyenv(), #Don't serialize environments for now
+       "namespace" = getNamespace(obj$value$name),
        "externalptr" = NULL, #see below fixNativeSymbol
        "S4" = stop("S4 unpacking not yet implemented"),
        "raw" = base64_decode(unlist(obj$value)),
