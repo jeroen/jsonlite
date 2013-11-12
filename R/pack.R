@@ -22,7 +22,7 @@ pack <- function(obj, ...) {
        "environment" = NULL,
        "externalptr" = NULL,
        "namespace" = lapply(as.list(getNamespaceInfo(obj, "spec")), as.scalar),
-       "S4" = pack(attributes(getClass(class(obj)))$slots, ...), #the value is the class defintion. The slots are in the attributes.
+       "S4" = list(class=as.scalar(as.character(attr(obj, "class"))), package=as.scalar(attr(attr(obj, "class"), "package"))), #the value is the class defintion. The slots are in the attributes.
        "raw" = as.scalar(base64_encode(unclass(obj))),
        "logical" = as.vector(unclass(obj), mode = "logical"),
        "integer" = as.vector(unclass(obj), mode = "integer"),
@@ -54,7 +54,7 @@ unpack <- function(obj){
        "environment" = emptyenv(), #Don't serialize environments for now
        "namespace" = getNamespace(obj$value$name),
        "externalptr" = NULL, #see below fixNativeSymbol
-       "S4" = stop("S4 unpacking not yet implemented"),
+       "S4" = getClass(obj$value$class, where=getNamespace(obj$value$package)), #this works! Data is added from attributes
        "raw" = base64_decode(obj$value),
        "logical" = as.logical(null2na(obj$value)),
        "integer" = as.integer(null2na(obj$value)),
