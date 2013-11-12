@@ -1,5 +1,5 @@
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Encoding Common R Data Structures in JSON}
+%\VignetteIndexEntry{A Practical and Consistent Mapping Between Common R Data Structures to JSON and JSON}
 
 %shorthands
 \newcommand{\JSON}{\texttt{JSON}\xspace}
@@ -7,7 +7,7 @@
 %meta
 \documentclass{article}
 \author{Jeroen Ooms}
-\title{Encoding Common R Data Structures in JSON}
+\title{A Practical and Consistent Mapping Between Common JSON Data Structures and Object Classes in The R Language}
 
 %some packages
 \usepackage{url}
@@ -36,7 +36,18 @@ toJSON <- function(...){
 
 \section{Introduction}
 
-JSON (JavaScript Object Notation) is a lightweight data-interchange format, and one of the most common methods today for exchange of simple data structures in systems and applications. It is easy for humans to read and write, and easy for machines to parse and generate. The \JSON format itself is very simple and completely defined in a single page at \url{http://www.json.org/}. This simplicity allows for directly mapping some universal data structures from any programming language into \JSON strings, and vice versa, which is convenient for developers and has contributed to the popularity of the format. Several R packages including \texttt{RJSONIO}, \texttt{rjson} and \texttt{JSONlite} implement \texttt{toJSON} and \texttt{fromJSON} functions which convert between basic R data structures and \JSON.  However, the intuitive mapping in R is limited to lists and vectors; there is no consensus on how some of the other common classes in R, such as factors, matrices and data frames should be mapped to \JSON. Furthermore, upon closer inspection, even the universal data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between the current packages, and can lead to unexpected output for certain special cases, which affects reliability of applications that rely on \JSON to get data in and out of R. This document tries to take away some of the ambiguity by describing the mapping a more formally and explicitly, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
+JSON (JavaScript Object Notation) is a lightweight data-interchange format, and one of the most common methods today for exchange of simple data structures in systems and applications. It is easy for humans to read and write, and easy for machines to parse and generate. The syntax is simple and completely defined in a single page at \url{http://www.json.org/}. It specifies 5 primitive types (\texttt{string}, \texttt{number}, \texttt{true}, \texttt{false}, \texttt{null}) and two \emph{universal data structures}:
+
+\begin{itemize}
+  \item A collection of name/value pairs. In R, this is realized as a \emph{named list}.
+  \item An ordered list of values. In R, this is realized as an \emph{unnamed list}.
+\end{itemize}
+
+\noindent Because \JSON is limited to universal types and structures, it can easily be converted to a native object in almost any programming language, which is convenient for developers and has contributed to the popularity of the format. Several R packages including \texttt{RJSONIO}, \texttt{rjson} and \texttt{JSONlite} implement \texttt{toJSON} and \texttt{fromJSON} functions which convert between basic R data structures and \JSON. However, there is no consensus on how some of the other common classes in R other than lists, such as factors, matrices and data frames should be mapped to \JSON. Furthermore, upon closer inspection, even the universal data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between the current packages, and can lead to unexpected output for certain special cases, which affects reliability of applications that rely on \JSON to get data in and out of R. This document tries to take away some of the ambiguity by describing the mapping a more formally and explicitly, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
+
+
+\noindent Any data object must somehow be transformed to into the above two structures in order to be represented using  \JSON. When relying on \JSON as the data interchange format between systems, this transformation must be consistent, even when the data is dynamic, in order to facilitate reliable communication.
+
 
 \subsection{Reference implementation: the \texttt{JSONlite} package}
 
@@ -58,6 +69,10 @@ The alternative to the S3 method system is to use type-based encoding, which \te
 \subsection{Scope and Limitations}
 
 Before continuing, it is important to be aware of the limitations of representing R data structures in \JSON. First of all, there are the general limitations to types of objects that can be serialized. Temporary in-memory properties such as connections, file descriptors and (recursive) memory references are always difficult if not impossible to store in a sensible way, regardless of the language or serialization method. This document mostly focuses on R classes that hold  data that can be exchanged with other languages, e.g. vectors, lists, dates, matrices, data frames, etc. We are not overly interested in language level constructs such as expressions, functions, promises, which hold little meaning outside the context of R. Then there are limitations in the format itself. \JSON is a human readable, text-based format which does not support binary data, and numbers are stored in their decimal representation. This leads to loss of precision for real numbers, depending on how many digits the user decides to print. Finally, as mentioned earlier, the class based S3 method system allows for concise and practical encoding of the various data structures, but makes that \texttt{fromJSON} is not a perfect inverse function of \texttt{toJSON}, as is the case for e.g. \texttt{serialializeJSON} and \texttt{unserializeJSON}. For example, the \JSON representation of an empty vector, empty list or empty data frame are all the same: \texttt{"[ ]"}. In the design of the functions we target consistent behavior, and try to adhere to the \emph{robustness principle} to be strict on output but tolerant on input. 
+
+\subsection{Goals: Practical and Consistent}
+
+
 
 \section{Converting R objects to \JSON}
  
@@ -383,9 +398,10 @@ cat(toJSON(x, pretty=TRUE))
 
 \noindent Because R doesn't have native support for relational data, there is no natural way to model these structures. The best we can do is a column containing a list of data frames. This allows us to access the data, but we can't flatten it. Also this structure does not guarantee that each of these subtables contains the same fields, as would be the case in an actual relational data base. 
 
-\section{Problems}
+\section{Best Practices}
 
-- Unnamed lists containing different structures
+- Unnamed lists containing different structures.
+- Tidy data: don't confuse variables and values.
 - Array of records with different fields names (i.e. not really a table)
 
 
