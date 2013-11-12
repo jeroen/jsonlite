@@ -71,14 +71,14 @@
 #'   myrawvec = charToRaw("This is a test")
 #' );
 #' identical(unserializeJSON(serializeJSON(myobject)), myobject);
-fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, flatten=FALSE){
+fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, simplifyMatrix = simplifyVector){
   
   #parse JSON
   obj <- parseJSON(txt);
   
   #post processing
   if(any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))){
-    return(simplify(obj, simplifyVector=simplifyVector, simplifyDataFrame=simplifyDataFrame, simplifyMatrix=simplifyMatrix, flatten=flatten));
+    return(simplify(obj, simplifyVector=simplifyVector, simplifyDataFrame=simplifyDataFrame, simplifyMatrix=simplifyMatrix));
   } else{
     return(obj);
   }
