@@ -15,3 +15,5 @@ vignettes/*.pdf
 vignettes/*.aux
 man/as.scalar.Rd
 vignettes/framed.sty
+vignettes/.DS_Store
+.DS_Store
