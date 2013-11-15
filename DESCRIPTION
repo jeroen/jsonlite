@@ -21,4 +21,5 @@ Description: This package is a fork of the RJSONIO package by Duncan Temple
 Suggests:
     testthat,
     knitr,
-    reshape2
+    reshape2,
+    RCurl

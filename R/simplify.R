@@ -18,7 +18,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     
     # or a scalar list (atomic vector)
     if(isTRUE(simplifyVector) && is.null(names(x)) && is.scalarlist(x)){
-        return(null2na(x)); 
+      return(null2na(x));
     }
     
     #apply recursively
@@ -48,7 +48,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
         }
         
         #if all others look like atomic vectors, unlist all
-        if(all(vapply(out[!isemptylist], is.atomic, logical(1)))) {
+        if(all(vapply(out[!isemptylist], function(z){isTRUE(is.vector(z) && is.atomic(z))}, logical(1)))) {
           for(i in which(isemptylist)){
             out[[i]] <- vector(mode=typeof(out[[which(!isemptylist)[1]]]));  
           }
@@ -73,12 +73,15 @@ is.namedlist <- function(x){
 }
 
 is.recordlist <- function(x){
-  isTRUE (
-    is.list(x) &&
-    length(x) && 
-    all(sapply(x, is.namedlist))# &&
-    #all(sapply(x, is.scalarlist))
-  );
+  #recordlist is an array with only objects or NULL
+  #NULL appears when this is a nested data frame, but some records do not contain this data frame at all.
+  if(!isTRUE(is.list(x) && length(x))){
+    return(FALSE);
+  } 
+  if(!any(namedlists <- vapply(x, is.namedlist, logical(1)))){
+    return(FALSE);
+  }
+  return(isTRUE(all(namedlists | vapply(x, is.null, logical(1)))));
 }
 
 is.matrixlist <- function(x){

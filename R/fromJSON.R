@@ -73,6 +73,21 @@
 #' identical(unserializeJSON(serializeJSON(myobject)), myobject);
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, simplifyMatrix = simplifyVector){
   
+  #overload for URL or path
+  if(length(txt) == 1 && nchar(txt) < 1000){
+    if(grepl("^https", txt)){
+      library(RCurl);
+      txt <- RCurl::getURL(txt);
+    } else if(grepl("^http", txt)){
+      tmp <- tempfile();
+      download.file(txt, tmp);
+      txt <- paste(readLines(tmp), collapse="\n");
+      unlink(tmp);
+    } else if(file.exists(txt)){
+      txt <- paste(readLines(tmp), collapse="\n");
+    }
+  }
+
   #parse JSON
   obj <- parseJSON(txt);
   

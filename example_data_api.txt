@@ -7,13 +7,12 @@ https://api.github.com/users/hadley/orgs
 #nested
 https://api.github.com/users/hadley/repos
 
-#highly nested
-https://api.github.com/repos/hadley/ggplot2/events
-
-#inconsistent schema
+#inconsistent schema (filename as key)
+https://api.github.com/gists/5585173
 https://api.github.com/users/hadley/gists
 
-#inconsistent and relational
+#dynamic payload
+https://api.github.com/repos/hadley/ggplot2/events
 https://api.github.com/users/hadley/events
 
 
