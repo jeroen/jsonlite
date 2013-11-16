@@ -3,7 +3,8 @@
 
 %shorthands
 \newcommand{\JSON}{\texttt{JSON}\xspace}
-
+\newcommand{\toJSON}{\texttt{toJSON}\xspace}
+\newcommand{\fromJSON}{\texttt{fromJSON}\xspace}
 %meta
 \documentclass{article}
 \author{Jeroen Ooms}
@@ -43,14 +44,14 @@ JSON (JavaScript Object Notation) is a lightweight data-interchange format, and 
   \item An ordered list of values. In R, this is realized as an \emph{unnamed list}.
 \end{itemize}
 
-\noindent Because the syntax is limited to these universal types and structures, \JSON data is easily converted into a native object in almost any programming language. This is convenient for developers and has contributed to the popularity of the format. Several R packages already implement \texttt{toJSON} and \texttt{fromJSON} functions which convert between R objects and \JSON structures. However, the exact mapping between the various R classes and the two universal data structures that are supported by \JSON is not self evident. Currently, there are no formal guidelines, or even consensus between implementations on how exactly each class, such as \texttt{vector}, \texttt{matrix} and \texttt{data.frame} should be represented in \JSON. Furthermore, upon closer inspection, even the most basic data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between implementations, and can lead to unexpected output for special cases. To further complicate things, best practices of representing data in \JSON have already been established outside the R community. Respecting these conventions where possible is important to maximize interoperability of \JSON data in R.
+\noindent Because the syntax is limited to these universal types and structures, \JSON data is easily converted into a native object in almost any programming language. This is convenient for developers and has contributed to the popularity of the format. Several R packages already implement \toJSON and \fromJSON functions which convert between R objects and \JSON structures. However, the exact mapping between the various R classes and the two universal data structures that are supported by \JSON is not self evident. Currently, there are no formal guidelines, or even consensus between implementations on how exactly each class in R should be represented in \JSON. Furthermore, upon closer inspection, even the most basic data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between implementations, and can lead to unexpected output for special cases. To further complicate things, best practices of representing data in \JSON have already been established outside the R community. Respecting these conventions where possible is important to maximize interoperability of data in R when using \JSON.
 
 
 When relying on \JSON as the data interchange format, the mapping between R objects and \JSON data must be consistent and unambiguous. Clients relying on \JSON to get data in and out of R must know exactly what to expect in order to facilitate reliable communication, even if the data themselves are dynamic. This document attempts to take away some of the ambiguity by explicitly describing the mapping between R classes and \JSON data, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
 
 \subsection{Reference implementation: the \texttt{JSONlite} package}
 
-The \texttt{JSONlite} package provides a reference implementation of the conventions proposed in this document. \texttt{JSONlite} is a fork of the \texttt{RJSONIO} package by Duncan Temple Lang, which again builds on \texttt{libjson} \texttt{C++} library. The \texttt{JSONlite} package uses the parser from \texttt{RJSONIO}, but the R code has been rewritten from scratch. Both packages implement \texttt{toJSON} and \texttt{fromJSON} functions, but their output is quite different. Finally, the \texttt{JSONlite} package contains a large set of unit tests to validate that R objects are correctly converted to \JSON and vice versa. These unit tests can be used to validate if and where other implementation follow the same convetions. 
+The \texttt{JSONlite} package provides a reference implementation of the conventions proposed in this document. \texttt{JSONlite} is a fork of the \texttt{RJSONIO} package by Duncan Temple Lang, which again builds on \texttt{libjson} \texttt{C++} library from Jonathan Wallace. The \texttt{JSONlite} package uses the parser from \texttt{RJSONIO}, but the R code has been rewritten from scratch. Both packages implement \toJSON and \fromJSON functions, but their output is quite different. Finally, the \texttt{JSONlite} package contains a large set of unit tests to validate that R objects are correctly converted to \JSON and vice versa. These unit tests cover all classes and edge cases mentioned in this document, and could be used to validate if other implementations follow the same convetions. 
 
 <<eval=FALSE>>=
 library(testthat)
@@ -61,27 +62,53 @@ test_package("JSONlite")
 
 \subsection{Class-based versus type-based encoding}
 
-The \texttt{JSONlite} package actually implements two systems for translating between R objects and \JSON. This document focuses on the \texttt{toJSON} and \texttt{fromJSON} functions which use R's class-based S3 method system. For all of the common classes in R, the \texttt{JSONlite} package implements \texttt{toJSON} methods as described in this document. Users in R can easily extend this system by implementing additional \texttt{toJSON} methods for other classes. However this also means that classes that do not have the \texttt{toJSON} method defined are not supported. Furthermore, the implementation of a specific \texttt{toJSON} method determines which data and metadata in the objects of this class gets encoded in its \JSON representation, and how. In this respect, \texttt{toJSON} is similar to e.g. the \texttt{print} function, which also provides a certain \emph{representation} of an object based on its class and optionally some print parameters. This representation does not necessarily reflect all information stored in the object, and there is no guaranteed one-to-one correspondence between R objects and \JSON. I.e. calling \texttt{fromJSON(toJSON(object))} might return an object of a different class than the original, which only contains the data that was encoded by the \texttt{toJSON} method for this particular class.
+The \texttt{JSONlite} package actually implements two systems for translating between R objects and \JSON. This document focuses on the \toJSON and \fromJSON functions which use R's class-based S3 method system. For all of the common classes in R, the \texttt{JSONlite} package implements \toJSON methods as described in this document. Users in R can easily extend this system by implementing additional \toJSON methods for other classes. However this also means that classes that do not have the \toJSON method defined are not supported. Furthermore, the implementation of a specific \toJSON method determines which data and metadata in the objects of this class gets encoded in its \JSON representation, and how. In this respect, \toJSON is similar to e.g. the \texttt{print} function, which also provides a certain \emph{representation} of an object based on its class and optionally some print parameters. This representation does not necessarily reflect all information stored in the object, and there is no guaranteed one-to-one correspondence between R objects and \JSON. I.e. calling \texttt{fromJSON(toJSON(object))} will return an object which only contains the data that was encoded by the \toJSON method for this particular class, and which even be a different class than the original.
 
-The alternative to the S3 method system is to use type-based encoding, which \texttt{JSONlite} implements in the functions \texttt{serializeJSON} and \texttt{unserializeJSON}. All data structures in R get stored in memory using one of the internal \texttt{SEXP} storage types, and \texttt{serializeJSON} defines an encoding schema which captures the type, value, and attributes for each storage type. The result is \JSON output which closely resembles the internal structure of the underlying C data types, and which can be perfectly restored to the original R object using \texttt{unserializeJSON}. This method is relatively straightforward to implement, however the disadvantage is that the resulting \JSON is very verbose, hard to interpret, and cumbersome to generate in the context of another language or system. For most applications this is actually impractical and limits interoperability. Instead we can make data in R more accessible to third parties by defining sensible \JSON representations that are natural for the class of an object, rather than its internal storage type. This document does not discuss the \texttt{serializeJSON} system in any further detail, and solely treats the class based system implemented in \texttt{toJSON} and \texttt{fromJSON}. However the reader that is interested in full serialization of R objects into \JSON is encouraged to have a look at the respective manual pages.
+The alternative to the S3 method system is to use type-based encoding, which \texttt{JSONlite} implements in the functions \texttt{serializeJSON} and \texttt{unserializeJSON}. All data structures in R get stored in memory using one of the internal \texttt{SEXP} storage types, and \texttt{serializeJSON} defines an encoding schema which captures the type, value, and attributes for each storage type. The result is \JSON output which closely resembles the internal structure of the underlying C data types, and which can be perfectly restored to the original R object using \texttt{unserializeJSON}. This method is relatively straightforward to implement, however the disadvantage is that the resulting \JSON is very verbose, hard to interpret, and cumbersome to generate in the context of another language or system. For most applications this is actually impractical because it requires the client/consumer to understand and manipulate R types, which severely reduces interoperability. Instead we can make data in R more accessible to third parties by defining sensible \JSON representations that are natural for the class of an object, rather than its internal storage type. This document does not discuss the \texttt{serializeJSON} system in any further detail, and solely treats the class based system implemented in \toJSON and \fromJSON. However the reader that is interested in full serialization of R objects into \JSON is encouraged to have a look at the respective manual pages.
 
 \subsection{Scope and Limitations}
 
-Before continuing, it is important to be aware of the limitations of representing R data structures in \JSON. Most importantly, there are the limitations to types of objects that can be represented. Temporary in-memory properties such as connections, file descriptors and (recursive) memory references are always difficult if not impossible to store in a sensible way, regardless of the language or serialization method. This document focuses on the common R classes that hold \emph{data}, such as vectors, lists, dates, factors, matrices, data frames, etc. We do not treat language level constructs such as expressions, functions, promises, which hold little meaning outside the context of R. We also don't treat custom classes defined in contributed packges.
+Before continuing, we want to stress some limitations of encoding R data structures in \JSON. Most importantly, there are the limitations to types of objects that can be represented. In general, temporary in-memory properties such as connections, file descriptors and (recursive) memory references are always difficult if not impossible to store in a sensible way, regardless of the language or serialization method. This document focuses on the common R classes that hold \emph{data}, such as vectors, lists, dates, factors, matrices, data frames, etc. We do not treat language level constructs such as expressions, functions, promises, which hold little meaning outside the context of R. We also don't treat special compound classes such as linear models or custom classes defined in contributed packages. When designing systems or protocols that interact with R, we recommend to stick with the standard data structures as much as possible.
 
-Then there are limitations in the format itself. \JSON is a human readable, text-based format which does not support binary data, and numbers are stored in their decimal representation. This leads to loss of precision for real numbers, depending on how many digits the user decides to print. Finally, as mentioned earlier, the class based S3 method system allows for concise and practical encoding of the various data structures, but makes that \texttt{fromJSON} is not a perfect inverse function of \texttt{toJSON}, as is the case for e.g. \texttt{serialializeJSON} and \texttt{unserializeJSON}. For example, the \JSON representation of an empty vector, empty list or empty data frame are all the same: \texttt{"[ ]"}. In the design of the functions we target consistent behavior, and try to adhere to the \emph{robustness principle} to be strict on output but tolerant on input. 
+Then there are limitations introduced by the format. Because \JSON is a human readable, text-based format, it does not support binary data, and numbers are stored in their decimal notation. This leads to loss of precision for real numbers, depending on how many digits the user decides to print. There are dialects of \JSON such as \texttt{BSON} or \texttt{MSGPACK} that extend the format with various binary types. However, these formats are much less popular, less interoperable, and often impractical, precisely because they require binary parsing and abandon human readability. 
 
-\subsection{Goals: Practical and Consistent}
+Finally, as mentioned earlier, \fromJSON is not a perfect inverse function of \toJSON, as would be the case for \texttt{serialializeJSON} and \texttt{unserializeJSON}. The class based S3 method system allows for concise and practical encoding of the various common data structures. In our design of \toJSON and \fromJSON, we have tried to approach a reversible mapping between R objects and \JSON for the standard data classes, but there are always limitations and edge cases. For example, the \JSON representation of an empty vector, empty list or empty data frame are all the same: \texttt{"[ ]"}. Also some special vector types such as factors, dates or timestamps get coersed to strings, as they would in for example \texttt{CSV}. This is a quite typical and expected behavior among text based formats, but it does require some additional interpretation on the side of the consumer.
+
+\subsection{Goals: Consistent and Practical}
+
+The main goal of JSONlite is to define a consistent and practical mapping between \JSON structures and R objects such that it becomes easy to read, write and manipulate a JSON structure in R using the corresponding object, and vice versa. Two important use cases include consuming live/dynamic data from public API's and getting data in and out of R in the context of an RPC service such as OpenCPU. 
+
+
+
+
+
+
+\begin{itemize}
+  
+  \item{Good support for \JSON from 3rd party API.}
+  \item{Interact with R in RPC setting.}
+  \item{Consistent behavior to build on systems with dynamic data}
+  \item{Optimally reversible, at least coercible.}
+  \item{Minimize opportunities for misinterpretation.}
+\end{itemize}
+
+Much of this work has been motived by the need to support real world API's and \emph{dynamic data}.tgm
+
+
+
 
 - Dynamic data, e.g. API, RPC
 - Consistent
 - Reversible where possible
 - Practical: not overly verbose, use conventional ways of representing data in JSON
+- Robustness principle.
 
+
+In the design of the functions we target consistent behavior, and try to adhere to the \emph{robustness principle} to be strict on output but tolerant on input. 
 
 \section{Converting R objects to \JSON}
  
-This section lists options and examples of representing the common R classes in \JSON, i.e. the \texttt{toJSON} function in \texttt{JSONlite}. As explained before, we rely on the class based S3 method system in R; hence objects get encoded according to their \texttt{class} value. If an object has multiple \texttt{class} values, R will use the first occurring class which has a \texttt{toJSON} method implemented. If none of the classes of an object has a \texttt{toJSON} method, R will raise an error.
+This section lists options and examples of representing the common R classes in \JSON, i.e. the \toJSON function in \texttt{JSONlite}. As explained before, we rely on the class based S3 method system in R; hence objects get encoded according to their \texttt{class} value. If an object has multiple \texttt{class} values, R will use the first occurring class which has a \toJSON method implemented. If none of the classes of an object has a \toJSON method, R will raise an error.
 
 \subsection{Atomic Vectors}
 
@@ -250,7 +277,7 @@ cat(toJSON(as.data.frame(x), pretty=TRUE))
 cat(toJSON(y, pretty=TRUE))
 @
 
-For data sets with records consisting of a set of named columns (fields), R has more natural and flexible class: the data-frame. The \texttt{toJSON} method for data-frames is described below and is much suitable when we want to refer to rows or fields by a particular name. Any matrix can easily be converted to a dataframe using the \texttt{as.data.frame} function.
+For data sets with records consisting of a set of named columns (fields), R has more natural and flexible class: the data-frame. The \toJSON method for data-frames is described below and is much suitable when we want to refer to rows or fields by a particular name. Any matrix can easily be converted to a dataframe using the \texttt{as.data.frame} function.
 
 
 \subsection{Lists}
@@ -332,7 +359,7 @@ The data frame in R is implemented in a column based fasion: it constitutes of a
 
 \subsubsection{Row based data frame encodingin JSONlite}
 
-The way data frames are encoded is one of the major differences between JSONlite and the \texttt{toJSON} implementations from other currently available packages. Instead of using the column-based encoding also used for lists, JSONlite encodes data frames by default as an array of records:
+The way data frames are encoded is one of the major differences between JSONlite and the \toJSON implementations from other currently available packages. Instead of using the column-based encoding also used for lists, JSONlite encodes data frames by default as an array of records:
 
 <<>>=
 cat(toJSON(iris[1:2,], pretty=TRUE))
