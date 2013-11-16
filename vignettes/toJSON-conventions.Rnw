@@ -76,9 +76,9 @@ Finally, as mentioned earlier, \fromJSON is not a perfect inverse function of \t
 
 \subsection{Goals: Consistent and Practical}
 
-The main goal of JSONlite is to define a consistent and practical mapping between \JSON structures and R objects such that it becomes easy to read, write and manipulate a JSON structure in R using the corresponding object, and vice versa. Two important use cases include consuming live/dynamic data from public API's and getting data in and out of R in the context of an RPC service such as OpenCPU. 
+The main goal of JSONlite is to define a consistent, natural and practical mapping between \JSON structures and R objects. This is useful for interoperability, both when R is a server or a client role. From the perspective of the R user, a consistent mapping makes it easy to read, write and manipulate a JSON structure using the corresponding object. This is useful, for example when consuming live/dynamic data from a public \JSON API in R. In order for R code to work, the \JSON data must consistently be converted to the same R classes for all possible outputs of the API.
 
-
+From the perspective of a client, it allows the client to access and manipulate R objects through their \JSON representation. This allows clients to get data in and out of R, for example in the context of an RPC serverice such as OpenCPU.
 
 
 
