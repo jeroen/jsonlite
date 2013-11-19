@@ -80,7 +80,7 @@ It can be helpful to see the problem from both sides. The R user would like to i
 Both sides come together in the context of an RPC service such as OpenCPU. OpenCPU exposes a HTTP API to let 3rd party clients call R functions over HTTP. A client posts function arguments in \JSON and OpenCPU automatically converts these to R objects to construct the R function call. The return value of the function is then converted to \JSON and sent back to the client. For this to work, the \JSON data must consistently be converted to the same R classes for all allowed inputs of the API.
 
 \begin{itemize}
-  
+
   \item{Good support for \JSON from 3rd party API.}
   \item{Interact with R in RPC setting.}
   \item{Consistent behavior to build on systems with dynamic data}
