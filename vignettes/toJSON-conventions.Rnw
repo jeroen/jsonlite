@@ -324,7 +324,7 @@ cat(toJSON(x))
 
 \subsection{Data frame}
 
-The \texttt{data frame} is perhaps the most central data structure in R from the user point of view. This class holds a tabular data structure in which each column is named and (usually) homogeneous. Conceptually it is very similar to a table in relational data bases such as \texttt{MySQL}, where \emph{fields} are referred to as \emph{column names}, and \emph{records} are called \emph{row names}. Like a matrix, a data frame can be subsetted with two indices, to extract certain rows and columns of the data:
+The \texttt{data frame} is perhaps the most central data structure in R from the user point of view. This class holds tabular data in which each column is named and (usually) homogeneous. Conceptually it is very similar to a table in relational data bases such as \texttt{MySQL}, where \emph{fields} are referred to as \emph{column names}, and \emph{records} are called \emph{row names}. Like a matrix, a data frame can be subsetted with two indices, to extract certain rows and columns of the data:
 
 <<>>=
 is(iris)
@@ -371,7 +371,7 @@ cat(toJSON(x, pretty=TRUE))
 
 \subsubsection{Relational data: nested records}
 
-A structure somewhat unusual in R but frequently encountered in \JSON, is a dataset with records containing nested substructures. Such structures do not really fit the vector based paradigm which makes them hard to manipulate in R, and we should probably avoid them where possible. However, nested records are too common in \JSON data to ignore, and with a little work most cases can still map to a data frame quite nicely. The most common scenario is a dataset in which a certain field within each record contains a \emph{subrecord} with additional fields. JSONlite interprets these subrecords as a nested data frame. Whereas the data frame class usually consists of vectors, technically a column can also be list or another data frame with matching dimension (although this does stretch the meaning of the word "column" a bit):
+Nested datasets are somewhat unusual in R, but frequently encountered in \JSON. Such structures do not really fit the vector based paradigm which makes them harder to manipulate in R. However, nested structures are too common in \JSON to ignore, and with a little work most cases still map to a data frame quite nicely. The most common scenario is a dataset in which a certain field within each record contains a \emph{subrecord} with additional fields. JSONlite interprets these subrecords as a nested data frame. Whereas the data frame class usually consists of vectors, technically a column can also be list or another data frame with matching dimension (this stretches the meaning of the word "column" a bit):
 
 <<tidy=FALSE>>=
 x <- data.frame(driver = c("Bowser", "Peach"), occupation = c("Koopa", "Princess"))
@@ -381,7 +381,7 @@ str(x)
 cat(toJSON(x, pretty=TRUE));
 @
 
-\noindent \JSON data containing nested records are often generated from a \emph{relational} database. The \JSON field containing a subrecord is created from a \emph{foreign key} pointing to a record in an external table which were joined into a nested structure. The nested subrecord represents a \emph{one-to-one} or \emph{many-to-one} relation between the parent and child table, and can quite naturally be stored in R using a nested data frame. In the example above, the \texttt{vehicle} field points to a table of verhicles, which in turn contains a \texttt{stats} field pointing to a table of stats. When there is exactly one subrecord for each record, we can decide to \emph{flatten} the structure into a single non-nested data frame.
+\noindent When encountering \JSON data containing nested records in the wild, chances are that these data were generated from \emph{relational} database. The \JSON field containing a subrecord results from a \emph{foreign key} pointing to a record in an external table. For the purpose of encoding these into a single \JSON structure, the tables were joined into a nested structure. The directly nested subrecord represents a \emph{one-to-one} or \emph{many-to-one} relation between the parent and child table, and is most naturally stored in R using a nested data frame. In the example above, the \texttt{vehicle} field points to a table of verhicles, which in turn contains a \texttt{stats} field pointing to a table of stats. When there is exactly one subrecord for each record, we can decide to \emph{flatten} the structure into a single non-nested data frame.
 
 <<>>=
 myjson <- toJSON(x)
