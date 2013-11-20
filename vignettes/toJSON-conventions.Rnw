@@ -75,33 +75,22 @@ Finally, as mentioned earlier, \fromJSON is not a perfect inverse function of \t
 
 \subsection{Goals: Consistent and Practical}
 
-It can be helpful to see the problem from both sides. The R user needs to interface external \JSON data from within R. This includes reading data from a public source/API, or posting a specific \JSON structure to an online service. From perspective of the R user, \JSON data should be realized in R using classes which are most natural in R for a particular structure. A proper mapping would allow the R user to read any incoming data or generate a specific \JSON structures using the familiar methods and classes in R. Ideally, the R user would like to forget about the interchange format at all, and think about the external data interface in terms of its corresponding R structures rather than a \JSON schema. The other perspective is that of an third party client or language, which needs to interface data in R using \JSON. This actor needs to access and manipulate R objects via their \JSON representation. The mapping between \JSON and R objects should allow 3rd party clients to get data in and out of R, without necessarily understanding the specifics of the underlying R classes. Ideally, the external client could forget about the R objects and classes at all, and think about input and output of data completely in terms of the \JSON schema, or the corresponding realization in the language of the client. 
+It can be helpful to see the problem from both sides. The R user needs to interface external \JSON data from within R. This includes reading data from a public source/API, or posting a specific \JSON structure to an online service. From perspective of the R user, \JSON data should be realized in R using classes which are most natural in R for a particular structure. A proper mapping is one which allows the R user to read any incoming data or generate a specific \JSON structures using the familiar methods and classes in R. Ideally, the R user would like to forget about the interchange format at all, and think about the external data interface in terms of its corresponding R structures rather than a \JSON schema. The other perspective is that of an third party client or language, which needs to interface data in R using \JSON. This actor wants to access and manipulate R objects via their \JSON representation. A good mapping is one that allows a 3rd party client to get data in and out of R, without necessarily understanding the specifics of the underlying R classes. Ideally, the external client could forget about the R objects and classes at all, and think about input and output of data in terms of the \JSON schema, or the corresponding realization in the language of the client. 
 
-Both sides come together in the context of an RPC service such as OpenCPU. OpenCPU exposes a HTTP API to let 3rd party clients call R functions over HTTP. A client posts function arguments in \JSON and OpenCPU automatically converts these to R objects to construct the R function call. The return value of the function is then converted to \JSON and sent back to the client. For this to work, the \JSON data must consistently be converted to the same R classes for all allowed inputs of the API.
+Both sides come together in the context of an RPC service such as OpenCPU. OpenCPU exposes a HTTP API to let 3rd party clients call R functions over HTTP. The function arguments are posed using \JSON and OpenCPU automatically converts these into R objects to construct the R function call. The return value of the function is then converted to \JSON and sent back to the client. To the client, the RPC looks like a \JSON API, whereas the R side can simply be implemented as standard R function that takes standard data structures as its arguments and return value. For this to work, the conversion between \JSON data and R objects must be consistent and unambiguous. In the design of our mapping we have tried to pursue the following requirements:
 
 \begin{itemize}
-
-  \item{Good support for \JSON from 3rd party API.}
-  \item{Interact with R in RPC setting.}
-  \item{Consistent behavior to build on systems with dynamic data}
-  \item{Optimally reversible, at least coercible.}
-  \item{Minimize opportunities for misinterpretation.}
+  \item{Recognize and comply with existing conventions of encoding common data structures in \JSON, in particular (relational) data sets.}
+  \item{Consistently use a particular schema for a class of objects, including edge cases.}
+  \item{Avoid R-specific peculiarities to minimize opportunities for misinterpretation.}
+  \item{Mapping should optimally be reversible, but at least coercible.}
+  \item{Robustness principle: be strict on output but tolerant on input.}
 \end{itemize}
 
-Much of this work has been motived by the need to support real world API's and \emph{dynamic data}.tgm
-
-- Dynamic data, e.g. API, RPC
-- Consistent
-- Reversible where possible
-- Practical: not overly verbose, use conventional ways of representing data in JSON
-- Robustness principle.
-
-
-In the design of the functions we target consistent behavior, and try to adhere to the \emph{robustness principle} to be strict on output but tolerant on input. 
 
 \section{Converting between \JSON and R Classes}
  
-This section lists examples of how the common R classes are represented in \JSON. As explained before, the \toJSON method relies on the class based S3 method system in R; hence objects get encoded according to their \texttt{class} value. If an object has multiple \texttt{class} values, R will use the first occurring class which has a \toJSON method implemented. If none of the classes of an object has a \toJSON method, R will raise an error.
+This section lists examples of how the common R classes are represented in \JSON. As explained before, the \toJSON method relies on the S3 method system; hence objects get encoded according to their \texttt{class}. If an object has multiple \texttt{class} values, R will use the first occurring class which has a \toJSON method implemented. If none of the classes of an object has a \toJSON method, R will raise an error.
 
 \subsection{Atomic Vectors}
 
