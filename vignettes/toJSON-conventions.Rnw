@@ -77,35 +77,35 @@ Finally, as mentioned earlier, \fromJSON is not a perfect inverse function of \t
 
 It can be helpful to see the problem from both sides. The R user needs to interface external \JSON data from within R. This includes reading data from a public source/API, or posting a specific \JSON structure to an online service. From perspective of the R user, \JSON data should be realized in R using classes which are most natural in R for a particular structure. A proper mapping is one which allows the R user to read any incoming data or generate a specific \JSON structures using the familiar methods and classes in R. Ideally, the R user would like to forget about the interchange format at all, and think about the external data interface in terms of its corresponding R structures rather than a \JSON schema. The other perspective is that of an third party client or language, which needs to interface data in R using \JSON. This actor wants to access and manipulate R objects via their \JSON representation. A good mapping is one that allows a 3rd party client to get data in and out of R, without necessarily understanding the specifics of the underlying R classes. Ideally, the external client could forget about the R objects and classes at all, and think about input and output of data in terms of the \JSON schema, or the corresponding realization in the language of the client. 
 
-Both sides come together in the context of an RPC service such as OpenCPU. OpenCPU exposes a HTTP API to let 3rd party clients call R functions over HTTP. The function arguments are posed using \JSON and OpenCPU automatically converts these into R objects to construct the R function call. The return value of the function is then converted to \JSON and sent back to the client. To the client, the RPC looks like a \JSON API, whereas the R side can simply be implemented as standard R function that takes standard data structures as its arguments and return value. For this to work, the conversion between \JSON data and R objects must be consistent and unambiguous. In the design of our mapping we have tried to pursue the following requirements:
+Both sides come together in the context of an RPC service such as OpenCPU. OpenCPU exposes a HTTP API to let 3rd party clients call R functions over HTTP. The function arguments are posed using \JSON and OpenCPU automatically converts these into R objects to construct the R function call. The return value of the function is then converted to \JSON and sent back to the client. To the client, the service works as a \JSON API, but it is implemented as standard R function uses standard data structures for its arguments and return value. For this to work, the conversion between \JSON data and R objects must be consistent and unambiguous. In the design of our mapping we have pursued the following requirements:
 
 \begin{itemize}
   \item{Recognize and comply with existing conventions of encoding common data structures in \JSON, in particular (relational) data sets.}
   \item{Consistently use a particular schema for a class of objects, including edge cases.}
   \item{Avoid R-specific peculiarities to minimize opportunities for misinterpretation.}
-  \item{Mapping should optimally be reversible, but at least coercible.}
+  \item{Mapping should optimally be reversible, but at least coercible for the standard classes.}
   \item{Robustness principle: be strict on output but tolerant on input.}
 \end{itemize}
 
 
 \section{Converting between \JSON and R Classes}
  
-This section lists examples of how the common R classes are represented in \JSON. As explained before, the \toJSON method relies on the S3 method system; hence objects get encoded according to their \texttt{class}. If an object has multiple \texttt{class} values, R will use the first occurring class which has a \toJSON method implemented. If none of the classes of an object has a \toJSON method, R will raise an error.
+This section lists examples of how the common R classes are represented in \JSON. As explained before, the \toJSON method relies on the S3 method system, which means that objects get encoded according to their \texttt{class}. If an object has multiple \texttt{class} values, R uses the first occurring class which has a \toJSON method. If none of the classes of an object has a \toJSON method, an error is raised.
 
 \subsection{Atomic Vectors}
 
-The most basic data type in R is the atomic vector. The atomic vector holds an ordered set of homogeneous values of type \texttt{"logical"} (booleans), \texttt{integer}, \texttt{numeric} (doubles), \texttt{character} (strings), or \texttt{"raw"} (bytes). Because R is fully vectorized, there is no user level notion of a primitive: any scalar value is considered a vector of length 1. Atomic vectors are encoded using a \JSON array:
+The most basic data type in R is the atomic vector. The atomic vector holds an ordered set of homogeneous values of type \texttt{"logical"} (booleans), \texttt{character} (strings), \texttt{"raw"} (bytes), \texttt{integer}, \texttt{numeric} (doubles), \texttt{"complex"} (complex numbers with a real and imaginary part). Because R is fully vectorized, there is no user level notion of a primitive: a scalar value is considered a vector of length 1. Atomic vectors are encoded using a \JSON array:
 
 <<>>=
 x <- c(1, 2, pi)
 cat(toJSON(x))
 @
 
-\noindent The \JSON array is the most natural way of encoding an R vector, however note that vectors in R are homogeneous, whereas the \JSON array is actually heterogeneous, but \JSON does not make this distinction.
+\noindent The \JSON array is the only appropriate structure to encode a vector, however note that vectors in R are homogeneous, whereas the \JSON array is actually heterogeneous, but \JSON does not make this distinction.
 
 \subsubsection{Missing Values}
 
-A typical domain specific problem when working with statistical data is presented by missing data: a concept foreign to many other languages. Besides regular values, vector types \texttt{logical}, \texttt{integer}, \texttt{character} and \texttt{double} can hold \texttt{NA} as a value. Vectors of type \texttt{double} define three additional types of non finite values: \texttt{NaN}, \texttt{Inf} and \texttt{-Inf}. \JSON does not natively support any of these types; therefore such values values need to be encoded in some other way. There are two obvious approaches. The first one is to use the  \JSON \texttt{null} type. For example:
+A typical domain specific problem when working with statistical data is presented by missing data: a concept foreign to many other languages. Besides regular values, all vector types except for \texttt{raw} can hold \texttt{NA} as a value. Vectors of type \texttt{double} and \texttt{complex} define three additional types of non finite values: \texttt{NaN}, \texttt{Inf} and \texttt{-Inf}. \JSON does not natively support any of these types; therefore such values values need to be encoded in some other way. There are two obvious approaches. The first one is to use the  \JSON \texttt{null} type. For example:
 
 <<>>=
 x <- c(TRUE, FALSE, NA)
@@ -119,20 +119,20 @@ x <- c(1,2,NA,NaN,Inf,10)
 cat(toJSON(x))
 @
 
-\noindent Both methods result in valid \JSON, but both have a limitation: the problem with the \texttt{null} type is that there is no way to distinguish between different types of missing data, which is a problem for numeric vectors. The values \texttt{Inf}, \texttt{-Inf}, \texttt{NA} and \texttt{NaN} have a very different meanings, and these should not get lost in the encoding. The problem with encoding missing values as strings is that this method can not be used for character vectors, because the consumer won't be able to distinguish the actual string \texttt{"NA"} and the missing value \texttt{NA}. This would create a likely source of bugs, where clients mistakenly interpret \texttt{"NA"} as an actual value, which is a common problem with text-based formats such as CSV. For this reason, \texttt{JSONlite} uses the following defaults:
+\noindent Both methods result in valid \JSON, but both have a limitation: the problem with the \texttt{null} type is that there is no way to distinguish between different types of missing data, which could be a problem for numeric vectors. The values \texttt{Inf}, \texttt{-Inf}, \texttt{NA} and \texttt{NaN} have different meanings, and these should not get lost in the encoding. However, the problem with encoding missing values as strings is that this method can not be used for character vectors, because the consumer won't be able to distinguish the actual string \texttt{"NA"} and the missing value \texttt{NA}. This would create a likely source of bugs, where clients mistakenly interpret \texttt{"NA"} as an actual value, which is a common problem with text-based formats such as CSV. For this reason, \texttt{JSONlite} uses the following defaults:
 
 \begin{itemize}
  \item Missing values in non-numeric vectors (\texttt{logical}, \texttt{character}) are encoded as \texttt{null}.
  \item Missing values in numeric vectors (\texttt{double}, \texttt{integer}, \texttt{complex}) are encoded as strings.
 \end{itemize}
 
-\noindent Some examples:
+\noindent We expect that these conventions are most likely to result in the correct interpretation of missing values. Some examples:
 
 <<>>=
 cat(toJSON(c(TRUE, NA, NA, FALSE)))
 cat(toJSON(c("FOO", "BAR", NA, "NA")))
 cat(toJSON(c(3.14, NA, NaN, 21, Inf, -Inf)))
-cat(toJSON(c(3.14, NA, NaN, 21, Inf, -Inf), NA_as_string=FALSE))
+cat(toJSON(c(3.14, NA, NaN, 21, Inf, -Inf), na="null"))
 @
 
 \subsubsection{Special vector types: dates, times, factor, complex}
@@ -146,11 +146,11 @@ cat(toJSON(factor(c("foo", "bar", "foo"))))
 cat(toJSON(complex(real=runif(3), imaginary=rnorm(3))))
 @
 
-\noindent When parsing such \JSON strings, these values will appear as character vectors. In order to obtain the original types, the user needs to manually coerce them back to the desired type using e.g. \texttt{as.POSIXct}, \texttt{as.Date}, \texttt{as.factor} or \texttt{as.complex}. In this respect, \JSON is subject to the same limitations as text based formats such as CSV. 
+\noindent When parsing such \JSON strings, these values will appear as character vectors. In order to obtain the original types, the user needs to manually coerce them back to the desired type using the corresponding \texttt{as} funtion, e.g. \texttt{as.POSIXct}, \texttt{as.Date}, \texttt{as.factor} or \texttt{as.complex}. In this respect, \JSON is subject to the same limitations as text based formats such as CSV.
 
 \subsubsection{Special cases: vectors of length 0 or 1}
 
-Two special cases deserve special attention: vectors of length 0 and vectors of length 1. In \texttt{JSONlite} these are encoded respectively as an empty array, and an array of length 1:
+Two edge cases deserve special attention: vectors of length 0 and vectors of length 1. In \texttt{JSONlite} these are encoded respectively as an empty array, and an array of length 1:
 
 <<>>=
 #vectors of length 0 and 1
@@ -166,7 +166,7 @@ cat(toJSON(list(vector())))
 cat(toJSON(list(pi)))
 @
 
-\noindent This might seem trivial but these cases result in very different behavior between different \JSON packages, which is probably caused by the fact that R does not distinguish between a scalar and a vector of length 1. For example, in the current implementations, both \texttt{RJSONIO} and \texttt{rjson} encode a vector of length one as a \JSON primitive when it appears within a list: 
+\noindent This might seem obvious but these cases result in very different behavior between different \JSON packages. This is probably caused by the fact that R does not have a scalar type, and some package authors decided to treat vectors of length 1 as if they were a scalar. For example, in the current implementations, both \texttt{RJSONIO} and \texttt{rjson} encode a vector of length one as a \JSON primitive when it appears within a list: 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -205,7 +205,7 @@ attributes(volcano)
 length(volcano)
 @
 
-\noindent Even though the matrix is stored as a single vector, it the way it is printed, indexed and treated otherwise makes it conceptually closer to 2 dimensional structure. \texttt{JSONlite} treats a matrix as a set of equal-length homogeneous vectors, and therefore encodes it using an array of sub arrays:
+\noindent Even though the matrix is stored as a single vector, it the way it is printed, indexed and treated otherwise makes it conceptually a 2 dimensional structure. \texttt{JSONlite} treats a matrix as a set of equal-length homogeneous vectors, and therefore encodes it using an array of sub arrays:
 
 <<>>=
 x <- matrix(1:12, nrow=3, ncol=4)
@@ -225,46 +225,45 @@ cat(toJSON(x))
 <<>>=
 x <- matrix(c(1,2,4,NA), nrow=2)
 cat(toJSON(x))
-cat(toJSON(x, NA_as_string=FALSE))
+cat(toJSON(x, na="null"))
 cat(toJSON(matrix(pi)))
 @
 
 
 \subsubsection{Matrix row and column names}
 
-Besides the \texttt{"dim"} attribute, matrices in R can have another attribute: \texttt{"dimnames"}. This attribute holds names for the rows and columns in the matrix. However, we decided not to include this information in the default \JSON encoding for matrices for several reasons. First of all, for objects of class matrix the dimnames attribute is optional and often either row or column names or both are \texttt{NULL}. This makes it difficult to define a practical encoding that covers all cases with and without row and/or column names. Secondly, the names in matrices are mostly there for annotation only; they are not actually used in calculations. For example, the linear algebra operations mentioned before completely ignore them, and do not include any names in their output. So when using matrices for linear algebra, there is often little purpose of setting names in the first place. 
+Besides the \texttt{"dim"} attribute, the matrix class has an additional, optional attribute: \texttt{"dimnames"}. This attribute holds names for the rows and columns in the matrix. However, we decided not to include this information in the default \JSON encoding for matrices for several reasons. First of all, because this attribute is optional, often either row or column names or both are \texttt{NULL}. This makes it difficult to define a practical encoding that covers all cases with and without row and/or column names. Secondly, the names in matrices are mostly there for annotation only; they are not actually used in calculations. For example, the linear algebra subroutines mentioned before completely ignore them, and do not include any names in their output. So there is often little purpose of setting names in the first place, other annotation.
 
-When row and column names of a matrix contain vital information, chances are they are actually variable values themselves, and the matrix is not the most appropriate structure to store this data. It might be useful to transform the data into a more appropriate structure. Wickham (2013) calls this tidying the data and outlines best practices on structuring data in. The example below is taken from Wickham (2013). A matrix structured below is practical for printing, but not for manipulating the data. The main variable, treatment, is put in the header:
+When the row names or column names of a matrix actually contain vital information, chances are they actually are not names but variable values. It might be needed to transform the data into a more appropriate structure. Wickham (2013) calls this tidying the data and outlines best practices on storing statistical data in its most appropriate form. He lists the issue where \emph{"column headers are values, not variable names"} the most common source of \emph{"messy"} data. It happens when the structure is optimized for presenentation (e.g. printing), rather than computation. In the following example, taken from Wickham (2013), the column headers do not list names, but actually contain values of the main variable (treatment). As a result, these are not represented in the \JSON encoding:
 
 <<>>=
-x <- matrix(c(NA,1,2,5,4,3), nrow=3)
+x <- matrix(c(NA,1,2,5,NA,3), nrow=3)
 row.names(x) <- c("Joe", "Jane", "Mary");
 colnames(x) <- c("Treatment A", "Treatment B")
 print(x)
+cat(toJSON(x))
 @
 
-\noindent In this case might want to melt the data, before converting it to \JSON:
+\noindent Wikcham recommends that the data be \emph{melted} into its \emph{tidy} form. Once the data is tidy, the \JSON encoding will naturally contain the treatment values:
 
 <<>>=
 library(reshape2)
 y <- melt(x, varnames=c("Subject", "Treatment"))
 print(y)
-@
-
-\noindent Tidy date will most likely result in a practical \JSON representation. Compare the encoding of the original and tidy data:
-
-<<>>=
-cat(toJSON(x))
-cat(toJSON(as.data.frame(x), pretty=TRUE))
 cat(toJSON(y, pretty=TRUE))
 @
 
-For data sets with records consisting of a set of named columns (fields), R has more natural and flexible class: the data-frame. The \toJSON method for data-frames is described below and is much suitable when we want to refer to rows or fields by a particular name. Any matrix can easily be converted to a dataframe using the \texttt{as.data.frame} function.
+\noindent In some other cases, the column headers actually do contain variable names, and melting is inappropriate. For data sets with records consisting of a set of named columns (fields), R has more natural and flexible class: the data-frame. The \toJSON method for data frames is described in a later section, and is more suitable when we want to refer to rows or fields by a particular name. Any matrix can easily be converted to a dataframe using the \texttt{as.data.frame} function:
 
+<<>>=
+cat(toJSON(as.data.frame(x), pretty=TRUE))
+@
+
+\noindent In some cases that will result in the desired encoding, but for the example above melting seems more appropriate.
 
 \subsection{Lists}
 
-The \texttt{list} is the most general purpose data structure in R. It holds an ordered set of elements, including other lists, each of arbitrary type and size. For the purpose of \JSON encoding, two types of lists are distinguished: named lists and unnamed lists. A list is considered a named list if it has an attribute called \texttt{"names"}. In practice, a named list is any list for which we can access an element by its name, whereas elements of an unnamed lists can only be accessed using their index number:
+The \texttt{list} is the most general purpose data structure in R. It holds an ordered set of elements, including other lists, each of arbitrary type and size. Two types of lists are distinguished: named lists and unnamed lists. A list is considered a named list if it has an attribute called \texttt{"names"}. In practice, a named list is any list for which we can access an element by its name, whereas elements of an unnamed lists can only be accessed using their index number:
 
 <<>>=
 mylist1 <- list("foo" = 123, "bar"= 456)
@@ -321,6 +320,7 @@ print(x)
 cat(toJSON(x))
 @
 
+\noindent This behavior ensures that all generated \JSON is valid, however named lists with empty names should be avoided where possible. When actually designing R objects that should be interoperable, it is recommended that each list element has a proper name.
 
 \subsection{Data frame}
 
