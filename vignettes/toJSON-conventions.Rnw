@@ -259,7 +259,7 @@ cat(toJSON(y, pretty=TRUE))
 cat(toJSON(as.data.frame(x), pretty=TRUE))
 @
 
-\noindent In some cases that will result in the desired encoding, but for the example above melting seems more appropriate.
+\noindent For some cases this results in the desired encoding, but in this example melting seems more appropriate.
 
 \subsection{Lists}
 
@@ -343,19 +343,19 @@ The data frame in R is implemented in a column based fasion: it constitutes of a
 
 \subsubsection{Row based data frame encodingin JSONlite}
 
-The way data frames are encoded is one of the major differences between JSONlite and the \toJSON implementations from other currently available packages. Instead of using the column-based encoding also used for lists, JSONlite encodes data frames by default as an array of records:
+The encoding of data frames is one of the major differences between JSONlite and implementations from other currently available packages. Instead of using the column-based encoding also used for lists, JSONlite encodes data frames by default as an array of records:
 
 <<>>=
 cat(toJSON(iris[1:2,], pretty=TRUE))
 @
 
-\noindent This output looks a bit like a list of named lists. However, there is one major difference: the individual records contain primitives values, which will never appear in lists (remember, a scalar in R is a vector of length 1):
+\noindent This output looks a bit like a list of named lists. However, there is one major difference: the individual records contain primitives values, which will never appear in lists:
 
 <<>>=
 cat(toJSON(list(list(Species="Foo", Width=21))))
 @
 
-\noindent This leads us to the following convention: when encoding R objects, \JSON primitives only appear in vectors and data-frame rows. Primitive values within a \JSON array indicate a vector, and \JSON primitives appearing inside a \JSON object indicate a data-frame row. A \JSON encoded \texttt{list}, (named or unnamed) will never contain \JSON primitives. This is a subtle but important convention that helps to distinguish between R classes from their \JSON resprestation, without explicitly encoding any metadata.
+\noindent This leads to the following convention: when encoding R objects, \JSON primitives only appear in vectors and data-frame rows. Primitive values within a \JSON array indicate a vector, and \JSON primitives appearing inside a \JSON object indicate a data-frame row. A \JSON encoded \texttt{list}, (named or unnamed) will never contain \JSON primitives. This is a subtle but important convention that helps to distinguish between R classes from their \JSON resprestation, without explicitly encoding any metadata.
 
 \subsubsection{Missing values in data frames}
 
@@ -374,26 +374,27 @@ cat(toJSON(x, pretty=TRUE))
 Nested datasets are somewhat unusual in R, but frequently encountered in \JSON. Such structures do not really fit the vector based paradigm which makes them harder to manipulate in R. However, nested structures are too common in \JSON to ignore, and with a little work most cases still map to a data frame quite nicely. The most common scenario is a dataset in which a certain field within each record contains a \emph{subrecord} with additional fields. JSONlite interprets these subrecords as a nested data frame. Whereas the data frame class usually consists of vectors, technically a column can also be list or another data frame with matching dimension (this stretches the meaning of the word "column" a bit):
 
 <<tidy=FALSE>>=
+options(stringsAsFactors=FALSE)
 x <- data.frame(driver = c("Bowser", "Peach"), occupation = c("Koopa", "Princess"))
 x$vehicle <- data.frame(model = c("Piranha Prowler", "Royal Racer"))
 x$vehicle$stats <- data.frame(speed = c(55, 34), weight = c(67, 24), drift = c(35, 32))
 str(x)
-cat(toJSON(x, pretty=TRUE));
-@
-
-\noindent When encountering \JSON data containing nested records in the wild, chances are that these data were generated from \emph{relational} database. The \JSON field containing a subrecord results from a \emph{foreign key} pointing to a record in an external table. For the purpose of encoding these into a single \JSON structure, the tables were joined into a nested structure. The directly nested subrecord represents a \emph{one-to-one} or \emph{many-to-one} relation between the parent and child table, and is most naturally stored in R using a nested data frame. In the example above, the \texttt{vehicle} field points to a table of verhicles, which in turn contains a \texttt{stats} field pointing to a table of stats. When there is exactly one subrecord for each record, we can decide to \emph{flatten} the structure into a single non-nested data frame.
-
-<<>>=
+cat(toJSON(x, pretty=TRUE))
 myjson <- toJSON(x)
 y <- fromJSON(myjson)
-str(y)
-flatdf <- cbind(y[c("driver", "occupation")], x$vehicle["model"], x$vehicle$stats)
-str(flatdf)
+identical(x,y)
+@
+
+\noindent When encountering \JSON data containing nested records in the wild, chances are that these data were generated from \emph{relational} database. The \JSON field containing a subrecord represents a \emph{foreign key} pointing to a record in an external table. For the purpose of encoding these into a single \JSON structure, the tables were joined into a nested structure. The directly nested subrecord represents a \emph{one-to-one} or \emph{many-to-one} relation between the parent and child table, and is most naturally stored in R using a nested data frame. In the example above, the \texttt{vehicle} field points to a table of verhicles, which in turn contains a \texttt{stats} field pointing to a table of stats. When there is no more than one subrecord for each record, we easily \emph{flatten} the structure into a single non-nested data frame.
+
+<<>>=
+z <- cbind(x[c("driver", "occupation")], x$vehicle["model"], x$vehicle$stats)
+str(z)
 @
 
 \subsubsection{Relational data: nested tables}
 
-The one-to-one relation discussed above is relatively easy to model in R, because easy records contains exactly one subrecord. Therefore we can use either a nested dataframe, or flatten the data frame. However, things get more difficult when \JSON records contain a field with an array. Such a structure appears when tables have a \emph{one-to-many} relation. A standard textbook example is the relation between authors and titles. In the simple case, the field contains an array of primitives:
+The one-to-one relation discussed above is relatively easy to store in R, because each record contains at most one subrecord. Therefore we can use either a nested dataframe, or flatten the data frame. However, things get more difficult when \JSON records contain a field with a nested array. Such a structure appears in relational data in case of a \emph{one-to-many} relation. A standard textbook illustration is the relation between authors and titles. For example, a field can contain an array of values:
 
 <<tidy=FALSE>>=
 x <- data.frame(author = c("Homer", "Virgil", "Jeroen"))
@@ -402,7 +403,7 @@ names(x)
 cat(toJSON(x, pretty = TRUE))
 @
 
-\noindent However in practice, the one-to-many relation often results in fields containing a \emph{set of records}. In R, the only way to model this is as a column containing a list of data frames, one for each row:
+\noindent As can be seen from the example, the way to store this in a data frame is using a list of character vectors. This works, and although unconventional, we can still create and read such structures in R relatively easily. However, in practice the one-to-many relation is often more complex. It results in fields containing a \emph{set of records}. In R, the only way to model this is as a column containing a list of data frames, one seperate data frame for each row:
 
 <<tidy=FALSE>>=
 x <- data.frame(author = c("Homer", "Virgil", "Jeroen"))
@@ -414,13 +415,17 @@ x$poems <- list(
 cat(toJSON(x, pretty=TRUE))
 @
 
-\noindent Because R doesn't have native support for relational data, there is no natural way to model these structures. The best we can do is a column containing a list of data frames. This allows us to access the data, but we can't flatten it. Also this structure does not guarantee that each of these subtables contains the same fields, as would be the case in an actual relational data base. 
+\noindent Because R doesn't have native support for relational data, there is no natural class to store such structures. The best we can do is a column containing a list of sub-dataframes. This does the job, and allows the R user to access or generate nested \JSON structures. However, a data frame like this cannot be flattened, and the class does not guarantee that each of the individual sub-dataframe contain the same fields, as would be the case in an actual relational data base. 
 
-\section{Best Practices}
+\section{Assumptions and Best Practices}
+
+The previous section described a mapping between \JSON data and R classes. In particular, we 
 
 - Unnamed lists containing different structures.
 - Tidy data: don't confuse variables and values.
 - Array of records with different fields names (i.e. not really a table)
+- No data in keys. Analogies with tidy data, mysql tables.
+- Refer to data frame columns by name, not by index. Order can change.
 
 
 \section{Public JSON APIs}
