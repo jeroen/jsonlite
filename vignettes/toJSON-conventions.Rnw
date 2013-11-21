@@ -417,15 +417,60 @@ cat(toJSON(x, pretty=TRUE))
 
 \noindent Because R doesn't have native support for relational data, there is no natural class to store such structures. The best we can do is a column containing a list of sub-dataframes. This does the job, and allows the R user to access or generate nested \JSON structures. However, a data frame like this cannot be flattened, and the class does not guarantee that each of the individual sub-dataframe contain the same fields, as would be the case in an actual relational data base. 
 
-\section{Assumptions and Best Practices}
 
-The previous section described a mapping between \JSON data and R classes. In particular, we 
 
-- Unnamed lists containing different structures.
+
+\section{Designing Interoperable \JSON structures.}
+
+The previous section described a mapping between \JSON data and R classes.  This section takes a higher level view and we outline some best practices for designing structures that can be used across platforms.
+
+- Interpreting, processing data
+- Describing, documenting, schema.
+
+
+
+\subsection{Unnamed Lists (\JSON array)}
+
+A structure should be avoided for interoperable data is a \JSON array containing different classes of elements, i.e. a heterogenous unnamed list in R. Because both R and \JSON are weakly typed there are no restrictions on the classes of objects that can be combined into a collection. For example, the list below contains a character vector, a numeric vector and a list:
+
+<<>>=
+#Heterogeneous lists are bad!
+x <- list("FOO", 1:3, list("bar"=pi))
+cat(toJSON(x))
+@
+
+\noindent But just because this is possible, doesn't mean it is wise to do so. On the contrary: it puts the responsibility of defining sensible structures in the hands of the developer. A collection of arbitrary objects is hard to describe, interpret and process in the context of inter-system communication. Therfore \JSON arrays should only be used for homogeneous sets. However, the term homogeneous in this case is somewhat subjective as it refers to the \emph{meaning} of the elements, they don't necessarily need to have exactly the same structure. What is important is that the consumer of the data can treat each element identically, e.g. iterate over the elements in the collection and apply the same method to each of them. To illustrate this, lets take the example of the data frame: 
+
+<<>>=
+#conceptually homogenous array
+x <- data.frame(name=c("Jay", "Mary", NA, NA), gender=c("M", NA, NA, "F"))
+cat(toJSON(x, pretty=TRUE))
+@
+
+\noindent The \JSON array above has 4 elements, each of which a \JSON object. However, due to the \texttt{NA} values, not all elements have an identical structure: some records have more fields than others. But as long as they are conceptually the same type (e.g. a person), the consumer can iterate over the elements to process each "person" in the set according to a predefined action. For example, in the context of a strong-typed language, each element could be used to construct a Person object. When combining objects of different classes, a \texttt{named list} can be used to distinguish between the different types:
+
+<<tidy=FALSE>>=
+x <- list(
+  humans = data.frame(name = c("Jay", "Mary"), married = c(TRUE, FALSE)),
+  horses = data.frame(name = c("Star", "Dakota"), price = c(5000, 30000))
+)
+cat(toJSON(x, pretty=TRUE))
+@
+
+\noindent When looking at the public APIs, limiting \JSON arrays to homogeneous sets is a very strong convention and we have not been able to find a single exception.
+
+
+\subsection{No Data in Keys}
+
 - Tidy data: don't confuse variables and values.
 - Array of records with different fields names (i.e. not really a table)
 - No data in keys. Analogies with tidy data, mysql tables.
 - Refer to data frame columns by name, not by index. Order can change.
+
+\subsection{Putting Things Together: A Schema}
+
+- Schema documents or describes the recurring structure and meaning of data.
+- Can use a formal schema language, but don't have to. Great thing about JSON is that we don't really need a formal schema, a single example will do. 
 
 
 \section{Public JSON APIs}
