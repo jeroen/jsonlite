@@ -430,6 +430,11 @@ The previous section described a mapping between \JSON data and R classes. In pa
 
 \section{Public JSON APIs}
 
+- NY Citibyke: http://citibikenyc.com/stations/json
+- Github: http://developer.github.com/v3/
+- Twitter
+- NY times
+
 \section{Converting \JSON to R objects}
 
 Guidelines:
