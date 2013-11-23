@@ -420,15 +420,15 @@ cat(toJSON(x, pretty=TRUE))
 
 \section{Designing Interoperable \JSON structures.}
 
-The previous section described a mapping between \JSON data and R classes. This section takes a higher level view and outlines best practices of designing interoperable structures for use across systems. These guidelines hold for \JSON in general (and possible other formats), but we will illustrate them with some examples from R. Much of it comes down to some common sense practices that ensure data exchange is unambiguous and consistent. Consensus must exist between the different parties/systems on the data that can be exchanged as part of the communication or protocol. This requires the structure of data to follow some sort of schema that specifies which attributes can appear in the data, what they mean and how they are composed. Thereby each possible message can be interpreted/processed appropriately and no exceptions arise during runtime. 
+The previous section described a mapping between \JSON data and R classes. This section takes a higher level view and outlines best practices of designing interoperable structures for use across systems. These guidelines hold for \JSON in general (and possibly other formats as well), but we will illustrate them with some examples from R. Much of it comes down to some common sense practices that ensure data exchange is unambiguous and consistent. Consensus must exist between the different parties/systems on the data that can be exchanged as part of the communication or protocol. This requires the structure of data to follow some sort of schema that specifies which attributes can appear in the data, what they mean and how they are composed. Thereby each possible message can be accounted for in the software and gets interpreted/processed appropriately so that no exceptions arise during runtime. 
 
-Some data interchange formats, such as \texttt{XML} or \texttt{Protocol Buffers} take a very formal approach, and have well established \emph{schema languages} and \emph{interface description languages}. Using such a language it is possible to define the exact structure of including all properties and actions in a formal meta-document. However, in \JSON, formal structure definitions are faily uncommon. Some initiatives for \JSON schema languages exist, but they aren't very well established and rarely seen in practice. One reason for this might be that defining and implementing formal schemas is complicated and a lot of work which defeats the purpose of using an lightweight format such as \JSON in the first place. But another reason might be that often it is simply not necessary to be overly formal. The \JSON format is simple and intuitive, and under some general conventions, a single example will often suffice to document an API. This section lists two of such important conventions that are important when using \JSON to exchange dynamic data. When these rules are followed, we call the data \emph{consistent}.
+Some other data interchange formats, such as \texttt{XML} or \texttt{Protocol Buffers} take a formal approach, and have well established \emph{schema languages} and \emph{interface description languages}. Using such a language it is possible to define the exact structure of including all properties and actions in a formal meta-document. However, in \JSON, such formal definitions are faily uncommon. Some initiatives for \JSON schema languages exist, but they aren't very well established and rarely seen in practice. One reason for this might be that defining and implementing formal schemas is complicated and a lot of work which defeats the purpose of using an lightweight format such as \JSON in the first place. But another reason might be that it is often simply not necessary to be overly formal. The \JSON format is simple and intuitive, and under some general conventions, a single example will often suffice to document an API. This section lists two of such important conventions that are important when using \JSON to exchange dynamic data. When these rules are followed, we call the data \emph{consistent}.
 
-\subsection{Rule 1: No Data in Keys}
+\subsection{Rule 1: Consistent Keys}
 
-\noindent The first piece of advice is to use \JSON \emph{keys} only for \emph{names}, and not for \emph{data}. This convention can be a bit subtle because what exactly constitutes names and data is context dependent and subject to interpretation. Usually, it comes down to a finite set of keys that are known \emph{a priory} by all parties. It can be helpful to think about this in analogy with for example a relational database. Here, the database model seperates the data from metadata. At runtime, records can be inserted or deleted, and a certain select query might returns different data each time it is executed. However, each query execution will return exactly the same \emph{field names}. This makes the \emph{structure} of the output consistent, which makes software that builds on this data reliable. In \JSON, data and metadata are not formally seperated as in a database, but the principles that hold for fields in a database, apply to keys in \JSON data.  
+\noindent The first piece of advice is to use \JSON \emph{keys} only for \emph{names}, and not for \emph{data}. This convention can be a bit subtle because what exactly constitutes names and data is context dependent and subject to interpretation. Usually, it comes down to defining a finite set of keys that are known \emph{a priory} by all parties. It can be helpful to think about this in analogy with for example a relational database. Here, the database model seperates the data from metadata. At runtime, records can be inserted or deleted, and a certain select query might returns different data each time it is executed. However, each query execution will return exactly the same \emph{field names}, hence the \emph{structure} of the output consistent. Client software needs this structure to validate input, optimize implementation, and process each part of the data appropriately. In \JSON, data and metadata are not formally seperated as in a database, but similar principles that hold for fields in a database, apply to keys in dynamic \JSON data.  
  
-A beautiful example of this problem in practice was given by Mike Dewar (Data Scientist, bit.ly) in at the New York Open Statistical Programming Meetup on Jan. 12, 2012. In his talk he refers to this principle as the "golden rule", and explains how he learned his lesson the hard way. In one of his early applications, timeseries data was encoded by using the epoch timestamp as the \JSON key:
+A beautiful example of this going wrong in practice was given by Mike Dewar (Data Scientist, bit.ly) in at the New York Open Statistical Programming Meetup on Jan. 12, 2012. In his talk he refers to this principle as the "golden rule", and explains how he learned his lesson the hard way. In one of his early applications, timeseries data was encoded by using the epoch timestamp as the \JSON key. Therefore the keys are different for each query:
 
 \begin{verbatim}
 [
@@ -453,15 +453,9 @@ A beautiful example of this problem in practice was given by Mike Dewar (Data Sc
 In the context of R, the no-data-in-keys rule is closely related to Wikcham's concept of \emph{tidy data} discussed earlier. Wickham states that the most common reason for messy data are column headers containing values instead of variable names. Column headers in tabular datasets become keys when converted to \JSON. Therefore, when headers are actually values, the \JSON keys contain in fact data, and can become unpredictable. The cure is almost always to tidy the data according to recommendations given by Wickham. 
 
  
-\subsection{Rule 2: Simulate Strong typing}
+\subsection{Rule 2: Consistent Types}
 
- - Meaning/type of specific properties should be fixed.
- - A collection of properties should be of same type.
- - Important to consumer of \JSON to know what to do.
-
-\subsection{Unnamed Lists (\JSON array)}
-
-A structure should be avoided for interoperable data is a \JSON array containing different classes of elements, i.e. a heterogenous unnamed list in R. Because both R and \JSON are weakly typed, there are no restrictions on the classes of objects that can be combined into a collection. For example, the list below contains a character vector, a numeric vector and a list:
+In a strong typed language, fields and arrays declare their class before any values are assigned. Thereby the type of a given field is consitent among all instantiations of a particular object class, and every array only contains objects of a single type. Both R and \JSON are weakly typed and put no formal restrictions on the class of a certain property, or the types of objects that can be combined into a collection. For example, the list below contains a character vector, a numeric vector and a list:
 
 <<>>=
 #Heterogeneous lists are bad!
@@ -469,7 +463,21 @@ x <- list("FOO", 1:3, list("bar"=pi))
 cat(toJSON(x))
 @
 
-\noindent But just because this is possible, doesn't mean it is wise to do so. On the contrary: it puts the responsibility of defining sensible structures in the hands of the developer. A collection of arbitrary objects is hard to describe, interpret and process in the context of inter-system communication. Therfore \JSON arrays should only be used for homogeneous sets. However, the term homogeneous in this case is somewhat subjective as it refers to the \emph{meaning} of the elements, they don't necessarily need to have exactly the same structure. What is important is that the consumer of the data can treat each element identically, e.g. iterate over the elements in the collection and apply the same method to each of them. To illustrate this, lets take the example of the data frame: 
+\noindent Also we can assign different types to the same fields:
+
+<<>>=
+x <- list()
+
+#first its numberic
+x$test <- 5:2
+cat(toJSON(x))
+
+#and then its a list
+x$test <- list(bar=TRUE)
+cat(toJSON(x))
+@
+
+\noindent But just because this is possible, doesn't mean it is wise to do so. On the contrary: it puts the responsibility of defining sensible structures in the hands of the developer. Fields or collections with ambiguous object classes are very diffucult to describe, interpret and process in the context of inter-system communication. When using \JSON to exchange dynamic data, it is important that each property and array is \emph{type consistent}. However, the consitent in this case is somewhat subjective as it refers to the \emph{meaning} of the elements; they don't necessarily need to have exactly the same structure. What is important is that the consumer of the data can treat each element identically, e.g. iterate over the elements in the collection and apply the same method to each of them. To illustrate this, lets take the example of the data frame: 
 
 <<>>=
 #conceptually homogenous array
@@ -477,7 +485,7 @@ x <- data.frame(name=c("Jay", "Mary", NA, NA), gender=c("M", NA, NA, "F"))
 cat(toJSON(x, pretty=TRUE))
 @
 
-\noindent The \JSON array above has 4 elements, each of which a \JSON object. However, due to the \texttt{NA} values, not all elements have an identical structure: some records have more fields than others. But as long as they are conceptually the same type (e.g. a person), the consumer can iterate over the elements to process each "person" in the set according to a predefined action. For example, in the context of a strong-typed language, each element could be used to construct a Person object. When combining objects of different classes, a \texttt{named list} can be used to distinguish between the different types:
+\noindent The \JSON array above has 4 elements, each of which a \JSON object. However, due to the \texttt{NA} values, not all elements have an identical structure: some records have more fields than others. But as long as they are conceptually the same type (e.g. a person), the consumer can iterate over the elements to process each "person" in the set according to a predefined action. For example each element could be used to construct a Person object. When combining objects of different classes, a \texttt{named list} can be used to distinguish between the different types:
 
 <<tidy=FALSE>>=
 x <- list(
@@ -488,6 +496,9 @@ cat(toJSON(x, pretty=TRUE))
 @
 
 \noindent When looking at the public APIs, limiting \JSON arrays to homogeneous sets is a very strong convention and we have not been able to find a single exception.
+
+
+
 
 \subsection{Consistent keys and meaning}
 
