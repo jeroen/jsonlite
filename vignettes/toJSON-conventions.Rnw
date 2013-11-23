@@ -418,16 +418,46 @@ cat(toJSON(x, pretty=TRUE))
 \noindent Because R doesn't have native support for relational data, there is no natural class to store such structures. The best we can do is a column containing a list of sub-dataframes. This does the job, and allows the R user to access or generate nested \JSON structures. However, a data frame like this cannot be flattened, and the class does not guarantee that each of the individual sub-dataframe contain the same fields, as would be the case in an actual relational data base. 
 
 
-
-
 \section{Designing Interoperable \JSON structures.}
 
-The previous section described a mapping between \JSON data and R classes.  This section takes a higher level view and we outline some best practices for designing structures that can be used across platforms.
+The previous section described a mapping between \JSON data and R classes. This section takes a higher level view and outlines best practices of designing interoperable structures for use across systems. These guidelines hold for \JSON in general (and possible other formats), but we will illustrate them with some examples from R. Much of it comes down to some common sense practices that ensure data exchange is unambiguous and consistent. Consensus must exist between the different parties/systems on the data that can be exchanged as part of the communication or protocol. This requires the structure of data to follow some sort of schema that specifies which attributes can appear in the data, what they mean and how they are composed. Thereby each possible message can be interpreted/processed appropriately and no exceptions arise during runtime. 
 
-- Interpreting, processing data
-- Describing, documenting, schema.
+Some data interchange formats, such as \texttt{XML} or \texttt{Protocol Buffers} take a very formal approach, and have well established \emph{schema languages} and \emph{interface description languages}. Using such a language it is possible to define the exact structure of including all properties and actions in a formal meta-document. However, in \JSON, formal structure definitions are faily uncommon. Some initiatives for \JSON schema languages exist, but they aren't very well established and rarely seen in practice. One reason for this might be that defining and implementing formal schemas is complicated and a lot of work which defeats the purpose of using an lightweight format such as \JSON in the first place. But another reason might be that often it is simply not necessary to be overly formal. The \JSON format is simple and intuitive, and under some general conventions, a single example will often suffice to document an API. This section lists two of such important conventions that are important when using \JSON to exchange dynamic data. When these rules are followed, we call the data \emph{consistent}.
 
+\subsection{Rule 1: No Data in Keys}
 
+\noindent The first piece of advice is to use \JSON \emph{keys} only for \emph{names}, and not for \emph{data}. This convention can be a bit subtle because what exactly constitutes names and data is context dependent and subject to interpretation. Usually, it comes down to a finite set of keys that are known \emph{a priory} by all parties. It can be helpful to think about this in analogy with for example a relational database. Here, the database model seperates the data from metadata. At runtime, records can be inserted or deleted, and a certain select query might returns different data each time it is executed. However, each query execution will return exactly the same \emph{field names}. This makes the \emph{structure} of the output consistent, which makes software that builds on this data reliable. In \JSON, data and metadata are not formally seperated as in a database, but the principles that hold for fields in a database, apply to keys in \JSON data.  
+ 
+A beautiful example of this problem in practice was given by Mike Dewar (Data Scientist, bit.ly) in at the New York Open Statistical Programming Meetup on Jan. 12, 2012. In his talk he refers to this principle as the "golden rule", and explains how he learned his lesson the hard way. In one of his early applications, timeseries data was encoded by using the epoch timestamp as the \JSON key:
+
+\begin{verbatim}
+[
+  {"1325344443" : 4},
+  {"1325344456" : 5},
+  {"1325344478" : 6},
+]
+\end{verbatim}
+
+\noindent Even though being valid \JSON, dynamic keys as in the example above are likely to cause trouble down the line. When documenting a \JSON API, either informally or formally using a schema language, we want to describe for each property that might appear in the data what it's value means and is compososed of. The client or consumer of the data needs to implement code that interprets and process each element in the data in an appropriate manner. Both the documentation and interpretation of \JSON data rely on fixed keys with well defined meaning. Also note that the structure cannot be extended in the future. If we want to add an additional property to each observation, we would have to change the entire structure. In his talk, Dewar explains that life got much easier when he switched to the following encoding:
+
+\begin{verbatim}
+[
+  {"time": "1325344443" : "price": 4},
+  {"time": "1325344456" : "price": 5},
+  {"time": "1325344478" : "price": 6}
+]
+\end{verbatim}
+
+\noindent This structure will play much nicer with existing software that assumes fixed keys. Moreover, the structure can easily be described in documentation, or captured in a schema. Even when we have no intention of writing documentation or a schema for a dynamic \JSON source, it is still wise to design the structure in such away that it \emph{could} be described by a schema. When the keys are fixed, a well chosen example can provide all the information required for the consumer to implement client code. Also note that the new structure is extensible: additional fields could be added to each observation without breaking backward compatibility.  
+
+In the context of R, the no-data-in-keys rule is closely related to Wikcham's concept of \emph{tidy data} discussed earlier. Wickham states that the most common reason for messy data are column headers containing values instead of variable names. Column headers in tabular datasets become keys when converted to \JSON. Therefore, when headers are actually values, the \JSON keys contain in fact data, and can become unpredictable. The cure is almost always to tidy the data according to recommendations given by Wickham. 
+
+ 
+\subsection{Rule 2: Simulate Strong typing}
+
+ - Meaning/type of specific properties should be fixed.
+ - A collection of properties should be of same type.
+ - Important to consumer of \JSON to know what to do.
 
 \subsection{Unnamed Lists (\JSON array)}
 
@@ -484,7 +514,7 @@ cat(toJSON(x2))
 
 - Schema documents or describes the recurring structure and meaning of data.
 - Can use a formal schema language, but don't have to. Great thing about JSON is that we don't really need a formal schema, a single example will do. 
-
+- JSON schema examples
 
 \section{Public JSON APIs}
 
