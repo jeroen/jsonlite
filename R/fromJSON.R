@@ -81,7 +81,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
     } else if(grepl("^http", txt)){
       tmp <- tempfile();
       download.file(txt, tmp);
-      txt <- paste(readLines(tmp), collapse="\n");
+      txt <- paste(readLines(tmp, warn=FALSE), collapse="\n");
       unlink(tmp);
     } else if(file.exists(txt)){
       txt <- paste(readLines(tmp), collapse="\n");
