@@ -537,9 +537,9 @@ key <- "&apikey=6e021ea1c1264a658e259708076f04a1"
 
 #some queries
 drones <- fromJSON(paste0("http://openstates.org/api/v1/bills/?q=drone", key))
-legislators <- fromJSON(paste0("http://congress.api.sunlightfoundation.com/legislators
-  /locate?latitude=42.96&longitude=-108.09", key))
-words <- fromJSON(paste0("http://capitolwords.org/api/1/dates.json?phrase=obamacare", key))
+word <- fromJSON(paste0("http://capitolwords.org/api/1/dates.json?phrase=obamacare", key))
+legislators <- fromJSON(paste0("http://congress.api.sunlightfoundation.com/",
+  "legislators/locate?latitude=42.96&longitude=-108.09", key))
 @
 
 \subsection{New York Times}
@@ -555,13 +555,13 @@ url = "http://api.nytimes.com/svc/search/v2/articlesearch.json?q=obamacare+socia
 articles <- fromJSON(paste0(url, article_key))
 
 #search for best sellers
-bestseller_key = "&api-key=c900c6eae827adb52a373a976c4dcd33:16:6841409"
+bestseller_key = "&api-key=c900c6eae827adb52a373a976c4dcd33:16:68414090"
 url = "http://api.nytimes.com/svc/books/v2/lists/overview.json?published_date=2013-01-01"
 bestsellers <- fromJSON(paste0(url, bestseller_key))
 
 #movie reviews
 movie_key = "&api-key=a2bf433b68cc54d04a5b5d9fd44a66d6:8:68414090"
-url = "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json"
+url = "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json?order=by-date"
 reviews <- fromJSON(paste0(url, movie_key))
 @
  
@@ -575,11 +575,8 @@ The Twitter API provides access to almost anything happening on Twitter. Unfortu
 consumer_key = "1XxSHU2XTchttIJapwwCQ";
 consumer_secret = "TWFqJK66La96OgF12aWJn3kxq2fE6iNDTKrdzVeukg";
 
-#Packages
-library(httr)
-library(JSONlite)
-
 #basic auth
+library(httr)
 secret <- RCurl::base64(paste(consumer_key, consumer_secret, sep=":"));
 req <- POST("https://api.twitter.com/oauth2/token", 
   config(httpheader = c(
@@ -594,7 +591,7 @@ res <- fromJSON(rawToChar(req$content))
 token <- paste("Bearer", res$access_token);
 
 #Actual API call
-url = "https://api.twitter.com/1.1/statuses/user_timeline.json?count=3&screen_name=UCLA"
+url = "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=UCLA"
 call1 <- GET(url, config(httpheader = c("Authorization" = token)))
 obj1 <- fromJSON(rawToChar(call1$content))
 @

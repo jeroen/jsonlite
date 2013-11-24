@@ -20,6 +20,7 @@
 #' 
 #' @export fromJSON
 #' @export toJSON
+#' @importFrom RCurl getURL
 #' @useDynLib JSONlite
 #' @name JSONlite
 #' @aliases fromJSON
@@ -75,14 +76,8 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   
   #overload for URL or path
   if(length(txt) == 1 && nchar(txt) < 1000){
-    if(grepl("^https", txt)){
-      library(RCurl);
-      txt <- RCurl::getURL(txt);
-    } else if(grepl("^http", txt)){
-      tmp <- tempfile();
-      download.file(txt, tmp);
-      txt <- paste(readLines(tmp, warn=FALSE), collapse="\n");
-      unlink(tmp);
+    if(grepl("^http", txt)){
+      txt <- RCurl::getURLContent(txt);
     } else if(file.exists(txt)){
       txt <- paste(readLines(tmp), collapse="\n");
     }
