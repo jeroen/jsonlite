@@ -1,4 +1,4 @@
-#' @rdname JSONlite
+#' @rdname toJSON
 #' @export
 toJSON <- function(x,
    dataframe=c("rows", "columns"),

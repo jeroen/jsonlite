@@ -16,6 +16,7 @@ Objects.*
 ^.*\.Rproj$
 ^\.Rproj\.user$
 man/as.scalar.Rd$
+man/simplifyDataFrame.Rd$
 vignettes/*.tex$
 vignettes/*.log$
 vignettes/*.gz$

@@ -2,7 +2,7 @@ setGeneric("asJSON",
 	function(x, pretty=FALSE, ...){  
 		ans <- standardGeneric("asJSON");
 		if(isTRUE(pretty)){
-			ans <-jsonPretty(ans);
+			ans <-prettify(ans);
 		}
 		return(ans);
 	}

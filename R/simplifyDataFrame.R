@@ -19,7 +19,6 @@
 #' @param recordlist a list of named lists representing records (rows).
 #' @param columns character vector with names of the fields to extract. Optional but recommended when available.
 #' @param flatten automatically unlist nested lists within the records. 
-#' @export
 #' @examples \dontrun{
 #' library(httr)
 #' res <- GET("https://api.github.com/users/hadley/repos")
