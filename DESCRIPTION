@@ -18,9 +18,8 @@ Description: This package is a fork of the RJSONIO package by Duncan Temple
     functions to serialize objects. Furthermore, the package contains a lot of
     unit tests to make sure that all edge cases are encoded and decoded
     consistently for use with dynamic data in systems and applications.
-Imports:
-    RCurl
 Suggests:
     testthat,
     knitr,
-    reshape2
+    reshape2,
+    httr

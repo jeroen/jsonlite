@@ -7,8 +7,8 @@
 \title{Stringify R objects to JSON and vice versa}
 \usage{
   fromJSON(txt, simplifyVector = TRUE,
-    simplifyDataFrame = TRUE, simplifyMatrix = TRUE,
-    flatten = FALSE)
+    simplifyDataFrame = simplifyVector,
+    simplifyMatrix = simplifyVector)
 
   serializeJSON(x, digits = 8, pretty = FALSE)
 

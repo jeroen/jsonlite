@@ -20,7 +20,6 @@
 #' 
 #' @export fromJSON
 #' @export toJSON
-#' @importFrom RCurl getURL
 #' @useDynLib JSONlite
 #' @name JSONlite
 #' @aliases fromJSON
@@ -74,13 +73,33 @@
 #' identical(unserializeJSON(serializeJSON(myobject)), myobject);
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, simplifyMatrix = simplifyVector){
   
+  #check type
+  if(!is.character(txt)){
+    stop("Argument 'txt' must be a JSON string, URL or path to existing file.");
+  }
+  
   #overload for URL or path
   if(length(txt) == 1 && nchar(txt) < 1000){
-    if(grepl("^http", txt)){
-      txt <- RCurl::getURLContent(txt);
+    if(grepl("^https?://", txt)){
+      tryCatch(getNamespace("httr"), error = function(e){
+        stop("Package httr not found. Please run: install.packages('httr')")
+      });
+      req <- httr::GET(txt);
+      httr::stop_for_status(req);
+      txt <- rawToChar(req$content);      
     } else if(file.exists(txt)){
-      txt <- paste(readLines(tmp), collapse="\n");
+      txt <- paste(readLines(txt, warn=FALSE), collapse="\n");
     }
+  }
+  
+  #collapse
+  if(length(txt) > 1){
+    txt <- paste(txt, collapse="\n");
+  }
+  
+  #simple check
+  if(!grepl("^[ \t\r\n]*(\\{|\\[)",txt)){
+    stop("String does not seem to be valid JSON: ", substring(txt, 0, 20))
   }
 
   #parse JSON

@@ -29,6 +29,7 @@
 
 <<echo=FALSE>>=
 library(JSONlite)
+library(knitr)
 opts_chunk$set(comment="")
 
 #this replaces tabs by spaces because latex-verbatim doesn't like tabs
