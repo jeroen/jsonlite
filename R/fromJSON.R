@@ -54,7 +54,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
       tryCatch(getNamespace("httr"), error = function(e){
         stop("Package httr not found. Please run: install.packages('httr')")
       });
-      req <- httr::GET(txt);
+      req <- httr::GET(txt, add_headers("User-Agent" = "RCurl-httr-jsonlite"));
       httr::stop_for_status(req);
       txt <- rawToChar(req$content);      
     } else if(file.exists(txt)){
