@@ -12,7 +12,7 @@
 #
 #' @export fromJSON
 #' @export toJSON
-#' @useDynLib JSONlite
+#' @useDynLib jsonlite
 #' @name toJSON
 #' @aliases fromJSON
 #' @param x the object to be encoded

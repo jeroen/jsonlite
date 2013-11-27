@@ -3,4 +3,4 @@ They are intended to be tested by a non-root user.
 To run them, install this package and run:
 
 library(testthat)
-test_package("JSONlite")
+test_package("jsonlite")

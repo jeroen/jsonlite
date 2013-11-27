@@ -1,4 +1,4 @@
-Package: JSONlite
+Package: jsonlite
 Version: 0.9.0
 Title: Convert R objects to JSON and vice versa
 License: Apache License (== 2.0)
@@ -6,8 +6,8 @@ NeedsCompilation: yes
 Depends:
     methods
 Author: Jeroen Ooms, Duncan Temple Lang
-URL: http://github.com/jeroenooms/JSONlite#readme
-BugReports: http://github.com/jeroenooms/JSONlite/issues
+URL: http://github.com/jeroenooms/jsonlite#readme
+BugReports: http://github.com/jeroenooms/jsonlite/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
 VignetteBuilder: knitr
 Description: This package is a fork of the RJSONIO package by Duncan Temple

@@ -2,4 +2,4 @@
 #Comment this out to disable.
 
 library(testthat)
-test_package("JSONlite")
+test_package("jsonlite")

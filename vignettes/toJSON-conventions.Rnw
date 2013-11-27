@@ -28,13 +28,13 @@
 \maketitle
 
 <<echo=FALSE>>=
-library(JSONlite)
+library(jsonlite)
 library(knitr)
 opts_chunk$set(comment="")
 
 #this replaces tabs by spaces because latex-verbatim doesn't like tabs
 toJSON <- function(...){
-  gsub("\t", "  ", JSONlite::toJSON(...), fixed=TRUE);
+  gsub("\t", "  ", jsonlite::toJSON(...), fixed=TRUE);
 }
 @
 
@@ -51,22 +51,22 @@ JSON (JavaScript Object Notation) is a lightweight data-interchange format, and 
 
 When relying on \JSON as the data interchange format, the mapping between R objects and \JSON data must be consistent and unambiguous. Clients relying on \JSON to get data in and out of R must know exactly what to expect in order to facilitate reliable communication, even if the data themselves are dynamic. Similarly, R code using dynamic \JSON data from an external source is only reliable when the conversion from \JSON to R is consistent. This document attempts to take away some of the ambiguity by explicitly describing the mapping between R classes and \JSON data, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
 
-\subsection{Reference implementation: the \texttt{JSONlite} package}
+\subsection{Reference implementation: the \texttt{jsonlite} package}
 
-The \texttt{JSONlite} package provides a reference implementation of the conventions proposed in this document. \texttt{JSONlite} is a fork of the \texttt{RJSONIO} package by Duncan Temple Lang, which again builds on \texttt{libjson} \texttt{C++} library from Jonathan Wallace. The \texttt{JSONlite} package uses the parser from \texttt{RJSONIO}, but the R code has been rewritten from scratch. Both packages implement \toJSON and \fromJSON functions, but their output is quite different. Finally, the \texttt{JSONlite} package contains a large set of unit tests to validate that R objects are correctly converted to \JSON and vice versa. These unit tests cover all classes and edge cases mentioned in this document, and could be used to validate if other implementations follow the same convetions. 
+The \texttt{jsonlite} package provides a reference implementation of the conventions proposed in this document. \texttt{jsonlite} is a fork of the \texttt{RJSONIO} package by Duncan Temple Lang, which again builds on \texttt{libjson} \texttt{C++} library from Jonathan Wallace. The \texttt{jsonlite} package uses the parser from \texttt{RJSONIO}, but the R code has been rewritten from scratch. Both packages implement \toJSON and \fromJSON functions, but their output is quite different. Finally, the \texttt{jsonlite} package contains a large set of unit tests to validate that R objects are correctly converted to \JSON and vice versa. These unit tests cover all classes and edge cases mentioned in this document, and could be used to validate if other implementations follow the same convetions. 
 
 <<eval=FALSE>>=
 library(testthat)
-test_package("JSONlite")
+test_package("jsonlite")
 @
 
 \noindent Note that even though \texttt{JSON} allows for inserting arbitrary white space and indentation, the unit tests assume that white space is trimmed.
 
 \subsection{Class-based versus type-based encoding}
 
-The \texttt{JSONlite} package actually implements two systems for translating between R objects and \JSON. This document focuses on the \toJSON and \fromJSON functions which use R's class-based S3 method system. For all of the common classes in R, the \texttt{JSONlite} package implements \toJSON methods as described in this document. Users in R can easily extend this system by implementing additional \toJSON methods for other classes. However this also means that classes that do not have the \toJSON method defined are not supported. Furthermore, the implementation of a specific \toJSON method determines which data and metadata in the objects of this class gets encoded in its \JSON representation, and how. In this respect, \toJSON is similar to e.g. the \texttt{print} function, which also provides a certain \emph{representation} of an object based on its class and optionally some print parameters. This representation does not necessarily reflect all information stored in the object, and there is no guaranteed one-to-one correspondence between R objects and \JSON. I.e. calling \texttt{fromJSON(toJSON(object))} will return an object which only contains the data that was encoded by the \toJSON method for this particular class, and which might even have a different class than the original.
+The \texttt{jsonlite} package actually implements two systems for translating between R objects and \JSON. This document focuses on the \toJSON and \fromJSON functions which use R's class-based S3 method system. For all of the common classes in R, the \texttt{jsonlite} package implements \toJSON methods as described in this document. Users in R can easily extend this system by implementing additional \toJSON methods for other classes. However this also means that classes that do not have the \toJSON method defined are not supported. Furthermore, the implementation of a specific \toJSON method determines which data and metadata in the objects of this class gets encoded in its \JSON representation, and how. In this respect, \toJSON is similar to e.g. the \texttt{print} function, which also provides a certain \emph{representation} of an object based on its class and optionally some print parameters. This representation does not necessarily reflect all information stored in the object, and there is no guaranteed one-to-one correspondence between R objects and \JSON. I.e. calling \texttt{fromJSON(toJSON(object))} will return an object which only contains the data that was encoded by the \toJSON method for this particular class, and which might even have a different class than the original.
 
-The alternative to the S3 method system is to use type-based encoding, which \texttt{JSONlite} implements in the functions \texttt{serializeJSON} and \texttt{unserializeJSON}. All data structures in R get stored in memory using one of the internal \texttt{SEXP} storage types, and \texttt{serializeJSON} defines an encoding schema which captures the type, value, and attributes for each storage type. The result is \JSON output which closely resembles the internal structure of the underlying C data types, and which can be perfectly restored to the original R object using \texttt{unserializeJSON}. This method is relatively straightforward to implement, however the disadvantage is that the resulting \JSON is very verbose, hard to interpret, and cumbersome to generate in the context of another language or system. For most applications this is actually impractical because it requires the client/consumer to understand and manipulate R types, which is difficult and reduces interoperability. Instead we can make data in R more accessible to third parties by defining sensible \JSON representations that are natural for the class of an object, rather than its internal storage type. This document does not discuss the \texttt{serializeJSON} system in any further detail, and solely treats the class based system implemented in \toJSON and \fromJSON. However the reader that is interested in full serialization of R objects into \JSON is encouraged to have a look at the respective manual pages.
+The alternative to the S3 method system is to use type-based encoding, which \texttt{jsonlite} implements in the functions \texttt{serializeJSON} and \texttt{unserializeJSON}. All data structures in R get stored in memory using one of the internal \texttt{SEXP} storage types, and \texttt{serializeJSON} defines an encoding schema which captures the type, value, and attributes for each storage type. The result is \JSON output which closely resembles the internal structure of the underlying C data types, and which can be perfectly restored to the original R object using \texttt{unserializeJSON}. This method is relatively straightforward to implement, however the disadvantage is that the resulting \JSON is very verbose, hard to interpret, and cumbersome to generate in the context of another language or system. For most applications this is actually impractical because it requires the client/consumer to understand and manipulate R types, which is difficult and reduces interoperability. Instead we can make data in R more accessible to third parties by defining sensible \JSON representations that are natural for the class of an object, rather than its internal storage type. This document does not discuss the \texttt{serializeJSON} system in any further detail, and solely treats the class based system implemented in \toJSON and \fromJSON. However the reader that is interested in full serialization of R objects into \JSON is encouraged to have a look at the respective manual pages.
 
 \subsection{Scope and Limitations}
 
@@ -122,7 +122,7 @@ x <- c(1,2,NA,NaN,Inf,10)
 cat(toJSON(x))
 @
 
-\noindent Both methods result in valid \JSON, but both have a limitation: the problem with the \texttt{null} type is that there is no way to distinguish between different types of missing data, which could be a problem for numeric vectors. The values \texttt{Inf}, \texttt{-Inf}, \texttt{NA} and \texttt{NaN} have different meanings, and these should not get lost in the encoding. However, the problem with encoding missing values as strings is that this method can not be used for character vectors, because the consumer won't be able to distinguish the actual string \texttt{"NA"} and the missing value \texttt{NA}. This would create a likely source of bugs, where clients mistakenly interpret \texttt{"NA"} as an actual value, which is a common problem with text-based formats such as CSV. For this reason, \texttt{JSONlite} uses the following defaults:
+\noindent Both methods result in valid \JSON, but both have a limitation: the problem with the \texttt{null} type is that there is no way to distinguish between different types of missing data, which could be a problem for numeric vectors. The values \texttt{Inf}, \texttt{-Inf}, \texttt{NA} and \texttt{NaN} have different meanings, and these should not get lost in the encoding. However, the problem with encoding missing values as strings is that this method can not be used for character vectors, because the consumer won't be able to distinguish the actual string \texttt{"NA"} and the missing value \texttt{NA}. This would create a likely source of bugs, where clients mistakenly interpret \texttt{"NA"} as an actual value, which is a common problem with text-based formats such as CSV. For this reason, \texttt{jsonlite} uses the following defaults:
 
 \begin{itemize}
  \item Missing values in non-numeric vectors (\texttt{logical}, \texttt{character}) are encoded as \texttt{null}.
@@ -140,7 +140,7 @@ cat(toJSON(c(3.14, NA, NaN, 21, Inf, -Inf), na="null"))
 
 \subsubsection{Special vector types: dates, times, factor, complex}
 
-Besides missing values, \JSON also lacks native support for some of the basic vector types in R that frequently appear in data sets. These include vectors of class \texttt{Date}, \texttt{POSIXt} (timestamps), \texttt{factors} and \texttt{complex} vectors. By default, the \texttt{JSONlite} package coerces these types to strings (using \texttt{as.character}):
+Besides missing values, \JSON also lacks native support for some of the basic vector types in R that frequently appear in data sets. These include vectors of class \texttt{Date}, \texttt{POSIXt} (timestamps), \texttt{factors} and \texttt{complex} vectors. By default, the \texttt{jsonlite} package coerces these types to strings (using \texttt{as.character}):
 
 <<>>=
 cat(toJSON(Sys.time() + 1:3))
@@ -153,7 +153,7 @@ cat(toJSON(complex(real=runif(3), imaginary=rnorm(3))))
 
 \subsubsection{Special cases: vectors of length 0 or 1}
 
-Two edge cases deserve special attention: vectors of length 0 and vectors of length 1. In \texttt{JSONlite} these are encoded respectively as an empty array, and an array of length 1:
+Two edge cases deserve special attention: vectors of length 0 and vectors of length 1. In \texttt{jsonlite} these are encoded respectively as an empty array, and an array of length 1:
 
 <<>>=
 #vectors of length 0 and 1
@@ -189,7 +189,7 @@ cat(toJSON(list(pi)))
 \end{kframe}
 \end{knitrout}
 
-\noindent When encoding a single data set this might seem harmless, but in the context of dynamic data this inconsistency is almost guaranteed to cause bugs. For example, imagine an R web service which lets the user fit a linear model and sends back the fitted parameter estimates. In this application, the R server returns the vector with coefficients encoded as a \JSON array. The client code then parses the \JSON, and then iterates over the array of coefficients to display them in a GUI. All goes well, until the user decides to fit a model with only one predictor. If the \JSON encoder returns a primitive value where the client is assuming an array, the application will likely break. Any consumer or client would need to be aware of the special case where the vector becomes a primitive, and explicitly take this exception into account when processing the result. When the client fails to do so and proceeds as usual, it will probably call an iterator or loop method on a primitive value, resulting in the obvious errors. For this reason \texttt{JSONlite} uses consistent encoding schemes which do not depend on variable object properties such as its length. Hence, a vector is always encoded as an array, even when it is of length 0 or 1.
+\noindent When encoding a single data set this might seem harmless, but in the context of dynamic data this inconsistency is almost guaranteed to cause bugs. For example, imagine an R web service which lets the user fit a linear model and sends back the fitted parameter estimates. In this application, the R server returns the vector with coefficients encoded as a \JSON array. The client code then parses the \JSON, and then iterates over the array of coefficients to display them in a GUI. All goes well, until the user decides to fit a model with only one predictor. If the \JSON encoder returns a primitive value where the client is assuming an array, the application will likely break. Any consumer or client would need to be aware of the special case where the vector becomes a primitive, and explicitly take this exception into account when processing the result. When the client fails to do so and proceeds as usual, it will probably call an iterator or loop method on a primitive value, resulting in the obvious errors. For this reason \texttt{jsonlite} uses consistent encoding schemes which do not depend on variable object properties such as its length. Hence, a vector is always encoded as an array, even when it is of length 0 or 1.
 
 \subsection{Matrices}
 
@@ -208,7 +208,7 @@ attributes(volcano)
 length(volcano)
 @
 
-\noindent Even though the matrix is stored as a single vector, it the way it is printed, indexed and treated otherwise makes it conceptually a 2 dimensional structure. \texttt{JSONlite} treats a matrix as a set of equal-length homogeneous vectors, and therefore encodes it using an array of sub arrays:
+\noindent Even though the matrix is stored as a single vector, it the way it is printed, indexed and treated otherwise makes it conceptually a 2 dimensional structure. \texttt{jsonlite} treats a matrix as a set of equal-length homogeneous vectors, and therefore encodes it using an array of sub arrays:
 
 <<>>=
 x <- matrix(1:12, nrow=3, ncol=4)
@@ -315,7 +315,7 @@ x$foo
 x[[2]]
 @
 
-\noindent In a \JSON object, each element in an object must have a valid name. To ensure this property, \texttt{JSONlite} uses the same solution as the \texttt{print} method, which is to fall back on indices for elements that do not have a proper name:
+\noindent In a \JSON object, each element in an object must have a valid name. To ensure this property, \texttt{jsonlite} uses the same solution as the \texttt{print} method, which is to fall back on indices for elements that do not have a proper name:
 
 <<>>=
 x <- list(foo=123, "test", TRUE)
@@ -336,7 +336,7 @@ print(iris[1:3, c(1,5)])
 print(iris[1:3, c("Sepal.Width", "Species")])
 @
 
-\noindent For the previously discussed classes such as vectors and matrices, behavior of JSONlite is quite similar to the other available packages that implement \texttt{toJSON} and \texttt{toJSON} functions, with only minor differences for missing values and edge cases. But when it comes to data frames, JSONlite takes a completely different approach. The behavior of JSONlite is designed to be compatible with conventional ways of encoding table-like structures outside the R community. The implementation is more complex, but results in a powerful and more natural way of interfacing data frames through \JSON and vice versa.
+\noindent For the previously discussed classes such as vectors and matrices, behavior of jsonlite is quite similar to the other available packages that implement \texttt{toJSON} and \texttt{toJSON} functions, with only minor differences for missing values and edge cases. But when it comes to data frames, jsonlite takes a completely different approach. The behavior of jsonlite is designed to be compatible with conventional ways of encoding table-like structures outside the R community. The implementation is more complex, but results in a powerful and more natural way of interfacing data frames through \JSON and vice versa.
 
 \subsubsection{Column based versus row based tables}
 
@@ -344,9 +344,9 @@ Generally speaking, tabular data structures can be implemented in two different 
 
 The data frame in R is implemented in a column based fasion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \texttt{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. R simply binds the specified columns together into a matrix \texttt{X} and calls out to a highly optimized fortran subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the QR factorization of \texttt{X}. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in R. However, unfortunately R is an exception in its preference for column-based storage: most  languages, systems, databases, APIs, etc, are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. The remaining of this section discusses details and challenges of consistently mapping record based \JSON data as frequently encountered in the wild, into column-based data frames which are convenient for statistical computing.
 
-\subsubsection{Row based data frame encodingin JSONlite}
+\subsubsection{Row based data frame encodingin jsonlite}
 
-The encoding of data frames is one of the major differences between JSONlite and implementations from other currently available packages. Instead of using the column-based encoding also used for lists, JSONlite encodes data frames by default as an array of records:
+The encoding of data frames is one of the major differences between jsonlite and implementations from other currently available packages. Instead of using the column-based encoding also used for lists, jsonlite encodes data frames by default as an array of records:
 
 <<>>=
 cat(toJSON(iris[1:2,], pretty=TRUE))
@@ -370,11 +370,11 @@ print(x)
 cat(toJSON(x, pretty=TRUE))
 @
 
-\noindent The default behavior of JSONlite is to omit missing data from records in a data frame. This seems to be the most conventional way of doing things, and we expect this encoding will most likely lead to the correct interpretation of \emph{missingness}, even in languages which have no explicit notion of \texttt{NA}.
+\noindent The default behavior of jsonlite is to omit missing data from records in a data frame. This seems to be the most conventional way of doing things, and we expect this encoding will most likely lead to the correct interpretation of \emph{missingness}, even in languages which have no explicit notion of \texttt{NA}.
 
 \subsubsection{Relational data: nested records}
 
-Nested datasets are somewhat unusual in R, but frequently encountered in \JSON. Such structures do not really fit the vector based paradigm which makes them harder to manipulate in R. However, nested structures are too common in \JSON to ignore, and with a little work most cases still map to a data frame quite nicely. The most common scenario is a dataset in which a certain field within each record contains a \emph{subrecord} with additional fields. JSONlite interprets these subrecords as a nested data frame. Whereas the data frame class usually consists of vectors, technically a column can also be list or another data frame with matching dimension (this stretches the meaning of the word "column" a bit):
+Nested datasets are somewhat unusual in R, but frequently encountered in \JSON. Such structures do not really fit the vector based paradigm which makes them harder to manipulate in R. However, nested structures are too common in \JSON to ignore, and with a little work most cases still map to a data frame quite nicely. The most common scenario is a dataset in which a certain field within each record contains a \emph{subrecord} with additional fields. jsonlite interprets these subrecords as a nested data frame. Whereas the data frame class usually consists of vectors, technically a column can also be list or another data frame with matching dimension (this stretches the meaning of the word "column" a bit):
 
 <<tidy=FALSE>>=
 options(stringsAsFactors=FALSE)
