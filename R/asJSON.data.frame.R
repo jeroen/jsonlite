@@ -33,24 +33,19 @@ setMethod("asJSON", "data.frame", function(x, na = c("default", "null", "string"
     x <- cbind(data.frame(`$row` = row.names(x), check.names = FALSE), x)
   }
   
+  #convert factors to char earlier!
+  
   # Get a list of rows. This is the computationally expensive part.
-  out <- list()
-  for (i in 1:nrow(x)) {
-    out[[i]] <- x[i, , drop = FALSE]
+  out <-  if(na == "default") {
+    lapply(seq_len(nrow(x)), function(i){
+      z <- as.list(x[i, , drop=FALSE]);
+      lapply(z[!is.na(z)], as.scalar);
+    });
+  } else {
+    lapply(seq_len(nrow(x)), function(i){
+      lapply(x[i, , drop=FALSE], as.scalar);
+    });
   }
-  
-  # don't explicitly encode missing values in records (just drop them)
-  if (na == "default") {
-    out <- lapply(out, function(record) {
-      na_values <- vapply(record, function(z) {
-        isTRUE(is.na(z))
-      }, logical(1))
-      return(as.list(record[1, !na_values, drop = FALSE]))
-    })
-  }
-  
-  # add scalar too all elements to prevent [] containers.
-  out <- lapply(out, lapply, as.scalar)
   
   # we assume a dataframe with one row
   if (!isTRUE(container)) {
