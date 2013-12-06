@@ -6,21 +6,20 @@ setMethod("asJSON", "numeric", function(x, container = TRUE, digits = 5, na = "s
   }
   
   # pretty format numbers
-  tmp <- trim(formatC(x, digits = digits, format = "f", drop0trailing = TRUE))
+  tmp <- formatC(x, digits = digits, format = "f", drop0trailing = TRUE)
   
   # in numeric variables, NA, NaN, Inf are replaced by character strings
-  if (any(missings <- !is.finite(x))) {
+  if (any(missings <- which(!is.finite(x)))) {
     if (na %in% c("default", "string")) {
-      tmp[missings] <- wrapinquotes(tmp[missings])
+      tmp[missings] <- wrapinquotes(x[missings])
     } else {
       tmp[missings] <- "null"
     }
   }
   
-  tmp <- paste(tmp, collapse = ", ")
-  
-  if (container) {
-    tmp <- paste("[", tmp, "]")
+  if(!container){
+    return(paste0(tmp, collapse = ", "))
+  } else {
+    return(paste0("[ ", paste0(tmp, collapse = ", "), " ]"))
   }
-  return(tmp)
 }) 
