@@ -11,8 +11,8 @@
 #' #Something bad happened
 #' truncated <- substring(myjson, 1, 100)
 #' validate(truncated) #FALSE
-validate <- function(txt){
-	stopifnot(is.character(txt))
-	txt <- paste(txt, collapse="\n")
-	.Call("R_isValidJSON", as.character(txt))
-}
+validate <- function(txt) {
+  stopifnot(is.character(txt))
+  txt <- paste(txt, collapse = "\n")
+  .Call("R_isValidJSON", as.character(txt))
+} 

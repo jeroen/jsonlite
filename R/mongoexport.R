@@ -11,19 +11,19 @@
 #' @param jsonArray if output should be an array. See details. 
 #' @param ... args passed on to asJSON
 #' @export
-toMongo <- function(x, jsonArray=FALSE, ...){
-	if(!is.data.frame(x)){
-		stop("toMongo only exports dataframes.");
-	}
-	
-	#by default mongoimport expects an entry per line
-	if(isTRUE(jsonArray)){
-		output <- asJSON(x, POSIXt="mongo", raw="mongo", ...)
-	} else {
-		output <- rep(NA, nrow(x));	
-		for(i in 1:nrow(x)){
-			output[i] <- asJSON(as.scalar(x[i, ,drop=FALSE]), POSIXt="mongo", raw="mongo", pretty=FALSE, ...);
-		}
-	}
-	return(paste(output, collapse="\n"));	
-}
+toMongo <- function(x, jsonArray = FALSE, ...) {
+  if (!is.data.frame(x)) {
+    stop("toMongo only exports dataframes.")
+  }
+  
+  # by default mongoimport expects an entry per line
+  if (isTRUE(jsonArray)) {
+    output <- asJSON(x, POSIXt = "mongo", raw = "mongo", ...)
+  } else {
+    output <- rep(NA, nrow(x))
+    for (i in 1:nrow(x)) {
+      output[i] <- asJSON(as.scalar(x[i, , drop = FALSE]), POSIXt = "mongo", raw = "mongo", pretty = FALSE, ...)
+    }
+  }
+  return(paste(output, collapse = "\n"))
+} 
