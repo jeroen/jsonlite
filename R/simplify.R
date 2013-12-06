@@ -1,8 +1,10 @@
-simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, homoList = TRUE, flatten = FALSE) {
+simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, 
+  homoList = TRUE, flatten = FALSE) {
   if (is.list(x)) {
     if (!length(x)) {
-      # In case of fromJSON('[]') returning a list is most neutral.  Because the user can do as.vector(list()) and
-      # as.data.frame(list()) which both results in the correct object.
+      # In case of fromJSON('[]') returning a list is most neutral.  Because the user
+      # can do as.vector(list()) and as.data.frame(list()) which both results in the
+      # correct object.
       return(list())
     }
     
@@ -22,12 +24,13 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     }
     
     # apply recursively
-    out <- lapply(x, sys.function(0), simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, simplifyMatrix = simplifyMatrix)
+    out <- lapply(x, sys.function(0), simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
+      simplifyMatrix = simplifyMatrix)
     
-    # test for matrix. Note that we have to take another look at x (before null2na on its elements) to differentiate
-    # between matrix and vector
-    if (isTRUE(simplifyMatrix) && isTRUE(simplifyVector) && is.matrixlist(out) && all(unlist(vapply(x, is.scalarlist, 
-      logical(1))))) {
+    # test for matrix. Note that we have to take another look at x (before null2na on
+    # its elements) to differentiate between matrix and vector
+    if (isTRUE(simplifyMatrix) && isTRUE(simplifyVector) && is.matrixlist(out) && 
+      all(unlist(vapply(x, is.scalarlist, logical(1))))) {
       return(do.call(rbind, out))
     }
     
@@ -65,7 +68,8 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
 
 is.scalarlist <- function(x) {
   isTRUE(is.list(x) && all(sapply(x, function(y) {
-    mode(y) %in% c("numeric", "logical", "character", "complex", "NULL") && (length(y) <= 1)
+    mode(y) %in% c("numeric", "logical", "character", "complex", "NULL") && (length(y) <= 
+      1)
   })))
 }
 
@@ -74,8 +78,8 @@ is.namedlist <- function(x) {
 }
 
 is.recordlist <- function(x) {
-  # recordlist is an array with only objects or NULL NULL appears when this is a nested data frame, but some records do
-  # not contain this data frame at all.
+  # recordlist is an array with only objects or NULL NULL appears when this is a
+  # nested data frame, but some records do not contain this data frame at all.
   if (!isTRUE(is.list(x) && length(x))) {
     return(FALSE)
   }
@@ -88,6 +92,6 @@ is.recordlist <- function(x) {
 is.matrixlist <- function(x) {
   isTRUE(is.list(x) && length(x) && is.null(names(x)) && all(unlist(vapply(x, function(y) {
     is.atomic(y)
-  }, logical(1)))) && (length(unique(unlist(vapply(x, length, integer(1))))) == 1) && (length(unique(unlist(vapply(x, 
-    mode, character(1))))) == 1))
+  }, logical(1)))) && (length(unique(unlist(vapply(x, length, integer(1))))) == 
+    1) && (length(unique(unlist(vapply(x, mode, character(1))))) == 1))
 } 

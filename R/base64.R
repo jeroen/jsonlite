@@ -1,5 +1,5 @@
-# These functions have been taken from the base64 package by Francois Romain. It was easier to copy then to import.
-# They will not be exported
+# These functions have been taken from the base64 package by Francois Romain. It
+# was easier to copy then to import.  They will not be exported
 
 
 base64_decode <- function(input) {

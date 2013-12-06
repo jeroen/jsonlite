@@ -1,4 +1,5 @@
-# timestamps can either be: ISO8601 (various formats), R style print, GMT epoch ms, or mongo
+# timestamps can either be: ISO8601 (various formats), R style print, GMT epoch
+# ms, or mongo
 
 parseTimestamp <- function(x) {
   UseMethod("parseTimestamp")
@@ -8,7 +9,8 @@ parseTimestamp <- function(x) {
 #' @S3method parseTimestamp numeric
 parseTimestamp.numeric <- function(x) {
   if (any(x < 1e+10) && all(x < 1e+10)) {
-    warning("Timestamps seem low. Make sure they are milliseconds and not seconds:\n\n", x)
+    warning("Timestamps seem low. Make sure they are milliseconds and not seconds:\n\n", 
+      x)
   }
   structure(x/1000, class = c("POSIXct", "POSIXt"))
 }
@@ -34,9 +36,10 @@ parseTimestamp.character <- function(x) {
   substring(x, 11) <- "T"
   
   # select format
-  outtime <- switch(datepattern, ISODATE = strptime(x, "%Y-%m-%d"), ISOTIME = strptime(x, "%Y-%m-%dT%H:%M"), ISOTIMEUTC = strptime(x, 
-    "%Y-%m-%dT%H:%MZ", tz = "UTC"), ISOTIMESECONDS = strptime(x, "%Y-%m-%dT%H:%M:%S"), ISOTIMESECONDSUTC = strptime(x, 
-    "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"), )
+  outtime <- switch(datepattern, ISODATE = strptime(x, "%Y-%m-%d"), ISOTIME = strptime(x, 
+    "%Y-%m-%dT%H:%M"), ISOTIMEUTC = strptime(x, "%Y-%m-%dT%H:%MZ", tz = "UTC"), 
+    ISOTIMESECONDS = strptime(x, "%Y-%m-%dT%H:%M:%S"), ISOTIMESECONDSUTC = strptime(x, 
+      "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"), )
   
   # convert to POSIXct
   outtime <- as.POSIXct(outtime)

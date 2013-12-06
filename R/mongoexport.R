@@ -22,7 +22,8 @@ toMongo <- function(x, jsonArray = FALSE, ...) {
   } else {
     output <- rep(NA, nrow(x))
     for (i in 1:nrow(x)) {
-      output[i] <- asJSON(as.scalar(x[i, , drop = FALSE]), POSIXt = "mongo", raw = "mongo", pretty = FALSE, ...)
+      output[i] <- asJSON(as.scalar(x[i, , drop = FALSE]), POSIXt = "mongo", 
+        raw = "mongo", pretty = FALSE, ...)
     }
   }
   return(paste(output, collapse = "\n"))

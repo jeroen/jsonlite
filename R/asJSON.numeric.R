@@ -1,7 +1,9 @@
-setMethod("asJSON", "numeric", function(x, container = TRUE, digits = 5, na = "string", ...) {
+setMethod("asJSON", "numeric", function(x, container = TRUE, digits = 5, na = "string", 
+  ...) {
   # empty vector
-  if (!length(x)) 
+  if (!length(x)) {
     return("[]")
+  }
   
   # pretty format numbers
   tmp <- trim(formatC(x, digits = digits, format = "f", drop0trailing = TRUE))

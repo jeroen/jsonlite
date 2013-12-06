@@ -1,5 +1,4 @@
 setMethod("asJSON", "factor", function(x, factor = c("string", "integer"), ...) {
-  
   # validate
   factor <- match.arg(factor)
   

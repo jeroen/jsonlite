@@ -5,5 +5,5 @@ library(formatR)
 options(reindent.spaces=2)
 options(replace.assign=TRUE)
 lapply(list.files("R", full.name=TRUE), function(x){
-  try(tidy.source(x, file=x))
+  try(tidy.source(x, file=x, width.cutoff=80))
 })

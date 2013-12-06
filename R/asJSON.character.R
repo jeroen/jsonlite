@@ -1,5 +1,5 @@
-setMethod("asJSON", "character", function(x, container = TRUE, na = c("default", "null", "string"), ...) {
-  
+setMethod("asJSON", "character", function(x, container = TRUE, na = c("default", 
+  "null", "string"), ...) {
   # 0 vector is not handled properly by paste()
   if (!length(x)) 
     return("[]")

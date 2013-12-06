@@ -1,4 +1,5 @@
-setMethod("asJSON", "function", function(x, container = TRUE, fun = c("source", "list"), ...) {
+setMethod("asJSON", "function", function(x, container = TRUE, fun = c("source", "list"), 
+  ...) {
   # validate
   fun <- match.arg(fun)
   

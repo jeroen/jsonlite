@@ -1,5 +1,6 @@
-# S4 to list object. Not quite sure if this really works in general. You probably shouldn't use S4 instances with JSON
-# anyway because you don't know the class definition.
+# S4 to list object. Not quite sure if this really works in general. You probably
+# shouldn't use S4 instances with JSON anyway because you don't know the class
+# definition.
 
 S4tolist <- function(x) {
   structure(lapply(slotNames(x), slot, object = x), .Names = slotNames(x))

@@ -41,7 +41,8 @@
 #' 
 #' #parse it back
 #' fromJSON(jsoncars)
-fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, simplifyMatrix = simplifyVector) {
+fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, 
+  simplifyMatrix = simplifyVector) {
   
   # check type
   if (!is.character(txt)) {
@@ -52,7 +53,8 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   if (length(txt) == 1 && nchar(txt) < 1000) {
     if (grepl("^https?://", txt)) {
       tryCatch(getNamespace("httr"), error = function(e) {
-        stop("Package httr not found. Please run: install.packages('httr')", call. = FALSE)
+        stop("Package httr not found. Please run: install.packages('httr')", 
+          call. = FALSE)
       })
       req <- httr::GET(txt, httr::add_headers(`User-Agent` = "RCurl-httr-jsonlite"))
       httr::stop_for_status(req)
@@ -77,7 +79,8 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   
   # post processing
   if (any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))) {
-    return(simplify(obj, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, simplifyMatrix = simplifyMatrix))
+    return(simplify(obj, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
+      simplifyMatrix = simplifyMatrix))
   } else {
     return(obj)
   }

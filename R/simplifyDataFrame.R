@@ -31,7 +31,8 @@ simplifyDataFrame <- function(recordlist, columns, flatten = FALSE) {
   # no records at all
   if (!length(recordlist)) {
     if (!missing(columns)) {
-      return(as.data.frame(matrix(ncol = length(columns), nrow = 0, dimnames = list(NULL, columns))))
+      return(as.data.frame(matrix(ncol = length(columns), nrow = 0, dimnames = list(NULL, 
+        columns))))
     } else {
       return(data.frame())
     }
@@ -42,8 +43,9 @@ simplifyDataFrame <- function(recordlist, columns, flatten = FALSE) {
     return(data.frame(matrix(nrow = length(recordlist), ncol = 0)))
   }
   
-  # flatten list if set must be a more efficient way to do this. also 'null' values get lost (although they might come
-  # back later) also breaks when records contain nested lists of variable length
+  # flatten list if set must be a more efficient way to do this. also 'null' values
+  # get lost (although they might come back later) also breaks when records contain
+  # nested lists of variable length
   if (isTRUE(flatten)) {
     recordlist <- lapply(recordlist, function(mylist) {
       lapply(rapply(mylist, base::enquote, how = "unlist"), eval)
@@ -60,7 +62,8 @@ simplifyDataFrame <- function(recordlist, columns, flatten = FALSE) {
     # a new record with each requested column
     y <- structure(as.list(x)[columns], names = columns)
     
-    # replace NULL with NA values in each record lapply(y, function(z) { if(is.null(z)) NA else z; })
+    # replace NULL with NA values in each record lapply(y, function(z) {
+    # if(is.null(z)) NA else z; })
   })
   
   # create a list of lists
@@ -68,11 +71,12 @@ simplifyDataFrame <- function(recordlist, columns, flatten = FALSE) {
   names(columnlist) <- columns
   
   # simplify vectors and nested data frames
-  columnlist <- lapply(columnlist, simplify, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = FALSE, 
-    flatten = flatten)
+  columnlist <- lapply(columnlist, simplify, simplifyVector = TRUE, simplifyDataFrame = TRUE, 
+    simplifyMatrix = FALSE, flatten = flatten)
   
-  # columnlist <- lapply(columnlist, function(x){ if(is.scalarlist(x)){ return(null2na(x)) } else if(is.recordlist(x)) {
-  # return(simplifyDataFrame(x, flatten=flatten)); } else { return(x); } });
+  # columnlist <- lapply(columnlist, function(x){ if(is.scalarlist(x)){
+  # return(null2na(x)) } else if(is.recordlist(x)) { return(simplifyDataFrame(x,
+  # flatten=flatten)); } else { return(x); } });
   
   # check that all elements have equal length
   columnlengths <- unlist(vapply(columnlist, function(z) {
