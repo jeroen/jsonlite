@@ -2,10 +2,7 @@ setMethod("asJSON", "factor", function(x, factor = c("string", "integer"), ...) 
   # validate
   factor <- match.arg(factor)
   
-  # empty vector
-  if (!length(x)) 
-    return("[]")
-  
+  # dispatch
   if (factor == "integer") {
     # encode factor as enum
     return(asJSON(unclass(x), ...))
