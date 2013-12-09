@@ -55,19 +55,26 @@ setMethod("asJSON", "data.frame", function(x, na = c("default", "null", "string"
   out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, raw = "hex", na = na, complex=complex, ...)
   
   #this is a workaround for vapply simplifying into a vector for n=1 (not for n=0 surprisingly)
-  if(nrow(x) == 1){
+  if(!is.matrix(out)){
     out <- t(out)
   }
   
   #turn the matrix into json records
-  tmp <- apply(out, 1, function(z){
-    missings <- is.na(z);
-    if(any(missings)){
-      paste("{", paste(dfnames[!missings], z[!missings], sep = " : ", collapse = ", "), "}")
-    } else {
+  if(na == "NA") {
+    tmp <- apply(out, 1, function(z){
+      missings <- is.na(z);
+      if(any(missings)){
+        paste("{", paste(dfnames[!missings], z[!missings], sep = " : ", collapse = ", "), "}")
+      } else {
+        paste("{", paste(dfnames, z, sep = " : ", collapse = ", "), "}")
+      }
+    });
+  } else {
+    #tiny speed up because we don't have to check for NA 
+    tmp <- apply(out, 1, function(z){
       paste("{", paste(dfnames, z, sep = " : ", collapse = ", "), "}")
-    }
-  });
+    });    
+  }
   
   #collapse
   if(isTRUE(collapse)){
