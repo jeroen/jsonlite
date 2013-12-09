@@ -46,7 +46,7 @@
 \examples{
 \dontrun{
 library(httr)
-res <- GET("https://api.github.com/users/hadley/repos")
+res <- GET('https://api.github.com/users/hadley/repos')
 obj <- fromJSON(rawToChar(res$content))
 mydf1 <- simplifyDataFrame(obj, flatten=FALSE)
 mydf2 <- simplifyDataFrame(obj, flatten=TRUE)

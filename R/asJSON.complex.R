@@ -7,7 +7,11 @@ setMethod("asJSON", "complex", function(x, digits = 5, collapse = TRUE, complex 
   
   # empty vector
   if (!length(x)) {
-    return("[]")
+    if(collapse) {
+      return("[]")
+    } else {
+      return(character())
+    }
   }
   
   #turn into strings
@@ -16,20 +20,11 @@ setMethod("asJSON", "complex", function(x, digits = 5, collapse = TRUE, complex 
     mystring <- prettyNum(x = x, digits = digits)
     if (any(missings <- which(!is.finite(x)))){
       if (na %in% c("null", "NA")) {
-        mystring[missings] <- NA;
+        mystring[missings] <- NA_character_;
       }
     }
-    return(asJSON(mystring, collapse = collapse, na = na, ...))
+    asJSON(mystring, collapse = collapse, na = na, ...)
   } else {
-    mylist <- list(real = Re(x), imaginary = Im(x))
-    
-    # this is a bit of a hack if collapse is false, this is length 1 vector so we
-    # have to actually apply this so the real and imaginary elements of the list
-    if (!collapse) {
-      mylist <- lapply(mylist, as.scalar)
-    }
-    
-    # return
-    return(asJSON(mylist, na = na, ...))
+    asJSON(list(real = Re(x), imaginary = Im(x)), na = na, ...)
   }
 }) 

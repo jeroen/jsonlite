@@ -8,7 +8,11 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
   
   # empty vector
   if (!length(x)) {
-    return("[]")
+    if(collapse) {
+      return("[]")
+    } else {
+      return(character())
+    }
   }
   
   # Encode based on a schema
@@ -16,14 +20,7 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
     if (is(x, "POSIXlt")) {
       x <- as.POSIXct(x)
     }
-    y <- lapply(as.list(x), function(item) {
-      if (is.na(item)) {
-        item
-      } else {
-        as.scalar(list(`$date` = as.scalar(floor(unclass(item) * 1000))))
-      }      
-    })
-    return(asJSON(y, digits = 0, ...))
+    return(asJSON(data.frame("$date" = floor(unclass(x) * 1000), check.names = FALSE), digits = 0, ...))
   } else if (POSIXt == "ISO8601") {
     return(asJSON(as.iso(x, UTC = UTC), ...))
   } else if (POSIXt == "string") {

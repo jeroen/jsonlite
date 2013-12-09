@@ -1,19 +1,27 @@
 setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("default", 
   "null", "string", "NA"), ...) {
-  # 0 vector is not handled properly by paste()
+  # empty vector
   if (!length(x)) {
-    return("[]")
+    if(collapse) {
+      return("[]")
+    } else {
+      return(character())
+    }
   }
   
   # vectorized escaping
   tmp <- deparse_vector(x)
   
   # validate NA
-  na <- match.arg(na)
-  if (na %in% c("default", "null")) {
-    tmp[is.na(x)] <- "null"
-  } else if(na %in% "string") {
-    tmp[is.na(x)] <- "\"NA\""
+  if (any(missings <- which(is.na(x)))) {
+    na <- match.arg(na)
+    if (na %in% c("default", "null")) {
+      tmp[missings] <- "null"
+    } else if(na %in% "string") {
+      tmp[missings] <- "\"NA\""
+    } else {
+      tmp[missings] <- NA_character_
+    }
   }
   
   # this is almost always true, except for class 'scalar'

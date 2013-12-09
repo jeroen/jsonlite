@@ -1,6 +1,6 @@
 Package: jsonlite
-Version: 0.9.0.99
-Title: Convert R objects to JSON and vice versa
+Version: 0.9.1
+Title: A smarter JSON encoder/decoder for R
 License: Apache License (== 2.0)
 NeedsCompilation: yes
 Depends:

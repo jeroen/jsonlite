@@ -20,28 +20,28 @@
   \item{x}{the object to be encoded}
 
   \item{dataframe}{how to encode data.frame objects: must
-  be one of "row" or "column"}
+  be one of 'row' or 'column'}
 
   \item{Date}{how to encode Date objects: must be one of
-  "ISO8601" or "epoch"}
+  'ISO8601' or 'epoch'}
 
   \item{POSIXt}{how to encode POSIXt (datetime) objects:
-  must be one of "string", "ISO8601", "epoch" or "mongo"}
+  must be one of 'string', 'ISO8601', 'epoch' or 'mongo'}
 
   \item{factor}{how to encode factor objects: must be one
-  of "string" or "integer"}
+  of 'string' or 'integer'}
 
   \item{complex}{how to encode complex numbers: must be one
-  of "string" or "list"}
+  of 'string' or 'list'}
 
   \item{raw}{how to encode raw objects: must be one of
-  "base64", "hex" or "mongo"}
+  'base64', 'hex' or 'mongo'}
 
   \item{digits}{max number of digits (after the dot) to
   print for numeric values}
 
-  \item{na}{how to print NA values. One of "default",
-  "null" or "string"}
+  \item{na}{how to print NA values. One of 'default',
+  'null' or 'string'}
 
   \item{pretty}{adds indentation whitespace to JSON output.
   See \code{\link{prettify}}}

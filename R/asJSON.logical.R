@@ -3,8 +3,12 @@ setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "stri
   na <- match.arg(na)
   
   # empty vector
-  if (!length(x)){
-    return("[]")
+  if (!length(x)) {
+    if(collapse) {
+      return("[]")
+    } else {
+      return(character())
+    }
   }
   
   # json true/false
@@ -16,6 +20,11 @@ setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "stri
     if (any(missings <- which(is.na(x)))) {
       tmp[missings] <- ifelse(identical(na, "string"), "\"NA\"", "null")
     }
+  }
+  
+  #this is needed when !length(tmp) or all(is.na(tmp))
+  if(!is.character(tmp)){
+    tmp <- as.character(tmp);
   }
   
   # collapse it

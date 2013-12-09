@@ -9,9 +9,13 @@ setMethod("asJSON", "list", function(x, collapse = TRUE, ...) {
     x <- as.vector(x, mode = "list")
   }
   
-  # Emtpy list:
-  if (length(x) == 0) {
-    return(if (is.null(names(x))) "[]" else "{}")
+  # empty vector
+  if (!length(x)) {
+    if(collapse) {
+      return(if (is.null(names(x))) "[]" else "{}")
+    } else {
+      return(character())
+    }
   }
   
   # this condition appears when a dataframe contains a column with lists we need to

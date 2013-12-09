@@ -2,7 +2,11 @@ setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = "st
   ...) {
   # empty vector
   if (!length(x)) {
-    return("[]")
+    if(collapse) {
+      return("[]")
+    } else {
+      return(character())
+    }
   }
   
   # pretty format numbers
@@ -15,7 +19,7 @@ setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = "st
     } else if(identical(na, "null")) {
       tmp[missings] <- "null"
     } else {
-      tmp[missings] <- NA
+      tmp[missings] <- NA_character_
     }
   }
   

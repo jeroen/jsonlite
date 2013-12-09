@@ -18,7 +18,7 @@ test_that("Encoding Numbers in Data Frame", {
   expect_that(toJSON(data.frame(foo=pi), digits=0), equals("[ { \"foo\" : 3 } ]")); 
   expect_that(toJSON(data.frame(foo=pi), digits=2), equals("[ { \"foo\" : 3.14 } ]")); 
   expect_that(toJSON(data.frame(foo=pi), digits=20), equals("[ { \"foo\" : 3.141592653589793116 } ]"));
-  expect_that(toJSON(data.frame(foo=c(pi, NA)), na="default", digits=5), equals("[ { \"foo\" : 3.14159 },{} ]"));              
+  expect_that(toJSON(data.frame(foo=c(pi, NA)), na="default", digits=5), equals("[ { \"foo\" : 3.14159 },{  } ]"));              
   expect_that(toJSON(data.frame(foo=c(pi, NA)), na="string", digits=5), equals( "[ { \"foo\" : 3.14159 },{ \"foo\" : \"NA\" } ]"));
   expect_that(toJSON(data.frame(foo=c(pi, NA)), na="null", digits=5), equals("[ { \"foo\" : 3.14159 },{ \"foo\" : null } ]"));
 });
