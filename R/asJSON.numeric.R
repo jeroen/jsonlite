@@ -1,5 +1,4 @@
-setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = "string", 
-  ...) {
+setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = "string", ...) {
   # empty vector
   if (!length(x)) {
     if(collapse) {
@@ -10,7 +9,8 @@ setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = "st
   }
   
   # pretty format numbers
-  tmp <- formatC(x, digits = digits, format = "f", drop0trailing = TRUE)
+  # tmp <- formatC(x, digits = digits, format = "f", drop0trailing = TRUE)
+  tmp <- as.character(round(x, digits))
   
   # in numeric variables, NA, NaN, Inf are replaced by character strings
   if (any(missings <- which(!is.finite(x)))) {
