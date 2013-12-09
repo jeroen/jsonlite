@@ -1,4 +1,4 @@
-setMethod("asJSON", "numeric", function(x, container = TRUE, digits = 5, na = "string", 
+setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = "string", 
   ...) {
   # empty vector
   if (!length(x)) {
@@ -12,14 +12,16 @@ setMethod("asJSON", "numeric", function(x, container = TRUE, digits = 5, na = "s
   if (any(missings <- which(!is.finite(x)))) {
     if (na %in% c("default", "string")) {
       tmp[missings] <- wrapinquotes(x[missings])
-    } else {
+    } else if(identical(na, "null")) {
       tmp[missings] <- "null"
+    } else {
+      tmp[missings] <- NA
     }
   }
   
-  if(!container){
-    return(paste0(tmp, collapse = ", "))
+  if(collapse){
+    collapse(tmp)
   } else {
-    return(paste0("[ ", paste0(tmp, collapse = ", "), " ]"))
+    tmp
   }
 }) 

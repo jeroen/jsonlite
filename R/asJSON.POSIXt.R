@@ -17,9 +17,11 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
       x <- as.POSIXct(x)
     }
     y <- lapply(as.list(x), function(item) {
-      if (is.na(item)) 
-        return(item)
-      as.scalar(list(`$date` = as.scalar(floor((unclass(item) * 1000)))))
+      if (is.na(item)) {
+        item
+      } else {
+        as.scalar(list(`$date` = as.scalar(floor(unclass(item) * 1000))))
+      }      
     })
     return(asJSON(y, digits = 0, ...))
   } else if (POSIXt == "ISO8601") {

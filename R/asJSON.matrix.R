@@ -1,15 +1,14 @@
 # NOTE: opencpu.encode is never upposed to use this function, because it
 # unclasses every object first.  it is included for completeness.
 
-setMethod("asJSON", "matrix", function(x, container = TRUE, ...) {
+setMethod("asJSON", "matrix", function(x, collapse = TRUE, ...) {
   # row based json
-  tmp <- paste(apply(x, 1, asJSON, ...), collapse = ", ")
+  tmp <- apply(x, 1, asJSON, ...)
   
-  # wrap in container
-  if (container) {
-    tmp <- paste("[", tmp, "]")
+  # collapse it
+  if (collapse) {
+    collapse(tmp)
+  } else {
+    tmp
   }
-  
-  # return
-  return(tmp)
 }) 

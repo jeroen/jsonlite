@@ -8,5 +8,5 @@ setMethod("asJSON", "scalar", function(x, ...) {
   }
   
   # Print JSON without []
-  return(asJSON(x, container = FALSE, ...))
+  return(asJSON(x, collapse = FALSE, ...))
 }) 

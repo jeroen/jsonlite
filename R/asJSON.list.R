@@ -1,4 +1,4 @@
-setMethod("asJSON", "list", function(x, container = TRUE, ...) {
+setMethod("asJSON", "list", function(x, collapse = TRUE, ...) {
   
   # We are explicitly taking the container argument to prevent it from being passed
   # down through ... (elipse) As scalar should never be applied to an entire list
@@ -16,25 +16,31 @@ setMethod("asJSON", "list", function(x, container = TRUE, ...) {
   
   # this condition appears when a dataframe contains a column with lists we need to
   # do this, because the [ operator always returns a list of length 1
-  if (length(x) == 1 && is.null(names(x)) && container == FALSE) {
+  if (length(x) == 1 && is.null(names(x)) && collapse == FALSE) {
     return(asJSON(x[[1]], ...))
   }
   
   # note we are NOT passing on the container argument.
-  els <- vapply(x, asJSON, character(1), ...)
+  tmp <- vapply(x, asJSON, character(1), ...)
   
-  if (all(sapply(els, is.name))) {
-    names(els) <- NULL
+  # this seems redundant??
+  if (all(sapply(tmp, is.name))) {
+    names(tmp) <- NULL
   }
   
   if (length(names(x))) {
+    #in case of named list:    
     objnames <- names(x)
-    objnames[objnames == ""] <- as.character(1:length(objnames))[objnames == 
-      ""]
+    objnames[objnames == ""] <- as.character(1:length(objnames))[objnames == ""]
     objnames <- make.unique(objnames)
-    return(paste("{", paste(deparse_vector(objnames), els, sep = " : ", collapse = ", "), 
-      "}"))
+    paste("{", paste(deparse_vector(objnames), tmp, sep = " : ", collapse = ", "), "}")
   } else {
-    return(paste("[", paste(els, collapse = ","), "]"))
+    #in case of unnamed list:
+    if(collapse){
+      #collapse(tmp)
+      paste("[", paste0(tmp, collapse = ","), "]")
+    } else {
+      tmp
+    }
   }
 }) 

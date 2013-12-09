@@ -18,9 +18,15 @@ toJSON <- function(x, dataframe = c("rows", "columns"), Date = c("ISO8601", "epo
   x <- force(x)
   
   # dispatch
-  asJSON(x, dataframe = dataframe, Date = Date, POSIXt = POSIXt, factor = factor, 
-    complex = complex, raw = raw, digits = digits, na = na, pretty = pretty, 
-    ...)
+  ans <- asJSON(x, dataframe = dataframe, Date = Date, POSIXt = POSIXt, factor = factor, 
+    complex = complex, raw = raw, digits = digits, na = na, ...)
+  
+  #prettify
+  if (isTRUE(pretty)) {
+    return(prettify(ans))
+  } else {
+    return(ans)
+  }
 }
 
 # maps encoding name to integer

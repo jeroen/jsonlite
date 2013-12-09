@@ -5,9 +5,9 @@ setMethod("asJSON", "factor", function(x, factor = c("string", "integer"), ...) 
   # dispatch
   if (factor == "integer") {
     # encode factor as enum
-    return(asJSON(unclass(x), ...))
+    asJSON(unclass(x), ...)
   } else {
     # encode as strings
-    return(asJSON(as.character(x), ...))
+    asJSON(as.character(x), ...)
   }
-}) 
+})

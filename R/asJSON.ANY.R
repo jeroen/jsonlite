@@ -3,7 +3,7 @@ setMethod("asJSON", "ANY", function(x, force = FALSE, ...) {
     if (isTRUE(force)) {
       return(asJSON(attributes(x), ...))
     } else {
-      stop("No S4 method for object of class:", class(x))
+      stop("No method for S4 class:", class(x))
     }
   } else if (length(class(x)) > 1) {
     # If an object has multiple classes, we recursively try the next class. This is
@@ -15,6 +15,6 @@ setMethod("asJSON", "ANY", function(x, force = FALSE, ...) {
     return(asJSON(unclass(x), ...))
   } else {
     # If even that doesn't work, we give up.
-    stop("No S3 method asJSON for class: ", class(x))
+    stop("No method asJSON S3 class: ", class(x))
   }
 }) 

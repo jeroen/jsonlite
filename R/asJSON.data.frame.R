@@ -1,5 +1,5 @@
 setMethod("asJSON", "data.frame", function(x, na = c("default", "null", "string"), 
-  container = TRUE, dataframe = c("rows", "columns"), raw, ...) {
+  collapse = TRUE, dataframe = c("rows", "columns"), raw, ...) {
   # Note: just as in asJSON.list we take the container argument to prevent it form
   # being passed down through ... This is needed in the rare case that a dataframe
   # contains new dataframes, and hence as.scalar is inappropriate check how we want
@@ -13,7 +13,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("default", "null", "string"
   }
   
   if (dataframe == "columns") {
-    return(asJSON(as.list(x), na = na, container = container, dataframe = "columns", 
+    return(asJSON(as.list(x), na = na, collapse = collapse, dataframe = "columns", 
       raw = "hex", ...))
   }
   
@@ -48,7 +48,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("default", "null", "string"
   }
   
   # we assume a dataframe with one row
-  if (!isTRUE(container)) {
+  if (!isTRUE(collapse)) {
     if (length(out) == 1) {
       out <- out[[1]]
     } else {
