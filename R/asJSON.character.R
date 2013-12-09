@@ -1,13 +1,5 @@
 setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("default", 
   "null", "string", "NA"), ...) {
-  # empty vector
-  if (!length(x)) {
-    if(collapse) {
-      return("[]")
-    } else {
-      return(character())
-    }
-  }
   
   # vectorized escaping
   tmp <- deparse_vector(x)

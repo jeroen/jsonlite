@@ -14,11 +14,11 @@ test_that("Encoding Numbers", {
 test_that("Encoding Numbers in Data Frame", {
   expect_that(toJSON(data.frame(foo=35)), equals("[ { \"foo\" : 35 } ]"));
   expect_that(toJSON(data.frame(foo=35L)), equals("[ { \"foo\" : 35 } ]"));
-  expect_that(toJSON(data.frame(foo=c(35, pi)), digits=5), equals("[ { \"foo\" : 35 },{ \"foo\" : 3.14159 } ]"));  
+  expect_that(toJSON(data.frame(foo=c(35, pi)), digits=5), equals("[ { \"foo\" : 35 }, { \"foo\" : 3.14159 } ]"));  
   expect_that(toJSON(data.frame(foo=pi), digits=0), equals("[ { \"foo\" : 3 } ]")); 
   expect_that(toJSON(data.frame(foo=pi), digits=2), equals("[ { \"foo\" : 3.14 } ]")); 
   expect_that(toJSON(data.frame(foo=pi), digits=10), equals("[ { \"foo\" : 3.1415926536 } ]"));
-  expect_that(toJSON(data.frame(foo=c(pi, NA)), na="default", digits=5), equals("[ { \"foo\" : 3.14159 },{  } ]"));              
-  expect_that(toJSON(data.frame(foo=c(pi, NA)), na="string", digits=5), equals( "[ { \"foo\" : 3.14159 },{ \"foo\" : \"NA\" } ]"));
-  expect_that(toJSON(data.frame(foo=c(pi, NA)), na="null", digits=5), equals("[ { \"foo\" : 3.14159 },{ \"foo\" : null } ]"));
+  expect_that(toJSON(data.frame(foo=c(pi, NA)), na="default", digits=5), equals("[ { \"foo\" : 3.14159 }, {  } ]"));              
+  expect_that(toJSON(data.frame(foo=c(pi, NA)), na="string", digits=5), equals( "[ { \"foo\" : 3.14159 }, { \"foo\" : \"NA\" } ]"));
+  expect_that(toJSON(data.frame(foo=c(pi, NA)), na="null", digits=5), equals("[ { \"foo\" : 3.14159 }, { \"foo\" : null } ]"));
 });

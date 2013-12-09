@@ -2,15 +2,6 @@ setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "stri
   # validate arg
   na <- match.arg(na)
   
-  # empty vector
-  if (!length(x)) {
-    if(collapse) {
-      return("[]")
-    } else {
-      return(character())
-    }
-  }
-  
   # json true/false
   tmp <- ifelse(x, "true", "false")
   

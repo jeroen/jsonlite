@@ -1,12 +1,4 @@
 setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = "string", ...) {
-  # empty vector
-  if (!length(x)) {
-    if(collapse) {
-      return("[]")
-    } else {
-      return(character())
-    }
-  }
   
   # pretty format numbers, 'drop0trailing' is super slow for some reason
   # tmp <- formatC(x, digits = digits, format = "f", drop0trailing = TRUE)

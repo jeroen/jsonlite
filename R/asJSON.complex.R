@@ -5,15 +5,6 @@ setMethod("asJSON", "complex", function(x, digits = 5, collapse = TRUE, complex 
   na <- match.arg(na);
   complex <- match.arg(complex)
   
-  # empty vector
-  if (!length(x)) {
-    if(collapse) {
-      return("[]")
-    } else {
-      return(character())
-    }
-  }
-  
   #turn into strings
   if (complex == "string") {
     #default NA is "NA"

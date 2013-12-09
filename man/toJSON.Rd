@@ -97,6 +97,19 @@ fromJSON(jsoncars)
 toJSON(10 ^ (0:10), digits=8)
 options(scipen=3)
 toJSON(10 ^ (0:10), digits=8)
+
+\dontrun{
+# Parse data frame
+data1 <- fromJSON("https://api.github.com/users/hadley/orgs")
+names(data1)
+data1$login
+
+#nested data frames:
+data2 <- fromJSON("https://api.github.com/users/hadley/repos")
+names(data2)
+names(data2$owner)
+data2$owner$login
+}
 }
 \author{
   Jeroen Ooms \email{jeroen.ooms@stat.ucla.edu}

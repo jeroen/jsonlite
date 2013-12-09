@@ -63,7 +63,7 @@ unpack <- function(obj) {
       numeric = as.numeric(null2na(obj$value)), 
       double = as.double(null2na(obj$value)), 
       character = as.character(null2na(obj$value)), 
-      complex = buildcomplex(obj$value), 
+      complex = as.complex(null2na(obj$value)),
       list = lapply(obj$value, unpack), 
       pairlist = lapply(obj$value, unpack), 
       symbol = makesymbol(x = unlist(obj$value)), 

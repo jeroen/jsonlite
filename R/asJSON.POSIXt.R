@@ -5,16 +5,7 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
   
   # Validate
   POSIXt <- match.arg(POSIXt)
-  
-  # empty vector
-  if (!length(x)) {
-    if(collapse) {
-      return("[]")
-    } else {
-      return(character())
-    }
-  }
-  
+
   # Encode based on a schema
   if (POSIXt == "mongo") {
     if (is(x, "POSIXlt")) {

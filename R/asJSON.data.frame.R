@@ -1,9 +1,7 @@
 setMethod("asJSON", "data.frame", function(x, na = c("default", "null", "string", "NA"), 
   collapse = TRUE, dataframe = c("rows", "columns"), raw, complex="string", ...) {
-  # Note: just as in asJSON.list we take the container argument to prevent it form
-  # being passed down through ... This is needed in the rare case that a dataframe
-  # contains new dataframes, and hence as.scalar is inappropriate check how we want
-  # to encode
+
+  #validate some args
   dataframe <- match.arg(dataframe)
   na <- match.arg(na)
   
@@ -17,13 +15,9 @@ setMethod("asJSON", "data.frame", function(x, na = c("default", "null", "string"
       raw = "hex", complex=complex, ...))
   }
   
-  # empty vector
+  # no records
   if (!nrow(x)) {
-    if(collapse) {
-      return("[]")
-    } else {
-      return(character())
-    }
+    return(asJSON(list(), collapse=collapse))
   }
   
   # Convert POSIXlt to POSIXct before we start messing with lists
@@ -78,7 +72,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("default", "null", "string"
   
   #collapse
   if(isTRUE(collapse)){
-    paste("[", paste0(tmp, collapse = ","), "]")
+    collapse(tmp)
   } else {
     tmp
   }

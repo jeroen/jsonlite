@@ -42,3 +42,13 @@ test_that("recover lists in data frames", {
   expect_that(fromJSON(toJSON(z)), equals(z))
   expect_that(fromJSON(toJSON(zz)), equals(zz))
 });
+
+#note: nested matrix does not perfectly restore
+test_that("nested matrix in data frame", {
+  x <- data.frame(foo=1:2)
+  x$bar <- matrix(1:6, 2)
+  y <- fromJSON(toJSON(x))
+  expect_that(y, is_a("data.frame"))
+  expect_that(names(x), equals(names(y)))
+  expect_that(length(y[[1,"bar"]]), equals(3))
+});
