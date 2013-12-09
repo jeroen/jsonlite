@@ -9,7 +9,10 @@ setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = "st
   }
   
   # pretty format numbers
+  # this is a bit slow
   # tmp <- formatC(x, digits = digits, format = "f", drop0trailing = TRUE)
+  
+  # See options(scipen) for if and how it switches to scientific notation
   tmp <- as.character(round(x, digits))
   
   # in numeric variables, NA, NaN, Inf are replaced by character strings

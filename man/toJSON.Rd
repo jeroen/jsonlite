@@ -92,6 +92,11 @@ cat(jsoncars)
 
 #parse it back
 fromJSON(jsoncars)
+
+#control scientific notation
+toJSON(10 ^ (0:10), digits=8)
+options(scipen=3)
+toJSON(10 ^ (0:10), digits=8)
 }
 \author{
   Jeroen Ooms \email{jeroen.ooms@stat.ucla.edu}
