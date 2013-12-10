@@ -2,8 +2,8 @@
 #' @export
 toJSON <- function(x, dataframe = c("rows", "columns"), Date = c("ISO8601", "epoch"), 
   POSIXt = c("string", "ISO8601", "epoch", "mongo"), factor = c("string", "integer"), 
-  complex = c("string", "list"), raw = c("base64", "hex", "mongo"), na = c("default", 
-    "null", "string"), digits = 2, pretty = FALSE, ...) {
+  complex = c("string", "list"), raw = c("base64", "hex", "mongo"), na=c("null", "string"), 
+  digits = 2, pretty = FALSE, ...) {
   
   # validate args
   dataframe <- match.arg(dataframe)
@@ -12,7 +12,13 @@ toJSON <- function(x, dataframe = c("rows", "columns"), Date = c("ISO8601", "epo
   factor <- match.arg(factor)
   complex <- match.arg(complex)
   raw <- match.arg(raw)
-  na <- match.arg(na)
+  
+  #this is just to check, we keep method-specific defaults
+  if(!missing(na)){
+    na <- match.arg(na)
+  } else {
+    na <- NULL
+  }
   
   # force
   x <- force(x)

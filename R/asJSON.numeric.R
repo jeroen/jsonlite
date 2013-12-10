@@ -1,4 +1,4 @@
-setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = "string", ...) {
+setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = c("string", "null", "NA"), ...) {
   
   # pretty format numbers, 'drop0trailing' is super slow for some reason
   # tmp <- formatC(x, digits = digits, format = "f", drop0trailing = TRUE)
@@ -9,10 +9,11 @@ setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = "st
   # This is perhaps a bit more natural?
   # See options(scipen) for if and how it switches to scientific notation
   tmp <- as.character(round(x, digits))
+  na <- match.arg(na)
   
   # in numeric variables, NA, NaN, Inf are replaced by character strings
   if (any(missings <- which(!is.finite(x)))) {
-    if (na %in% c("default", "string")) {
+    if (na %in% c("string")) {
       tmp[missings] <- wrapinquotes(x[missings])
     } else if(identical(na, "null")) {
       tmp[missings] <- "null"

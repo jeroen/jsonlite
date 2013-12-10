@@ -1,5 +1,5 @@
 setMethod("asJSON", "complex", function(x, digits = 5, collapse = TRUE, complex = c("string", 
-  "list"), na = c("string", "null", "NA", "default"), ...) {
+  "list"), na = c("string", "null", "NA"), ...) {
   
   # validate
   na <- match.arg(na);

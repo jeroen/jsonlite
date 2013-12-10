@@ -23,7 +23,7 @@
 #' @param complex how to encode complex numbers: must be one of 'string' or 'list'
 #' @param raw how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'
 #' @param digits max number of digits (after the dot) to print for numeric values
-#' @param na how to print NA values. One of 'default', 'null' or 'string'
+#' @param na how to print NA values. One of 'null' or 'string'. Defaults are class specific
 #' @param pretty adds indentation whitespace to JSON output. See \code{\link{prettify}}
 #' @param txt a string in json format 
 #' @param simplifyVector automatically coerse JSON arrays containing only scalars into a vector

@@ -1,4 +1,9 @@
-setMethod("asJSON", "list", function(x, collapse = TRUE, ...) {
+setMethod("asJSON", "list", function(x, collapse = TRUE, na = NULL, oldna = NULL, ...) {
+  
+  # reset na arg when called from data frame
+  if(identical(na, "NA")){
+    na <- oldna;
+  }
 
   # coerse pairlist if needed
   if (is.pairlist(x)) {
@@ -21,7 +26,7 @@ setMethod("asJSON", "list", function(x, collapse = TRUE, ...) {
   # }
   
   # note we are NOT passing on the container argument.
-  tmp <- vapply(x, asJSON, character(1), ...)
+  tmp <- vapply(x, asJSON, character(1), na = na, ...)
   
   if (!is.null(names(x))) {
     if(!collapse){

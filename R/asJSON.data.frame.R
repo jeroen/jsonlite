@@ -1,19 +1,28 @@
-setMethod("asJSON", "data.frame", function(x, na = c("default", "null", "string", "NA"), 
-  collapse = TRUE, dataframe = c("rows", "columns"), raw, complex="string", ...) {
+setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), 
+  collapse = TRUE, dataframe = c("rows", "columns"), complex="string", ...) {
 
-  #validate some args
+  # Validate some args
   dataframe <- match.arg(dataframe)
-  na <- match.arg(na)
   
-  # coerse pairlist if needed
+  # Coerse pairlist if needed
   if (is.pairlist(x)) {
     x <- as.vector(x, mode = "list")
   }
   
+  # Colum based is same as list based
   if (dataframe == "columns") {
-    return(asJSON(as.list(x), na = na, collapse = collapse, dataframe = dataframe, 
-      raw = "hex", complex=complex, ...))
+    return(asJSON(as.list(x), na = na, collapse = collapse, dataframe = dataframe, complex=complex, ...))
   }
+
+  # Determine "oldna". This is needed when the data frame contains a list column
+  if(missing(na) || !length(na) || identical(na, "NA")){
+    oldna <- NULL
+  } else {
+    oldna <- na;
+  }
+  
+  # Set default for row based, don't do it earlier because it will affect 'oldna' or dataframe="columns"
+  na <- match.arg(na)
   
   # no records
   if (!nrow(x)) {
@@ -25,6 +34,12 @@ setMethod("asJSON", "data.frame", function(x, na = c("default", "null", "string"
   for (i in posvars) {
     x[[i]] <- as.POSIXct(x[[i]])
   }
+  
+  # Convert raw vectors
+  rawvars <- which(as.logical(vapply(x, is.raw, integer(1))))
+  for (i in rawvars) {
+    x[[i]] <- as.character.hexmode(x[[i]])
+  }  
   
   # Turn complex vectors into data frames
   if(complex == "list"){
@@ -39,14 +54,9 @@ setMethod("asJSON", "data.frame", function(x, na = c("default", "null", "string"
     x <- cbind(data.frame(`$row` = row.names(x), check.names = FALSE), x)
   }
   
-  #default is to drop the elements
-  if(identical(na, "default")){
-    na <- "NA";
-  }
-  
   #create a matrix of json elements
   dfnames <- deparse_vector(names(x))
-  out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, raw = "hex", na = na, complex=complex, ...)
+  out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, complex = complex, na = na, oldna = oldna, ...)
   
   #this is a workaround for vapply simplifying into a vector for n=1 (not for n=0 surprisingly)
   if(!is.matrix(out)){

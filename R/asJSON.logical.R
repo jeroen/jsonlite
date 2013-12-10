@@ -1,4 +1,4 @@
-setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "string", "NA", "default"), ...) {
+setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "string", "NA"), ...) {
   # validate arg
   na <- match.arg(na)
   
