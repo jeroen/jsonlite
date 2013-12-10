@@ -1,5 +1,5 @@
 setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), 
-  collapse = TRUE, dataframe = c("rows", "columns"), complex="string", ...) {
+  collapse = TRUE, dataframe = c("rows", "columns"), complex = "string", oldna=NULL, ...) {
 
   # Validate some args
   dataframe <- match.arg(dataframe)

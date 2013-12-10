@@ -1,5 +1,5 @@
 setMethod("asJSON", "complex", function(x, digits = 5, collapse = TRUE, complex = c("string", 
-  "list"), na = c("string", "null", "NA"), ...) {
+  "list"), na = c("string", "null", "NA"), oldna = NULL, ...) {
   
   # validate
   na <- match.arg(na);
@@ -16,6 +16,9 @@ setMethod("asJSON", "complex", function(x, digits = 5, collapse = TRUE, complex 
     }
     asJSON(mystring, collapse = collapse, na = na, ...)
   } else {
+    if(na == "NA"){
+      na <- oldna;
+    }
     asJSON(list(real = Re(x), imaginary = Im(x)), na = na, ...)
   }
 }) 
