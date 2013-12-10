@@ -58,6 +58,13 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"),
   dfnames <- deparse_vector(names(x))
   out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, complex = complex, na = na, oldna = oldna, ...)
   
+  # This would be another way of doing the missing values
+  # This does not require the individual classes to support na="NA"
+  #if(identical(na, "NA")){
+  #  namatrix <- vapply(x, is.na, logical(nrow(x)))
+  #  out[namatrix] <- NA;
+  #}
+  
   #this is a workaround for vapply simplifying into a vector for n=1 (not for n=0 surprisingly)
   if(!is.matrix(out)){
     out <- t(out)
