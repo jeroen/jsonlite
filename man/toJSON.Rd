@@ -13,8 +13,8 @@
     factor = c("string", "integer"),
     complex = c("string", "list"),
     raw = c("base64", "hex", "mongo"),
-    na = c("default", "null", "string"), digits = 2,
-    pretty = FALSE, ...)
+    na = c("null", "string"), digits = 2, pretty = FALSE,
+    ...)
 }
 \arguments{
   \item{x}{the object to be encoded}
@@ -40,8 +40,8 @@
   \item{digits}{max number of digits (after the dot) to
   print for numeric values}
 
-  \item{na}{how to print NA values. One of 'default',
-  'null' or 'string'}
+  \item{na}{how to print NA values. One of 'null' or
+  'string'. Defaults are class specific}
 
   \item{pretty}{adds indentation whitespace to JSON output.
   See \code{\link{prettify}}}
