@@ -1,4 +1,8 @@
-setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NULL, ...) {
+setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NULL, 
+  matrix = c("rowmajor", "columnmajor"), ...) {
+  
+  #validate
+  matrix <- match.arg(matrix);
   
   # reset na arg when called from data frame
   if(identical(na, "NA")){
@@ -6,8 +10,10 @@ setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NUL
   }
   
   # row based json
-  # we do not pass on reverse value, so that the inner matrix is consistent with default encoding
-  tmp <- apply(x, 1, asJSON, na = na, ...)
+  # if collapse == FALSE, then this matrix is nested inside a data frame, 
+  # and therefore row major is required to match dimensions
+  margin <- ifelse(identical(matrix, "columnmajor") && isTRUE(collapse), length(dim(x)), 1);
+  tmp <- apply(x, margin, asJSON, matrix = matrix, na = na, ...)
   
   # collapse it
   if (collapse) {

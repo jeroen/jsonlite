@@ -1,12 +1,13 @@
 #' @rdname toJSON
 #' @export
-toJSON <- function(x, dataframe = c("rows", "columns"), Date = c("ISO8601", "epoch"), 
-  POSIXt = c("string", "ISO8601", "epoch", "mongo"), factor = c("string", "integer"), 
-  complex = c("string", "list"), raw = c("base64", "hex", "mongo"), na=c("null", "string"), 
-  digits = 2, pretty = FALSE, ...) {
+toJSON <- function(x, dataframe = c("rows", "columns"), matrix = c("rowmajor", "columnmajor"),
+  Date = c("ISO8601", "epoch"), POSIXt = c("string", "ISO8601", "epoch", "mongo"), 
+  factor = c("string", "integer"), complex = c("string", "list"), raw = c("base64", "hex", "mongo"), 
+  na=c("null", "string"), digits = 2, pretty = FALSE, ...) {
   
   # validate args
   dataframe <- match.arg(dataframe)
+  matrix <- match.arg(matrix)  
   Date <- match.arg(Date)
   POSIXt <- match.arg(POSIXt)
   factor <- match.arg(factor)
@@ -25,7 +26,7 @@ toJSON <- function(x, dataframe = c("rows", "columns"), Date = c("ISO8601", "epo
   
   # dispatch
   ans <- asJSON(x, dataframe = dataframe, Date = Date, POSIXt = POSIXt, factor = factor, 
-    complex = complex, raw = raw, digits = digits, na = na, ...)
+    complex = complex, raw = raw, matrix = matrix, digits = digits, na = na, ...)
   
   #prettify
   if (isTRUE(pretty)) {

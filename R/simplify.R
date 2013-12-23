@@ -1,5 +1,5 @@
 simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, 
-  homoList = TRUE, flatten = FALSE) {
+  homoList = TRUE, flatten = FALSE, columnmajor = FALSE) {
   if (is.list(x)) {
     if (!length(x)) {
       # In case of fromJSON('[]') returning a list is most neutral.  Because the user
@@ -25,21 +25,33 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     
     # apply recursively
     out <- lapply(x, sys.function(0), simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
-      simplifyMatrix = simplifyMatrix)
+      simplifyMatrix = simplifyMatrix, columnmajor = columnmajor)
     
     # test for matrix. Note that we have to take another look at x (before null2na on
     # its elements) to differentiate between matrix and vector
-    if (isTRUE(simplifyMatrix) && isTRUE(simplifyVector) && is.matrixlist(out) && 
-      all(unlist(vapply(x, is.scalarlist, logical(1))))) {
-      return(do.call(rbind, out))
+    if (isTRUE(simplifyMatrix) && isTRUE(simplifyVector) && is.matrixlist(out) && all(unlist(vapply(x, is.scalarlist, logical(1))))) {
+      if(isTRUE(columnmajor)){
+        return(do.call(cbind, out))        
+      } else {
+        #this is currently the default        
+        return(do.call(rbind, out))        
+      }
     }
     
     # Simplify higher arrays
     if (isTRUE(simplifyMatrix) && is.arraylist(out)){
-      return(array(
-        data = do.call(rbind, lapply(out, as.vector)), 
-        dim = c(length(out), dim(out[[1]]))
-      ));
+      if(isTRUE(columnmajor)){
+        return(array(
+          data = do.call(cbind, out),
+          dim = c(dim(out[[1]]), length(out))
+        ));        
+      } else {
+        #this is currently the default
+        return(array(
+          data = do.call(rbind, lapply(out, as.vector)), 
+          dim = c(length(out), dim(out[[1]]))
+        ));
+      }
     }
     
     # try to enfoce homoList on unnamed lists

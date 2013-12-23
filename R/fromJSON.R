@@ -17,6 +17,7 @@
 #' @aliases fromJSON
 #' @param x the object to be encoded
 #' @param dataframe how to encode data.frame objects: must be one of 'row' or 'column'
+#' @param matrix should matrices and higher dimensional arrays be encoded in row-major or column-major.
 #' @param Date how to encode Date objects: must be one of 'ISO8601' or 'epoch'
 #' @param POSIXt how to encode POSIXt (datetime) objects: must be one of 'string', 'ISO8601', 'epoch' or 'mongo'
 #' @param factor how to encode factor objects: must be one of 'string' or 'integer'
@@ -26,9 +27,9 @@
 #' @param na how to print NA values. One of 'null' or 'string'. Defaults are class specific
 #' @param pretty adds indentation whitespace to JSON output. See \code{\link{prettify}}
 #' @param txt a string in json format 
-#' @param simplifyVector automatically coerse JSON arrays containing only scalars into a vector
-#' @param simplifyDataFrame automatically coerse JSON arrays containing records (JSON objects with scalars) into a data frame.
-#' @param simplifyMatrix automatically coerse JSON arrays with vectors of equal length and mode into a matrix
+#' @param simplifyVector coerse JSON arrays containing only scalars into a vector
+#' @param simplifyDataFrame coerse JSON arrays containing only records (JSON objects) into a data frame.
+#' @param simplifyMatrix coerse JSON arrays containing vectors of equal length and mode into matrix or array.
 #' @param ... arguments passed on to class specific \code{print} methods
 #' @note All encoded objects should pass the validation at www.jsonlint.org
 #' @references
@@ -60,7 +61,7 @@
 #' data2$owner$login
 #' }
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, 
-  simplifyMatrix = simplifyVector) {
+  simplifyMatrix = simplifyVector, ...) {
   
   # check type
   if (!is.character(txt)) {
@@ -99,7 +100,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   # post processing
   if (any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))) {
     return(simplify(obj, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
-      simplifyMatrix = simplifyMatrix))
+      simplifyMatrix = simplifyMatrix, ...))
   } else {
     return(obj)
   }
