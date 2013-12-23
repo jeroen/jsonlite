@@ -11,7 +11,7 @@ test_that("Encoding Factor Objects", {
   expect_that(toJSON(factor()), is_identical_to("[  ]"))
   expect_that(toJSON(factor(levels=c("foo", "bar"))), is_identical_to("[  ]"))
   expect_that(toJSON(matrix(nrow=0, ncol=0)), is_identical_to("[  ]"))
-  expect_that(toJSON(as.matrix(numeric())), is_identical_to("[  ]"))
+  expect_that(toJSON(as.matrix(numeric())), is_identical_to("[ [  ] ]"))
   expect_that(toJSON(data.frame()), is_identical_to("[  ]"))
   expect_that(toJSON(data.frame(foo=vector())), is_identical_to("[  ]"))  
   expect_that(toJSON(data.frame(foo=vector(), bar=logical())), is_identical_to("[  ]"))

@@ -1,4 +1,4 @@
-setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NULL, ...) {
+setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NULL, reverse=FALSE, ...) {
   
   # reset na arg when called from data frame
   if(identical(na, "NA")){
@@ -6,7 +6,7 @@ setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NUL
   }
   
   # row based json
-  tmp <- apply(x, 1, asJSON, na = na, ...)
+  tmp <- apply(x, ifelse(isTRUE(reverse), 1, length(dim(x))), asJSON, na = na, reverse=reverse, ...)
   
   # collapse it
   if (collapse) {

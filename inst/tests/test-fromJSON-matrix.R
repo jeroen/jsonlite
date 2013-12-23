@@ -8,6 +8,7 @@ test_that("fromJSON Matrix", {
     matrix(1:2),
     matrix(1:2, nrow=1),
     matrix(round(pi,2)),
+    matrix(c(1,NA,2,NA), 2),
     volcano,
     matrix(NA)    
   );

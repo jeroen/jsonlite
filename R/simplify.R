@@ -31,7 +31,12 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     # its elements) to differentiate between matrix and vector
     if (isTRUE(simplifyMatrix) && isTRUE(simplifyVector) && is.matrixlist(out) && 
       all(unlist(vapply(x, is.scalarlist, logical(1))))) {
-      return(do.call(rbind, out))
+      return(do.call(cbind, out))
+    }
+    
+    # Simplify higher arrays
+    if (isTRUE(simplifyMatrix) && is.arraylist(out)){
+      return(array(do.call(c, out), dim=c(dim(out[[1]]), length(out))));
     }
     
     # try to enfoce homoList on unnamed lists
@@ -90,8 +95,24 @@ is.recordlist <- function(x) {
 }
 
 is.matrixlist <- function(x) {
-  isTRUE(is.list(x) && length(x) && is.null(names(x)) && all(unlist(vapply(x, function(y) {
-    is.atomic(y)
-  }, logical(1)))) && (length(unique(unlist(vapply(x, length, integer(1))))) == 
-    1) && (length(unique(unlist(vapply(x, mode, character(1))))) == 1))
+  isTRUE(is.list(x) 
+    && length(x) 
+    && is.null(names(x)) 
+    && all(vapply(x, is.atomic, logical(1))) 
+    && all.identical(vapply(x, length, integer(1))) 
+    #&& all.identical(vapply(x, mode, character(1))) #this fails for: [ [ 1, 2 ], [ "NA", "NA" ] ]
+  );
 } 
+
+is.arraylist <- function(x) {
+  isTRUE(is.list(x)
+    && length(x)
+    && is.null(names(x))
+    && all(vapply(x, is.array, logical(1)))
+    && all.identical(vapply(x, function(y){paste(dim(y), collapse="-")}, character(1)))
+  );
+}
+
+all.identical <- function(x){
+  length(unique(x)) == 1
+}
