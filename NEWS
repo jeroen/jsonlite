@@ -1,7 +1,6 @@
 0.9.2
  - Set default SSL version to 3 for fromJSON("https://...")
- - Renamed toJSON method 'matrix' to 'array' to work for higher dimensions.
- - Changed arrays (including matrix) to column-based instead of row-based rencoding.
+ - Generalized toJSON method 'matrix' to 'array' to work for higher dimensions.
 
 0.9.1
  - Major performance improvements for toJSON.data.frame

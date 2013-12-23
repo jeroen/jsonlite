@@ -31,12 +31,15 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     # its elements) to differentiate between matrix and vector
     if (isTRUE(simplifyMatrix) && isTRUE(simplifyVector) && is.matrixlist(out) && 
       all(unlist(vapply(x, is.scalarlist, logical(1))))) {
-      return(do.call(cbind, out))
+      return(do.call(rbind, out))
     }
     
     # Simplify higher arrays
     if (isTRUE(simplifyMatrix) && is.arraylist(out)){
-      return(array(do.call(c, out), dim=c(dim(out[[1]]), length(out))));
+      return(array(
+        data = do.call(rbind, lapply(out, as.vector)), 
+        dim = c(length(out), dim(out[[1]]))
+      ));
     }
     
     # try to enfoce homoList on unnamed lists

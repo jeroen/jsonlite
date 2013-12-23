@@ -1,5 +1,5 @@
 setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), 
-  collapse = TRUE, dataframe = c("rows", "columns"), complex = "string", oldna=NULL, reverse=NULL, ...) {
+  collapse = TRUE, dataframe = c("rows", "columns"), complex = "string", oldna=NULL, ...) {
 
   # Validate some args
   dataframe <- match.arg(dataframe)
@@ -56,7 +56,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"),
   
   #create a matrix of json elements
   dfnames <- deparse_vector(names(x))
-  out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, complex = complex, na = na, oldna = oldna, reverse=TRUE, ...)
+  out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, complex = complex, na = na, oldna = oldna, ...)
   
   # This would be another way of doing the missing values
   # This does not require the individual classes to support na="NA"
