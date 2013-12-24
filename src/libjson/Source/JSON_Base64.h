@@ -1,10 +1,10 @@
-#ifndef JSON_BASE64_H
-#define JSON_BASE64_H
+#ifndef LIBJSON_GUARD_BASE64_H
+#define LIBJSON_GUARD_BASE64_H
 
 #include "JSONDebug.h"
 #if defined(JSON_BINARY) || defined(JSON_EXPOSE_BASE64)  //if this is not needed, don't waste space compiling it
 
-#include "Dependencies/libbase64++/libbase64++.h"
+#include "../Dependencies/libbase64++/libbase64++.h"
 
 class JSONBase64 {
 public:

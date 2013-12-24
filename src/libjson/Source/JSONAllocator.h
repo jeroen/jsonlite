@@ -1,7 +1,7 @@
 #ifndef JSON_ALLOCATOR_H
 #define JSON_ALLOCATOR_H
 
-#include "../JSONOptions.h"
+#include "JSONStats.h"
 #if defined(JSON_MEMORY_CALLBACKS) || defined(JSON_MEMORY_POOL)
 
 #include <cstddef>
@@ -13,11 +13,6 @@
 
 class JSONAllocatorRelayer {
 public:
-#ifdef JSON_UNIT_TEST
-    static size_t getAllocationCount(void);
-	static size_t getAllocationByteCount(void);
-	static size_t getDeallocationCount(void);
-#endif
 	static void * alloc(size_t bytes) json_nothrow json_hot;
 	static void dealloc(void * ptr) json_nothrow json_hot;
 };
@@ -45,10 +40,20 @@ public:
 	typedef T         value_type;
 	template <class U> struct rebind { typedef json_allocator<U> other; };
 	
-	inline json_allocator() json_nothrow {}
-	inline json_allocator(const json_allocator&) json_nothrow {}
-	template <class U> inline json_allocator(const json_allocator<U>&) json_nothrow {}
-	inline ~json_allocator() json_nothrow {}
+	//LIBJSON_OBJECT(json_allocator);
+	
+	inline json_allocator() json_nothrow { 
+		//LIBJSON_CTOR; 
+	}
+	inline json_allocator(const json_allocator&) json_nothrow { 
+		//LIBJSON_COPY_CTOR; 
+	}
+	template <class U> inline json_allocator(const json_allocator<U>&) json_nothrow { 
+		//LIBJSON_COPY_CTOR; 
+	}
+	inline ~json_allocator() json_nothrow { 
+		//LIBJSON_DTOR; 
+	}
 	
 	inline pointer address(reference x) const { return &x; }
 	inline const_pointer address(const_reference x) const { return &x; }

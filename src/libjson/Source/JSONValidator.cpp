@@ -391,10 +391,10 @@ bool JSONValidator::isValidPartialRoot(const json_char * json) json_nothrow {
 	const json_char * ptr = json;
     switch(*ptr){
 		case JSON_TEXT('{'):
-                    JSON_ASSERT_SAFE(!isValidObject(++ptr  DEPTH_ARG(1)), JSON_TEXT("Partial Object seems to be valid"), {});
+			JSON_ASSERT_SAFE(!isValidObject(++ptr  DEPTH_ARG(1)), JSON_TEXT("Partial Object seems to be valid"), );
 			return *ptr == JSON_TEXT('\0');
 		case JSON_TEXT('['):
-                    JSON_ASSERT_SAFE(!isValidArray(++ptr  DEPTH_ARG(1)), JSON_TEXT("Partial Object seems to be valid"), {});
+			JSON_ASSERT_SAFE(!isValidArray(++ptr  DEPTH_ARG(1)), JSON_TEXT("Partial Object seems to be valid"), );
 			return *ptr == JSON_TEXT('\0');
     }
     return false;

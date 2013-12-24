@@ -406,7 +406,7 @@
 	   json_char * json_encode64(json_const void * binary, json_index_t bytes){
 		  const json_string result(JSONBase64::json_encode64((const unsigned char *)binary, (size_t)bytes));
 		  #ifdef JSON_MEMORY_MANAGE
-			 return json_global(STRING_HANDLER).insert((json_char*)std::memcpy(json_malloc<json_char>(result.length() + 1), result.c_str(), (result.length() + 1) * sizeof(json_char)));
+			 return (json_char*)json_global(STRING_HANDLER).insert((json_char*)std::memcpy(json_malloc<json_char>(result.length() + 1), result.c_str(), (result.length() + 1) * sizeof(json_char)));
 		  #else
 			 return (json_char*)std::memcpy(json_malloc<json_char>(result.length() + 1), result.c_str(), (result.length() + 1) * sizeof(json_char));
 		  #endif

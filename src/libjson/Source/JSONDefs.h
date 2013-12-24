@@ -15,7 +15,7 @@
 
 #define __LIBJSON_MAJOR__ 7
 #define __LIBJSON_MINOR__ 6
-#define __LIBJSON_PATCH__ 0
+#define __LIBJSON_PATCH__ 1
 #define __LIBJSON_VERSION__ (__LIBJSON_MAJOR__ * 10000 + __LIBJSON_MINOR__ * 100 + __LIBJSON_PATCH__)
 
 #define JSON_NULL '\0'
@@ -44,9 +44,6 @@
     #define json_throw(x)
     #define json_try
     #define json_catch(exception, code)
-	#ifdef JSON_SAFE
-		#error, JSON_NO_EXCEPTIONS is not permitted with JSON_SAFE
-	#endif
 #else
     #define json_throw(x) throw(x)
     #define json_try try
@@ -77,7 +74,7 @@
 
 
 #ifdef JSON_NUMBER_TYPE
-	typedef JSON_NUMBER_TYPE json_number
+	typedef JSON_NUMBER_TYPE json_number;
 	#define JSON_FLOAT_THRESHHOLD 0.00001
 #else
 	#ifdef JSON_LESS_MEMORY

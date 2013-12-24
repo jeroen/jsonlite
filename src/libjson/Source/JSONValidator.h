@@ -31,6 +31,8 @@ class JSONValidator {
 		#ifdef JSON_STREAM
 			static bool isValidPartialRoot(const json_char * json) json_nothrow json_read_priority;
 		#endif
+	private: 
+		JSONValidator(void);
 };
 
 #endif

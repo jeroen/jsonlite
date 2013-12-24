@@ -1,5 +1,5 @@
-#ifndef JSON_PREPARSE_H
-#define JSON_PREPARSE_H
+#ifndef LIBJSON_GUARD_PREPARSE_H
+#define LIBJSON_GUARD_PREPARSE_H
 
 #include "JSONDebug.h"
 #include "JSONNode.h"

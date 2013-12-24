@@ -131,6 +131,7 @@
 
 class JSONNode {
 public:
+	LIBJSON_OBJECT(JSONNode);
     explicit JSONNode(char mytype = JSON_NODE) json_nothrow json_hot;
     #define DECLARE_CTOR(type) explicit JSONNode(const json_string & name_t, type value_t)
     DECLARE_FOR_ALL_TYPES(DECLARE_CTOR)
@@ -505,21 +506,6 @@ public:
 	   static void * getThisLock(JSONNode * pthis) json_nothrow json_cold;
     #endif
 
-    #ifdef JSON_UNIT_TEST
-	   static int getNodeAllocationCount(void);
-	   static int getNodeDeallocationCount(void);
-	   static int getInternalAllocationCount(void);
-	   static int getInternalDeallocationCount(void);
-	   static int getChildrenAllocationCount(void);
-	   static int getChildrenDeallocationCount(void);
-	   static void incAllocCount(void);
-	   static void decAllocCount(void);
-	   static void incinternalAllocCount(void);
-	   static void decinternalAllocCount(void);
-	   static void incChildrenAllocCount(void);
-	   static void decChildrenAllocCount(void);
-    #endif
-
     #ifdef JSON_WRITE_PRIORITY
 		#ifdef JSON_LESS_MEMORY
 			#define DEFAULT_APPROX_SIZE 8
@@ -548,11 +534,11 @@ JSON_PRIVATE
     #ifdef JSON_READ_PRIORITY
 	   //used by JSONWorker
 	   JSONNode(const json_string & unparsed) json_nothrow : internal(internalJSONNode::newInternal(unparsed)){ //root, specialized because it can only be array or node
-		  incAllocCount();
+		  LIBJSON_CTOR;
 	   }
     #endif
     JSONNode(internalJSONNode * internal_t) json_nothrow : internal(internal_t){ //do not increment anything, this is only used in one case and it's already taken care of
-	   incAllocCount();
+	   LIBJSON_CTOR;
     }
     JSONNode(bool, JSONNode & orig) json_nothrow json_hot;
 
@@ -609,22 +595,22 @@ inline JSONNode::JSONNode(char mytype) json_nothrow : internal(internalJSONNode:
 			 (mytype == JSON_BOOL) ||
 			 (mytype == JSON_ARRAY) ||
 			 (mytype == JSON_NODE), JSON_TEXT("Not a proper JSON type"));
-    incAllocCount();
+    LIBJSON_CTOR;
 }
 
 inline JSONNode::JSONNode(const JSONNode & orig) json_nothrow : internal(orig.internal -> incRef()){
-    incAllocCount();
+    LIBJSON_COPY_CTOR;
 }
 
 //this allows a temp node to simply transfer its contents, even with ref counting off
 inline JSONNode::JSONNode(bool, JSONNode & orig) json_nothrow : internal(orig.internal){
     orig.internal = 0;
-    incAllocCount();
+    LIBJSON_CTOR;
 }
 
 inline JSONNode::~JSONNode(void) json_nothrow{
     if (internal != 0) decRef();
-    decAllocCount();
+    LIBJSON_DTOR;
 }
 
 inline json_index_t JSONNode::size(void) const json_nothrow {
@@ -755,6 +741,7 @@ inline JSONNode & JSONNode::operator = (const JSONNode & orig) json_nothrow {
 
 #define NODE_SET_TYPED(type)\
     inline JSONNode & JSONNode::operator = (type val) json_nothrow {\
+		LIBJSON_ASSIGNMENT;\
 	   JSON_CHECK_INTERNAL();\
 	   makeUniqueInternal();\
 	   internal -> Set(val);\

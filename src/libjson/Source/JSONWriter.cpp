@@ -14,7 +14,7 @@ extern bool used_ascii_one;
 	   for(unsigned int i = 0; i < amount; ++i){
 		  result += json_global(INDENT);
 	   }
-	   JSON_ASSERT(result.capacity == amount * json_global(INDENT).length(), JSON_TEXT("makeIndent made a string too big"));
+	   JSON_ASSERT(result.capacity() == amount * json_global(INDENT).length(), JSON_TEXT("makeIndent made a string too big"));
 	   return result;
     }
 #else
@@ -104,8 +104,8 @@ void internalJSONNode::WriteChildren(unsigned int indent, json_string & output) 
 #ifdef JSON_ARRAY_SIZE_ON_ONE_LINE
     void internalJSONNode::WriteChildrenOneLine(unsigned int indent, json_string & output) const json_nothrow {
 	   //Iterate through the children and write them
-	   if (json_likely(CHILDREN -> empty())) return json_global(EMPTY_JSON_STRING);
-	   if ((*CHILDREN -> begin()) -> internal -> isContainer()) return WriteChildren(indent);
+	   if (json_likely(CHILDREN -> empty())) return;
+	   if ((*CHILDREN -> begin()) -> internal -> isContainer()) return WriteChildren(indent, output);
 
 	   json_string comma(JSON_TEXT(","));
 	   if (indent != 0xFFFFFFFF){

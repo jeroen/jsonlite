@@ -38,12 +38,14 @@
 	//This class is only meant to initiate the mempool to start out using std::malloc/realloc/free
 	class mempool_callback_setter {
     public:
+		LIBJSON_OBJECT(mempool_callback_setter);
         inline mempool_callback_setter(void) json_nothrow {
+		`	LIBJSON_CTOR;
             mempool_callbacks::set(std::malloc, std::realloc, std::free);
         }
     private:
-        inline mempool_callback_setter(const mempool_callback_setter & o){}
-        inline mempool_callback_setter & operator = (const mempool_callback_setter & o){}
+        inline mempool_callback_setter(const mempool_callback_setter & o);
+        inline mempool_callback_setter & operator = (const mempool_callback_setter & o);
     };
     static mempool_callback_setter __mempoolcallbacksetter;
 #endif

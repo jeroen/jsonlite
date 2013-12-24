@@ -1,9 +1,9 @@
-#ifndef JSON_MEMORY_POOL_H
-#define JSON_MEMORY_POOL_H
+#ifndef LIBJSON_GUARD_MEMORY_POOL_H
+#define LIBJSON_GUARD_MEMORY_POOL_H
 
 #ifdef JSON_MEMORY_POOL
 
-#include "Dependencies/mempool++/mempool.h"
+#include "../Dependencies/mempool++/mempool.h"
 
 //this macro expands to the number of bytes a pool gets based on block size and number of 32s of the total pool it gets
 #define jsonPoolPart(bytes_per_block, thirty_seconds_of_mem) bytes_per_block, ((thirty_seconds_of_mem * JSON_MEMORY_POOL / 32) / bytes_per_block)

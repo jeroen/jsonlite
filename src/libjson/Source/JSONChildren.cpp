@@ -1,11 +1,6 @@
 #include "JSONChildren.h"
 #include "JSONNode.h"
 
-#ifdef JSON_UNIT_TEST
-    void jsonChildren::addAllocCount(void){ JSONNode::incChildrenAllocCount();}
-    void jsonChildren::subAllocCount(void){ JSONNode::decChildrenAllocCount();}
-#endif
-
 /*
  *	reserves a certain number of bytes, in memory saving mode it creates a special
  *	type of child container that will not autoshrink

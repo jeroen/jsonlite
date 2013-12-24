@@ -3,7 +3,6 @@
 
 #include <cstdlib> //for malloc, realloc, and free
 #include <cstring> //for memmove
-#include "../JSONOptions.h"
 #include "JSONDebug.h"
 
 #if defined(JSON_DEBUG) || defined(JSON_SAFE)
@@ -79,8 +78,9 @@
     class JSONNode;
     struct auto_expand {
     public:
-	   auto_expand(void) json_nothrow : mymap(){}
-	   ~auto_expand(void) json_nothrow { purge(); }
+		LIBJSON_OBJECT(auto_expand);
+	   auto_expand(void) json_nothrow : mymap(){ LIBJSON_CTOR;}
+	   ~auto_expand(void) json_nothrow { purge(); LIBJSON_DTOR; }
 	   void purge(void) json_nothrow;
 	   inline void clear(void) json_nothrow { purge(); mymap.clear(); }
 	   inline void * insert(void * ptr) json_nothrow { mymap[ptr] = ptr; return ptr; }
@@ -97,8 +97,9 @@
 
     struct auto_expand_node {
     public:
-	   auto_expand_node(void) json_nothrow : mymap(){}
-	   ~auto_expand_node(void) json_nothrow { purge(); }
+		LIBJSON_OBJECT(auto_expand_node);
+	   auto_expand_node(void) json_nothrow : mymap(){ LIBJSON_CTOR; }
+	   ~auto_expand_node(void) json_nothrow { purge(); LIBJSON_DTOR; }
 	   void purge(void) json_nothrow ;
 	   inline void clear(void) json_nothrow { purge(); mymap.clear(); }
 	   inline JSONNode * insert(JSONNode * ptr) json_nothrow { mymap[ptr] = ptr; return ptr; }
@@ -116,8 +117,9 @@
 	   class JSONStream;
 	   struct auto_expand_stream {
         public:
-		  auto_expand_stream(void) json_nothrow : mymap(){}
-		  ~auto_expand_stream(void) json_nothrow { purge(); }
+			LIBJSON_OBJECT(auto_expand_stream);
+		  auto_expand_stream(void) json_nothrow : mymap(){ LIBJSON_CTOR; }
+		  ~auto_expand_stream(void) json_nothrow { purge(); LIBJSON_DTOR; }
 		  void purge(void) json_nothrow ;
 		  inline void clear(void) json_nothrow { purge(); mymap.clear(); }
 		  inline JSONStream * insert(JSONStream * ptr) json_nothrow { mymap[ptr] = ptr; return ptr; }
@@ -137,11 +139,13 @@
 template <typename T>
 class json_auto {
     public:
-	   json_auto(void) json_nothrow : ptr(0){}
-	   json_auto(size_t count) json_nothrow : ptr(json_malloc<T>(count)){}
-	   json_auto(T * arg) json_nothrow : ptr(arg){}
+		LIBJSON_OBJECT(json_auto);
+	   json_auto(void) json_nothrow : ptr(0){ LIBJSON_CTOR; }
+	   json_auto(size_t count) json_nothrow : ptr(json_malloc<T>(count)){ LIBJSON_CTOR; }
+	   json_auto(T * arg) json_nothrow : ptr(arg){ LIBJSON_CTOR; }
 	   ~json_auto(void) json_nothrow {
 		  libjson_free<T>(ptr);
+		  LIBJSON_DTOR;
 	   }
 	   inline void set(T * p) json_nothrow{
 		  ptr = p;

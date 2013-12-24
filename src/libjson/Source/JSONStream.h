@@ -1,5 +1,5 @@
-#ifndef JSONSTREAM_H
-#define JSONSTREAM_H
+#ifndef LIBJSON_GUARD_STREAM_H
+#define LIBJSON_GUARD_STREAM_H
 
 #include "JSONDebug.h"
 
@@ -24,9 +24,11 @@ typedef void (*json_stream_callback_t)(JSONNode &, void *);
 
 class JSONStream {
 public:
+	LIBJSON_OBJECT(JSONStream);
     JSONStream(json_stream_callback_t call_p, json_stream_e_callback_t call_e = NULL, void * callbackIdentifier = JSONSTREAM_SELF) json_nothrow;
     JSONStream(const JSONStream & orig) json_nothrow;
     JSONStream & operator =(const JSONStream & orig) json_nothrow;
+	~JSONStream(void) json_nothrow { LIBJSON_DTOR; }
 #ifdef JSON_LIBRARY
 	JSONStream & operator << (const json_char * str) json_nothrow;
 #else

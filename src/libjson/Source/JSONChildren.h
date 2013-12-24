@@ -1,8 +1,6 @@
 #ifndef JSONCHILDREN_H
 #define JSONCHILDREN_H
 
-using namespace std;
-
 #include "JSONMemory.h"
 #include "JSONDebug.h"  //for JSON_ASSERT macro
 
@@ -36,21 +34,17 @@ class JSONNode;  //forward declaration
     #define childrenVirtual
 #endif
 
-#ifndef JSON_UNIT_TEST
-    #define addAllocCount() (void)0
-    #define subAllocCount() (void)0
-#endif
-
 class jsonChildren {
 public:
+	LIBJSON_OBJECT(jsonChildren);
     //starts completely empty and the array is not allocated
     jsonChildren(void) json_nothrow : array(0), mysize(0), mycapacity(0) {
-	   addAllocCount();
+	   LIBJSON_CTOR;
     }
 
     #ifdef JSON_LESS_MEMORY
 	   jsonChildren(JSONNode** ar, json_index_t si, json_index_t ca) json_nothrow : array(ar), mysize(si), mycapacity(ca) {
-		  addAllocCount();
+		  LIBJSON_CTOR;
 	   }
     #endif
 
@@ -60,13 +54,8 @@ public:
 		  deleteAll();
 		  libjson_free<JSONNode*>(array);
 	   }
-	   subAllocCount();
+	   LIBJSON_DTOR;
     }
-
-    #ifdef JSON_UNIT_TEST
-	   void addAllocCount(void);
-	   void subAllocCount(void);
-    #endif
 
     //increase the size of the array
     void inc(json_index_t amount) json_nothrow;
@@ -141,12 +130,16 @@ public:
 	template <bool reverse>
     struct iteratorKeeper {
     public:
+		LIBJSON_OBJECT(jsonChildren::iteratorKeeper);
 	  iteratorKeeper(jsonChildren * pthis, JSONNode ** & position) json_nothrow :
 		 myRelativeOffset(reverse ? (json_index_t)(pthis -> array + (size_t)pthis -> mysize - position) : (json_index_t)(position - pthis -> array)),
 		 myChildren(pthis),
-		 myPos(position){}
+		 myPos(position){
+			LIBJSON_CTOR;
+		}
 
 	   ~iteratorKeeper(void) json_nothrow {
+		 LIBJSON_DTOR;
 		 if (reverse){
 			myPos = myChildren -> array + myChildren -> mysize - myRelativeOffset;
 		 } else {
@@ -288,16 +281,17 @@ JSON_PROTECTED
 #ifdef JSON_LESS_MEMORY
     class jsonChildren_Reserved : public jsonChildren {
     public:
+		LIBJSON_OBJECT(jsonChildren_Reserved);
 	   jsonChildren_Reserved(jsonChildren * orig, json_index_t siz) json_nothrow : jsonChildren(orig -> array, orig -> mysize, orig -> mycapacity), myreserved(siz) {
 		  orig -> array = 0;
 		  deleteChildren(orig);
-		  addAllocCount();
+		  LIBJSON_CTOR;
 	   }
 	   jsonChildren_Reserved(const jsonChildren_Reserved & orig) json_nothrow  : jsonChildren(orig.array, orig.mysize, orig.mycapacity), myreserved(orig.myreserved){
-		  addAllocCount();
+		  LIBJSON_COPY_CTOR;
 	   }
 	   inline virtual ~jsonChildren_Reserved() json_nothrow {
-		  subAllocCount();
+		  LIBJSON_DTOR;
 	   };
 	   inline virtual void shrink() json_nothrow {
 		  JSON_ASSERT(this != 0, JSON_TEXT("Children is null shrink reserved"));

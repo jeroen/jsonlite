@@ -1,7 +1,8 @@
-#ifndef JSON_DEBUG_H
-#define JSON_DEBUG_H
+#ifndef LIBJSON_GUARD_DEBUG_H
+#define LIBJSON_GUARD_DEBUG_H
 
 #include "JSONDefs.h"
+#include "JSONStats.h"
 
 #ifdef JSON_DEBUG
     #ifdef JSON_SAFE

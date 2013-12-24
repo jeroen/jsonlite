@@ -216,6 +216,8 @@ inline void SingleLineComment(const json_char * & p, const json_char * const end
 					  *runner++ = JSON_TEXT('\\');
 					  if (escapeQuotes){
 							*runner++ = (*++p == JSON_TEXT('\"')) ? ascii_one() : *p;  //an escaped quote will reak havoc will all of my searching functions, so change it into an illegal character in JSON for convertion later on
+					  } else {
+							*runner++ = *++p;
 					  }
 					  break;
 				   default:
@@ -292,7 +294,7 @@ json_string JSONWorker::RemoveWhiteSpaceAndComments(const json_string & value_t,
 #endif
 
 json_uchar JSONWorker::UTF8(const json_char * & pos, const json_char * const end) json_nothrow {
-	JSON_ASSERT_SAFE((end - pos) > 4, JSON_TEXT("UTF will go out of bounds"), return (json_uchar) '\0';);
+	JSON_ASSERT_SAFE(((long)end - (long)pos) > 4, JSON_TEXT("UTF will go out of bounds"), return JSON_TEXT('\0'););
     #ifdef JSON_UNICODE
 	   ++pos;
 	   json_uchar temp = Hex(pos) << 8;
@@ -335,7 +337,7 @@ json_char JSONWorker::Hex(const json_char * & pos) json_nothrow {
 
 #ifndef JSON_STRICT
     inline json_char FromOctal(const json_char * & str, const json_char * const end) json_nothrow {
-	   JSON_ASSERT_SAFE((end - str) > 3, JSON_TEXT("Octal will go out of bounds"), return (json_uchar)'\0';);
+	   JSON_ASSERT_SAFE(((long)end - (long)str) > 3, JSON_TEXT("Octal will go out of bounds"), return JSON_TEXT('\0'););
 	   str += 2;
 	   return (json_char)(((((json_uchar)(*(str - 2) - 48))) << 6) | (((json_uchar)(*(str - 1) - 48)) << 3) | ((json_uchar)(*str - 48)));
     }
@@ -384,7 +386,7 @@ void JSONWorker::SpecialChar(const json_char * & pos, const json_char * const en
 		  break;
 	   #ifndef JSON_STRICT
 		  case JSON_TEXT('x'):   //hexidecimal ascii code
-			 JSON_ASSERT_SAFE((end - pos) > 3, JSON_TEXT("Hex will go out of bounds"), res += JSON_TEXT('\0'); return;);
+			 JSON_ASSERT_SAFE(((long)end - (long)pos) > 3, JSON_TEXT("Hex will go out of bounds"), res += JSON_TEXT('\0'); return;);
 			 res += Hex(++pos);
 			 break;
 
@@ -462,7 +464,7 @@ void JSONWorker::SpecialChar(const json_char * & pos, const json_char * const en
 		  unsigned short HiSurrogate = 0xD800 | (((unsigned short)((unsigned int)((C >> 16) & 31)) - 1) << 6) | ((unsigned short)C) >> 10;
 
 		  //compute the low surrogate
-		  unsigned short LoSurrogate = (unsigned short) (0xDC00 | ((unsigned short)C) & 1023);
+		  unsigned short LoSurrogate = (unsigned short) (0xDC00 | ((unsigned short)C & 1023));
 
 		  json_string res;
 		  res += toUTF8(HiSurrogate);

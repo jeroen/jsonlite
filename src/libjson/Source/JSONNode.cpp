@@ -1,31 +1,10 @@
 #include "JSONNode.h"
 
-#ifdef JSON_UNIT_TEST
-    int allocCount(0);
-    int deallocCount(0);
-    int internalAllocCount(0);
-    int internalDeallocCount(0);
-    int childrenAllocCount(0);
-    int childrenDeallocCount(0);
-    int JSONNode::getNodeAllocationCount(void){ return allocCount; }
-    int JSONNode::getNodeDeallocationCount(void){ return deallocCount; }
-    int JSONNode::getInternalAllocationCount(void){ return internalAllocCount; }
-    int JSONNode::getInternalDeallocationCount(void){ return internalDeallocCount; }
-    int JSONNode::getChildrenAllocationCount(void){ return childrenAllocCount; }
-    int JSONNode::getChildrenDeallocationCount(void){ return childrenDeallocCount; }
-    void JSONNode::incAllocCount(void){ ++allocCount; }
-    void JSONNode::decAllocCount(void){ ++deallocCount; }
-    void JSONNode::incinternalAllocCount(void){ ++internalAllocCount; }
-    void JSONNode::decinternalAllocCount(void){ ++internalDeallocCount; }
-    void JSONNode::incChildrenAllocCount(void){ ++childrenAllocCount; }
-    void JSONNode::decChildrenAllocCount(void){ ++childrenDeallocCount; }
-#endif
-
 #define IMPLEMENT_CTOR(type)\
     JSONNode::JSONNode(const json_string & name_t, type value_t) json_nothrow : internal(internalJSONNode::newInternal()){\
 	   internal -> Set(value_t);\
 	   internal -> setname(name_t);\
-	   incAllocCount();\
+	   LIBJSON_CTOR;\
     }
 IMPLEMENT_FOR_ALL_TYPES(IMPLEMENT_CTOR)
 
@@ -33,7 +12,7 @@ IMPLEMENT_FOR_ALL_TYPES(IMPLEMENT_CTOR)
     JSONNode::JSONNode(const json_string & name_t, const json_char * value_t) json_nothrow : internal(internalJSONNode::newInternal()){
 	   internal -> Set(json_string(value_t));
 	   internal -> setname(name_t);
-	   incAllocCount();
+	   LIBJSON_CTOR;
     }
 #endif
 

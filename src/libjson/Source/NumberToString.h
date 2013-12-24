@@ -7,11 +7,7 @@
     #include "JSONMemory.h"
 #endif
 #include "JSONSharedString.h"
-#ifdef __SUNPRO_CC
-#include <stdio.h>
-#else
 #include <cstdio>
-#endif
 #ifdef JSON_STRICT
     #include <cmath>
 #endif
