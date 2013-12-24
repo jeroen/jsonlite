@@ -5,9 +5,10 @@
 \usage{
   fromJSON(txt, simplifyVector = TRUE,
     simplifyDataFrame = simplifyVector,
-    simplifyMatrix = simplifyVector)
+    simplifyMatrix = simplifyVector, ...)
 
   toJSON(x, dataframe = c("rows", "columns"),
+    matrix = c("rowmajor", "columnmajor"),
     Date = c("ISO8601", "epoch"),
     POSIXt = c("string", "ISO8601", "epoch", "mongo"),
     factor = c("string", "integer"),
@@ -21,6 +22,9 @@
 
   \item{dataframe}{how to encode data.frame objects: must
   be one of 'row' or 'column'}
+
+  \item{matrix}{should matrices and higher dimensional
+  arrays be encoded in row-major or column-major.}
 
   \item{Date}{how to encode Date objects: must be one of
   'ISO8601' or 'epoch'}
@@ -48,15 +52,14 @@
 
   \item{txt}{a string in json format}
 
-  \item{simplifyVector}{automatically coerse JSON arrays
-  containing only scalars into a vector}
+  \item{simplifyVector}{coerse JSON arrays containing only
+  scalars into a vector}
 
-  \item{simplifyDataFrame}{automatically coerse JSON arrays
-  containing records (JSON objects with scalars) into a
-  data frame.}
+  \item{simplifyDataFrame}{coerse JSON arrays containing
+  only records (JSON objects) into a data frame.}
 
-  \item{simplifyMatrix}{automatically coerse JSON arrays
-  with vectors of equal length and mode into a matrix}
+  \item{simplifyMatrix}{coerse JSON arrays containing
+  vectors of equal length and mode into matrix or array.}
 
   \item{...}{arguments passed on to class specific
   \code{print} methods}
