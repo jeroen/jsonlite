@@ -8,9 +8,7 @@ test_that("test that the validator properly deals with escaped characters", {
     paste(mychars[ceiling(runif(length, 0, length(mychars)))], collapse="")
   }  
   
-  for(i in 1:200){
-    cat("validator tests currently disabled.\n"); break;
-    
+  for(i in 1:200){    
     #create some random strings to validate
     x <- createstring(i);
     expect_that(validate(toJSON(x)), is_true());
