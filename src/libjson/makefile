@@ -1,6 +1,6 @@
 ###############################################################################
-#
-#  Copyright 2010 Jonathan Wallace. All rights reserved.
+#                                                       
+#  Copyright 2010 Jonathan Wallace. All rights reserved.         
 #
 #  Redistribution and use in source and binary forms, with or without
 #  modification, are permitted provided that the following conditions are met:
@@ -50,12 +50,12 @@
 #      Builds the library before installing if it does not exist already.
 #      Ececutes ldconfig in case of the shared library.
 #      Default locations:
-#        library: $(exec_prefix)/$(libdir) => /usr/local/lib
-#        headers:   $(prefix)/$(includedir) => /usr/local/include
+#        library: $(exec_prefix)/$(libdir) => /usr/lib
+#        headers:   $(prefix)/$(includedir) => /usr/include
 #
 #    install_headers
 #      Installs the header files.
-#      Default location: $(prefix)/$(includedir) => /usr/local/include
+#      Default location: $(prefix)/$(includedir) => /usr/include
 #
 #    clean
 #      Removes the shared or the static library, depending of the value
@@ -72,7 +72,7 @@
 #
 #  Variables
 #    prefix
-#      The general installation root directory. Default: /usr/local
+#      The general installation root directory. Default: /usr
 #
 #    exec_prefix
 #      The installation root directory to place executables and libraries.
@@ -88,7 +88,7 @@
 #
 #    srcdir
 #      The directory where the object source files are located.
-#      Default: Sources
+#      Default: Source
 #
 #    CXX
 #      The compiler to be used. Default: c++
@@ -107,7 +107,7 @@
 #      The PIC to be used. Default: PIC
 #
 #    BUILD_TYPE
-#      Used to select a specific set of predefined configuaration parameters.
+#      Used to select a specific set of predefined configuration parameters.
 #      Default:  undefined: The default settings are used
 #      Options:
 #        small
@@ -132,12 +132,12 @@ OS=$(shell uname)
 
 # Defaults
 ifeq ($(OS), Darwin)
-	cxxflags_default = -c -fast -ffast-math -fexpensive-optimizations -DNDEBUG
+	cxxflags_default = -fast -ffast-math -fexpensive-optimizations -DNDEBUG
 else
-	cxxflags_default = -c -O3 -ffast-math -fexpensive-optimizations -DNDEBUG
+	cxxflags_default = -O3 -ffast-math -fexpensive-optimizations -DNDEBUG
 endif
-cxxflags_small   = -c -Os -ffast-math -DJSON_LESS_MEMORY -DNDEBUG
-cxxflags_debug   = -c -g -DJSON_SAFE -DJSON_DEBUG
+cxxflags_small   = -Os -ffast-math -DJSON_LESS_MEMORY -DNDEBUG
+cxxflags_debug   = -g -DJSON_SAFE -DJSON_DEBUG
 cxxflags_shared  = -f$(PIC)
 libname          = libjson
 libname_hdr      := $(libname)
@@ -145,12 +145,12 @@ libname_debug    = $(libname)_dbg
 suffix_shared    = so
 suffix_static    = a
 major_version    = 7
-minor_version    = 6.0
+minor_version    = 6.1
 objdir           = Objects
 
 
 # Variables
-prefix          ?= /usr/local
+prefix          ?= /usr
 exec_prefix     ?= $(prefix)
 libdir          ?= lib
 includedir      ?= include
@@ -237,7 +237,7 @@ endif
 
 # Compile object files
 $(objdir)/%.o: $(srcdir)/%.cpp
-	$(CXX) $< -o $@ $(CXXFLAGS)
+	$(CXX) $< -o $@ -c $(CXXFLAGS)
 
 ifeq ($(SHARED),1)
 install: banner install_headers $(lib_target)
@@ -246,9 +246,9 @@ install: banner install_headers $(lib_target)
 	cd $(inst_path) ; \
 	ln -sf $(lib_target) $(libname_shared_major_version) ; \
 	ln -sf $(libname_shared_major_version) $(libname_shared)
-	ifneq ($(OS),Darwin)
-		ldconfig
-	endif
+ifneq ($(OS),Darwin)
+	ldconfig
+endif
 	@echo "Install shared library: Done."
 else
 install: banner install_headers $(lib_target)
@@ -266,6 +266,7 @@ install_headers: banner
 	cp -r ./$(srcdir)/JSONDefs $(include_path)/$(libname_hdr)/$(srcdir)
 	chmod -R a+r $(include_path)/$(libname_hdr)
 	find  $(include_path)/$(libname_hdr) -type d -exec chmod a+x {} \;
+	cp -rv $(srcdir)/Dependencies/ $(include_path)/$(libname_hdr)/$(srcdir)
 	@echo "Install header files: Done."
 
 clean: banner
@@ -280,7 +281,9 @@ uninstall: banner uninstall_headers
 	rm -f $(inst_path)/$(libname_shared)
 	rm -f $(inst_path)/$(libname_shared_major_version)
 	rm -f $(inst_path)/$(lib_target)
+ifneq ($(OS),Darwin)
 	ldconfig
+endif
 	@echo "Uninstall shared library: Done"
 else
 uninstall: banner uninstall_headers
@@ -291,5 +294,5 @@ endif
 
 uninstall_headers: banner
 	@echo "Uninstall header files"
-	rm -rf $(include_path)/$(libname)
+	rm -rf $(include_path)/$(libname_hdr)
 	@echo "Uninstall header files: Done"
