@@ -12,6 +12,7 @@ test_that("escaping and parsing of special characters", {
   for(i in 1:200){
     x <- createstring(i);
     expect_that(x, equals(fromJSON(toJSON(x))));
+    expect_that(x, equals(fromJSON(toJSON(x, pretty=TRUE))));
   }
 
 });
