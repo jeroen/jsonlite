@@ -152,10 +152,10 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
 	    if(tmp1 != tmp)
 		json_free(tmp);
 	    tmp = tmp1;
-	    el = ScalarString(mkCharCE(tmp, CE_NATIVE));
+	    el = ScalarString(mkCharCE(tmp, charEncoding));
 	}
     } else {
-	el = ScalarString(mkCharCE(tmp, CE_NATIVE));
+	el = ScalarString(mkCharCE(tmp, charEncoding));
     	     /* Call the R function if there is one. */
 	if(r_stringCall != NULL) {
 	    SETCAR(CDR(r_stringCall), el);
@@ -469,7 +469,7 @@ R_jsonPrettyPrint(SEXP r_content, SEXP r_encoding)
     }
 
     ans = json_write_formatted(node);
-    return(ScalarString(mkCharCE(ans, CE_NATIVE)));
+    return(ScalarString(mkCharCE(ans, INTEGER(r_encoding)[0])));
 }
 
 
@@ -504,5 +504,5 @@ R_json_dateStringOp(const char *value, cetype_t encoding)
         UNPROTECT(2);
 	return(ans);
     } else
-       return(ScalarString(mkCharCE(value, CE_NATIVE)));
+       return(ScalarString(mkCharCE(value, encoding)));
 }
