@@ -36,7 +36,7 @@ class JSONNode;  //forward declaration
 
 class jsonChildren {
 public:
-	LIBJSON_OBJECT(jsonChildren);
+	//LIBJSON_OBJECT(jsonChildren);
     //starts completely empty and the array is not allocated
     jsonChildren(void) json_nothrow : array(0), mysize(0), mycapacity(0) {
 	   LIBJSON_CTOR;
@@ -130,7 +130,7 @@ public:
 	template <bool reverse>
     struct iteratorKeeper {
     public:
-		LIBJSON_OBJECT(jsonChildren::iteratorKeeper);
+		//LIBJSON_OBJECT(jsonChildren::iteratorKeeper);
 	  iteratorKeeper(jsonChildren * pthis, JSONNode ** & position) json_nothrow :
 		 myRelativeOffset(reverse ? (json_index_t)(pthis -> array + (size_t)pthis -> mysize - position) : (json_index_t)(position - pthis -> array)),
 		 myChildren(pthis),
@@ -281,7 +281,7 @@ JSON_PROTECTED
 #ifdef JSON_LESS_MEMORY
     class jsonChildren_Reserved : public jsonChildren {
     public:
-		LIBJSON_OBJECT(jsonChildren_Reserved);
+		//LIBJSON_OBJECT(jsonChildren_Reserved);
 	   jsonChildren_Reserved(jsonChildren * orig, json_index_t siz) json_nothrow : jsonChildren(orig -> array, orig -> mysize, orig -> mycapacity), myreserved(siz) {
 		  orig -> array = 0;
 		  deleteChildren(orig);
