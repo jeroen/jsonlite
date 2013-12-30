@@ -114,7 +114,7 @@ R_readFromJSON(SEXP r_input, SEXP depth, SEXP allowComments, SEXP func, SEXP dat
 void
 R_json_parse_character(SEXP r_input, SEXP maxChar, struct JSON_parser_struct *parser)
 {
-    const char *input;
+    unsigned const char *input;
     int *ivals = NULL;
     unsigned int count = 0, len;
 
