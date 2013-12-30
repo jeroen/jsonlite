@@ -10,7 +10,7 @@ void * manager_mutex = 0;
 
 struct AutoLock {
 public:
-	LIBJSON_OBJECT(AutoLock);
+	//LIBJSON_OBJECT(AutoLock);
     AutoLock(void) json_nothrow {
 		LIBJSON_CTOR;
 	   json_lock_callback(manager_mutex);
@@ -30,7 +30,7 @@ private:
     //make sure that the global mutex is taken care of too
     struct auto_global {
     public:
-		LIBJSON_OBJECT(auto_global;)
+		//LIBJSON_OBJECT(auto_global;)
 	   auto_global(void) json_nothrow { LIBJSON_CTOR; }
 	   ~auto_global(void) json_nothrow {
 		  LIBJSON_DTOR;

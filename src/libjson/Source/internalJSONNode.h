@@ -80,7 +80,7 @@ class JSONNode;  //forward declaration
 
 class internalJSONNode {
 public:
-	LIBJSON_OBJECT(internalJSONNode);
+	//LIBJSON_OBJECT(internalJSONNode);
     internalJSONNode(char mytype = JSON_NULL) json_nothrow json_hot;
     #ifdef JSON_READ_PRIORITY
 	   internalJSONNode(const json_string & unparsed) json_nothrow json_hot;

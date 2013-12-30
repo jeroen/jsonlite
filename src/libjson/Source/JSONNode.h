@@ -131,7 +131,7 @@
 
 class JSONNode {
 public:
-	LIBJSON_OBJECT(JSONNode);
+	//LIBJSON_OBJECT(JSONNode);
     explicit JSONNode(char mytype = JSON_NODE) json_nothrow json_hot;
     #define DECLARE_CTOR(type) explicit JSONNode(const json_string & name_t, type value_t)
     DECLARE_FOR_ALL_TYPES(DECLARE_CTOR)

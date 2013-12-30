@@ -24,7 +24,7 @@ typedef void (*json_stream_callback_t)(JSONNode &, void *);
 
 class JSONStream {
 public:
-	LIBJSON_OBJECT(JSONStream);
+	//LIBJSON_OBJECT(JSONStream);
     JSONStream(json_stream_callback_t call_p, json_stream_e_callback_t call_e = NULL, void * callbackIdentifier = JSONSTREAM_SELF) json_nothrow;
     JSONStream(const JSONStream & orig) json_nothrow;
     JSONStream & operator =(const JSONStream & orig) json_nothrow;

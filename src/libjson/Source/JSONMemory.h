@@ -78,7 +78,7 @@
     class JSONNode;
     struct auto_expand {
     public:
-		LIBJSON_OBJECT(auto_expand);
+		//LIBJSON_OBJECT(auto_expand);
 	   auto_expand(void) json_nothrow : mymap(){ LIBJSON_CTOR;}
 	   ~auto_expand(void) json_nothrow { purge(); LIBJSON_DTOR; }
 	   void purge(void) json_nothrow;
@@ -97,7 +97,7 @@
 
     struct auto_expand_node {
     public:
-		LIBJSON_OBJECT(auto_expand_node);
+		//LIBJSON_OBJECT(auto_expand_node);
 	   auto_expand_node(void) json_nothrow : mymap(){ LIBJSON_CTOR; }
 	   ~auto_expand_node(void) json_nothrow { purge(); LIBJSON_DTOR; }
 	   void purge(void) json_nothrow ;
@@ -117,7 +117,7 @@
 	   class JSONStream;
 	   struct auto_expand_stream {
         public:
-			LIBJSON_OBJECT(auto_expand_stream);
+			//LIBJSON_OBJECT(auto_expand_stream);
 		  auto_expand_stream(void) json_nothrow : mymap(){ LIBJSON_CTOR; }
 		  ~auto_expand_stream(void) json_nothrow { purge(); LIBJSON_DTOR; }
 		  void purge(void) json_nothrow ;
@@ -139,7 +139,7 @@
 template <typename T>
 class json_auto {
     public:
-		LIBJSON_OBJECT(json_auto);
+		//LIBJSON_OBJECT(json_auto);
 	   json_auto(void) json_nothrow : ptr(0){ LIBJSON_CTOR; }
 	   json_auto(size_t count) json_nothrow : ptr(json_malloc<T>(count)){ LIBJSON_CTOR; }
 	   json_auto(T * arg) json_nothrow : ptr(arg){ LIBJSON_CTOR; }
