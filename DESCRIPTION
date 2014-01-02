@@ -1,10 +1,9 @@
 Package: jsonlite
-Version: 0.9.2
+Version: 0.9.3
 Title: A smarter JSON encoder/decoder for R
 License: Apache License (== 2.0)
 NeedsCompilation: yes
-Depends:
-    methods
+Depends: methods
 Author: Jeroen Ooms, Duncan Temple Lang
 URL: http://github.com/jeroenooms/jsonlite#readme
 BugReports: http://github.com/jeroenooms/jsonlite/issues
@@ -18,8 +17,7 @@ Description: This package is a fork of the RJSONIO package by Duncan Temple
     functions to serialize objects. Furthermore, the package contains a lot of
     unit tests to make sure that all edge cases are encoded and decoded
     consistently for use with dynamic data in systems and applications.
-Suggests:
-    testthat,
-    knitr,
-    reshape2,
-    httr
+Suggests: testthat, knitr, reshape2, httr
+Packaged: 2014-01-02 07:46:45 UTC; ripley
+Repository: CRAN
+Date/Publication: 2014-01-02 08:51:48

@@ -4,7 +4,11 @@
 #include "JSONDebug.h"   //for string type
 #include "internalJSONNode.h"  //internal structure for json value
 #include <stdexcept>
+#ifdef __SUNPRO_CC
+#include <varargs.h>
+#else
 #include <cstdarg>  //for the ... parameter
+#endif
 
 #ifdef JSON_BINARY
     #include "JSON_Base64.h"
