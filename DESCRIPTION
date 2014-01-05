@@ -1,5 +1,5 @@
 Package: jsonlite
-Version: 0.9.3
+Version: 0.9.3.99
 Title: A smarter JSON encoder/decoder for R
 License: Apache License (== 2.0)
 NeedsCompilation: yes
@@ -18,6 +18,3 @@ Description: This package is a fork of the RJSONIO package by Duncan Temple
     unit tests to make sure that all edge cases are encoded and decoded
     consistently for use with dynamic data in systems and applications.
 Suggests: testthat, knitr, reshape2, httr
-Packaged: 2014-01-02 07:46:45 UTC; ripley
-Repository: CRAN
-Date/Publication: 2014-01-02 08:51:48
