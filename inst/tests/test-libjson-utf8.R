@@ -5,35 +5,31 @@ context("libjson UTF-8 characters")
 # \u00F8 however this is mostly for legacy purposes. Using actual UTF-8 characters 
 # is easier and more efficient.
 
-if(!grepl("UTF", ignore.case=TRUE, Sys.getlocale("LC_CTYPE"))){
-  warning("Current locale is not UTF! Cannot run UTF-8 tests.")
-} else { 
 
-  test_that("test that non ascii characters are ok", {
-    #create random strings
-    objects <- list(
-      "Zürich",
-      "北京填鴨们",
-      "ผัดไทย",
-      "寿司"
-    );
-    
-    lapply(objects, function(x){
-      myjson <- toJSON(x);
-      expect_that(validate(myjson), is_true());
-      expect_that(fromJSON(myjson), equals(x));
-      
-      #prettify needs to parse + output
-      prettyjson <- prettify(myjson);
-      expect_that(validate(prettyjson), is_true());
-      expect_that(fromJSON(prettyjson), equals(x));      
-    });
-  });
-
+test_that("test that non ascii characters are ok", {
+  #create random strings
+  objects <- list(
+    "Zürich",
+    "北京填鴨们",
+    "ผัดไทย",
+    "寿司"
+  );
   
-  #Test unicode escape notation
-  test_that("escaped unicode gets parsed OK", {
-    #disabled until fixed
-    #expect_that(fromJSON('["z\\00FCrich"]'), equals("Zürich"));
+  lapply(objects, function(x){
+    myjson <- toJSON(x);
+    expect_that(validate(myjson), is_true());
+    expect_that(fromJSON(myjson), equals(x));
+    
+    #prettify needs to parse + output
+    prettyjson <- prettify(myjson);
+    expect_that(validate(prettyjson), is_true());
+    expect_that(fromJSON(prettyjson), equals(x));      
   });
-}
+});
+
+
+#Test unicode escape notation
+test_that("escaped unicode gets parsed OK", {
+  #disabled until fixed
+  #expect_that(fromJSON('["z\\00FCrich"]'), equals("Zürich"));
+});
