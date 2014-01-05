@@ -215,7 +215,7 @@ x <- matrix(1:12, nrow=3, ncol=4)
 cat(toJSON(x))
 @
 
-\noindent We hope that this representation will be the most intuitive to interpret, even within languages that do not have a native notion of a matrix. When the JSON string is properly indented (recall that white space and line breaks are optional in JSON), it looks very similar to the way R prints matrices:
+\noindent We hope that this representation will be the most intuitive to interpret, even within languages that do not have a native notion of a matrix. Note that even though R stores matrices in \emph{column major} order, \texttt{jsonlite} encodes matrices in \emph{row major} order. This is a more conventional and intuitive way to represent matrices and is consistent with the row-based encoding of data frames. When the JSON string is properly indented (recall that white space and line breaks are optional in JSON), it looks very similar to the way R prints matrices:
 
 \begin{verbatim}
 [ [ 1, 4, 7, 10 ], 
