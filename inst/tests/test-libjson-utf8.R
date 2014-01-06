@@ -31,5 +31,6 @@ test_that("test that non ascii characters are ok", {
 #Test unicode escape notation
 test_that("escaped unicode gets parsed OK", {
   #disabled until fixed
-  #expect_that(fromJSON('["z\\00FCrich"]'), equals("Zürich"));
+  #expect_that(fromJSON('["z\\u00FCrich"]'), equals("Zürich"));
+  #expect_that(fromJSON('["\\u586B"]'), equals("填"));
 });
