@@ -15,4 +15,7 @@ myjson <- toJSON(cars, pretty=FALSE)
 myprettyjson <- prettify(myjson)
 cat(myprettyjson)
 }
+\seealso{
+  Other prettify: \code{\link{minify}}
+}
 

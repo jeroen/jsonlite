@@ -4,6 +4,7 @@
 #' 
 #' @param txt JSON string
 #' @export
+#' @family prettify
 #' @examples myjson <- toJSON(cars, pretty=FALSE)
 #' myprettyjson <- prettify(myjson)
 #' cat(myprettyjson)

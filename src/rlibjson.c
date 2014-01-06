@@ -472,6 +472,22 @@ R_jsonPrettyPrint(SEXP r_content, SEXP r_encoding)
     return(ScalarString(mkCharCE(ans, INTEGER(r_encoding)[0])));
 }
 
+SEXP
+R_jsonMiniPrint(SEXP r_content, SEXP r_encoding)
+{
+    const char *str = CHAR(STRING_ELT(r_content, 0));
+    JSONNODE *node;
+    json_char *ans;
+    
+    node = json_parse(str);
+    if(!node) {
+  PROBLEM "couldn't parse the JSON content"
+	    ERROR;
+    }
+
+    ans = json_write(node);
+    return(ScalarString(mkCharCE(ans, INTEGER(r_encoding)[0])));
+}
 
 const char *
 dummyStringOperation(const char *value)
