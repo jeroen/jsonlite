@@ -4,7 +4,7 @@ Title: A smarter JSON encoder/decoder for R
 License: Apache License (== 2.0)
 NeedsCompilation: yes
 Depends: methods
-Author: Jeroen Ooms, Duncan Temple Lang
+Author: Jeroen Ooms, Duncan Temple Lang, Jonathan Wallace
 URL: http://github.com/jeroenooms/jsonlite#readme
 BugReports: http://github.com/jeroenooms/jsonlite/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
