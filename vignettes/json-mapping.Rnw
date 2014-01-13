@@ -1,6 +1,11 @@
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{A Practical and Consistent Mapping Between JSON Data and R Objects}
 
+%placeholders for JSS
+\newcommand{\pkg}[1]{\texttt{#1}}
+\newcommand{\proglang}[1]{\texttt{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+
 %shorthands
 \newcommand{\JSON}{\texttt{JSON}\xspace}
 \newcommand{\toJSON}{\texttt{toJSON}\xspace}
@@ -17,6 +22,7 @@
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
+\usepackage{natbib}
 
 %extra line spacing
 \usepackage{xspace}
@@ -40,14 +46,45 @@ toJSON <- function(...){
 
 \section{Introduction}
 
-JSON (JavaScript Object Notation) is a lightweight data-interchange format, and one of the most common methods today for exchange of data structures in systems and applications. It is easy for humans to read and write, and easy for machines to parse and generate. The syntax is completely defined in a single page at \url{http://www.json.org/}: it specifies 5 primitive types (\texttt{string}, \texttt{number}, \texttt{true}, \texttt{false}, \texttt{null}) and two \emph{universal data structures}:
+JavaScript Object Notation (JSON) is a text format for the serialization of structured data \citep{crockford2006application}. It is derived from the object literals of JavaScript, as defined in the ECMAScript Programming Language Standard, Third Edition \citep{ecma1999262}. Design of JSON is simple and compact in comparison with other text based formats, and it was originally presented as a ``fat-free alternative to XML'' \citep{crockford2006json}. The syntax is easy for humans to read and write, easy for machines to parse and generate and completely described in a single page at \url{http://www.json.org/}. The character encoding of JSON text is always Unicode, preferably using \texttt{UTF-8} \citep{crockford2006application}, making naturally suitable for users of non-latin alphabets without additional effort. Over the past years, JSON has become hugely popular on the internet as a general purpose data interchange format. High quality parsing libraries are available for almost any programming language, making it easy to implement systems and applications that exchange data over the network using JSON. For R \citep{R}, several packages that assist users in generating, parsing and validating JSON are available through CRAN, including \pkg{rjson} \citep{rjson}, \pkg{RJSONIO} \citep{RJSONIO}, and \pkg{jsonlite} \citep{jsonlite}.
+
+
+
+\subsection{Syntax and Terminology}
+
+
+
+\begin{quote}
+
+
+   JSON can represent four primitive types (strings, numbers, booleans,
+   and null) and two structured types (objects and arrays).
+
+   A string is a sequence of zero or more Unicode characters [UNICODE].
+
+   An object is an unordered collection of zero or more name/value
+   pairs, where a name is a string and a value is a string, number,
+   boolean, null, object, or array.
+
+   An array is an ordered sequence of zero or more values.
+
+   The terms "object" and "array" come from the conventions of
+   JavaScript.
+
+   JSON's design goals were for it to be minimal, portable, textual, and
+   a subset of JavaScript.
+\end{quote}
+
+
+
+JSON specifies 5 primitive types (\texttt{string}, \texttt{number}, \texttt{true}, \texttt{false}, \texttt{null}) and two \emph{universal data structures}:
 
 \begin{itemize}
   \item A collection of name-value pairs. In R, this is realized as a \emph{named list}.
   \item An ordered set of values. In R, this is realized as an \emph{unnamed list}.
 \end{itemize}
 
-\noindent Because the syntax is limited to these universal types and structures, \JSON data is easily converted into a native object in almost any programming language. This is convenient for developers and has contributed to the popularity of the format. Several R packages already implement \toJSON and \fromJSON functions which convert between R objects and \JSON structures. However, the exact mapping between the various R classes and the two universal data structures that are supported by \JSON is not self evident. Currently, there are no formal guidelines, or even consensus between implementations on how exactly each class in R should be represented in \JSON. Furthermore, upon closer inspection, even the most basic data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between implementations, and can lead to unexpected output for special cases. To further complicate things, best practices of representing data in \JSON have already been established outside the R community. Respecting these conventions where possible is important to maximize interoperability of data in R when using \JSON.
+\noindent Because the syntax is limited to these universal types and structures, \JSON data is easily converted into a native object in almost any programming language. This is convenient for developers and has contributed to the popularity of the format. Several R packages already implement \toJSON and \fromJSON functions which convert between R objects and \JSON structures \citep{RJSONIO, rjson}. However, the exact mapping between the various R classes and the two universal data structures that are supported by \JSON is not self evident. Currently, there are no formal guidelines, or even consensus between implementations on how exactly each class in R should be represented in \JSON. Furthermore, upon closer inspection, even the most basic data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between implementations, and can lead to unexpected output for special cases. To further complicate things, best practices of representing data in \JSON have already been established outside the R community. Respecting these conventions where possible is important to maximize interoperability of data in R when using \JSON.
 
 When relying on \JSON as the data interchange format, the mapping between R objects and \JSON data must be consistent and unambiguous. Clients relying on \JSON to get data in and out of R must know exactly what to expect in order to facilitate reliable communication, even if the data themselves are dynamic. Similarly, R code using dynamic \JSON data from an external source is only reliable when the conversion from \JSON to R is consistent. This document attempts to take away some of the ambiguity by explicitly describing the mapping between R classes and \JSON data, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
 
@@ -597,4 +634,6 @@ call1 <- GET(url, config(httpheader = c("Authorization" = token)))
 obj1 <- fromJSON(rawToChar(call1$content))
 @
 
+\bibliographystyle{plainnat}
+\bibliography{json-mapping}
 \end{document}
