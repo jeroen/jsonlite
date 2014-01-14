@@ -10,6 +10,8 @@
 \newcommand{\JSON}{\texttt{JSON}\xspace}
 \newcommand{\toJSON}{\texttt{toJSON}\xspace}
 \newcommand{\fromJSON}{\texttt{fromJSON}\xspace}
+\newcommand{\XML}{\texttt{XML}\xspace}
+
 %meta
 \documentclass{article}
 \author{Jeroen Ooms}
@@ -49,12 +51,30 @@ toJSON <- function(...){
 
 \section{Introduction}
 
-JavaScript Object Notation (JSON) is a text format for the serialization of structured data \citep{crockford2006application}. It is derived from the object literals of JavaScript, as defined in the ECMAScript Programming Language Standard, Third Edition \citep{ecma1999262}. Design of JSON is simple and compact in comparison with other text based formats, and it was originally proposed by Douglas Crockford as a ``fat-free alternative to XML'' \citep{crockford2006json}. The syntax is easy for humans to read and write, easy for machines to parse and generate and completely described in a single page at \url{http://www.json.org/}. The character encoding of JSON text is always Unicode, using \texttt{UTF-8} by default \citep{crockford2006application}, making naturally suitable for users of non-latin alphabets without additional effort. Over the past years, JSON has become hugely popular on the internet as a general purpose data interchange format. High quality parsing libraries are available for almost any programming language, making it easy to implement systems and applications that exchange data over the network using JSON. For R \citep{R}, several packages that assist users in generating, parsing and validating JSON are available through CRAN, including \pkg{rjson} \citep{rjson}, \pkg{RJSONIO} \citep{RJSONIO}, and \pkg{jsonlite} \citep{jsonlite}.
+\emph{JavaScript Object Notation} (\JSON) is a text format for the serialization of structured data \citep{crockford2006application}. It is derived from the object literals of \proglang{JavaScript}, as defined in the \proglang{ECMAScript} Programming Language Standard, Third Edition \citep{ecma1999262}. Design of \JSON is simple and compact in comparison with other text based formats, and it was originally proposed by Douglas Crockford as a ``fat-free alternative to \XML'' \citep{crockford2006json}. The syntax is easy for humans to read and write, easy for machines to parse and generate and completely described in a single page at \url{http://www.json.org/}. The character encoding of \JSON text is always Unicode, using \texttt{UTF-8} by default \citep{crockford2006application}, making it naturally compatible with non-latin alphabets. Over the past years, \JSON has become hugely popular on the internet as a general purpose data interchange format. High quality parsing libraries are available for almost any programming language, making it easy to implement systems and applications that exchange data over the network using JSON. For R \citep{R}, several packages that assist the user in generating, parsing and validating JSON are available through CRAN, including \pkg{rjson} \citep{rjson}, \pkg{RJSONIO} \citep{RJSONIO}, and \pkg{jsonlite} \citep{jsonlite}.
 
-The purpose of this paper is not to introduce any particular implementation or method for manipulating \JSON data in R. Instead we take a high level view and discuss how several common R data structures are most naturally represented using \JSON. A mapping between \JSON structures and several common R object classes is proposed that makes it natural to interface R objects through \JSON, and interface \JSON data through R objects.
+The purpose of this paper is not to introduce any particular implementation or method for manipulating \JSON data in R. Instead we take a high level view and discuss how R data structures are most naturally represented in \JSON. This is not a trivial problem. Several R packages implement \toJSON and \fromJSON functions which directly convert R objects into \JSON and vice versa. However, the exact mapping between the various R data classes \JSON structures is not self evident. Currently, there are no formal guidelines, or even consensus between implementations on how R data should be represented in \JSON. Furthermore, upon closer inspection, even the most basic data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between implementations, and can lead to unexpected output for certain special cases. To further complicate things, best practices of representing data in \JSON have been established outside the R community. Respecting these conventions where possible is important to maximize interoperability.
+
+This paper explores this problem in greater detail and make case for
+
+- explain problem
+- highlight problems
+- make case for bidirectional mapping that allows to interface R from JSON and JSON from R
+- describe the mapping for each class using our reference implementation
+- end with a note on consistency
 
 
-\section{Problem Definition}
+
+A mapping between \JSON structures and several common R object classes is proposed that makes it natural to interface R objects through \JSON, and interface \JSON data through R objects.
+
+
+
+When relying on \JSON as the data interchange format, the mapping between R objects and \JSON data must be consistent and unambiguous. Clients relying on \JSON to get data in and out of R must know exactly what to expect in order to facilitate reliable communication, even if the data themselves are dynamic. Similarly, R code using dynamic \JSON data from an external source is only reliable when the conversion from \JSON to R is consistent. This document attempts to take away some of the ambiguity by explicitly describing the mapping between R classes and \JSON data, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
+
+
+\section{Data, R and JSON}
+
+approximate bidirectional mapping
 
 \subsection{Syntax and Terminology}
 
