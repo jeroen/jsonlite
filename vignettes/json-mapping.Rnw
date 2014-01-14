@@ -18,14 +18,17 @@
 %some packages
 \usepackage{url}
 \usepackage{fullpage}
-\usepackage{setspace}
+\usepackage{xspace}
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \usepackage{natbib}
 
+%use vspace instead of indentation for paragraphs
+\usepackage{parskip}
+
 %extra line spacing
-\usepackage{xspace}
+\usepackage{setspace}
 \setstretch{1.2}
 
 %actual doc
@@ -46,9 +49,12 @@ toJSON <- function(...){
 
 \section{Introduction}
 
-JavaScript Object Notation (JSON) is a text format for the serialization of structured data \citep{crockford2006application}. It is derived from the object literals of JavaScript, as defined in the ECMAScript Programming Language Standard, Third Edition \citep{ecma1999262}. Design of JSON is simple and compact in comparison with other text based formats, and it was originally presented as a ``fat-free alternative to XML'' \citep{crockford2006json}. The syntax is easy for humans to read and write, easy for machines to parse and generate and completely described in a single page at \url{http://www.json.org/}. The character encoding of JSON text is always Unicode, preferably using \texttt{UTF-8} \citep{crockford2006application}, making naturally suitable for users of non-latin alphabets without additional effort. Over the past years, JSON has become hugely popular on the internet as a general purpose data interchange format. High quality parsing libraries are available for almost any programming language, making it easy to implement systems and applications that exchange data over the network using JSON. For R \citep{R}, several packages that assist users in generating, parsing and validating JSON are available through CRAN, including \pkg{rjson} \citep{rjson}, \pkg{RJSONIO} \citep{RJSONIO}, and \pkg{jsonlite} \citep{jsonlite}.
+JavaScript Object Notation (JSON) is a text format for the serialization of structured data \citep{crockford2006application}. It is derived from the object literals of JavaScript, as defined in the ECMAScript Programming Language Standard, Third Edition \citep{ecma1999262}. Design of JSON is simple and compact in comparison with other text based formats, and it was originally proposed by Douglas Crockford as a ``fat-free alternative to XML'' \citep{crockford2006json}. The syntax is easy for humans to read and write, easy for machines to parse and generate and completely described in a single page at \url{http://www.json.org/}. The character encoding of JSON text is always Unicode, using \texttt{UTF-8} by default \citep{crockford2006application}, making naturally suitable for users of non-latin alphabets without additional effort. Over the past years, JSON has become hugely popular on the internet as a general purpose data interchange format. High quality parsing libraries are available for almost any programming language, making it easy to implement systems and applications that exchange data over the network using JSON. For R \citep{R}, several packages that assist users in generating, parsing and validating JSON are available through CRAN, including \pkg{rjson} \citep{rjson}, \pkg{RJSONIO} \citep{RJSONIO}, and \pkg{jsonlite} \citep{jsonlite}.
+
+The purpose of this paper is not to introduce any particular implementation or method for manipulating \JSON data in R. Instead we take a high level view and discuss how several common R data structures are most naturally represented using \JSON. A mapping between \JSON structures and several common R object classes is proposed that makes it natural to interface R objects through \JSON, and interface \JSON data through R objects.
 
 
+\section{Problem Definition}
 
 \subsection{Syntax and Terminology}
 
@@ -84,7 +90,7 @@ JSON specifies 5 primitive types (\texttt{string}, \texttt{number}, \texttt{true
   \item An ordered set of values. In R, this is realized as an \emph{unnamed list}.
 \end{itemize}
 
-\noindent Because the syntax is limited to these universal types and structures, \JSON data is easily converted into a native object in almost any programming language. This is convenient for developers and has contributed to the popularity of the format. Several R packages already implement \toJSON and \fromJSON functions which convert between R objects and \JSON structures \citep{RJSONIO, rjson}. However, the exact mapping between the various R classes and the two universal data structures that are supported by \JSON is not self evident. Currently, there are no formal guidelines, or even consensus between implementations on how exactly each class in R should be represented in \JSON. Furthermore, upon closer inspection, even the most basic data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between implementations, and can lead to unexpected output for special cases. To further complicate things, best practices of representing data in \JSON have already been established outside the R community. Respecting these conventions where possible is important to maximize interoperability of data in R when using \JSON.
+Because the syntax is limited to these universal types and structures, \JSON data is easily converted into a native object in almost any programming language. This is convenient for developers and has contributed to the popularity of the format. Several R packages already implement \toJSON and \fromJSON functions which convert between R objects and \JSON structures \citep{RJSONIO, rjson}. However, the exact mapping between the various R classes and the two universal data structures that are supported by \JSON is not self evident. Currently, there are no formal guidelines, or even consensus between implementations on how exactly each class in R should be represented in \JSON. Furthermore, upon closer inspection, even the most basic data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between implementations, and can lead to unexpected output for special cases. To further complicate things, best practices of representing data in \JSON have already been established outside the R community. Respecting these conventions where possible is important to maximize interoperability of data in R when using \JSON.
 
 When relying on \JSON as the data interchange format, the mapping between R objects and \JSON data must be consistent and unambiguous. Clients relying on \JSON to get data in and out of R must know exactly what to expect in order to facilitate reliable communication, even if the data themselves are dynamic. Similarly, R code using dynamic \JSON data from an external source is only reliable when the conversion from \JSON to R is consistent. This document attempts to take away some of the ambiguity by explicitly describing the mapping between R classes and \JSON data, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
 
@@ -97,7 +103,7 @@ library(testthat)
 test_package("jsonlite")
 @
 
-\noindent Note that even though \texttt{JSON} allows for inserting arbitrary white space and indentation, the unit tests assume that white space is trimmed.
+Note that even though \texttt{JSON} allows for inserting arbitrary white space and indentation, the unit tests assume that white space is trimmed.
 
 \subsection{Class-based versus type-based encoding}
 
@@ -141,7 +147,7 @@ x <- c(1, 2, pi)
 cat(toJSON(x))
 @
 
-\noindent The \JSON array is the only appropriate structure to encode a vector, however note that vectors in R are homogeneous, whereas the \JSON array is actually heterogeneous, but \JSON does not make this distinction.
+The \JSON array is the only appropriate structure to encode a vector, however note that vectors in R are homogeneous, whereas the \JSON array is actually heterogeneous, but \JSON does not make this distinction.
 
 \subsubsection{Missing Values}
 
@@ -152,21 +158,21 @@ x <- c(TRUE, FALSE, NA)
 cat(toJSON(x))
 @
 
-\noindent The other option is to encode missing values as strings by wrapping them in double quotes:
+The other option is to encode missing values as strings by wrapping them in double quotes:
 
 <<>>=
 x <- c(1,2,NA,NaN,Inf,10)
 cat(toJSON(x))
 @
 
-\noindent Both methods result in valid \JSON, but both have a limitation: the problem with the \texttt{null} type is that there is no way to distinguish between different types of missing data, which could be a problem for numeric vectors. The values \texttt{Inf}, \texttt{-Inf}, \texttt{NA} and \texttt{NaN} have different meanings, and these should not get lost in the encoding. However, the problem with encoding missing values as strings is that this method can not be used for character vectors, because the consumer won't be able to distinguish the actual string \texttt{"NA"} and the missing value \texttt{NA}. This would create a likely source of bugs, where clients mistakenly interpret \texttt{"NA"} as an actual value, which is a common problem with text-based formats such as CSV. For this reason, \texttt{jsonlite} uses the following defaults:
+Both methods result in valid \JSON, but both have a limitation: the problem with the \texttt{null} type is that there is no way to distinguish between different types of missing data, which could be a problem for numeric vectors. The values \texttt{Inf}, \texttt{-Inf}, \texttt{NA} and \texttt{NaN} have different meanings, and these should not get lost in the encoding. However, the problem with encoding missing values as strings is that this method can not be used for character vectors, because the consumer won't be able to distinguish the actual string \texttt{"NA"} and the missing value \texttt{NA}. This would create a likely source of bugs, where clients mistakenly interpret \texttt{"NA"} as an actual value, which is a common problem with text-based formats such as CSV. For this reason, \texttt{jsonlite} uses the following defaults:
 
 \begin{itemize}
  \item Missing values in non-numeric vectors (\texttt{logical}, \texttt{character}) are encoded as \texttt{null}.
  \item Missing values in numeric vectors (\texttt{double}, \texttt{integer}, \texttt{complex}) are encoded as strings.
 \end{itemize}
 
-\noindent We expect that these conventions are most likely to result in the correct interpretation of missing values. Some examples:
+We expect that these conventions are most likely to result in the correct interpretation of missing values. Some examples:
 
 <<>>=
 cat(toJSON(c(TRUE, NA, NA, FALSE)))
@@ -186,7 +192,7 @@ cat(toJSON(factor(c("foo", "bar", "foo"))))
 cat(toJSON(complex(real=runif(3), imaginary=rnorm(3))))
 @
 
-\noindent When parsing such \JSON strings, these values will appear as character vectors. In order to obtain the original types, the user needs to manually coerce them back to the desired type using the corresponding \texttt{as} function, e.g. \texttt{as.POSIXct}, \texttt{as.Date}, \texttt{as.factor} or \texttt{as.complex}. In this respect, \JSON is subject to the same limitations as text based formats such as CSV.
+When parsing such \JSON strings, these values will appear as character vectors. In order to obtain the original types, the user needs to manually coerce them back to the desired type using the corresponding \texttt{as} function, e.g. \texttt{as.POSIXct}, \texttt{as.Date}, \texttt{as.factor} or \texttt{as.complex}. In this respect, \JSON is subject to the same limitations as text based formats such as CSV.
 
 \subsubsection{Special cases: vectors of length 0 or 1}
 
@@ -206,7 +212,7 @@ cat(toJSON(list(vector())))
 cat(toJSON(list(pi)))
 @
 
-\noindent This might seem obvious but these cases result in very different behavior between different \JSON packages. This is probably caused by the fact that R does not have a scalar type, and some package authors decided to treat vectors of length 1 as if they were a scalar. For example, in the current implementations, both \texttt{RJSONIO} and \texttt{rjson} encode a vector of length one as a \JSON primitive when it appears within a list: 
+This might seem obvious but these cases result in very different behavior between different \JSON packages. This is probably caused by the fact that R does not have a scalar type, and some package authors decided to treat vectors of length 1 as if they were a scalar. For example, in the current implementations, both \texttt{RJSONIO} and \texttt{rjson} encode a vector of length one as a \JSON primitive when it appears within a list: 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -226,7 +232,7 @@ cat(toJSON(list(pi)))
 \end{kframe}
 \end{knitrout}
 
-\noindent When encoding a single data set this might seem harmless, but in the context of dynamic data this inconsistency is almost guaranteed to cause bugs. For example, imagine an R web service which lets the user fit a linear model and sends back the fitted parameter estimates. In this application, the R server returns the vector with coefficients encoded as a \JSON array. The client code then parses the \JSON, and then iterates over the array of coefficients to display them in a GUI. All goes well, until the user decides to fit a model with only one predictor. If the \JSON encoder returns a primitive value where the client is assuming an array, the application will likely break. Any consumer or client would need to be aware of the special case where the vector becomes a primitive, and explicitly take this exception into account when processing the result. When the client fails to do so and proceeds as usual, it will probably call an iterator or loop method on a primitive value, resulting in the obvious errors. For this reason \texttt{jsonlite} uses consistent encoding schemes which do not depend on variable object properties such as its length. Hence, a vector is always encoded as an array, even when it is of length 0 or 1.
+When encoding a single data set this might seem harmless, but in the context of dynamic data this inconsistency is almost guaranteed to cause bugs. For example, imagine an R web service which lets the user fit a linear model and sends back the fitted parameter estimates. In this application, the R server returns the vector with coefficients encoded as a \JSON array. The client code then parses the \JSON, and then iterates over the array of coefficients to display them in a GUI. All goes well, until the user decides to fit a model with only one predictor. If the \JSON encoder returns a primitive value where the client is assuming an array, the application will likely break. Any consumer or client would need to be aware of the special case where the vector becomes a primitive, and explicitly take this exception into account when processing the result. When the client fails to do so and proceeds as usual, it will probably call an iterator or loop method on a primitive value, resulting in the obvious errors. For this reason \texttt{jsonlite} uses consistent encoding schemes which do not depend on variable object properties such as its length. Hence, a vector is always encoded as an array, even when it is of length 0 or 1.
 
 \subsection{Matrices}
 
@@ -238,21 +244,21 @@ print(x)
 print(x[2,4])
 @
 
-\noindent A matrix is stored in memory as a single atomic vector with an attribute called \texttt{"dim"} defining the dimensions of the matrix. The product of the dimensions is equal to the length of the vector. 
+ A matrix is stored in memory as a single atomic vector with an attribute called \texttt{"dim"} defining the dimensions of the matrix. The product of the dimensions is equal to the length of the vector. 
 
 <<>>=
 attributes(volcano)
 length(volcano)
 @
 
-\noindent Even though the matrix is stored as a single vector, it the way it is printed, indexed and treated otherwise makes it conceptually a 2 dimensional structure. \texttt{jsonlite} treats a matrix as a set of equal-length homogeneous vectors, and therefore encodes it using an array of sub arrays:
+ Even though the matrix is stored as a single vector, it the way it is printed, indexed and treated otherwise makes it conceptually a 2 dimensional structure. \texttt{jsonlite} treats a matrix as a set of equal-length homogeneous vectors, and therefore encodes it using an array of sub arrays:
 
 <<>>=
 x <- matrix(1:12, nrow=3, ncol=4)
 cat(toJSON(x))
 @
 
-\noindent We hope that this representation will be the most intuitive to interpret, even within languages that do not have a native notion of a matrix. Note that even though R stores matrices in \emph{column major} order, \texttt{jsonlite} encodes matrices in \emph{row major} order. This is a more conventional and intuitive way to represent matrices and is consistent with the row-based encoding of data frames. When the JSON string is properly indented (recall that white space and line breaks are optional in JSON), it looks very similar to the way R prints matrices:
+ We hope that this representation will be the most intuitive to interpret, even within languages that do not have a native notion of a matrix. Note that even though R stores matrices in \emph{column major} order, \texttt{jsonlite} encodes matrices in \emph{row major} order. This is a more conventional and intuitive way to represent matrices and is consistent with the row-based encoding of data frames. When the JSON string is properly indented (recall that white space and line breaks are optional in JSON), it looks very similar to the way R prints matrices:
 
 \begin{verbatim}
 [ [ 1, 4, 7, 10 ], 
@@ -260,7 +266,7 @@ cat(toJSON(x))
   [ 3, 6, 9, 12 ] ]
 \end{verbatim}
 
-\noindent Because the matrix is implemented in R as an atomic vector, it automatically inherits the conventions mentioned earlier with respect to edge cases and missing values:
+ Because the matrix is implemented in R as an atomic vector, it automatically inherits the conventions mentioned earlier with respect to edge cases and missing values:
 
 <<>>=
 x <- matrix(c(1,2,4,NA), nrow=2)
@@ -284,7 +290,7 @@ print(x)
 cat(toJSON(x))
 @
 
-\noindent Wikcham recommends that the data be \emph{melted} into its \emph{tidy} form. Once the data is tidy, the \JSON encoding will naturally contain the treatment values:
+ Wikcham recommends that the data be \emph{melted} into its \emph{tidy} form. Once the data is tidy, the \JSON encoding will naturally contain the treatment values:
 
 <<>>=
 library(reshape2)
@@ -293,13 +299,13 @@ print(y)
 cat(toJSON(y, pretty=TRUE))
 @
 
-\noindent In some other cases, the column headers actually do contain variable names, and melting is inappropriate. For data sets with records consisting of a set of named columns (fields), R has more natural and flexible class: the data-frame. The \toJSON method for data frames is described in a later section, and is more suitable when we want to refer to rows or fields by a particular name. Any matrix can easily be converted to a data-frame using the \texttt{as.data.frame} function:
+ In some other cases, the column headers actually do contain variable names, and melting is inappropriate. For data sets with records consisting of a set of named columns (fields), R has more natural and flexible class: the data-frame. The \toJSON method for data frames is described in a later section, and is more suitable when we want to refer to rows or fields by a particular name. Any matrix can easily be converted to a data-frame using the \texttt{as.data.frame} function:
 
 <<>>=
 cat(toJSON(as.data.frame(x), pretty=TRUE))
 @
 
-\noindent For some cases this results in the desired encoding, but in this example melting seems more appropriate.
+ For some cases this results in the desired encoding, but in this example melting seems more appropriate.
 
 \subsection{Lists}
 
@@ -320,14 +326,14 @@ Just like vectors, an unnamed list is encoded using a \JSON array:
 cat(toJSON(list(c(1,2), "test", TRUE, list(c(1,2)))))
 @
 
-\noindent Note that even though both vectors and lists are encoded using \JSON arrays, they can be distinguished by looking at their contents: an R vector results in a \JSON array which contains only primitives, whereas a list results in a \JSON array which contains only objects and arrays. This allows the \JSON parser to reconstruct the original type from encoded vectors and arrays:
+ Note that even though both vectors and lists are encoded using \JSON arrays, they can be distinguished by looking at their contents: an R vector results in a \JSON array which contains only primitives, whereas a list results in a \JSON array which contains only objects and arrays. This allows the \JSON parser to reconstruct the original type from encoded vectors and arrays:
 
 <<>>=
 x <- list(c(1,2,NA), "test", FALSE, list(foo="bar"))
 identical(fromJSON(toJSON(x)), x)
 @
 
-\noindent The only exception is the empty list and empty vector, which are both encoded as \texttt{[ ]} and therefore indistinguishable, but this is rarely a problem in practice. 
+ The only exception is the empty list and empty vector, which are both encoded as \texttt{[ ]} and therefore indistinguishable, but this is rarely a problem in practice. 
 
 \subsubsection{Named lists}
 
@@ -337,13 +343,13 @@ A named list in R gets encoded as a \JSON \emph{object}:
 cat(toJSON(list(foo=c(1,2), bar="test")))
 @
 
-\noindent Because a list can contain other lists, this works recursively:
+ Because a list can contain other lists, this works recursively:
 
 <<tidy=FALSE>>=
 cat(toJSON(list(foo=list(bar=list(baz=pi)))))
 @
 
-\noindent Named lists map almost perfectly to \JSON objects with one exception: list elements can have empty names:
+ Named lists map almost perfectly to \JSON objects with one exception: list elements can have empty names:
 
 <<>>=
 x <- list(foo=123, "test", TRUE)
@@ -352,7 +358,7 @@ x$foo
 x[[2]]
 @
 
-\noindent In a \JSON object, each element in an object must have a valid name. To ensure this property, \texttt{jsonlite} uses the same solution as the \texttt{print} method, which is to fall back on indices for elements that do not have a proper name:
+ In a \JSON object, each element in an object must have a valid name. To ensure this property, \texttt{jsonlite} uses the same solution as the \texttt{print} method, which is to fall back on indices for elements that do not have a proper name:
 
 <<>>=
 x <- list(foo=123, "test", TRUE)
@@ -360,7 +366,7 @@ print(x)
 cat(toJSON(x))
 @
 
-\noindent This behavior ensures that all generated \JSON is valid, however named lists with empty names should be avoided where possible. When actually designing R objects that should be interoperable, it is recommended that each list element has a proper name.
+ This behavior ensures that all generated \JSON is valid, however named lists with empty names should be avoided where possible. When actually designing R objects that should be interoperable, it is recommended that each list element has a proper name.
 
 \subsection{Data frame}
 
@@ -373,7 +379,7 @@ print(iris[1:3, c(1,5)])
 print(iris[1:3, c("Sepal.Width", "Species")])
 @
 
-\noindent For the previously discussed classes such as vectors and matrices, behavior of jsonlite is quite similar to the other available packages that implement \texttt{toJSON} and \texttt{toJSON} functions, with only minor differences for missing values and edge cases. But when it comes to data frames, jsonlite takes a completely different approach. The behavior of jsonlite is designed to be compatible with conventional ways of encoding table-like structures outside the R community. The implementation is more complex, but results in a powerful and more natural way of interfacing data frames through \JSON and vice versa.
+ For the previously discussed classes such as vectors and matrices, behavior of jsonlite is quite similar to the other available packages that implement \texttt{toJSON} and \texttt{toJSON} functions, with only minor differences for missing values and edge cases. But when it comes to data frames, jsonlite takes a completely different approach. The behavior of jsonlite is designed to be compatible with conventional ways of encoding table-like structures outside the R community. The implementation is more complex, but results in a powerful and more natural way of interfacing data frames through \JSON and vice versa.
 
 \subsubsection{Column based versus row based tables}
 
@@ -389,13 +395,13 @@ The encoding of data frames is one of the major differences between jsonlite and
 cat(toJSON(iris[1:2,], pretty=TRUE))
 @
 
-\noindent This output looks a bit like a list of named lists. However, there is one major difference: the individual records contain primitives values, which will never appear in lists:
+ This output looks a bit like a list of named lists. However, there is one major difference: the individual records contain primitives values, which will never appear in lists:
 
 <<>>=
 cat(toJSON(list(list(Species="Foo", Width=21))))
 @
 
-\noindent This leads to the following convention: when encoding R objects, \JSON primitives only appear in vectors and data-frame rows. Primitive values within a \JSON array indicate a vector, and \JSON primitives appearing inside a \JSON object indicate a data-frame row. A \JSON encoded \texttt{list}, (named or unnamed) will never contain \JSON primitives. This is a subtle but important convention that helps to distinguish between R classes from their \JSON representation, without explicitly encoding any metadata.
+ This leads to the following convention: when encoding R objects, \JSON primitives only appear in vectors and data-frame rows. Primitive values within a \JSON array indicate a vector, and \JSON primitives appearing inside a \JSON object indicate a data-frame row. A \JSON encoded \texttt{list}, (named or unnamed) will never contain \JSON primitives. This is a subtle but important convention that helps to distinguish between R classes from their \JSON representation, without explicitly encoding any metadata.
 
 \subsubsection{Missing values in data frames}
 
@@ -407,7 +413,7 @@ print(x)
 cat(toJSON(x, pretty=TRUE))
 @
 
-\noindent The default behavior of jsonlite is to omit missing data from records in a data frame. This seems to be the most conventional way of doing things, and we expect this encoding will most likely lead to the correct interpretation of \emph{missingness}, even in languages which have no explicit notion of \texttt{NA}.
+ The default behavior of jsonlite is to omit missing data from records in a data frame. This seems to be the most conventional way of doing things, and we expect this encoding will most likely lead to the correct interpretation of \emph{missingness}, even in languages which have no explicit notion of \texttt{NA}.
 
 \subsubsection{Relational data: nested records}
 
@@ -425,7 +431,7 @@ y <- fromJSON(myjson)
 identical(x,y)
 @
 
-\noindent When encountering \JSON data containing nested records in the wild, chances are that these data were generated from \emph{relational} database. The \JSON field containing a subrecord represents a \emph{foreign key} pointing to a record in an external table. For the purpose of encoding these into a single \JSON structure, the tables were joined into a nested structure. The directly nested subrecord represents a \emph{one-to-one} or \emph{many-to-one} relation between the parent and child table, and is most naturally stored in R using a nested data frame. In the example above, the \texttt{vehicle} field points to a table of vehicles, which in turn contains a \texttt{stats} field pointing to a table of stats. When there is no more than one subrecord for each record, we easily \emph{flatten} the structure into a single non-nested data frame.
+ When encountering \JSON data containing nested records in the wild, chances are that these data were generated from \emph{relational} database. The \JSON field containing a subrecord represents a \emph{foreign key} pointing to a record in an external table. For the purpose of encoding these into a single \JSON structure, the tables were joined into a nested structure. The directly nested subrecord represents a \emph{one-to-one} or \emph{many-to-one} relation between the parent and child table, and is most naturally stored in R using a nested data frame. In the example above, the \texttt{vehicle} field points to a table of vehicles, which in turn contains a \texttt{stats} field pointing to a table of stats. When there is no more than one subrecord for each record, we easily \emph{flatten} the structure into a single non-nested data frame.
 
 <<>>=
 z <- cbind(x[c("driver", "occupation")], x$vehicle["model"], x$vehicle$stats)
@@ -443,7 +449,7 @@ names(x)
 cat(toJSON(x, pretty = TRUE))
 @
 
-\noindent As can be seen from the example, the way to store this in a data frame is using a list of character vectors. This works, and although unconventional, we can still create and read such structures in R relatively easily. However, in practice the one-to-many relation is often more complex. It results in fields containing a \emph{set of records}. In R, the only way to model this is as a column containing a list of data frames, one separate data frame for each row:
+ As can be seen from the example, the way to store this in a data frame is using a list of character vectors. This works, and although unconventional, we can still create and read such structures in R relatively easily. However, in practice the one-to-many relation is often more complex. It results in fields containing a \emph{set of records}. In R, the only way to model this is as a column containing a list of data frames, one separate data frame for each row:
 
 <<tidy=FALSE>>=
 x <- data.frame(author = c("Homer", "Virgil", "Jeroen"))
@@ -455,7 +461,7 @@ x$poems <- list(
 cat(toJSON(x, pretty=TRUE))
 @
 
-\noindent Because R doesn't have native support for relational data, there is no natural class to store such structures. The best we can do is a column containing a list of sub-dataframes. This does the job, and allows the R user to access or generate nested \JSON structures. However, a data frame like this cannot be flattened, and the class does not guarantee that each of the individual sub-dataframe contain the same fields, as would be the case in an actual relational data base. 
+ Because R doesn't have native support for relational data, there is no natural class to store such structures. The best we can do is a column containing a list of sub-dataframes. This does the job, and allows the R user to access or generate nested \JSON structures. However, a data frame like this cannot be flattened, and the class does not guarantee that each of the individual sub-dataframe contain the same fields, as would be the case in an actual relational data base. 
 
 
 \section{Structural Consistency of Dynamic Data}
@@ -482,7 +488,7 @@ A beautiful example of this going wrong in practice was given by Mike Dewar (Dat
 ]
 \end{verbatim}
 
-\noindent Even though being valid \JSON, dynamic keys as in the example above are likely to introduce trouble down the line. For example, when documenting the API, either informally or formally using a schema language, we want to describe for each property that might appear in the data what it's value means and is composed of. The client or consumer of the data needs to implement code that interprets and process each element in the data in an appropriate manner. Both the documentation and interpretation of \JSON data rely on fixed keys with well defined meaning. Also note that the structure cannot be extended in the future. If we want to add an additional property to each observation, the entire structure needs to change. In his talk, Dewar explains that life gets much easier when we switch to the following encoding:
+ Even though being valid \JSON, dynamic keys as in the example above are likely to introduce trouble down the line. For example, when documenting the API, either informally or formally using a schema language, we want to describe for each property that might appear in the data what it's value means and is composed of. The client or consumer of the data needs to implement code that interprets and process each element in the data in an appropriate manner. Both the documentation and interpretation of \JSON data rely on fixed keys with well defined meaning. Also note that the structure cannot be extended in the future. If we want to add an additional property to each observation, the entire structure needs to change. In his talk, Dewar explains that life gets much easier when we switch to the following encoding:
 
 \begin{verbatim}
 [
@@ -492,7 +498,7 @@ A beautiful example of this going wrong in practice was given by Mike Dewar (Dat
 ]
 \end{verbatim}
 
-\noindent This structure will play much nicer with existing software that assumes fixed keys. Moreover, the structure can easily be described in documentation, or captured in a schema. Even when we have no intention of writing documentation or a schema for a dynamic \JSON source, it is still wise to design the structure in such away that it \emph{could} be described by a schema. When the keys are fixed, a well chosen example can provide all the information required for the consumer to implement client code. Also note that the new structure is extensible: additional properties can be added to each observation without breaking backward compatibility.  
+ This structure will play much nicer with existing software that assumes fixed keys. Moreover, the structure can easily be described in documentation, or captured in a schema. Even when we have no intention of writing documentation or a schema for a dynamic \JSON source, it is still wise to design the structure in such away that it \emph{could} be described by a schema. When the keys are fixed, a well chosen example can provide all the information required for the consumer to implement client code. Also note that the new structure is extensible: additional properties can be added to each observation without breaking backward compatibility.  
 
 In the context of R, consistency of keys is closely related to Wikcham's concept of \emph{tidy data} discussed earlier. Wickham states that the most common reason for messy data are column headers containing values instead of variable names. Column headers in tabular datasets become keys when converted to \JSON. Therefore, when headers are actually values, the \JSON keys contain in fact data, and can become unpredictable. The cure to inconsistent keys is almost always to tidy the data according to recommendations given by Wickham. 
  
@@ -506,7 +512,7 @@ x <- list("FOO", 1:3, list("bar"=pi))
 cat(toJSON(x))
 @
 
-\noindent Also we can assign any type to a any field:
+ Also we can assign any type to a any field:
 
 <<>>=
 x <- list()
@@ -520,7 +526,7 @@ x$test <- list(bar=TRUE)
 cat(toJSON(x))
 @
 
-\noindent But just because this is possible, doesn't mean you should use it. On the contrary: it puts the responsibility of using consistent types in the hands of the developer. Fields or collections with ambiguous object types are very difficult to describe, interpret and process in the context of inter-system communication. When using \JSON to exchange dynamic data, it is important that each property and array is \emph{type consistent}. This means that the developer needs to make sure that properties are of the correct type before encoding to \JSON. Moreover, the \texttt{unnamed list} object in R should usually be avoided all together when designing interoperable structures. However, note that consistency is somewhat subjective as it refers to the \emph{meaning} of the elements; they don't necessarily need to have precisely the same structure. What is important is to keep in mind that the consumer of the data can treat each element identically, e.g. iterate over the elements in the collection and apply the same method to each of them. To illustrate this, lets take the example of the data frame: 
+ But just because this is possible, doesn't mean you should use it. On the contrary: it puts the responsibility of using consistent types in the hands of the developer. Fields or collections with ambiguous object types are very difficult to describe, interpret and process in the context of inter-system communication. When using \JSON to exchange dynamic data, it is important that each property and array is \emph{type consistent}. This means that the developer needs to make sure that properties are of the correct type before encoding to \JSON. Moreover, the \texttt{unnamed list} object in R should usually be avoided all together when designing interoperable structures. However, note that consistency is somewhat subjective as it refers to the \emph{meaning} of the elements; they don't necessarily need to have precisely the same structure. What is important is to keep in mind that the consumer of the data can treat each element identically, e.g. iterate over the elements in the collection and apply the same method to each of them. To illustrate this, lets take the example of the data frame: 
 
 <<>>=
 #conceptually homogenous array
@@ -528,7 +534,7 @@ x <- data.frame(name=c("Jay", "Mary", NA, NA), gender=c("M", NA, NA, "F"))
 cat(toJSON(x, pretty=TRUE))
 @
 
-\noindent The \JSON array above has 4 elements, each of which a \JSON object. However, due to the \texttt{NA} values, not all elements have an identical structure: some records have more fields than others. But as long as they are conceptually the same type (e.g. a person), the consumer can iterate over the elements to process each "person" in the set according to a predefined action. For example each element could be used to construct a Person object. When combining objects of different classes, a \texttt{named list} can be used to distinguish between the different types:
+ The \JSON array above has 4 elements, each of which a \JSON object. However, due to the \texttt{NA} values, not all elements have an identical structure: some records have more fields than others. But as long as they are conceptually the same type (e.g. a person), the consumer can iterate over the elements to process each "person" in the set according to a predefined action. For example each element could be used to construct a Person object. When combining objects of different classes, a \texttt{named list} can be used to distinguish between the different types:
 
 <<tidy=FALSE>>=
 x <- list(
@@ -538,7 +544,7 @@ x <- list(
 cat(toJSON(x, pretty=TRUE))
 @
 
-\noindent When looking at the public APIs, limiting \JSON arrays to homogeneous sets is a very strong convention and we have not been able to find a single exception.
+ When looking at the public APIs, limiting \JSON arrays to homogeneous sets is a very strong convention and we have not been able to find a single exception.
 
 
 
