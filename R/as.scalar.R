@@ -11,16 +11,14 @@
 as.scalar <- function(obj) {
   # Lists can never be a scalar (this can arise if a dataframe contains a column
   # with lists)
-  if (is.data.frame(obj) || is.matrix(obj)) {
-    if (nrow(obj) > 1) {
-      warning("as.scalar was applied to dataframe with more than 1 row.")
-      return(obj)
+  if(is.namedlist(obj)){
+    stop("as.scalar cannot be applied to a named list.")  
+  } else if (is.data.frame(obj) || is.matrix(obj)) {
+    if (!identical(nrow(obj), 1L)) {
+      stop("as.scalar was applied to dataframe with ", nrow(obj), " rows.")
     }
-  } else {
-    if (length(obj) > 1) {
-      warning("as.scalar was applied to an object of length > 1.")
-      return(obj)
-    }
+  } else if(!identical(length(obj), 1L)) {
+    stop("as.scalar was applied to an object of length ", length(obj))
   }
   
   class(obj) <- c("scalar", class(obj))

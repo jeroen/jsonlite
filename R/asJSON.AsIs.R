@@ -1,7 +1,11 @@
+setOldClass("AsIs")
 setMethod("asJSON", "AsIs", function(x, ...) {
-  #change AsIs into "scalar"
-  class(x)[1] <- "scalar";
+  #remove class "AsIs"
+  class(x) <- class(x)[-1]
+  
+  #This also checks if the object is of length one
+  x <- as.scalar(x)
   
   #encode without collapsing
-  asJSON(x, ...)  
+  asJSON(x, ...)
 })
