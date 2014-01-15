@@ -11,10 +11,8 @@
 as.scalar <- function(obj) {
   # Lists can never be a scalar (this can arise if a dataframe contains a column
   # with lists)
-  if (is.data.frame(obj) || is.matrix(obj)) {
-    if (!identical(nrow(obj), 1L)) {
-      stop("as.scalar was applied to dataframe with ", nrow(obj), " rows.")
-    }
+  if(length(dim(obj)) > 1 && !identical(nrow(obj), 1L)){
+    stop("as.scalar was applied to array or dataframe with ", nrow(obj), " rows.")    
   } else if(!identical(length(obj), 1L)) {
     stop("as.scalar was applied to an object of length ", length(obj))
   } else if(is.namedlist(obj)){
