@@ -13,14 +13,14 @@ as.scalar <- function(obj) {
   # with lists)
   if(length(dim(obj)) > 1){
     if(!identical(nrow(obj), 1L)){
-      warning("as.scalar was applied to array or dataframe with ", nrow(obj), " rows.")
+      warning("Tried to use as.scalar on an array or dataframe with ", nrow(obj), " rows.")
       return(obj)
     }
   } else if(!identical(length(obj), 1L)) {
-    warning("as.scalar was applied to an object of length ", length(obj))
+    warning("Tried to use as.scalar on an object of length ", length(obj))
     return(obj)
   } else if(is.namedlist(obj)){
-    warning("as.scalar cannot be applied to a named list.")
+    warning("Tried to use as.scalar on a named list.")
     return(obj)
   }
   
