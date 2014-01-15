@@ -26,7 +26,7 @@ toJSON <- function(x, dataframe = c("rows", "columns"), matrix = c("rowmajor", "
   
   # a check
   if(is.atomic(x) && identical(class(x)[1], "AsIs")){
-    warning("Calling toJSON on an atomic vector of class AsIs will likely result in invalid JSON.")
+    warning("Calling toJSON on an atomic vector of class AsIs will likely result in invalid JSON.", call.=FALSE)
   }
   
   # dispatch
