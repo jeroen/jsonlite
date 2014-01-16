@@ -34,12 +34,12 @@
   doing it wrong.
 }
 \examples{
-toJSON(list(foo=123))
-toJSON(list(foo=singleton(123)))
+cat(toJSON(list(foo=123)))
+cat(toJSON(list(foo=singleton(123))))
 
 x <- iris[1,]
-toJSON(list(rec=x))
-toJSON(list(rec=singleton(x)))
+cat(toJSON(list(rec=x)))
+cat(toJSON(list(rec=singleton(x))))
 }
 \references{
   \url{http://en.wikipedia.org/wiki/Singleton_(mathematics)}

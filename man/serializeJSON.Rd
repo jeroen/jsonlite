@@ -1,7 +1,7 @@
 \name{serializeJSON}
 \alias{serializeJSON}
 \alias{unserializeJSON}
-\title{Serialize R objects to JSON}
+\title{serializeJSON, unserializeJSON}
 \usage{
   serializeJSON(x, digits = 8, pretty = FALSE)
 
@@ -20,19 +20,20 @@
   \code{serializeJSON}}
 }
 \description{
+  Serialize R objects to JSON
+}
+\details{
   Just like \code{\link{toJSON}} and
   \code{\link{fromJSON}}, the \code{\link{serializeJSON}}
   and \code{\link{unserializeJSON}} functions convert
   between R objects to JSON. However instead of using a
   class based encoding, the serialize functions base the
-  encoding schema on the storage type of an object. They
-  use a much more verbose encoding schema which captures
-  all data and attributes from any object, such that it can
-  be almost perfectly restored from its JSON
-  representation. Almost all storage types (except for
-  environments) are supported.
-}
-\details{
+  encoding schema on the storage type of an object, which
+  captures all data and attributes from any object, such
+  that it can be almost perfectly restored from its JSON
+  representation. Almost all storage types are supported,
+  except for environments.
+
   Note that JSON is a text based format which leads to loss
   of precision when printing numbers.
 }

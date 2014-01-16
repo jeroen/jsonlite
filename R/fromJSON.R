@@ -11,9 +11,8 @@
 #' alternative system to convert between R objects and JSON, which supports more classes but is much more verbose.
 # 
 #' @export fromJSON
-#' @export toJSON
 #' @useDynLib jsonlite
-#' @name toJSON
+#' @title toJSON, fromJSON
 #' @aliases fromJSON
 #' @param x the object to be encoded
 #' @param dataframe how to encode data.frame objects: must be one of 'row' or 'column'
