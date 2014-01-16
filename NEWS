@@ -1,3 +1,11 @@
+0.9.4
+ - Added minify function
+ - Added singleton function
+ - Fixed bug where toJSON 'force' argument wasn't passed down
+
+0.9.3
+ - Changes by prof ripley for Solaris/CRAN
+
 0.9.2
  - Update libjson to 7.6.1 (fixes bug in the validator)
  - Generalized toJSON method 'matrix' to 'array' to work for higher dimensions.
