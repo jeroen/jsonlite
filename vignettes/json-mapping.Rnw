@@ -62,11 +62,13 @@ When relying on \JSON as the data interchange format, the mapping between R obje
 The \texttt{JSON} format specifies 4 primitive types (\texttt{string}, \texttt{number}, \texttt{boolean}, \texttt{null}) and two \emph{universal structures}:
 
 \begin{itemize}
-  \item A \JSON \emph{object}: a collection of name-value pairs.
-  \item A \JSON \emph{array}: an ordered set of values.
+  \item A \JSON \emph{object}: an unordered collection of zero or more name/value
+   pairs, where a name is a string and a value is a string, number,
+   boolean, null, object, or array.
+  \item A \JSON \emph{array}: an ordered sequence of zero or more values.
 \end{itemize}
 
-Both these structures are heterogeneous; i.e. they are allowed to contain elements of different types. Therefore, the native R realization of these structures is a \texttt{named list} for \JSON objects, and \texttt{unnamed list} for \JSON arrays. However, in practice a list is an awkward, inefficient type to store and manipulate data in R. Most statistical applications work with vectors (homogeneous sets), matrices or data frames. In order to give these data structures a \JSON representation, we can define certain special cases of \JSON structures which get parsed into other, more natural R types. For example, one convention which all current implementations have in common is that \JSON arrays will be parsed into a \texttt{vector} instead of a \texttt{list} when they contains only primitives of one and the same type. The \pkg{RJSONIO} documentation uses the term ``simplify'' for this, and we adopt this jargon.
+Both these structures are heterogeneous; i.e. they are allowed to contain elements of different types. Therefore, the native R realization of these structures is a \texttt{named list} for \JSON objects, and \texttt{unnamed list} for \JSON arrays. However, in practice a list is an awkward, inefficient type to store and manipulate data in R. Most statistical applications work with (homogeneous) vectors, matrices or data frames. In order to give these data structures a \JSON representation, we can define certain special cases of \JSON structures which get parsed into other, more specific R types. For example, one convention which all current implementations have in common is that a homogeneous array of primitives gets parsed into an \texttt{atomic vector} instead of a \texttt{list}. The \pkg{RJSONIO} documentation uses the term ``simplify'' for this, and we adopt this jargon.
 
 <<>>=
 txt <- '[12, 3, 7]'
@@ -75,21 +77,15 @@ is(x)
 print(x)
 @
  
-This seems very reasonable and it is the only practical solution to represent vectors in \JSON. However there is a caveat: automatic simplification can compromise type-safety in the context of dynamic data. For example, suppose an R package uses \fromJSON to pull data from a JSON API on the web, similar to the example above. However, for some particular combination of parameters, the result includes a \texttt{null} value, e.g: \texttt{[12, null, 7]}. This is actually quite common, many APIs use \texttt{null} for missing values or unset fields. However, this makes the behavior of our parser ambiguous, because the \JSON array is technically no longer homogenous. And indeed, some implementations will now return a \texttt{list} instead of a \texttt{vector}. If the user had not anticipated this scenario and the script assumes a \texttt{vector}, the code is likely to run into type errors. 
+This seems very reasonable and it is the only practical solution to represent vectors in \JSON. However the price we pay is that automatic simplification can compromise type-safety in the context of dynamic data. For example, suppose an R package uses \fromJSON to pull data from a JSON API on the web, similar to the example above. However, for some particular combination of parameters, the result includes a \texttt{null} value, e.g: \texttt{[12, null, 7]}. This is actually quite common, many APIs use \texttt{null} for missing values or unset fields. This case makes the behavior of parsers ambiguous, because the \JSON array is technically no longer homogenous. And indeed, some implementations will now return a \texttt{list} instead of a \texttt{vector}. If the user had not anticipated this scenario and the script assumes a \texttt{vector}, the code is likely to run into type errors. 
+
+The lesson here is that simplification is convenient, but requires us to be very specific and explicit about the mapping that is implemented to convert between \JSON and R objects. Moreover, as \JSON is an interoperable format, a practical mapping must incorporate existing conventions and uses the most natural representation of certain structures in R. For example, we could argue that instead of falling back on a \texttt{list}, the array above is more naturally interpreted as a numeric vector where the \texttt{null} becomes a missing value (\texttt{NA}). These principles will extrapolate as we start discussing more complex \JSON structures representing matrices and data frames.
 
 
 
 
 
 
-
-
-
-
-
-
-
-It is quit easy to 
 
 This paper describes a mapping between \JSON structures and several common R object classes. The mapping is approximately bidirectional, with the goal of defining a one-to-one correspondence. Thus the binary relation is functional in each direction: value can also act as a key to key. A pair (a, b) thus provides a unique coupling between a and b so that b can be found when a is used as a key and a can be found when b is used as a key.
 
@@ -111,46 +107,6 @@ This paper explores this problem in greater detail and make case for
 A mapping between \JSON structures and several common R object classes is proposed that makes it natural to interface R objects through \JSON, and interface \JSON data through R objects.
 
 
-
-
-
-\section{Data, R and JSON}
-
-approximate bidirectional mapping
-
-\subsection{Syntax and Terminology}
-
-
-
-\begin{quote}
-
-
-   JSON can represent four primitive types (strings, numbers, booleans,
-   and null) and two structured types (objects and arrays).
-
-   A string is a sequence of zero or more Unicode characters [UNICODE].
-
-   An object is an unordered collection of zero or more name/value
-   pairs, where a name is a string and a value is a string, number,
-   boolean, null, object, or array.
-
-   An array is an ordered sequence of zero or more values.
-
-   The terms "object" and "array" come from the conventions of
-   JavaScript.
-
-   JSON's design goals were for it to be minimal, portable, textual, and
-   a subset of JavaScript.
-\end{quote}
-
-
-
-JSON specifies 5 primitive types (\texttt{string}, \texttt{number}, \texttt{true}, \texttt{false}, \texttt{null}) and two \emph{universal data structures}:
-
-\begin{itemize}
-  \item A collection of name-value pairs. In R, this is realized as a \emph{named list}.
-  \item An ordered set of values. In R, this is realized as an \emph{unnamed list}.
-\end{itemize}
 
 When relying on \JSON as the data interchange format, the mapping between R objects and \JSON data must be consistent and unambiguous. Clients relying on \JSON to get data in and out of R must know exactly what to expect in order to facilitate reliable communication, even if the data themselves are dynamic. Similarly, R code using dynamic \JSON data from an external source is only reliable when the conversion from \JSON to R is consistent. This document attempts to take away some of the ambiguity by explicitly describing the mapping between R classes and \JSON data, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
 
