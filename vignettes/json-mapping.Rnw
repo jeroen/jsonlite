@@ -51,9 +51,9 @@ toJSON <- function(...){
 
 \section{Introduction}
 
-\emph{JavaScript Object Notation} (\JSON) is a text format for the serialization of structured data \citep{crockford2006application}. It is derived from the object literals of \proglang{JavaScript}, as defined in the \proglang{ECMAScript} Programming Language Standard, Third Edition \citep{ecma1999262}. Design of \JSON is simple and concise in comparison with other text based formats, and it was originally proposed by Douglas Crockford as a ``fat-free alternative to \XML'' \citep{crockford2006json}. The syntax is easy for humans to read and write, easy for machines to parse and generate and completely described in a single page at \url{http://www.json.org/}. The character encoding of \JSON text is always Unicode, using \texttt{UTF-8} by default \citep{crockford2006application}, making it naturally compatible with non-latin alphabets. Over the past years, \JSON has become hugely popular on the internet as a general purpose data interchange format. High quality parsing libraries are available for almost any programming language, making it easy to implement systems and applications that exchange data over the network using JSON. For R \citep{R}, several packages that assist the user in generating, parsing and validating JSON are available through CRAN, including \pkg{rjson} \citep{rjson}, \pkg{RJSONIO} \citep{RJSONIO}, and \pkg{jsonlite} \citep{jsonlite}.
+\emph{JavaScript Object Notation} (\JSON) is a text format for the serialization of structured data \citep{crockford2006application}. It is derived from the object literals of \proglang{JavaScript}, as defined in the \proglang{ECMAScript} Programming Language Standard, Third Edition \citep{ecma1999262}. Design of \JSON is simple and concise in comparison with other text based formats, and it was originally proposed by Douglas Crockford as a ``fat-free alternative to \XML'' \citep{crockford2006json}. The syntax is easy for humans to read and write, easy for machines to parse and generate and completely described in a single page at \url{http://www.json.org}. The character encoding of \JSON text is always Unicode, using \texttt{UTF-8} by default \citep{crockford2006application}, making it naturally compatible with non-latin alphabets. Over the past years, \JSON has become hugely popular on the internet as a general purpose data interchange format. High quality parsing libraries are available for almost any programming language, making it easy to implement systems and applications that exchange data over the network using JSON. For R \citep{R}, several packages that assist the user in generating, parsing and validating JSON are available through CRAN, including \pkg{rjson} \citep{rjson}, \pkg{RJSONIO} \citep{RJSONIO}, and \pkg{jsonlite} \citep{jsonlite}.
 
-The emphasis of this paper is not on discussing the \JSON format or any particular implementation for using \JSON with R. We refer to \cite{nolan2014xml} for a comprehensive introduction, or one of the many tutorials available on the web. Instead we take a high level view and discuss how R data structures are most naturally represented in \JSON. This is not a trivial problem, particulary for complex or relational data as they frequently appear in statistical applications. Several R packages implement \toJSON and \fromJSON functions which directly convert R objects into \JSON and vice versa. However, the exact mapping between the various R data classes \JSON structures is not self evident. Currently, there are no formal guidelines, or even consensus between implementations on how R data should be represented in \JSON. Furthermore, upon closer inspection, even the most basic data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between implementations, and can lead to unexpected output for certain special cases. To further complicate things, best practices of representing data in \JSON have been established outside the R community. Respecting these conventions where possible is important to maximize interoperability.
+The emphasis of this paper is not on discussing the \JSON format or any particular implementation for using \JSON with R. We refer to \cite{nolan2014xml} for a comprehensive introduction, or one of the many tutorials available on the web. Instead we take a high level view and discuss how R data structures are most naturally represented in \JSON. This is not a trivial problem, particulary for complex or relational data as they frequently appear in statistical applications. Several R packages implement \toJSON and \fromJSON functions which directly convert R objects into \JSON and vice versa. However, the exact mapping between the various R data classes \JSON structures is not self evident. Currently, there are no formal guidelines, or even consensus between implementations on how R data should be represented in \JSON. Furthermore, upon closer inspection, even the most basic data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between implementations, and can lead to unexpected output for certain special cases. To further complicate things, best practices of representing data in \JSON have been established outside the R community. Incorporating these conventions where possible is important to maximize interoperability.
 
 When relying on \JSON as the data interchange format, the mapping between R objects and \JSON data must be consistent and unambiguous. Clients relying on \JSON to get data in and out of R must know exactly what to expect in order to facilitate reliable communication, even if the data themselves are dynamic. Similarly, R code using dynamic \JSON data from an external source is only reliable when the conversion from \JSON to R is consistent. This document attempts to take away some of the ambiguity by explicitly describing the mapping between R classes and \JSON data, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
 
@@ -81,34 +81,15 @@ This seems very reasonable and it is the only practical solution to represent ve
 
 The lesson here is that we need to be very specific and explicit about the mapping that is implemented to convert between \JSON and R objects. When relying on \JSON as a data interchange format, the behavior of the parser must be consistent and unambiguous. Clients relying on \JSON to get data in and out of R must know exactly what to expect in order to facilitate reliable communication, even if the data themselves are dynamic. Similarly, R code using dynamic \JSON data from an external source is only reliable when the conversion from \JSON to R is consistent. Moreover a practical mapping must incorporate existing conventions and uses the most natural representation of certain structures in R. For example, we could argue that instead of falling back on a \texttt{list}, the array above is more naturally interpreted as a numeric vector where the \texttt{null} becomes a missing value (\texttt{NA}). These principles will extrapolate as we start discussing more complex \JSON structures representing matrices and data frames.
 
+\subsection{A Bidirectional Mapping}
 
-
-
-
-
-
-This paper describes a mapping between \JSON structures and several common R object classes. The mapping is approximately bidirectional, with the goal of defining a one-to-one correspondence. Thus the binary relation is functional in each direction: value can also act as a key to key. A pair (a, b) thus provides a unique coupling between a and b so that b can be found when a is used as a key and a can be found when b is used as a key.
-
-
-
-is proposed that makes it natural to interface R objects through \JSON, and interface \JSON data through R objects.
-
-
-This paper explores this problem in greater detail and make case for
-
-- explain problem
-- highlight problems
-- make case for bidirectional mapping that allows to interface R from JSON and JSON from R
-- describe the mapping for each class using our reference implementation
-- end with a note on consistency
-
-
-
-A mapping between \JSON structures and several common R object classes is proposed that makes it natural to interface R objects through \JSON, and interface \JSON data through R objects.
-
-
-
- This document attempts to take away some of the ambiguity by explicitly describing the mapping between R classes and \JSON data, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
+- bidirectional: one-to-one correspondence between JSON and R classes with minimal coersing.
+- relation is functional in each direction: json interface to R objects, and R objects can be used to manipulate a JSON structure.
+- Results in unique coupling between json and objects that makes it natural to manipulate JSON in R, and access R objects from their JSON representation.
+- Mild assumption of consistency.
+- Supported classes: vectors of type numeric, character, logical, data frame and matrix.
+- Natural class is implicit in the structure, rather than explicitly encode using metadata.
+- Will show examples of why this is powerful.
 
 \subsection{Reference implementation: the \texttt{jsonlite} package}
 
@@ -594,7 +575,7 @@ The Sunlight Foundation is a non-profit that helps to make government transparen
 
 <<eval=FALSE, tidy=FALSE>>=
 #register key at http://sunlightfoundation.com/api/accounts/register/ 
-key <- "&apikey=6e021ea1c1264a658e259708076f04a1"
+key <- "&apikey=39c83d5a4acc42be993ee637e2e4ba3d"
 
 #some queries
 drones <- fromJSON(paste0("http://openstates.org/api/v1/bills/?q=drone", key))
@@ -611,17 +592,17 @@ The New York Times has several free APIs that are part of its "developer network
 #Register keys at http://developer.nytimes.com/docs/reference/keys
 
 #search for articles
-article_key = "&api-key=12b3ff5decbd664d4d9edbd4ad450e54:8:68414090"
+article_key = "&api-key=c2fede7bd9aea57c898f538e5ec0a1ee:6:68700045"
 url = "http://api.nytimes.com/svc/search/v2/articlesearch.json?q=obamacare+socialism"
 articles <- fromJSON(paste0(url, article_key))
 
 #search for best sellers
-bestseller_key = "&api-key=c900c6eae827adb52a373a976c4dcd33:16:68414090"
+bestseller_key = "&api-key=5e260a86a6301f55546c83a47d139b0d:3:68700045"
 url = "http://api.nytimes.com/svc/books/v2/lists/overview.json?published_date=2013-01-01"
 bestsellers <- fromJSON(paste0(url, bestseller_key))
 
 #movie reviews
-movie_key = "&api-key=a2bf433b68cc54d04a5b5d9fd44a66d6:8:68414090"
+movie_key = "&api-key=5a3daaeee6bbc6b9df16284bc575e5ba:0:68700045"
 url = "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json?order=by-date"
 reviews <- fromJSON(paste0(url, movie_key))
 @
@@ -633,8 +614,8 @@ The Twitter API provides access to almost anything happening on Twitter. Unfortu
 
 <<tidy=FALSE, eval=FALSE>>=
 #Create your own appication key at https://dev.twitter.com/apps
-consumer_key = "1XxSHU2XTchttIJapwwCQ";
-consumer_secret = "TWFqJK66La96OgF12aWJn3kxq2fE6iNDTKrdzVeukg";
+consumer_key = "EZRy5JzOH2QQmVAe9B4j2w";
+consumer_secret = "OIDC4MdfZJ82nbwpZfoUO4WOLTYjoRhpHRAWj6JMec";
 
 #basic auth
 library(httr)
