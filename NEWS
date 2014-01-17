@@ -2,6 +2,7 @@
  - Added minify function
  - Added singleton function
  - Fixed bug where toJSON 'force' argument wasn't passed down
+ - Removed -DJSON_VALIDATE -DJSON_STREAM=1 from Makevars.in (already in JSONoptions.h)
 
 0.9.3
  - Changes by prof ripley for Solaris/CRAN
