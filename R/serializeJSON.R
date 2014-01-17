@@ -1,5 +1,3 @@
-#' Serialize R objects to JSON
-#'
 #' Just like \code{\link{toJSON}} and \code{\link{fromJSON}}, the \code{\link{serializeJSON}}
 #' and \code{\link{unserializeJSON}} functions convert between R objects to JSON. However
 #' instead of using a class based encoding, the serialize functions base the encoding schema
@@ -7,14 +5,15 @@
 #' such that it can be almost perfectly restored from its JSON representation. Almost all 
 #' storage types are supported, except for environments.
 #' 
-#' Note that JSON is a text based format which leads to loss of precision when printing numbers.
-#' 
-#' @title serializeJSON, unserializeJSON
+#' @rdname serializeJSON
+#' @title serialize R objects to \code{JSON}
+#' @name serializeJSON-unserializeJSON
+#' @aliases serializeJSON unserializeJSON
+#' @export serializeJSON unserializeJSON
 #' @param x an R object to be serialized
 #' @param digits max number of digits (after the dot) to print for numeric values
 #' @param pretty add indentation/whitespace to JSON output. See \code{\link{prettify}}
-#' @export
-#' @rdname serializeJSON
+#' @note JSON is a text based format which leads to loss of precision when printing numbers.
 #' @examples jsoncars <- serializeJSON(mtcars)
 #' mtcars2 <- unserializeJSON(jsoncars)
 #' identical(mtcars, mtcars2)
@@ -40,7 +39,6 @@ serializeJSON <- function(x, digits = 8, pretty = FALSE) {
   return(asJSON(pack(x), digits = digits, pretty = pretty))
 }
 
-#' @export
 #' @param txt a JSON string which was created using \code{serializeJSON}
 #' @rdname serializeJSON
 unserializeJSON <- function(txt) {

@@ -1,7 +1,8 @@
-\name{fromJSON}
+\name{toJSON-fromJSON}
 \alias{fromJSON}
 \alias{toJSON}
-\title{toJSON, fromJSON}
+\alias{toJSON-fromJSON}
+\title{Convert R objects to \code{JSON} and vice versa}
 \usage{
   fromJSON(txt, simplifyVector = TRUE,
     simplifyDataFrame = simplifyVector,
@@ -65,9 +66,6 @@
   \code{print} methods}
 }
 \description{
-  Stringify R objects to JSON and vice versa
-}
-\details{
   These functions are used to convert R objects into JSON
   and back. The \code{\link{toJSON}} and
   \code{\link{fromJSON}} functions use a class based
@@ -75,7 +73,8 @@
   vignette of this package. They implement a consitent and
   practical mapping between JSON structures and the
   standard data structures in R.
-
+}
+\details{
   The \code{\link{toJSON}} and \code{\link{fromJSON}}
   functions are drop-in replacements for the identically
   named functions in packages rjson and RJSONIO. Our

@@ -1,7 +1,8 @@
 \name{minify}
 \alias{minify}
 \alias{prettify}
-\title{prettify, minify}
+\alias{prettify-minify}
+\title{Prettify or minify a \code{JSON} string}
 \usage{
   minify(txt)
 
@@ -11,10 +12,7 @@
   \item{txt}{JSON string}
 }
 \description{
-  Prettify or minify a JSON string.
-}
-\details{
-  Prettify adds indentation to a JSON string; minify
+  Prettify adds indentation to a \code{JSON} string; minify
   removes all indentation/whitespace.
 }
 \examples{

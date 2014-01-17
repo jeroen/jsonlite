@@ -1,7 +1,8 @@
-\name{serializeJSON}
+\name{serializeJSON-unserializeJSON}
 \alias{serializeJSON}
+\alias{serializeJSON-unserializeJSON}
 \alias{unserializeJSON}
-\title{serializeJSON, unserializeJSON}
+\title{serialize R objects to \code{JSON}}
 \usage{
   serializeJSON(x, digits = 8, pretty = FALSE)
 
@@ -20,9 +21,6 @@
   \code{serializeJSON}}
 }
 \description{
-  Serialize R objects to JSON
-}
-\details{
   Just like \code{\link{toJSON}} and
   \code{\link{fromJSON}}, the \code{\link{serializeJSON}}
   and \code{\link{unserializeJSON}} functions convert
@@ -33,9 +31,10 @@
   that it can be almost perfectly restored from its JSON
   representation. Almost all storage types are supported,
   except for environments.
-
-  Note that JSON is a text based format which leads to loss
-  of precision when printing numbers.
+}
+\note{
+  JSON is a text based format which leads to loss of
+  precision when printing numbers.
 }
 \examples{
 jsoncars <- serializeJSON(mtcars)
