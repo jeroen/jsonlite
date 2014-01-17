@@ -1,4 +1,4 @@
-#' These functions are used to convert R objects into JSON and back. The \code{\link{toJSON}} and \code{\link{fromJSON}}
+#' These functions are used to convert R objects into JSON and vice versa. The \code{\link{toJSON}} and \code{\link{fromJSON}}
 #' functions use a class based encoding schema which follows conventions outlines in the vignette of this 
 #' package. They implement a consitent and practical mapping between JSON structures and the standard data 
 #' structures in R. 
@@ -10,8 +10,7 @@
 # 
 #' @export fromJSON toJSON
 #' @useDynLib jsonlite
-#' @title Convert R objects to \code{JSON} and vice versa
-#' @name toJSON-fromJSON
+#' @title Convert R objects to/from \code{JSON}
 #' @aliases fromJSON
 #' @param x the object to be encoded
 #' @param dataframe how to encode data.frame objects: must be one of 'row' or 'column'
