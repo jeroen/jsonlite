@@ -550,7 +550,11 @@ cat(toJSON(x, pretty=TRUE))
 
 Some examples of popular public APIs that use \JSON to server data. These are great to get a sense of the common structures that we encounter with real world \JSON data. All examples use HTTP GET, some require registration/authentication.
 
-\subsection{Github}
+\subsection{No Authentication Required}
+
+The following APIs allow for (limited) use without any form of registration:
+
+\subsubsection{Github}
 
 Github is an active online code repository and has APIs to get live data on almost anything that is happening. Some examples related to activity from a well known R package and author:
 
@@ -561,7 +565,7 @@ gg_issues <- fromJSON("https://api.github.com/repos/hadley/ggplot2/issues")
 gg_commits <- fromJSON("https://api.github.com/repos/hadley/ggplot2/commits")
 @
 
-\subsection{Citi Bike NYC}
+\subsubsection{Citi Bike NYC}
 
 A single public API that shows location, status and current availability for all stations in the New York City bike sharing imitative. 
 
@@ -569,7 +573,29 @@ A single public API that shows location, status and current availability for all
 citibike <- fromJSON("http://citibikenyc.com/stations/json")
 @
 
-\subsection{Sunlight Foundation}
+\subsubsection{AngelList}
+
+AngelList is a job listing directory for startup:
+
+<<eval=FALSE>>=
+res <- fromJSON("http://api.angel.co/1/tags/59/startups")
+res$startups
+@
+
+\subsubsection{Ergast}
+
+The Ergast Developer API is an experimental web service which provides a historical record of motor racing data for non-commercial purposes.
+
+<<eval=FALSE>>=
+races <- fromJSON('http://ergast.com/api/f1/2012/1/results.json')
+races$RaceTable$Races$MRData$Results[[1]]$Driver
+@
+
+\subsection{Free Registration Key Required}
+
+The following APIs require (free) registration of a key/token. In each case, registration is easy and a key will be emailed to you. The key has to be appended to the requests to query the APIs. The code below includes some example keys for illustration purposes.
+
+\subsubsection{Sunlight Foundation}
 
 The Sunlight Foundation is a non-profit that helps to make government transparent and accountable through data, tools, policy and journalism. The API can be accessed for free, but requires registration to obtain an API key (which is very easy). Examples:
 
@@ -584,7 +610,7 @@ legislators <- fromJSON(paste0("http://congress.api.sunlightfoundation.com/",
   "legislators/locate?latitude=42.96&longitude=-108.09", key))
 @
 
-\subsection{New York Times}
+\subsubsection{New York Times}
 
 The New York Times has several free APIs that are part of its "developer network". They interface to different parts of the organization, such as news articles, book reviews, real estate, etc. Registration is required to obtain a API keys. 
  
@@ -606,11 +632,22 @@ movie_key = "&api-key=5a3daaeee6bbc6b9df16284bc575e5ba:0:68700045"
 url = "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json?order=by-date"
 reviews <- fromJSON(paste0(url, movie_key))
 @
- 
- 
-\subsection{Twitter}
 
-The Twitter API provides access to almost anything happening on Twitter. Unfortunately recent changes in the policies have made the API much more complex and require a multi phase authentication procedure. Below some example code in R:
+\subsubsection{CrunchBase}
+
+<<eval=FALSE>>=
+key <- "f6dv6cas5vw7arn5b9d7mdm3"
+res <- fromJSON(paste0("http://api.crunchbase.com/v/1/search.js?query=R&api_key=",key))
+str(res$results)
+@
+ 
+\subsection{OAuth2 authentication} 
+ 
+The following API requires a more elaborate authentication process based on the Oauth2 protocol. 
+ 
+\subsubsection{Twitter}
+
+The Twitter API provides access to almost anything happening on Twitter. Below some example code in R:
 
 <<tidy=FALSE, eval=FALSE>>=
 #Create your own appication key at https://dev.twitter.com/apps
