@@ -24,5 +24,4 @@ Suggests:
     testthat,
     knitr,
     reshape2,
-    httr,
-    rmongodb (>= 1.5.3)
+    httr
