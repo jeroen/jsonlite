@@ -1,10 +1,10 @@
 #' Convert a mongo.bson object to an R object.
 #' 
-#' This function uses \link{\code{mongo.bson.to.list}} from the \code{rmongodb} package
+#' This function uses \code{mongo.bson.to.list} from the \code{rmongodb} package
 #' to read a \code{BSON} object, and then uses \code{jsonlite} the same mapping as for
 #' \code{JSON} objects to convert it into an R object. 
 #' 
-#' @param b A \link{\code{mongo.bson}} object. Passed to \link{\code{mongo.bson.to.list}}
+#' @param b A \code{mongo.bson} object. Passed to \code{mongo.bson.to.list}. See package \code{rmongodb}.
 #' @param simplifyVector coerse JSON arrays containing only scalars into a vector
 #' @param simplifyDataFrame coerse JSON arrays containing only records (JSON objects) into a data frame.
 #' @param simplifyMatrix coerse JSON arrays containing vectors of equal length and mode into matrix or array.

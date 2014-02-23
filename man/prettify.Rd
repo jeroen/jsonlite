@@ -4,16 +4,16 @@
 \alias{prettify-minify}
 \title{Prettify or minify a \code{JSON} string}
 \usage{
-  minify(txt)
+minify(txt)
 
-  prettify(txt)
+prettify(txt)
 }
 \arguments{
   \item{txt}{JSON string}
 }
 \description{
-  Prettify adds indentation to a \code{JSON} string; minify
-  removes all indentation/whitespace.
+Prettify adds indentation to a \code{JSON} string; minify
+removes all indentation/whitespace.
 }
 \examples{
 myjson <- toJSON(cars)

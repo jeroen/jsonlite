@@ -1,22 +1,16 @@
-\name{toJSON-fromJSON}
+\name{fromJSON}
 \alias{fromJSON}
 \alias{toJSON}
-\alias{toJSON-fromJSON}
-\title{Convert R objects to \code{JSON} and vice versa}
+\title{Convert R objects to/from \code{JSON}}
 \usage{
-  fromJSON(txt, simplifyVector = TRUE,
-    simplifyDataFrame = simplifyVector,
-    simplifyMatrix = simplifyVector, ...)
+fromJSON(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
+  simplifyMatrix = simplifyVector, ...)
 
-  toJSON(x, dataframe = c("rows", "columns"),
-    matrix = c("rowmajor", "columnmajor"),
-    Date = c("ISO8601", "epoch"),
-    POSIXt = c("string", "ISO8601", "epoch", "mongo"),
-    factor = c("string", "integer"),
-    complex = c("string", "list"),
-    raw = c("base64", "hex", "mongo"),
-    na = c("null", "string"), digits = 2, pretty = FALSE,
-    ...)
+toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
+  "columnmajor"), Date = c("ISO8601", "epoch"), POSIXt = c("string",
+  "ISO8601", "epoch", "mongo"), factor = c("string", "integer"),
+  complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
+  na = c("null", "string"), digits = 2, pretty = FALSE, ...)
 }
 \arguments{
   \item{x}{the object to be encoded}
@@ -66,28 +60,28 @@
   \code{print} methods}
 }
 \description{
-  These functions are used to convert R objects into JSON
-  and back. The \code{\link{toJSON}} and
-  \code{\link{fromJSON}} functions use a class based
-  encoding schema which follows conventions outlines in the
-  vignette of this package. They implement a consitent and
-  practical mapping between JSON structures and the
-  standard data structures in R.
+These functions are used to convert R objects into JSON and
+vice versa. The \code{\link{toJSON}} and
+\code{\link{fromJSON}} functions use a class based encoding
+schema which follows conventions outlines in the vignette
+of this package. They implement a consitent and practical
+mapping between JSON structures and the standard data
+structures in R.
 }
 \details{
-  The \code{\link{toJSON}} and \code{\link{fromJSON}}
-  functions are drop-in replacements for the identically
-  named functions in packages rjson and RJSONIO. Our
-  implementation uses an alternative, somewhat more
-  consistent mapping between R objects and JSON strings.
-  The \code{\link{serializeJSON}} and
-  \code{\link{unserializeJSON}} functions use an
-  alternative system to convert between R objects and JSON,
-  which supports more classes but is much more verbose.
+The \code{\link{toJSON}} and \code{\link{fromJSON}}
+functions are drop-in replacements for the identically
+named functions in packages rjson and RJSONIO. Our
+implementation uses an alternative, somewhat more
+consistent mapping between R objects and JSON strings. The
+\code{\link{serializeJSON}} and
+\code{\link{unserializeJSON}} functions use an alternative
+system to convert between R objects and JSON, which
+supports more classes but is much more verbose.
 }
 \note{
-  All encoded objects should pass the validation at
-  www.jsonlint.org
+All encoded objects should pass the validation at
+www.jsonlint.org
 }
 \examples{
 #stringify some data
@@ -116,9 +110,9 @@ data2$owner$login
 }
 }
 \author{
-  Jeroen Ooms \email{jeroen.ooms@stat.ucla.edu}
+Jeroen Ooms \email{jeroen.ooms@stat.ucla.edu}
 }
 \references{
-  \url{http://www.jsonlint.org}
+\url{http://www.jsonlint.org}
 }
 

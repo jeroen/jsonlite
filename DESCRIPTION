@@ -4,18 +4,25 @@ Date: 2014-01-16
 Title: A smarter JSON encoder/decoder for R
 License: Apache License 2.0
 NeedsCompilation: yes
-Depends: methods
+Depends:
+    methods
 Author: Jeroen Ooms, Duncan Temple Lang, Jonathan Wallace
-URL: http://github.com/jeroenooms/jsonlite#readme
+URL: http://github.com/jeroenooms/jsonlite#readme,
+    https://www.opencpu.org/posts/jsonlite-a-smarter-json-encoder/
 BugReports: http://github.com/jeroenooms/jsonlite/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
 VignetteBuilder: knitr
 Description: This package is a fork of the RJSONIO package by Duncan Temple
-    Lang. It builds on the parser from RJSONIO, but implements a different
-    mapping between R objects and JSON strings. The C code in this package is
-    mostly from Temple Lang, the R code has been rewritten from scratch. In
-    addition to drop-in replacements for fromJSON and toJSON, the package has
-    functions to serialize objects. Furthermore, the package contains a lot of
-    unit tests to make sure that all edge cases are encoded and decoded
-    consistently for use with dynamic data in systems and applications.
-Suggests: testthat, knitr, reshape2, httr, rmongodb
+    Lang. It builds on the same libjson c++ parser, but implements a smarter
+    mapping between R objects and JSON strings. The package vignette
+    describes the behavior in great detail. In addition to drop-in
+    replacements for fromJSON and toJSON, the package has functions to
+    serialize objects. Furthermore, the package contains many unit tests
+    to make verify that all edge cases are encoded and decoded consistently
+    for use with dynamic data in systems and applications.
+Suggests:
+    testthat,
+    knitr,
+    reshape2,
+    httr,
+    rmongodb (>= 1.5.3)
