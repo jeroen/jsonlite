@@ -1,3 +1,4 @@
+#' @import methods
 setMethod("asJSON", "ANY", function(x, force = FALSE, ...) {
   if (isS4(x) && !is(x, "classRepresentation")) {
     if (isTRUE(force)) {
