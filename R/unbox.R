@@ -1,4 +1,4 @@
-#' Mark a vector or data frame as singleton
+#' Unbox a vector or data frame
 #'
 #' This function marks an atomic vector or data frame as a 
 #' \href{http://en.wikipedia.org/wiki/Singleton_(mathematics)}{singleton}, i.e. 
