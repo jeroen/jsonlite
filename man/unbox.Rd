@@ -1,6 +1,6 @@
 \name{unbox}
 \alias{unbox}
-\title{Mark a vector or data frame as singleton}
+\title{Unbox a vector or data frame}
 \usage{
 unbox(x)
 }
