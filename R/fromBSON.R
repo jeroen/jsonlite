@@ -24,3 +24,14 @@ fromBSON <- function(b, simplifyVector = TRUE, simplifyDataFrame = simplifyVecto
     return(obj)
   }
 }
+
+mongoquery <- function(mongo, ns, ...){
+  cursor <- mongo.find(mongo, ns, ...);
+  results <- list();
+  while (mongo.cursor.next(cursor)) {
+    b <- mongo.cursor.value(cursor);
+    results[[length(results)+1]] <- mongo.bson.to.list(b);
+  }  
+  jsonlite:::simplify(results)
+}
+
