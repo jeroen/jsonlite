@@ -1,8 +1,8 @@
-\name{singleton}
-\alias{singleton}
+\name{unbox}
+\alias{unbox}
 \title{Mark a vector or data frame as singleton}
 \usage{
-singleton(x)
+unbox(x)
 }
 \arguments{
   \item{x}{atomic vector of length 1, or data frame with 1
@@ -29,16 +29,16 @@ some specific predifined \code{JSON} structure (e.g. to
 submit to an API), which has no natural R representation.
 Note that the default encoding for data frames naturally
 results in a collection of key-value pairs, without using
-\code{singleton}. If you are frequently using
-\code{singleton}, you're probably doing it wrong.
+\code{unbox}. If you are frequently using \code{unbox},
+you're probably doing it wrong.
 }
 \examples{
 cat(toJSON(list(foo=123)))
-cat(toJSON(list(foo=singleton(123))))
+cat(toJSON(list(foo=unbox(123))))
 
 x <- iris[1,]
 cat(toJSON(list(rec=x)))
-cat(toJSON(list(rec=singleton(x))))
+cat(toJSON(list(rec=unbox(x))))
 }
 \references{
 \url{http://en.wikipedia.org/wiki/Singleton_(mathematics)}
