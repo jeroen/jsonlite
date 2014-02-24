@@ -1,9 +1,9 @@
 #' Prettify adds indentation to a \code{JSON} string; minify removes all indentation/whitespace.
 #' 
-#' @name prettify-minify
-#' @aliases minify prettify
 #' @rdname prettify
 #' @title Prettify or minify a \code{JSON} string
+#' @name prettify-minify
+#' @aliases minify prettify
 #' @export prettify minify
 #' @param txt JSON string
 #' @examples myjson <- toJSON(cars)
@@ -15,3 +15,12 @@ prettify <- function(txt) {
   enc <- mapEncoding(Encoding(txt))
   .Call("R_jsonPrettyPrint", txt, enc)
 } 
+
+#' @rdname prettify
+minify <- function(txt) {
+  txt <- paste(as.character(txt), collapse = "\n")
+  enc <- mapEncoding(Encoding(txt))
+  .Call("R_jsonMiniPrint", txt, enc)
+}
+
+

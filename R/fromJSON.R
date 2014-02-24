@@ -8,10 +8,11 @@
 #' between R objects and JSON strings. The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions use an 
 #' alternative system to convert between R objects and JSON, which supports more classes but is much more verbose.
 # 
-#' @export fromJSON toJSON
-#' @useDynLib jsonlite
+#' @rdname fromJSON
 #' @title Convert R objects to/from \code{JSON}
-#' @aliases fromJSON
+#' @name toJSON-fromJSON
+#' @aliases fromJSON toJSON 
+#' @export fromJSON toJSON
 #' @param x the object to be encoded
 #' @param dataframe how to encode data.frame objects: must be one of 'row' or 'column'
 #' @param matrix should matrices and higher dimensional arrays be encoded in row-major or column-major.
@@ -29,10 +30,10 @@
 #' @param simplifyMatrix coerse JSON arrays containing vectors of equal length and mode into matrix or array.
 #' @param ... arguments passed on to class specific \code{print} methods
 #' @note All encoded objects should pass the validation at www.jsonlint.org
+#' @useDynLib jsonlite
 #' @references
 #' \url{http://www.jsonlint.org}
 #' @author Jeroen Ooms \email{jeroen.ooms@@stat.ucla.edu}
-#' @rdname toJSON
 #' @examples #stringify some data
 #' jsoncars <- toJSON(mtcars, pretty=TRUE)
 #' cat(jsoncars)

@@ -1,12 +1,12 @@
-\name{minify}
+\name{prettify-minify}
 \alias{minify}
 \alias{prettify}
 \alias{prettify-minify}
 \title{Prettify or minify a \code{JSON} string}
 \usage{
-minify(txt)
-
 prettify(txt)
+
+minify(txt)
 }
 \arguments{
   \item{txt}{JSON string}

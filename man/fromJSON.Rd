@@ -1,6 +1,7 @@
-\name{fromJSON}
+\name{toJSON-fromJSON}
 \alias{fromJSON}
 \alias{toJSON}
+\alias{toJSON-fromJSON}
 \title{Convert R objects to/from \code{JSON}}
 \usage{
 fromJSON(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
