@@ -10,7 +10,7 @@
 # 
 #' @rdname fromJSON
 #' @title Convert R objects to/from \code{JSON}
-#' @name toJSON-fromJSON
+#' @name toJSON, fromJSON
 #' @aliases fromJSON toJSON 
 #' @export fromJSON toJSON
 #' @param x the object to be encoded

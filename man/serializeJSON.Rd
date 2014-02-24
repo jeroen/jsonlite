@@ -1,6 +1,6 @@
-\name{serializeJSON-unserializeJSON}
+\name{(un)serializeJSON}
+\alias{(un)serializeJSON}
 \alias{serializeJSON}
-\alias{serializeJSON-unserializeJSON}
 \alias{unserializeJSON}
 \title{serialize R objects to \code{JSON}}
 \usage{

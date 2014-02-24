@@ -2,7 +2,7 @@
 #' 
 #' @rdname prettify
 #' @title Prettify or minify a \code{JSON} string
-#' @name prettify-minify
+#' @name prettify, minify
 #' @aliases minify prettify
 #' @export prettify minify
 #' @param txt JSON string

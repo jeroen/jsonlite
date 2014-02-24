@@ -1,7 +1,7 @@
-\name{prettify-minify}
+\name{prettify, minify}
 \alias{minify}
 \alias{prettify}
-\alias{prettify-minify}
+\alias{prettify, minify}
 \title{Prettify or minify a \code{JSON} string}
 \usage{
 prettify(txt)
