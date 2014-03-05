@@ -24,7 +24,7 @@
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
-\usepackage{natbib}
+\usepackage[round]{natbib}
 
 %use vspace instead of indentation for paragraphs
 \usepackage{parskip}
@@ -278,7 +278,7 @@ cat(toJSON(matrix(pi)))
 
 Besides the \texttt{"dim"} attribute, the matrix class has an additional, optional attribute: \texttt{"dimnames"}. This attribute holds names for the rows and columns in the matrix. However, we decided not to include this information in the default \JSON encoding for matrices for several reasons. First of all, because this attribute is optional, often either row or column names or both are \texttt{NULL}. This makes it difficult to define a practical encoding that covers all cases with and without row and/or column names. Secondly, the names in matrices are mostly there for annotation only; they are not actually used in calculations. For example, the linear algebra subroutines mentioned before completely ignore them, and do not include any names in their output. So there is often little purpose of setting names in the first place, other annotation.
 
-When the row names or column names of a matrix actually contain vital information, chances are they actually are not names but variable values. It might be needed to transform the data into a more appropriate structure. Wickham (2013) calls this tidying the data and outlines best practices on storing statistical data in its most appropriate form. He lists the issue where \emph{"column headers are values, not variable names"} the most common source of \emph{"messy"} data. It happens when the structure is optimized for presentation (e.g. printing), rather than computation. In the following example, taken from Wickham (2013), the column headers do not list names, but actually contain values of the main variable (treatment). As a result, these are not represented in the \JSON encoding:
+When the row names or column names of a matrix actually contain vital information, chances are they actually are not names but variable values. It might be needed to transform the data into a more appropriate structure. \cite{tidydata} calls this tidying the data and outlines best practices on storing statistical data in its most appropriate form. He lists the issue where \emph{"column headers are values, not variable names"} the most common source of \emph{"messy"} data. It happens when the structure is optimized for presentation (e.g. printing), rather than computation. In the following example taken from Wickham, the column headers do not list names, but actually contain values of the main variable (treatment). As a result, these are not represented in the \JSON encoding:
 
 <<>>=
 x <- matrix(c(NA,1,2,5,NA,3), nrow=3)
@@ -288,7 +288,7 @@ print(x)
 cat(toJSON(x))
 @
 
- Wikcham recommends that the data be \emph{melted} into its \emph{tidy} form. Once the data is tidy, the \JSON encoding will naturally contain the treatment values:
+Wikcham recommends that the data be \emph{melted} into its \emph{tidy} form. Once the data is tidy, the \JSON encoding will naturally contain the treatment values:
 
 <<>>=
 library(reshape2)
@@ -498,7 +498,7 @@ A beautiful example of this going wrong in practice was given by Mike Dewar (Dat
 
  This structure will play much nicer with existing software that assumes fixed keys. Moreover, the structure can easily be described in documentation, or captured in a schema. Even when we have no intention of writing documentation or a schema for a dynamic \JSON source, it is still wise to design the structure in such away that it \emph{could} be described by a schema. When the keys are fixed, a well chosen example can provide all the information required for the consumer to implement client code. Also note that the new structure is extensible: additional properties can be added to each observation without breaking backward compatibility.  
 
-In the context of R, consistency of keys is closely related to Wikcham's concept of \emph{tidy data} discussed earlier. Wickham states that the most common reason for messy data are column headers containing values instead of variable names. Column headers in tabular datasets become keys when converted to \JSON. Therefore, when headers are actually values, the \JSON keys contain in fact data, and can become unpredictable. The cure to inconsistent keys is almost always to tidy the data according to recommendations given by Wickham. 
+In the context of R, consistency of keys is closely related to Wikcham's concept of \emph{tidy data} discussed earlier. Wickham states that the most common reason for messy data are column headers containing values instead of variable names. Column headers in tabular datasets become keys when converted to \JSON. Therefore, when headers are actually values, the \JSON keys contain in fact data, and can become unpredictable. The cure to inconsistent keys is almost always to tidy the data according to recommendations given by \cite{tidydata}. 
  
 \subsection{Rule 2: Consistent Types}
 
