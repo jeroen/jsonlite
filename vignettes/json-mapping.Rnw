@@ -57,7 +57,7 @@ The emphasis of this paper is not on discussing the \JSON format or any particul
 
 %When relying on \JSON as the data interchange format, the mapping between R objects and \JSON data must be consistent and unambiguous. Clients relying on \JSON to get data in and out of R must know exactly what to expect in order to facilitate reliable communication, even if the data themselves are dynamic. Similarly, R code using dynamic \JSON data from an external source is only reliable when the conversion from \JSON to R is consistent. This document attempts to take away some of the ambiguity by explicitly describing the mapping between R classes and \JSON data, highlighting problems and propose conventions that can generalize the mapping to cover all common classes and cases in R.
 
-\subsection{Parsing Safety and Consistent}
+\subsection{Parsing and Type Safety}
 
 The \texttt{JSON} format specifies 4 primitive types (\texttt{string}, \texttt{number}, \texttt{boolean}, \texttt{null}) and two \emph{universal structures}:
 
@@ -107,7 +107,7 @@ Note that even though \texttt{JSON} allows for inserting arbitrary white space a
 
 The \texttt{jsonlite} package actually implements two systems for translating between R objects and \JSON. This document focuses on the \toJSON and \fromJSON functions which use R's class-based S3 method system. For all of the common classes in R, the \texttt{jsonlite} package implements \toJSON methods as described in this document. Users in R can easily extend this system by implementing additional methods for other classes. However this also means that classes that do not have the \toJSON method defined are not supported. Furthermore, the implementation of a specific \toJSON method determines which data and metadata in the objects of this class gets encoded in its \JSON representation, and how. In this respect, \toJSON is similar to e.g. the \texttt{print} function, which also provides a certain \emph{representation} of an object based on its class and optionally some print parameters. This representation does not necessarily reflect all information stored in the object, and there is no guaranteed one-to-one correspondence between R objects and \JSON. I.e. calling \texttt{fromJSON(toJSON(object))} will return an object which only contains the data that was encoded by the \toJSON method for this particular class, and which might even have a different class than the original.
 
-The alternative to the S3 method system is to use type-based encoding, which \texttt{jsonlite} implements in the functions \texttt{serializeJSON} and \texttt{unserializeJSON}. All data structures in R get stored in memory using one of the internal \texttt{SEXP} storage types, and \texttt{serializeJSON} defines an encoding schema which captures the type, value, and attributes for each storage type. The result is \JSON output which closely resembles the internal structure of the underlying C data types, and which can be perfectly restored to the original R object using \texttt{unserializeJSON}. This method is relatively straightforward to implement, however the disadvantage is that the resulting \JSON is very verbose, hard to interpret, and cumbersome to generate in the context of another language or system. For most applications this is actually impractical because it requires the client/consumer to understand and manipulate R types, which is difficult and reduces interoperability. Instead we can make data in R more accessible to third parties by defining sensible \JSON representations that are natural for the class of an object, rather than its internal storage type. This document does not discuss the \texttt{serializeJSON} system in any further detail, and solely treats the class based system implemented in \toJSON and \fromJSON. However the reader that is interested in full serialization of R objects into \JSON is encouraged to have a look at the respective manual pages.
+The alternative to method dispatch is to use type-based encoding, which \texttt{jsonlite} implements in the functions \texttt{serializeJSON} and \texttt{unserializeJSON}. All data structures in R get stored in memory using one of the internal \texttt{SEXP} storage types, and \texttt{serializeJSON} defines an encoding schema which captures the type, value, and attributes for each storage type. The result is \JSON output which closely resembles the internal structure of the underlying C data types, and which can be perfectly restored to the original R object using \texttt{unserializeJSON}. This method is relatively straightforward to implement, however the disadvantage is that the resulting \JSON is very verbose, hard to interpret, and cumbersome to generate in the context of another language or system. For most applications this is actually impractical because it requires the client/consumer to understand and manipulate R data types, which is difficult and reduces interoperability. Instead we can make data in R more accessible to third parties by defining sensible \JSON representations that are natural for the class of an object, rather than its internal storage type. This document does not discuss the \texttt{serializeJSON} system in any further detail, and solely treats the class based system implemented in \toJSON and \fromJSON. However the reader that is interested in full serialization of R objects into \JSON is encouraged to have a look at the respective manual pages.
 
 \subsection{Scope and Limitations}
 
@@ -115,7 +115,7 @@ Before continuing, we want to stress some limitations of encoding R data structu
 
 Then there are limitations introduced by the format. Because \JSON is a human readable, text-based format, it does not support binary data, and numbers are stored in their decimal notation. The latter leads to loss of precision for real numbers, depending on how many digits the user decides to print. Several dialects of \JSON exists such as \texttt{BSON} or \texttt{MSGPACK}, which extend the format with various binary types. However, these formats are much less popular, less interoperable, and often impractical, precisely because they require binary parsing and abandon human readability. The simplicity of \JSON is what makes it an accessible and widely applicable data interchange format. In cases where it is really needed to include some binary data in \JSON, one can use something like \texttt{base64} to encode it as a string.
 
-Finally, as mentioned earlier, \fromJSON is not a perfect inverse function of \toJSON, as would be the case for \texttt{serialializeJSON} and \texttt{unserializeJSON}. The class based S3 method system allows for concise and practical encoding of the various common data structures. In our design of \toJSON and \fromJSON, we have tried to approach a reversible mapping between R objects and \JSON for the standard data classes, but there are always limitations and edge cases. For example, the \JSON representation of an empty vector, empty list or empty data frame are all the same: \texttt{"[ ]"}. Also some special vector types such as factors, dates or timestamps get coerced to strings, as they would in for example \texttt{CSV}. This is a quite typical and expected behavior among text based formats, but it does require some additional interpretation on the side of the consumer.
+Finally, as mentioned earlier, \fromJSON is not a perfect inverse function of \toJSON, as would be the case for \texttt{serialializeJSON} and \texttt{unserializeJSON}. The class based mappings are designed for for concise and practical encoding of the various common data structures. Our implementation of \toJSON and \fromJSON approximates a reversible mapping between R objects and \JSON for the standard data classes, but there are always limitations and edge cases. For example, the \JSON representation of an empty vector, empty list or empty data frame are all the same: \texttt{"[ ]"}. Also some special vector types such as factors, dates or timestamps get coerced to strings, as they would in for example \texttt{CSV}. This is a quite typical and expected behavior among text based formats, but it does require some additional interpretation on the side of the consumer.
 
 \subsection{Goals: Consistent and Practical}
 
@@ -138,7 +138,7 @@ This section lists examples of how the common R classes are represented in \JSON
 
 \subsection{Atomic Vectors}
 
-The most basic data type in R is the atomic vector. The atomic vector holds an ordered set of homogeneous values of type \texttt{"logical"} (booleans), \texttt{character} (strings), \texttt{"raw"} (bytes), \texttt{integer}, \texttt{numeric} (doubles), \texttt{"complex"} (complex numbers with a real and imaginary part). Because R is fully vectorized, there is no user level notion of a primitive: a scalar value is considered a vector of length 1. Atomic vectors are encoded using a \JSON array:
+The most basic data type in R is the atomic vector. The atomic vector holds an ordered set of homogeneous values of type \texttt{"logical"} (booleans), \texttt{character} (strings), \texttt{"raw"} (bytes), \texttt{integer}, \texttt{numeric} (doubles), \texttt{"complex"} (complex numbers with a real and imaginary part). Because R is fully vectorized, there is no user level notion of a primitive: a scalar value is considered a vector of length 1. Atomic vectors map to \JSON arrays:
 
 <<>>=
 x <- c(1, 2, pi)
@@ -149,7 +149,7 @@ The \JSON array is the only appropriate structure to encode a vector, however no
 
 \subsubsection{Missing Values}
 
-A typical domain specific problem when working with statistical data is presented by missing data: a concept foreign to many other languages. Besides regular values, all vector types except for \texttt{raw} can hold \texttt{NA} as a value. Vectors of type \texttt{double} and \texttt{complex} define three additional types of non finite values: \texttt{NaN}, \texttt{Inf} and \texttt{-Inf}. \JSON does not natively support any of these types; therefore such values values need to be encoded in some other way. There are two obvious approaches. The first one is to use the  \JSON \texttt{null} type. For example:
+A typical domain specific problem when working with statistical data is presented by missing values: a concept foreign to many other languages. Besides regular values, each vector type in R except for \texttt{raw} can hold \texttt{NA} as a value. Vectors of type \texttt{double} and \texttt{complex} define three additional types of non finite values: \texttt{NaN}, \texttt{Inf} and \texttt{-Inf}. \JSON does not natively support any of these types; therefore such values values need to be encoded in some other way. There are two obvious approaches. The first one is to use the  \JSON \texttt{null} type. For example:
 
 <<>>=
 x <- c(TRUE, FALSE, NA)
@@ -230,11 +230,11 @@ This might seem obvious but these cases result in very different behavior betwee
 \end{kframe}
 \end{knitrout}
 
-When encoding a single data set this might seem harmless, but in the context of dynamic data this inconsistency is almost guaranteed to cause bugs. For example, imagine an R web service which lets the user fit a linear model and sends back the fitted parameter estimates. In this application, the R server returns the vector with coefficients encoded as a \JSON array. The client code then parses the \JSON, and then iterates over the array of coefficients to display them in a GUI. All goes well, until the user decides to fit a model with only one predictor. If the \JSON encoder returns a primitive value where the client is assuming an array, the application will likely break. Any consumer or client would need to be aware of the special case where the vector becomes a primitive, and explicitly take this exception into account when processing the result. When the client fails to do so and proceeds as usual, it will probably call an iterator or loop method on a primitive value, resulting in the obvious errors. For this reason \texttt{jsonlite} uses consistent encoding schemes which do not depend on variable object properties such as its length. Hence, a vector is always encoded as an array, even when it is of length 0 or 1.
+When encoding a single dataset this seems harmless, but in the context of dynamic data this inconsistency is almost guaranteed to cause bugs. For example, imagine an R web service which lets the user fit a linear model and sends back the fitted parameter estimates as a \JSON array. The client code then parses the \JSON, and then iterates over the array of coefficients to display them in a GUI. All goes well, until the user decides to fit a model with only one predictor. If the \JSON encoder returns a primitive value where the client is assuming an array, the application will likely break. Any consumer or client would need to be aware of the special case where the vector becomes a primitive, and explicitly take this exception into account when processing the result. When the client fails to do so and proceeds as usual, it will probably call an iterator or loop method on a primitive value, resulting in the obvious errors. For this reason \texttt{jsonlite} uses consistent encoding schemes which do not depend on variable object properties such as its length. Hence, a vector is always encoded as an array, even when it is of length 0 or 1.
 
 \subsection{Matrices}
 
-Arguably one of the strongest sides of R is its ability to interface libraries for basic linear algebra subroutines (BLAS) such as LAPACK, OpenBLAS, etc. These libraries provide well tuned, high performance implementations of important linear algebra operations to calculate anything from inner products and eigen values to singular value decompositions. These are in turn the building blocks of many higher level statistical methods such as linear regression or principal component analysis. Linear algebra methods operate on \emph{matrices}, making the matrix one of the most central data classes in R. Conceptually, a matrix consists of a 2 dimensional structure of homogeneous values. It is indexed using 2 numbers (or vectors), representing the row and column number of the matrix respectively. 
+Arguably one of the strongest sides of R is its ability to interface libraries for basic linear algebra subprograms \citep{lawson1979basic} such as LAPACK \citep{anderson1999lapack}. These libraries provide well tuned, high performance implementations of important linear algebra operations to calculate anything from inner products and eigen values to singular value decompositions. These are in turn the building blocks of statistical methods such as linear regression or principal component analysis. Linear algebra methods operate on \emph{matrices}, making the matrix one of the most central data classes in R. Conceptually, a matrix consists of a 2 dimensional structure of homogeneous values. It is indexed using 2 numbers (or vectors), representing the row and column number of the matrix respectively. 
 
 <<>>=
 x <- matrix(1:12, nrow=3, ncol=4)
@@ -249,14 +249,14 @@ attributes(volcano)
 length(volcano)
 @
 
- Even though the matrix is stored as a single vector, it the way it is printed, indexed and treated otherwise makes it conceptually a 2 dimensional structure. \texttt{jsonlite} treats a matrix as a set of equal-length homogeneous vectors, and therefore encodes it using an array of sub arrays:
+ Even though the matrix is stored as a single vector, it the way it is printed, indexed and treated otherwise makes it conceptually a 2 dimensional structure. In \texttt{jsonlite} a matrix maps to an array of equal-length subarrays:
 
 <<>>=
 x <- matrix(1:12, nrow=3, ncol=4)
 cat(toJSON(x))
 @
 
- We hope that this representation will be the most intuitive to interpret, even within languages that do not have a native notion of a matrix. Note that even though R stores matrices in \emph{column major} order, \texttt{jsonlite} encodes matrices in \emph{row major} order. This is a more conventional and intuitive way to represent matrices and is consistent with the row-based encoding of data frames. When the JSON string is properly indented (recall that white space and line breaks are optional in JSON), it looks very similar to the way R prints matrices:
+We expect this representation will to be the most intuitive to interpret, also within languages that do not have a native notion of a matrix. Note that even though R stores matrices in \emph{column major} order, \texttt{jsonlite} encodes matrices in \emph{row major} order. This is a more conventional and intuitive way to represent matrices and is consistent with the row-based encoding of data frames. When the JSON string is properly indented (recall that white space and line breaks are optional in JSON), it looks very similar to the way R prints matrices:
 
 \begin{verbatim}
 [ [ 1, 4, 7, 10 ], 
@@ -276,9 +276,9 @@ cat(toJSON(matrix(pi)))
 
 \subsubsection{Matrix row and column names}
 
-Besides the \texttt{"dim"} attribute, the matrix class has an additional, optional attribute: \texttt{"dimnames"}. This attribute holds names for the rows and columns in the matrix. However, we decided not to include this information in the default \JSON encoding for matrices for several reasons. First of all, because this attribute is optional, often either row or column names or both are \texttt{NULL}. This makes it difficult to define a practical encoding that covers all cases with and without row and/or column names. Secondly, the names in matrices are mostly there for annotation only; they are not actually used in calculations. For example, the linear algebra subroutines mentioned before completely ignore them, and do not include any names in their output. So there is often little purpose of setting names in the first place, other annotation.
+Besides the \texttt{"dim"} attribute, the matrix class has an additional, optional attribute: \texttt{"dimnames"}. This attribute holds names for the rows and columns in the matrix. However, we decided not to include this information in the default \JSON mapping for matrices for several reasons. First of all, because this attribute is optional, often either row or column names or both are \texttt{NULL}. This makes it difficult to define a practical encoding that covers all cases with and without row and/or column names. Secondly, the names in matrices are mostly there for annotation only; they are not actually used in calculations. The linear algebra subroutines mentioned before completely ignore them, and never include any names in their output. So there is often little purpose of setting names in the first place, other annotation.
 
-When the row names or column names of a matrix actually contain vital information, chances are they actually are not names but variable values. It might be needed to transform the data into a more appropriate structure. \cite{tidydata} calls this tidying the data and outlines best practices on storing statistical data in its most appropriate form. He lists the issue where \emph{"column headers are values, not variable names"} the most common source of \emph{"messy"} data. It happens when the structure is optimized for presentation (e.g. printing), rather than computation. In the following example taken from Wickham, the column headers do not list names, but actually contain values of the main variable (treatment). As a result, these are not represented in the \JSON encoding:
+When row or column names of a matrix seem to contain vital information, we might want to transform the data into a more appropriate structure. \cite{tidydata} calls this \emph{``tidying''} the data and outlines best practices on storing statistical data in its most appropriate form. He lists the issue where \emph{``column headers are values, not variable names''} as the most common source of untidy data. This often happens when the structure is optimized for presentation (e.g. printing), rather than computation. In the following example taken from Wickham, the column headers do not list names, but actually contain values of the main variable (treatment). As a result, these do not get represented in the \JSON:
 
 <<>>=
 x <- matrix(c(NA,1,2,5,NA,3), nrow=3)
@@ -297,13 +297,13 @@ print(y)
 cat(toJSON(y, pretty=TRUE))
 @
 
- In some other cases, the column headers actually do contain variable names, and melting is inappropriate. For data sets with records consisting of a set of named columns (fields), R has more natural and flexible class: the data-frame. The \toJSON method for data frames is described in a later section, and is more suitable when we want to refer to rows or fields by a particular name. Any matrix can easily be converted to a data-frame using the \texttt{as.data.frame} function:
+In some other cases, the column headers actually do contain variable names, and melting is inappropriate. For data sets with records consisting of a set of named columns (fields), R has more natural and flexible class: the data-frame. The \toJSON method for data frames is described in a later section, and is more suitable when we want to refer to rows or fields by their name. Any matrix can easily be converted to a data-frame using the \texttt{as.data.frame} function:
 
 <<>>=
 cat(toJSON(as.data.frame(x), pretty=TRUE))
 @
 
- For some cases this results in the desired encoding, but in this example melting seems more appropriate.
+For some cases this results in the desired output, but in this example melting seems more appropriate.
 
 \subsection{Lists}
 
@@ -318,13 +318,13 @@ print(mylist2[[2]])
 
 \subsubsection{Unnamed lists}
 
-Just like vectors, an unnamed list is encoded using a \JSON array:
+Just like vectors, an unnamed list maps to a \JSON array:
 
 <<>>=
 cat(toJSON(list(c(1,2), "test", TRUE, list(c(1,2)))))
 @
 
- Note that even though both vectors and lists are encoded using \JSON arrays, they can be distinguished by looking at their contents: an R vector results in a \JSON array which contains only primitives, whereas a list results in a \JSON array which contains only objects and arrays. This allows the \JSON parser to reconstruct the original type from encoded vectors and arrays:
+Note that even though both vectors and lists are encoded using \JSON arrays, they can be distinguished from their contents: an R vector results in a \JSON array containing only primitives, whereas a list results in a \JSON array containing only objects and arrays. This allows the \JSON parser to reconstruct the original type from encoded vectors and arrays:
 
 <<>>=
 x <- list(c(1,2,NA), "test", FALSE, list(foo="bar"))
@@ -335,7 +335,7 @@ identical(fromJSON(toJSON(x)), x)
 
 \subsubsection{Named lists}
 
-A named list in R gets encoded as a \JSON \emph{object}:
+A named list in R maps to a \JSON \emph{object}:
 
 <<>>=
 cat(toJSON(list(foo=c(1,2), bar="test")))
@@ -377,26 +377,26 @@ print(iris[1:3, c(1,5)])
 print(iris[1:3, c("Sepal.Width", "Species")])
 @
 
- For the previously discussed classes such as vectors and matrices, behavior of jsonlite is quite similar to the other available packages that implement \texttt{toJSON} and \texttt{toJSON} functions, with only minor differences for missing values and edge cases. But when it comes to data frames, jsonlite takes a completely different approach. The behavior of jsonlite is designed to be compatible with conventional ways of encoding table-like structures outside the R community. The implementation is more complex, but results in a powerful and more natural way of interfacing data frames through \JSON and vice versa.
+ For the previously discussed classes such as vectors and matrices, behavior of jsonlite is quite similar to the other available packages that implement \texttt{toJSON} and \texttt{toJSON} functions, with only minor differences for missing values and edge cases. But when it comes to data frames, jsonlite takes a completely different approach. The behavior of jsonlite is designed for compatibility with conventional ways of encoding table-like structures outside the R community. The implementation is more complex, but results in a powerful and more natural way of interfacing data frames through \JSON and vice versa.
 
 \subsubsection{Column based versus row based tables}
 
 Generally speaking, tabular data structures can be implemented in two different ways: in a column based, or row based fashion. A column based structure consists of a named collection of equal-length, homogeneous arrays representing the table columns. In a row-based structure on the other hand, the table is implemented as a set of heterogeneous associative arrays representing table rows with field values for each particular record. Even though most languages provide flexible and abstracted interfaces that hide such implementation details from the user, they can have huge implications for performance. A column based structure is efficient for inserting or extracting certain columns of the data, but it is inefficient for manipulating individual rows. For example to insert a single row somewhere in the middle, each of the columns has to be sliced and stitched back together. For row-based implementations, it is the exact other way around: we can easily manipulate a particular record, but to insert/extract a whole column we would need to iterate over all records in the table and read/modify the appropriate field in each of them.
 
-The data frame in R is implemented in a column based fashion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \texttt{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. R simply binds the specified columns together into a matrix \texttt{X} and calls out to a highly optimized FORTRAN subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the QR factorization of \texttt{X}. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in R. However, unfortunately R is an exception in its preference for column-based storage: most  languages, systems, databases, APIs, etc, are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. The remaining of this section discusses details and challenges of consistently mapping record based \JSON data as frequently encountered in the wild, into column-based data frames which are convenient for statistical computing.
+The data frame in R is implemented in a column based fashion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \texttt{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. R simply binds the specified columns together into a matrix \texttt{X} and calls out to a highly optimized FORTRAN subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the $QR$ factorization of $X$. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in R. However, unfortunately R is an exception in its preference for column-based storage: most  languages, systems, databases, APIs, etc, are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. The remaining of this section discusses details and challenges of consistently mapping record based \JSON data as frequently encountered in the wild, into column-based data frames which are convenient for statistical computing.
 
 \subsubsection{Row based data frame encoding jsonlite}
 
-The encoding of data frames is one of the major differences between jsonlite and implementations from other currently available packages. Instead of using the column-based encoding also used for lists, jsonlite encodes data frames by default as an array of records:
+The encoding of data frames is one of the major differences between jsonlite and implementations from other currently available packages. Instead of using the column-based encoding also used for lists, jsonlite maps data frames by default to an array of records:
 
 <<>>=
 cat(toJSON(iris[1:2,], pretty=TRUE))
 @
 
- This output looks a bit like a list of named lists. However, there is one major difference: the individual records contain primitives values, which will never appear in lists:
+ This output looks a bit like a list of named lists. However, there is one major difference: the individual records contain \JSON primitives, which never appear in lists:
 
 <<>>=
-cat(toJSON(list(list(Species="Foo", Width=21))))
+cat(toJSON(list(list(Species="Foo", Width=21)), pretty=TRUE))
 @
 
  This leads to the following convention: when encoding R objects, \JSON primitives only appear in vectors and data-frame rows. Primitive values within a \JSON array indicate a vector, and \JSON primitives appearing inside a \JSON object indicate a data-frame row. A \JSON encoded \texttt{list}, (named or unnamed) will never contain \JSON primitives. This is a subtle but important convention that helps to distinguish between R classes from their \JSON representation, without explicitly encoding any metadata.
@@ -476,13 +476,13 @@ Some other data interchange formats, such as \texttt{XML} or \texttt{Protocol Bu
 
 When using \JSON without a schema, there are no restrictions on the keys (field names) that can appear in a particular object. However, an API that returns a different set of keys for every time it is called makes it very difficult to write software to process these data. Hence, the first rule is to limit \JSON interfaces to a finite set of keys that are known \emph{a priory} by all parties. It can be helpful to think about this in analogy with for example a relational database. Here, the database model separates the data from metadata. At run time, records can be inserted or deleted, and a certain query might return different data each time it is executed. But for a given query, each execution will return exactly the same \emph{field names}; hence as long as the table definitions are unchanged, the \emph{structure} of the output consistent. Client software needs this structure to validate input, optimize implementation, and process each part of the data appropriately. In \JSON, data and metadata are not formally separated as in a database, but similar principles that hold for fields in a database, apply to keys in dynamic \JSON data.  
  
-A beautiful example of this going wrong in practice was given by Mike Dewar (Data Scientist at bit.ly) in at the New York Open Statistical Programming Meetup on Jan. 12, 2012. In his talk he emphasizes to use \JSON keys only for \emph{names}, and not for \emph{data}. He refers to this principle as the "golden rule", and explains how he learned his lesson the hard way. In one of his early applications, timeseries data was encoded by using the epoch timestamp as the \JSON key. Therefore the keys are different each time the query is executed:
+A beautiful example of this in practice was given by Mike Dewar at the New York Open Statistical Programming Meetup on Jan. 12, 2012 \citep{jsonkeys}. In his talk he emphasizes to use \JSON keys only for \emph{names}, and not for \emph{data}. He refers to this principle as the ``golden rule'', and explains how he learned his lesson the hard way. In one of his early applications, timeseries data was encoded by using the epoch timestamp as the \JSON key. Therefore the keys are different each time the query is executed:
 
 \begin{verbatim}
 [
-  {"1325344443" : 4},
-  {"1325344456" : 5},
-  {"1325344478" : 6},
+  {"1325344443" : 124},
+  {"1325344456" : 131},
+  {"1325344478" : 137},
 ]
 \end{verbatim}
 
@@ -524,7 +524,9 @@ x$test <- list(bar=TRUE)
 cat(toJSON(x))
 @
 
- But just because this is possible, doesn't mean you should use it. On the contrary: it puts the responsibility of using consistent types in the hands of the developer. Fields or collections with ambiguous object types are very difficult to describe, interpret and process in the context of inter-system communication. When using \JSON to exchange dynamic data, it is important that each property and array is \emph{type consistent}. This means that the developer needs to make sure that properties are of the correct type before encoding to \JSON. Moreover, the \texttt{unnamed list} object in R should usually be avoided all together when designing interoperable structures. However, note that consistency is somewhat subjective as it refers to the \emph{meaning} of the elements; they don't necessarily need to have precisely the same structure. What is important is to keep in mind that the consumer of the data can treat each element identically, e.g. iterate over the elements in the collection and apply the same method to each of them. To illustrate this, lets take the example of the data frame: 
+ But just because this is possible, doesn't mean it is correct. On the contrary: it puts the responsibility of using consistent types in the hands of the developer. Fields or collections with ambiguous object types are very difficult to describe, interpret and process in the context of inter-system communication. When using \JSON to exchange dynamic data, it is important that each property and array is \emph{type consistent}. This means that the developer needs to make sure that properties are of the correct type before encoding to \JSON. This means that the \texttt{unnamed list} object in R should usually generally be avoided when designing interoperable structures. 
+ 
+ Note that consistency is somewhat subjective as it refers to the \emph{meaning} of the elements; they don't necessarily need to have precisely the same structure. What is important is to keep in mind that the consumer of the data can interpret and process each element identically, e.g. iterate over the elements in the collection and apply the same method to each of them. To illustrate this, lets take the example of the data frame: 
 
 <<>>=
 #conceptually homogenous array
@@ -532,7 +534,7 @@ x <- data.frame(name=c("Jay", "Mary", NA, NA), gender=c("M", NA, NA, "F"))
 cat(toJSON(x, pretty=TRUE))
 @
 
- The \JSON array above has 4 elements, each of which a \JSON object. However, due to the \texttt{NA} values, not all elements have an identical structure: some records have more fields than others. But as long as they are conceptually the same type (e.g. a person), the consumer can iterate over the elements to process each "person" in the set according to a predefined action. For example each element could be used to construct a Person object. When combining objects of different classes, a \texttt{named list} can be used to distinguish between the different types:
+ The \JSON array above has 4 elements, each of which a \JSON object. However, due to the \texttt{NA} values, not all elements have an identical structure: some records have more fields than others. But as long as they are conceptually the same type (e.g. a person), the consumer can iterate over the elements to process each person in the set according to a predefined action. For example each element could be used to construct a \texttt{Person} object. A collection of different object classes should be separated and organized using a named list:
 
 <<tidy=FALSE>>=
 x <- list(
@@ -548,7 +550,9 @@ cat(toJSON(x, pretty=TRUE))
 
 \section{Public \JSON APIs}
 
-Some examples of popular public APIs that use \JSON to server data. These are great to get a sense of the common structures that we encounter with real world \JSON data. All examples use HTTP GET, some require registration/authentication.
+This section lists some examples of public HTTP APIs that publish data in \JSON format. These are great to get a sense of the complex structures that are encountered in real world \JSON data. All services are free, but some require registration/authentication.
+
+Most of the calls return a lot of data, and in most examples below, no output is printed. The user is encouraged to replaced the examples in R and inspect the output manually. 
 
 \subsection{No Authentication Required}
 
@@ -556,7 +560,7 @@ The following APIs allow for (limited) use without any form of registration:
 
 \subsubsection{Github}
 
-Github is an active online code repository and has APIs to get live data on almost anything that is happening. Some examples related to activity from a well known R package and author:
+Github is an online code repository and has APIs to get live data on almost all activity. Below some examples from a well known R package and author:
 
 <<eval=FALSE>>=
 hadley_orgs <- fromJSON("https://api.github.com/users/hadley/orgs")
@@ -575,7 +579,7 @@ citibike <- fromJSON("http://citibikenyc.com/stations/json")
 
 \subsubsection{AngelList}
 
-AngelList is a job listing directory for startup:
+AngelList is a job listing directory for startups:
 
 <<eval=FALSE>>=
 res <- fromJSON("http://api.angel.co/1/tags/59/startups")
@@ -597,7 +601,7 @@ The following APIs require (free) registration of a key/token. In each case, reg
 
 \subsubsection{Sunlight Foundation}
 
-The Sunlight Foundation is a non-profit that helps to make government transparent and accountable through data, tools, policy and journalism. The API can be accessed for free, but requires registration to obtain an API key (which is very easy). Examples:
+The Sunlight Foundation is a non-profit that helps to make government transparent and accountable through data, tools, policy and journalism.
 
 <<eval=FALSE, tidy=FALSE>>=
 #register key at http://sunlightfoundation.com/api/accounts/register/ 
@@ -612,7 +616,7 @@ legislators <- fromJSON(paste0("http://congress.api.sunlightfoundation.com/",
 
 \subsubsection{New York Times}
 
-The New York Times has several free APIs that are part of its "developer network". They interface to different parts of the organization, such as news articles, book reviews, real estate, etc. Registration is required to obtain a API keys. 
+The New York Times has several free APIs that are part of its "developer network". They interface to different parts of the organization, such as news articles, book reviews, real estate, etc.
  
 <<eval=FALSE>>=
 #Register keys at http://developer.nytimes.com/docs/reference/keys
@@ -634,6 +638,8 @@ reviews <- fromJSON(paste0(url, movie_key))
 @
 
 \subsubsection{CrunchBase}
+
+CrunchBase is the free database of technology companies, people, and investors that anyone can edit.
 
 <<eval=FALSE>>=
 key <- "f6dv6cas5vw7arn5b9d7mdm3"
