@@ -571,7 +571,7 @@ gg_commits <- fromJSON("https://api.github.com/repos/hadley/ggplot2/commits")
 
 \subsubsection{Citi Bike NYC}
 
-A single public API that shows location, status and current availability for all stations in the New York City bike sharing imitative. 
+A single public API that shows location, status and current availability for all stations in the New York City bike sharing initative. 
 
 <<eval=FALSE>>=
 citibike <- fromJSON("http://citibikenyc.com/stations/json")
