@@ -25,6 +25,8 @@
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \usepackage[round]{natbib}
+\usepackage{fancyvrb}
+\usepackage[toc,page]{appendix}
 
 %use vspace instead of indentation for paragraphs
 \usepackage{parskip}
@@ -546,19 +548,20 @@ cat(toJSON(x, pretty=TRUE))
 
  When looking at the public APIs, limiting \JSON arrays to homogeneous sets is a very strong convention and we have not been able to find a single exception.
 
+\begin{appendices}
 
 
 \section{Public \JSON APIs}
 
 This section lists some examples of public HTTP APIs that publish data in \JSON format. These are great to get a sense of the complex structures that are encountered in real world \JSON data. All services are free, but some require registration/authentication.
 
-Most of the calls return a lot of data, and in most examples below, no output is printed. The user is encouraged to replaced the examples in R and inspect the output manually. 
+Each example returns lots of data, therefore output is ommitted in this document. The reader is encouraged to run the examples in R and inspect the output manually. 
 
 \subsection{No Authentication Required}
 
 The following APIs allow for (limited) use without any form of registration:
 
-\subsubsection{Github}
+\subsubsection*{Github}
 
 Github is an online code repository and has APIs to get live data on almost all activity. Below some examples from a well known R package and author:
 
@@ -569,7 +572,7 @@ gg_issues <- fromJSON("https://api.github.com/repos/hadley/ggplot2/issues")
 gg_commits <- fromJSON("https://api.github.com/repos/hadley/ggplot2/commits")
 @
 
-\subsubsection{Citi Bike NYC}
+\subsubsection*{Citi Bike NYC}
 
 A single public API that shows location, status and current availability for all stations in the New York City bike sharing initative. 
 
@@ -577,7 +580,7 @@ A single public API that shows location, status and current availability for all
 citibike <- fromJSON("http://citibikenyc.com/stations/json")
 @
 
-\subsubsection{AngelList}
+\subsubsection*{AngelList}
 
 AngelList is a job listing directory for startups:
 
@@ -586,7 +589,7 @@ res <- fromJSON("http://api.angel.co/1/tags/59/startups")
 res$startups
 @
 
-\subsubsection{Ergast}
+\subsubsection*{Ergast}
 
 The Ergast Developer API is an experimental web service which provides a historical record of motor racing data for non-commercial purposes.
 
@@ -599,7 +602,7 @@ races$RaceTable$Races$MRData$Results[[1]]$Driver
 
 The following APIs require (free) registration of a key/token. In each case, registration is easy and a key will be emailed to you. The key has to be appended to the requests to query the APIs. The code below includes some example keys for illustration purposes.
 
-\subsubsection{Sunlight Foundation}
+\subsubsection*{Sunlight Foundation}
 
 The Sunlight Foundation is a non-profit that helps to make government transparent and accountable through data, tools, policy and journalism.
 
@@ -614,7 +617,7 @@ legislators <- fromJSON(paste0("http://congress.api.sunlightfoundation.com/",
   "legislators/locate?latitude=42.96&longitude=-108.09", key))
 @
 
-\subsubsection{New York Times}
+\subsubsection*{New York Times}
 
 The New York Times has several free APIs that are part of its "developer network". They interface to different parts of the organization, such as news articles, book reviews, real estate, etc.
  
@@ -637,7 +640,7 @@ url = "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json?order=by-date
 reviews <- fromJSON(paste0(url, movie_key))
 @
 
-\subsubsection{CrunchBase}
+\subsubsection*{CrunchBase}
 
 CrunchBase is the free database of technology companies, people, and investors that anyone can edit.
 
@@ -651,7 +654,7 @@ str(res$results)
  
 The following API requires a more elaborate authentication process based on the Oauth2 protocol. 
  
-\subsubsection{Twitter}
+\subsubsection*{Twitter}
 
 The Twitter API provides access to almost anything happening on Twitter. Below some example code in R:
 
@@ -681,6 +684,64 @@ call1 <- GET(url, config(httpheader = c("Authorization" = token)))
 obj1 <- fromJSON(rawToChar(call1$content))
 @
 
+\newpage
+\section{JSON RPC with OpenCPU}
+
+The \texttt{jsonlite} package is used by \texttt{OpenCPU} to convert between \JSON data and R ojects. Thereby clients can retrieve R objects, or remotely call R functions using \JSON where the function arguments as well as function return value are \JSON objects. For example to download the \texttt{Boston} data from the \texttt{MASS} package:\\
+
+\begin{tabular}{|l|l|}
+  \hline
+     \textbf{Command in R} & \textbf{Example URL on OpenCPU} \\
+  \hline
+     \texttt{toJSON(Boston, digits=4)} & \url{https://cran.ocpu.io/MASS/data/Boston/json?digits=4} \\
+  \hline 
+     \texttt{toJSON(Boston, dataframe="col")} & \url{https://cran.ocpu.io/MASS/data/Boston/json?dataframe=col} \\
+  \hline
+     \texttt{toJSON(Boston, pretty=FALSE)} & \url{https://cran.ocpu.io/MASS/data/Boston/json?pretty=false} \\
+  \hline  
+\end{tabular}
+\newline
+
+To calculate the variance of some the numbers \texttt{1:9} in the command line using using \texttt{curl}:
+
+\begin{Verbatim}[frame=single]
+curl https://demo.ocpu.io/stats/R/var/json -d 'x=[1,2,3,4,5,6,7,8,9]'
+\end{Verbatim}
+
+Or equivalently post the entire body in \JSON format:
+
+\begin{Verbatim}[frame=single]
+curl https://demo.ocpu.io/stats/R/var/json -H "Content-Type: application/json" \
+-d '{"x":[1,2,3,4,5,6,7,8,9]}'
+\end{Verbatim}
+
+Below an example where we call the \texttt{melt} function from the \texttt{reshape2} package. Here both input and output consist of an R data frame.
+
+\begin{Verbatim}[frame=single]
+curl https://cran.ocpu.io/reshape2/R/melt/json -d 'id=["Month", "Day"]&data=[ 
+  { "Ozone" : 41, "Solar.R" : 190, "Wind" : 7.4, "Temp" : 67, "Month" : 5, "Day" : 1 }, 
+  { "Ozone" : 36, "Solar.R" : 118, "Wind" : 8, "Temp" : 72, "Month" : 5, "Day" : 2 } ]'
+\end{Verbatim}
+
+Or equivalently:
+
+\begin{Verbatim}[frame=single]
+curl https://cran.ocpu.io/reshape2/R/melt/json -H "Content-Type: application/json" \
+  -d '{"id" : ["Month", "Day"], "data" : [ 
+    { "Ozone" : 41, "Solar.R" : 190, "Wind" : 7.4, "Temp" : 67, "Month" : 5, "Day" : 1 }, 
+    { "Ozone" : 36, "Solar.R" : 118, "Wind" : 8, "Temp" : 72, "Month" : 5, "Day" : 2 } 
+  ] }'
+\end{Verbatim}
+
+This is equivalent to the following in R:
+
+<<eval=FALSE>>=
+mydata <- airquality[1:2,]
+y <- reshape2::melt(data = mydata, id = c("Month", "Day"))
+cat(toJSON(y))
+@
+
+\end{appendices}
 \bibliographystyle{plainnat}
 \bibliography{json-mapping}
 \end{document}
