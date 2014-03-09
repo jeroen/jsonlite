@@ -733,7 +733,7 @@ curl https://cran.ocpu.io/reshape2/R/melt/json -H "Content-Type: application/jso
   ] }'
 \end{Verbatim}
 
-This is equivalent to the following in R:
+This request is equivalent to the following R code:
 
 <<eval=FALSE>>=
 mydata <- airquality[1:2,]
