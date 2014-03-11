@@ -14,7 +14,8 @@
 
 %meta
 \documentclass{article}
-\author{Jeroen Ooms}
+\author{Jeroen Ooms\\UCLA Department of Statistics} 
+\date{}
 \title{A Practical and Consistent Mapping Between JSON Data and R Objects}
 
 %some packages
