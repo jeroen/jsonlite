@@ -16,7 +16,7 @@
 \documentclass{article}
 \author{Jeroen Ooms\\UCLA Department of Statistics} 
 \date{}
-\title{A Practical and Consistent Mapping Between JSON Data and R Objects}
+\title{The jsonlite Package: A Practical and Consistent Mapping Between JSON Data and R Objects}
 
 %some packages
 \usepackage{url}
@@ -52,6 +52,9 @@ toJSON <- function(...){
 }
 @
 
+\abstract{The native R realization of \JSON data types is a \texttt{named list} for \JSON objects, and \texttt{unnamed list} for \JSON arrays. However, in practice a list is an awkward, inefficient type to store and manipulate data in R. Most statistical applications work with (homogeneous) vectors, matrices or data frames. In order to give these types a natural \JSON representation, we can define certain special cases of \JSON structures which map to more simple R types. However currently there exist no formal guidelines, or even consensus between implementations on how R data should be represented in \JSON. Furthermore, upon closer inspection, even the most basic data structures in R actually do not perfectly map to their \JSON counterparts, and leave some ambiguity for edge cases. These problems have resulted in different behavior between implementations, and can lead to unexpected output for certain special cases. This paper explicitly describes a mapping between R classes and \JSON data, highlights problems and proposes conventions that can generalize the mapping to cover all common classes and cases in R. We emphasize the importance of type consistency when using \JSON to exchange dynamic data. The \texttt{jsonlite} R package is used as a reference implementation throughout the paper.}
+
+
 \section{Introduction}
 
 \emph{JavaScript Object Notation} (\JSON) is a text format for the serialization of structured data \citep{crockford2006application}. It is derived from the object literals of \proglang{JavaScript}, as defined in the \proglang{ECMAScript} Programming Language Standard, Third Edition \citep{ecma1999262}. Design of \JSON is simple and concise in comparison with other text based formats, and it was originally proposed by Douglas Crockford as a ``fat-free alternative to \XML'' \citep{crockford2006json}. The syntax is easy for humans to read and write, easy for machines to parse and generate and completely described in a single page at \url{http://www.json.org}. The character encoding of \JSON text is always Unicode, using \texttt{UTF-8} by default \citep{crockford2006application}, making it naturally compatible with non-latin alphabets. Over the past years, \JSON has become hugely popular on the internet as a general purpose data interchange format. High quality parsing libraries are available for almost any programming language, making it easy to implement systems and applications that exchange data over the network using JSON. For R \citep{R}, several packages that assist the user in generating, parsing and validating JSON are available through CRAN, including \pkg{rjson} \citep{rjson}, \pkg{RJSONIO} \citep{RJSONIO}, and \pkg{jsonlite} \citep{jsonlite}.
@@ -71,7 +74,7 @@ The \texttt{JSON} format specifies 4 primitive types (\texttt{string}, \texttt{n
   \item A \JSON \emph{array}: an ordered sequence of zero or more values.
 \end{itemize}
 
-Both these structures are heterogeneous; i.e. they are allowed to contain elements of different types. Therefore, the native R realization of these structures is a \texttt{named list} for \JSON objects, and \texttt{unnamed list} for \JSON arrays. However, in practice a list is an awkward, inefficient type to store and manipulate data in R. Most statistical applications work with (homogeneous) vectors, matrices or data frames. In order to give these data structures a \JSON representation, we can define certain special cases of \JSON structures which get parsed into other, more specific R types. For example, one convention which all current implementations have in common is that a homogeneous array of primitives gets parsed into an \texttt{atomic vector} instead of a \texttt{list}. The \pkg{RJSONIO} documentation uses the term ``simplify'' for this, and we adopt this jargon.
+\noindent Both these structures are heterogeneous; i.e. they are allowed to contain elements of different types. Therefore, the native R realization of these structures is a \texttt{named list} for \JSON objects, and \texttt{unnamed list} for \JSON arrays. However, in practice a list is an awkward, inefficient type to store and manipulate data in R. Most statistical applications work with (homogeneous) vectors, matrices or data frames. In order to give these data structures a \JSON representation, we can define certain special cases of \JSON structures which get parsed into other, more specific R types. For example, one convention which all current implementations have in common is that a homogeneous array of primitives gets parsed into an \texttt{atomic vector} instead of a \texttt{list}. The \pkg{RJSONIO} documentation uses the term ``simplify'' for this, and we adopt this jargon.
 
 <<>>=
 txt <- '[12, 3, 7]'
