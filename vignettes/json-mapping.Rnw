@@ -28,6 +28,7 @@
 \usepackage[round]{natbib}
 \usepackage{fancyvrb}
 \usepackage[toc,page]{appendix}
+\usepackage{breakurl}
 
 %use vspace instead of indentation for paragraphs
 \usepackage{parskip}
