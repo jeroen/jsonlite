@@ -1,3 +1,7 @@
+0.9.5
+ - Never raise error in toJSON when force=true
+ - Update vignette
+
 0.9.4
  - Added minify function
  - Added singleton function

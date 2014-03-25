@@ -14,6 +14,9 @@ setMethod("asJSON", "ANY", function(x, force = FALSE, ...) {
   } else if (isTRUE(force) && existsMethod("asJSON", class(unclass(x)))) {
     # As a last resort we can force encoding using the unclassed object
     return(asJSON(unclass(x), force = force, ...))
+  } else if (isTRUE(force)) {
+    return(asJSON(NULL))
+    warning("No method asJSON S3 class: ", class(x))
   } else {
     # If even that doesn't work, we give up.
     stop("No method asJSON S3 class: ", class(x))
