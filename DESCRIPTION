@@ -15,12 +15,11 @@ Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
 VignetteBuilder: knitr
 Description: This package is a fork of the RJSONIO package by Duncan Temple
     Lang. It builds on the same libjson c++ parser, but implements a smarter
-    mapping between R objects and JSON strings. The package vignette describes
+    mapping between R objects and JSON strings. The vignette describes
     the behavior in great detail. In addition to drop-in replacements for
-    fromJSON and toJSON, the package has functions to serialize objects. The
-    package also contains many unit tests to make verify that all edge cases
-    are encoded and decoded consistently for use with dynamic data in systems
-    and applications.
+    fromJSON and toJSON, the package contains functions to serialize objects
+    and many unit tests to make verify that all edge cases are encoded and 
+    decoded consistently for use with dynamic data in systems and applications.
 Suggests:
     testthat,
     knitr,
