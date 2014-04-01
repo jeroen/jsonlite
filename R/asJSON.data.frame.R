@@ -55,7 +55,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"),
   }
   
   #create a matrix of json elements
-  dfnames <- deparse_vector(names(x))
+  dfnames <- deparse_vector(cleannames(names(x)))
   out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, complex = complex, na = na, oldna = oldna, ...)
   
   # This would be another way of doing the missing values

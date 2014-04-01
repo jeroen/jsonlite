@@ -34,10 +34,7 @@ setMethod("asJSON", "list", function(x, collapse = TRUE, na = NULL, oldna = NULL
       warning("collapse=FALSE called for named list.")
     }
     #in case of named list:    
-    objnames <- names(x)
-    objnames[is.na(objnames)] <- ""
-    objnames[objnames == ""] <- as.character(1:length(objnames))[objnames == ""]
-    objnames <- make.unique(objnames)
+    objnames <- cleannames(names(x))
     paste("{", paste(deparse_vector(objnames), tmp, sep = " : ", collapse = ", "), "}")
   } else {
     #in case of unnamed list:
