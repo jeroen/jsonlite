@@ -35,6 +35,7 @@ setMethod("asJSON", "list", function(x, collapse = TRUE, na = NULL, oldna = NULL
     }
     #in case of named list:    
     objnames <- names(x)
+    objnames[is.na(objnames)] <- ""
     objnames[objnames == ""] <- as.character(1:length(objnames))[objnames == ""]
     objnames <- make.unique(objnames)
     paste("{", paste(deparse_vector(objnames), tmp, sep = " : ", collapse = ", "), "}")
