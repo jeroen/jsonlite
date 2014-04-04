@@ -26,3 +26,4 @@ vignettes/framed.sty$
 src/Makevars$
 ^README.md$
 ^tidy.R$
+^.travis.yml$
