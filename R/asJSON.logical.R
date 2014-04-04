@@ -1,4 +1,4 @@
-setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "string", "NA"), ...) {
+setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "string", "NA"), auto_unbox = FALSE, ...) {
   # validate arg
   na <- match.arg(na)
   
@@ -17,6 +17,10 @@ setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "stri
   if(!is.character(tmp)){
     tmp <- as.character(tmp);
   }
+  
+  if(isTRUE(auto_unbox) && length(tmp) == 1){
+    return(tmp);
+  }  
   
   # collapse it
   if(collapse) {

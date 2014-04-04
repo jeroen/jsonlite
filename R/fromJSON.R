@@ -21,6 +21,7 @@
 #' @param factor how to encode factor objects: must be one of 'string' or 'integer'
 #' @param complex how to encode complex numbers: must be one of 'string' or 'list'
 #' @param raw how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'
+#' @param auto_unbox automatically \code{\link{unbox}} all atomic vectors of length 1. Not recommended!
 #' @param digits max number of digits (after the dot) to print for numeric values
 #' @param na how to print NA values. One of 'null' or 'string'. Defaults are class specific
 #' @param pretty adds indentation whitespace to JSON output. See \code{\link{prettify}}

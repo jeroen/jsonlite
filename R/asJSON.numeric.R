@@ -1,4 +1,4 @@
-setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = c("string", "null", "NA"), ...) {
+setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = c("string", "null", "NA"), auto_unbox = FALSE, ...) {
   
   # pretty format numbers, 'drop0trailing' is super slow for some reason
   # tmp <- formatC(x, digits = digits, format = "f", drop0trailing = TRUE)
@@ -21,6 +21,10 @@ setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = c("
       tmp[missings] <- NA_character_
     }
   }
+  
+  if(isTRUE(auto_unbox) && length(tmp) == 1){
+    return(tmp);
+  }  
   
   if(collapse){
     collapse(tmp)

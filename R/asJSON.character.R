@@ -1,4 +1,4 @@
-setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "string", "NA"), ...) {
+setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "string", "NA"), auto_unbox = FALSE, ...) {
   
   # vectorized escaping
   tmp <- deparse_vector(x)
@@ -20,6 +20,10 @@ setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "st
     } else {
       tmp[missings] <- NA_character_
     }
+  }
+  
+  if(isTRUE(auto_unbox) && length(tmp) == 1){
+    return(tmp);
   }
   
   # this is almost always true, except for class 'scalar'
