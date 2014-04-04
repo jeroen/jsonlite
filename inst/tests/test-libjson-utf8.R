@@ -7,24 +7,29 @@ context("libjson UTF-8 characters")
 
 
 test_that("test that non ascii characters are ok", {
-  #create random strings
-  objects <- list(
-    "Zürich",
-    "北京填鴨们",
-    "ผัดไทย",
-    "寿司"
-  );
-  
-  lapply(objects, function(x){
-    myjson <- toJSON(x);
-    expect_that(validate(myjson), is_true());
-    expect_that(fromJSON(myjson), equals(x));
+  #only run these tests with UTF8 locale (reported by BR)
+  if(grepl("utf|UTF", Sys.getlocale("LC_CTYPE"))) {
+    #create random strings
+    objects <- list(
+      "Zürich",
+      "北京填鴨们",
+      "ผัดไทย",
+      "寿司"
+    );
     
-    #prettify needs to parse + output
-    prettyjson <- prettify(myjson);
-    expect_that(validate(prettyjson), is_true());
-    expect_that(fromJSON(prettyjson), equals(x));      
-  });
+    lapply(objects, function(x){
+      myjson <- toJSON(x);
+      expect_that(validate(myjson), is_true());
+      expect_that(fromJSON(myjson), equals(x));
+      
+      #prettify needs to parse + output
+      prettyjson <- prettify(myjson);
+      expect_that(validate(prettyjson), is_true());
+      expect_that(fromJSON(prettyjson), equals(x));      
+    });
+  } else {
+    cat("skip")
+  }
 });
 
 
