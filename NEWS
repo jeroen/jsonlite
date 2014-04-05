@@ -1,5 +1,6 @@
 0.9.6
- - Add auto_unbox argument to toJSON
+ - toJSON gains argument auto_unbox
+ - Minor fixes
 
 0.9.5
  - Never raise error in toJSON when force=true
@@ -9,12 +10,12 @@
 
 0.9.4
  - Added minify function
- - Added singleton function
+ - Added unbox function
  - Fixed bug where toJSON 'force' argument wasn't passed down
  - Removed -DJSON_VALIDATE -DJSON_STREAM=1 from Makevars.in (already in JSONoptions.h)
 
 0.9.3
- - Changes by prof ripley for Solaris/CRAN
+ - Changes by Prof Ripley for Solaris/CRAN
 
 0.9.2
  - Update libjson to 7.6.1 (fixes bug in the validator)
