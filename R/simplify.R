@@ -1,5 +1,5 @@
 simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, 
-  simplifyDate = TRUE, homoList = TRUE, flatten = FALSE, columnmajor = FALSE) {
+  simplifyDate = simplifyVector, homoList = TRUE, flatten = FALSE, columnmajor = FALSE) {
   if (is.list(x)) {
     if (!length(x)) {
       # In case of fromJSON('[]') returning a list is most neutral.  Because the user
