@@ -11,6 +11,9 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     # list can be a dataframe recordlist
     if (isTRUE(simplifyDataFrame) && is.recordlist(x)) {
       mydf <- simplifyDataFrame(x, flatten = flatten)
+      if(is.data.frame(mydf) && identical(names(mydf), "$date") && is.numeric(mydf[["$date"]])){
+        return(structure(mydf[["$date"]]/1000, class=c("POSIXct", "POSIXt")))
+      }
       if ("$row" %in% names(mydf)) {
         row.names(mydf) <- mydf[["$row"]]
         mydf["$row"] <- NULL
