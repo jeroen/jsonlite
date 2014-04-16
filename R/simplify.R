@@ -1,5 +1,5 @@
 simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, 
-  homoList = TRUE, flatten = FALSE, columnmajor = FALSE) {
+  simplifyDate = TRUE, homoList = TRUE, flatten = FALSE, columnmajor = FALSE) {
   if (is.list(x)) {
     if (!length(x)) {
       # In case of fromJSON('[]') returning a list is most neutral.  Because the user
@@ -11,7 +11,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     # list can be a dataframe recordlist
     if (isTRUE(simplifyDataFrame) && is.recordlist(x)) {
       mydf <- simplifyDataFrame(x, flatten = flatten)
-      if(is.data.frame(mydf) && identical(names(mydf), "$date") && is.numeric(mydf[["$date"]])){
+      if(isTRUE(simplifyDate) && is.data.frame(mydf) && is.datelist(mydf)){
         return(structure(mydf[["$date"]]/1000, class=c("POSIXct", "POSIXt")))
       }
       if ("$row" %in% names(mydf)) {
@@ -82,6 +82,11 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
       }
     }
     
+    # convert date object
+    if( isTRUE(simplifyDate) && is.datelist(out) ){
+      return(structure(out[["$date"]]/1000, class=c("POSIXct", "POSIXt")))
+    }
+    
     # return object
     return(out)
   } else {
@@ -132,6 +137,13 @@ is.arraylist <- function(x) {
     && is.null(names(x))
     && all(vapply(x, is.array, logical(1)))
     && all.identical(vapply(x, function(y){paste(dim(y), collapse="-")}, character(1)))
+  );
+}
+
+is.datelist <- function(x){
+  isTRUE(is.list(x)
+     && identical(names(x), "$date")
+     && is.numeric(x[["$date"]])
   );
 }
 
