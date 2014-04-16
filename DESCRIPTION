@@ -1,6 +1,6 @@
 Package: jsonlite
-Version: 0.9.6.99
-Date: 2014-04-05
+Version: 0.9.7
+Date: 2014-04-16
 Title: A smarter JSON encoder/decoder for R
 License: Apache License 2.0
 NeedsCompilation: yes
