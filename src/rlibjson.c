@@ -213,7 +213,8 @@ processJSONNode(JSONNODE *n, int parentType, int simplify, SEXP nullValue, int s
         if(parentType == JSON_NODE)
 	   SET_NAMES(ans, NEW_CHARACTER(0));
         else  {
-	   SET_CLASS(ans, ScalarString(mkChar("AsIs")));
+     //Commented out by Jeroen. This seems useless.
+	   //SET_CLASS(ans, ScalarString(mkChar("AsIs")));
 	}
 
     } else if(simplifyWithNames || names == NULL || Rf_length(names) == 0) {
