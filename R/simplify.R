@@ -97,10 +97,14 @@ is.namedlist <- function(x) {
   isTRUE(is.list(x) && !is.null(names(x)))
 }
 
+is.unnamedlist <- function(x) {
+  isTRUE(is.list(x) && is.null(names(x)))
+}
+
 is.recordlist <- function(x) {
   # recordlist is an array with only objects or NULL NULL appears when this is a
   # nested data frame, but some records do not contain this data frame at all.
-  if (!isTRUE(is.list(x) && length(x))) {
+  if (!isTRUE(is.unnamedlist(x) && length(x))) {
     return(FALSE)
   }
   if (!any(namedlists <- vapply(x, is.namedlist, logical(1)))) {
