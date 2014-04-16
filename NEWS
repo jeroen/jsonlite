@@ -1,3 +1,8 @@
+0.9.7
+ - formally expose 'force' argument for toJSON
+ - fix bug in simplifyDataframe
+ - fix in rlibjson code that converted empty array to AsIs object
+
 0.9.6
  - toJSON gains argument auto_unbox
  - Minor fixes

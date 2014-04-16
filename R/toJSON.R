@@ -2,7 +2,7 @@
 toJSON <- function(x, dataframe = c("rows", "columns"), matrix = c("rowmajor", "columnmajor"),
   Date = c("ISO8601", "epoch"), POSIXt = c("string", "ISO8601", "epoch", "mongo"), 
   factor = c("string", "integer"), complex = c("string", "list"), raw = c("base64", "hex", "mongo"), 
-  na=c("null", "string"), auto_unbox = FALSE, digits = 2, pretty = FALSE, ...) {
+  na=c("null", "string"), auto_unbox = FALSE, digits = 2, pretty = FALSE, force = FALSE, ...) {
   
   # validate args
   dataframe <- match.arg(dataframe)
@@ -25,7 +25,8 @@ toJSON <- function(x, dataframe = c("rows", "columns"), matrix = c("rowmajor", "
   
   # dispatch
   ans <- asJSON(x, dataframe = dataframe, Date = Date, POSIXt = POSIXt, factor = factor, 
-    complex = complex, raw = raw, matrix = matrix, auto_unbox = auto_unbox, digits = digits, na = na, ...)
+    complex = complex, raw = raw, matrix = matrix, auto_unbox = auto_unbox, digits = digits, 
+    na = na, force = force, ...)
   
   #prettify
   if (isTRUE(pretty)) {

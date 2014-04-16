@@ -24,6 +24,7 @@
 #' @param auto_unbox automatically \code{\link{unbox}} all atomic vectors of length 1. Not recommended!
 #' @param digits max number of digits (after the dot) to print for numeric values
 #' @param na how to print NA values. One of 'null' or 'string'. Defaults are class specific
+#' @param force unclass/skip objects of classes with no defined json mapping
 #' @param pretty adds indentation whitespace to JSON output. See \code{\link{prettify}}
 #' @param txt a string in json format 
 #' @param simplifyVector coerse JSON arrays containing only scalars into a vector
