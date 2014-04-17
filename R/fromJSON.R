@@ -30,6 +30,7 @@
 #' @param simplifyVector coerse JSON arrays containing only scalars into a vector
 #' @param simplifyDataFrame coerse JSON arrays containing only records (JSON objects) into a data frame.
 #' @param simplifyMatrix coerse JSON arrays containing vectors of equal length and mode into matrix or array.
+#' @param flatten flatten nested data frames into a single non-nested data frame
 #' @param ... arguments passed on to class specific \code{print} methods
 #' @note All encoded objects should pass the validation at www.jsonlint.org
 #' @useDynLib jsonlite
@@ -61,7 +62,7 @@
 #' data2$owner$login
 #' }
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, 
-  simplifyMatrix = simplifyVector, ...) {
+  simplifyMatrix = simplifyVector, flatten = FALSE, ...) {
   
   # check type
   if (!is.character(txt)) {
@@ -100,7 +101,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   # post processing
   if (any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))) {
     return(simplify(obj, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
-      simplifyMatrix = simplifyMatrix, ...))
+      simplifyMatrix = simplifyMatrix, flatten = flatten, ...))
   } else {
     return(obj)
   }

@@ -26,7 +26,7 @@
 #' mydf1 <- simplifyDataFrame(obj, flatten=FALSE)
 #' mydf2 <- simplifyDataFrame(obj, flatten=TRUE)
 #' }
-simplifyDataFrame <- function(recordlist, columns, flatten = FALSE) {
+simplifyDataFrame <- function(recordlist, columns, flatten) {
   
   # no records at all
   if (!length(recordlist)) {
@@ -46,11 +46,11 @@ simplifyDataFrame <- function(recordlist, columns, flatten = FALSE) {
   # flatten list if set must be a more efficient way to do this. also 'null' values
   # get lost (although they might come back later) also breaks when records contain
   # nested lists of variable length
-  if (isTRUE(flatten)) {
-    recordlist <- lapply(recordlist, function(mylist) {
-      lapply(rapply(mylist, base::enquote, how = "unlist"), eval)
-    })
-  }
+  #if (isTRUE(flatten)) {
+  #  recordlist <- lapply(recordlist, function(mylist) {
+  #    lapply(rapply(mylist, base::enquote, how = "unlist"), eval)
+  #  })
+  #}
   
   # find columns if not specified
   if (missing(columns)) {
@@ -85,6 +85,14 @@ simplifyDataFrame <- function(recordlist, columns, flatten = FALSE) {
   n <- unique(columnlengths)
   if (length(n) > 1) {
     stop("Elements not of equal length: ", paste(columnlengths, collapse = " "))
+  }
+  
+  # flatten nested data frames
+  if(isTRUE(flatten)) {
+    dfcolumns <- vapply(columnlist, is.data.frame, logical(1))
+    if(any(dfcolumns)){
+      columnlist <- c(columnlist[!dfcolumns], do.call(c, columnlist[dfcolumns]))
+    }
   }
   
   # make into data frame
