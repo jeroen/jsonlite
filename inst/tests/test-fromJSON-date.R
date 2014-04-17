@@ -1,6 +1,6 @@
-context("fromJSON $date objects")
+context("fromJSON date objects")
 
-test_that("fromJSON $date objects", {
+test_that("fromJSON date objects", {
   
   x <- Sys.time() + c(1, 2, NA, 3)
   mydf <- data.frame(x=x)
