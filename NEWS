@@ -1,5 +1,6 @@
 0.9.7
- - formally expose 'force' argument for toJSON
+ - formally expose 'force' argument in toJSON
+ - formally expose 'flatten' argument in fromJSON
  - fix bug in simplifyDataframe
  - fix in rlibjson code that converted empty array to AsIs object
  - auto coerse mongo type dates in fromJSON
