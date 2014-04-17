@@ -27,8 +27,14 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     }
     
     # apply recursively
-    out <- lapply(x, sys.function(0), simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
+    out <- lapply(x, simplify, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
       simplifyMatrix = simplifyMatrix, columnmajor = columnmajor)
+    
+    # fix for mongo style dates turning into scalars *after* simplifying
+    # only happens when simplifyDataframe=FALSE
+    if(isTRUE(simplifyVector) && is.scalarlist(out) && all(vapply(out, is, logical(1), "POSIXt"))){
+      return(structure(null2na(out), class=c("POSIXct", "POSIXt")))
+    }
     
     # test for matrix. Note that we have to take another look at x (before null2na on
     # its elements) to differentiate between matrix and vector
