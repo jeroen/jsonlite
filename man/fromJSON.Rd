@@ -41,7 +41,7 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   \item{auto_unbox}{automatically \code{\link{unbox}} all
   atomic vectors of length 1. Not recommended!}
 
-  \item{digits}{max number of digits (after the dot) to
+  \item{digits}{max number of significant digits to
   print for numeric values}
 
   \item{na}{how to print NA values. One of 'null' or
