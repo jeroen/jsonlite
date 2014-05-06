@@ -8,7 +8,12 @@ setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = c("
   
   # This is perhaps a bit more natural?
   # See options(scipen) for if and how it switches to scientific notation
-  tmp <- as.character(round(x, digits))
+  # tmp <- as.character(round(x, digits))
+
+  # The problem with round is that it'll leave lots of digits on long numbers
+  # but very few on small ones, so varying relative precision
+  tmp <- formatC(x, digits=digits)
+
   na <- match.arg(na)
   
   # in numeric variables, NA, NaN, Inf are replaced by character strings
