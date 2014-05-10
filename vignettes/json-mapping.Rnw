@@ -55,6 +55,12 @@
 \newcommand{\dfn}[1]{\emph{#1}}
 \newcommand{\proglang}[1]{\texttt{#1}}
 
+%trick for using same content file as chatper and article
+\newcommand{\maintitle}[1]{
+  \title{#1}
+  \maketitle
+}
+
 %actual document
 \begin{document}
 
