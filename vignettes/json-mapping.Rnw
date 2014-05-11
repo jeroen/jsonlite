@@ -58,10 +58,12 @@
 %shorthands
 \newcommand{\JSON}{\texttt{JSON}\xspace}
 \newcommand{\R}{\texttt{R}\xspace}
+\newcommand{\C}{\texttt{C}\xspace}
 \newcommand{\toJSON}{\texttt{toJSON}\xspace}
 \newcommand{\fromJSON}{\texttt{fromJSON}\xspace}
 \newcommand{\XML}{\texttt{XML}\xspace}
 \newcommand{\jsonlite}{\texttt{jsonlite}\xspace}
+\newcommand{\API}{\texttt{API}\xspace}
 
 %trick for using same content file as chatper and article
 \newcommand{\maintitle}[1]{
