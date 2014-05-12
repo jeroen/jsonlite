@@ -1,8 +1,4 @@
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{A Practical and Consistent Mapping Between JSON Data and R Objects}
 
-%This is a template. 
-%Actual text goes in sources/content.Rnw
 \documentclass[notitlepage]{report} 
 \makeatletter
 \renewcommand{\thesection}{%
