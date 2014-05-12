@@ -1,0 +1,90 @@
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{A Practical and Consistent Mapping Between JSON Data and R Objects}
+
+%This is a template. 
+%Actual text goes in sources/content.Rnw
+\documentclass[notitlepage]{report} 
+\makeatletter
+\renewcommand{\thesection}{%
+  \@arabic\c@section
+}
+
+\setcounter {chapter} {3}
+
+%useful packages
+\usepackage{url}
+\usepackage{fullpage}
+\usepackage{xspace}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[round]{natbib}
+\usepackage{fancyvrb}
+\usepackage[toc,page]{appendix}
+\usepackage{breakurl}
+
+%for table positioning
+\usepackage{float}
+\restylefloat{table}
+
+%support for accents
+\usepackage[utf8]{inputenc}
+
+%support for ascii art 
+\usepackage{pmboxdraw}
+
+%use vspace instead of indentation for paragraphs
+\usepackage{parskip}
+
+%extra line spacing
+\usepackage{setspace}
+\setstretch{1.25}
+
+%knitr style verbatim blocks
+\newenvironment{codeblock}{
+  \VerbatimEnvironment
+  \definecolor{shadecolor}{rgb}{0.95, 0.95, 0.95}\color{fgcolor}
+  \color{black}
+  \begin{kframe}
+  \begin{BVerbatim}
+}{
+  \end{BVerbatim}
+  \end{kframe}
+}
+
+%placeholders for JSS/RJournal
+\newcommand{\pkg}[1]{\texttt{#1}}
+\newcommand{\CRANpkg}[1]{\texttt{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\file}[1]{\texttt{#1}}
+\newcommand{\dfn}[1]{\emph{#1}}
+\newcommand{\proglang}[1]{\texttt{#1}}
+
+%shorthands
+\newcommand{\JSON}{\texttt{JSON}\xspace}
+\newcommand{\R}{\texttt{R}\xspace}
+\newcommand{\C}{\texttt{C}\xspace}
+\newcommand{\toJSON}{\texttt{toJSON}\xspace}
+\newcommand{\fromJSON}{\texttt{fromJSON}\xspace}
+\newcommand{\XML}{\texttt{XML}\xspace}
+\newcommand{\jsonlite}{\texttt{jsonlite}\xspace}
+\newcommand{\API}{\texttt{API}\xspace}
+
+%trick for using same content file as chatper and article
+\newcommand{\maintitle}[1]{
+  \chapter{#1}
+}
+
+%actual document
+\begin{document}
+
+%include content
+<<child-content, child='sources/content.Rnw'>>=
+@
+
+%references
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+%end
+\end{document}
