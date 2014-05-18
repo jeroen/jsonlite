@@ -26,7 +26,7 @@
 #' mydf1 <- simplifyDataFrame(obj, flatten=FALSE)
 #' mydf2 <- simplifyDataFrame(obj, flatten=TRUE)
 #' }
-simplifyDataFrame <- function(recordlist, columns, flatten) {
+simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
   
   # no records at all
   if (!length(recordlist)) {
@@ -72,7 +72,7 @@ simplifyDataFrame <- function(recordlist, columns, flatten) {
   
   # simplify vectors and nested data frames
   columnlist <- lapply(columnlist, simplify, simplifyVector = TRUE, simplifyDataFrame = TRUE, 
-    simplifyMatrix = FALSE, flatten = flatten)
+    simplifyMatrix = FALSE, simplifySubMatrix = simplifyMatrix, flatten = flatten)
   
   # columnlist <- lapply(columnlist, function(x){ if(is.scalarlist(x)){
   # return(null2na(x)) } else if(is.recordlist(x)) { return(simplifyDataFrame(x,
@@ -80,7 +80,7 @@ simplifyDataFrame <- function(recordlist, columns, flatten) {
   
   # check that all elements have equal length
   columnlengths <- unlist(vapply(columnlist, function(z) {
-    ifelse(is.data.frame(z), nrow(z), length(z))
+    ifelse(length(dim(z)) > 1, nrow(z), length(z))
   }, integer(1)))
   n <- unique(columnlengths)
   if (length(n) > 1) {
