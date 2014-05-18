@@ -1,3 +1,8 @@
+0.9.8
+ - Add support for simplifyMatrix within a data frame
+ - Add class "json" output of toJSON, simplify, minify
+ - Add print method for json
+
 0.9.7
  - formally expose 'force' argument in toJSON
  - formally expose 'flatten' argument in fromJSON
