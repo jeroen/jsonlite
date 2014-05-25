@@ -30,7 +30,7 @@ The emphasis of this paper is not on discussing the \JSON format or any particul
 
 \subsection{Parsing and type safety}
 
-The \texttt{JSON} format specifies 4 primitive types (\texttt{string}, \texttt{number}, \texttt{boolean}, \texttt{null}) and two \emph{universal structures}:
+The \JSON format specifies 4 primitive types (\texttt{string}, \texttt{number}, \texttt{boolean}, \texttt{null}) and two \emph{universal structures}:
 
 \begin{itemize} %[itemsep=3pt, topsep=5pt]
   \item A \JSON \emph{object}: an unordered collection of zero or more name-value
@@ -64,19 +64,19 @@ The lesson here is that we need to be very specific and explicit about the mappi
 
 \subsection{Reference implementation: the \jsonlite package}
 
-The \jsonlite package provides a reference implementation of the conventions proposed in this document. It is a fork of the \texttt{RJSONIO} package by Duncan Temple Lang, which builds on \texttt{libjson} \texttt{C++} library from Jonathan Wallace. \jsonlite uses the parser from \texttt{RJSONIO}, but the \R code has been rewritten from scratch. Both packages implement \toJSON and \fromJSON functions, but their output is quite different. Finally, the \jsonlite package contains a large set of unit tests to validate that \R objects are correctly converted to \JSON and vice versa. These unit tests cover all classes and edge cases mentioned in this document, and could be used to validate if other implementations follow the same conventions. 
+The \jsonlite package provides a reference implementation of the conventions proposed in this document. It is a fork of the \RJSONIO package by Duncan Temple Lang, which builds on \texttt{libjson} \texttt{C++} library from Jonathan Wallace. \jsonlite uses the parser from \RJSONIO, but the \R code has been rewritten from scratch. Both packages implement \toJSON and \fromJSON functions, but their output is quite different. Finally, the \jsonlite package contains a large set of unit tests to validate that \R objects are correctly converted to \JSON and vice versa. These unit tests cover all classes and edge cases mentioned in this document, and could be used to validate if other implementations follow the same conventions. 
 
 <<eval=FALSE>>=
 library(testthat)
 test_package("jsonlite")
 @
 
-Note that even though \texttt{JSON} allows for inserting arbitrary white space and indentation, the unit tests assume that white space is trimmed.
+Note that even though \JSON allows for inserting arbitrary white space and indentation, the unit tests assume that white space is trimmed.
 
 \subsection{Class-based versus type-based encoding}
 \label{serializejson}
 
-The \jsonlite package actually implements two systems for translating between \R objects and \JSON. This document focuses on the \toJSON and \fromJSON functions which use \R's class-based method dispatch. For all of the common classes in \R, the \jsonlite package implements \toJSON methods as described in this document. Users in \R can extend this system by implementing additional methods for other classes. This also means that classes that do not have the \toJSON method defined are not supported. Furthermore, the implementation of a specific \toJSON method determines which data and metadata in the objects of this class gets encoded in its \JSON representation, and how. In this respect, \toJSON is similar to e.g. the \texttt{print} function, which also provides a certain \emph{representation} of an object based on its class and optionally some print parameters. This representation does not necessarily reflect all information stored in the object, and there is no guaranteed one-to-one correspondence between \R objects and \JSON. I.e. calling \texttt{fromJSON(toJSON(object))} will return an object which only contains the data that was encoded by the \toJSON method for this particular class, and which might even have a different class than the original.
+The \jsonlite package actually implements two systems for translating between \R objects and \JSON. This document focuses on the \toJSON and \fromJSON functions which use \R's class-based method dispatch. For all of the common classes in \R, the \jsonlite package implements \toJSON methods as described in this document. Users in \R can extend this system by implementing additional methods for other classes. This also means that classes that do not have the \toJSON method defined are not supported. Furthermore, the implementation of a specific \toJSON method determines which data and metadata in the objects of this class gets encoded in its \JSON representation, and how. In this respect, \toJSON is similar to e.g. the \texttt{print} function, which also provides a certain \emph{representation} of an object based on its class and optionally some print parameters. This representation does not necessarily reflect all information stored in the object, and there is no guaranteed one-to-one correspondence between \R objects and \JSON. I.e. calling \code{fromJSON(toJSON(object))} will return an object which only contains the data that was encoded by the \toJSON method for this particular class, and which might even have a different class than the original.
 
 The alternative to class-based method dispatch is to use type-based encoding, which \jsonlite implements in the functions \texttt{serializeJSON} and \texttt{unserializeJSON}. All data structures in \R get stored in memory using one of the internal \texttt{SEXP} storage types, and \texttt{serializeJSON} defines an encoding schema which captures the type, value, and attributes for each storage type. The resulting \JSON closely resembles the internal structure of the underlying \C data types, and can be perfectly restored to the original \R object using \texttt{unserializeJSON}. This system is relatively straightforward to implement, but the resulting \JSON is very verbose, hard to interpret, and cumbersome to generate in the context of another language or system. For most applications this is actually impractical because it requires the client/consumer to understand and manipulate \R data types, which is difficult and reduces interoperability. Instead we can make data in \R more accessible to third parties by defining sensible \JSON representations that are natural for the class of an object, rather than its internal storage type. This document does not discuss the \texttt{serializeJSON} system in any further detail, and solely treats the class based system implemented in \toJSON and \fromJSON. However the reader that is interested in full serialization of \R objects into \JSON is encouraged to have a look at the respective manual pages.
 
@@ -109,7 +109,7 @@ This section lists examples of how the common \R classes are represented in \JSO
 
 \subsection{Atomic vectors}
 
-The most basic data type in \R is the atomic vector. Atomic vectors hold an ordered, homogeneous set of values of type \texttt{"logical"} (booleans), \texttt{character} (strings), \texttt{"raw"} (bytes), \texttt{numeric} (doubles), \texttt{"complex"} (complex numbers with a real and imaginary part), or \texttt{integer}. Because \R is fully vectorized, there is no user level notion of a primitive: a scalar value is considered a vector of length 1. Atomic vectors map to \JSON arrays:
+The most basic data type in \R is the atomic vector. Atomic vectors hold an ordered, homogeneous set of values of type \texttt{logical} (booleans), \texttt{character} (strings), \texttt{raw} (bytes), \texttt{numeric} (doubles), \texttt{complex} (complex numbers with a real and imaginary part), or \texttt{integer}. Because \R is fully vectorized, there is no user level notion of a primitive: a scalar value is considered a vector of length 1. Atomic vectors map to \JSON arrays:
 
 <<>>=
 x <- c(1, 2, pi)
@@ -183,7 +183,7 @@ toJSON(list(vector()))
 toJSON(list(pi))
 @
 
-This might seem obvious but these cases result in very different behavior between different \JSON packages. This is probably caused by the fact that \R does not have a scalar type, and some package authors decided to treat vectors of length 1 as if they were a scalar. For example, in the current implementations, both \texttt{RJSONIO} and \texttt{rjson} encode a vector of length one as a \JSON primitive when it appears within a list: 
+This might seem obvious but these cases result in very different behavior between different \JSON packages. This is probably caused by the fact that \R does not have a scalar type, and some package authors decided to treat vectors of length 1 as if they were a scalar. For example, in the current implementations, both \RJSONIO and \pkg{rjson} encode a vector of length one as a \JSON primitive when it appears within a list: 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}

@@ -1,6 +1,12 @@
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{A Practical and Consistent Mapping Between JSON Data and R Objects}
 
+<<echo=FALSE>>=
+#For JSS
+#opts_chunk$set(prompt=TRUE, highlight=FALSE, background="white")
+#options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
+@
+
 %This is a template. 
 %Actual text goes in sources/content.Rnw
 \documentclass{article}
@@ -49,7 +55,6 @@
 
 %placeholders for JSS/RJournal
 \newcommand{\pkg}[1]{\texttt{#1}}
-\newcommand{\CRANpkg}[1]{\texttt{#1}}
 \newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\file}[1]{\texttt{#1}}
 \newcommand{\dfn}[1]{\emph{#1}}
@@ -61,8 +66,9 @@
 \newcommand{\C}{\texttt{C}\xspace}
 \newcommand{\toJSON}{\texttt{toJSON}\xspace}
 \newcommand{\fromJSON}{\texttt{fromJSON}\xspace}
-\newcommand{\XML}{\texttt{XML}\xspace}
-\newcommand{\jsonlite}{\texttt{jsonlite}\xspace}
+\newcommand{\XML}{\pkg{XML}\xspace}
+\newcommand{\jsonlite}{\pkg{jsonlite}\xspace}
+\newcommand{\RJSONIO}{\pkg{RJSONIO}\xspace}
 \newcommand{\API}{\texttt{API}\xspace}
 
 %trick for using same content file as chatper and article
