@@ -1,5 +1,5 @@
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Examples of jsonite with HTTP APIs}
+%\VignetteIndexEntry{Examples of using jsonlite with public JSON APIs}
 
 <<echo=FALSE>>=
 #For JSS
@@ -213,11 +213,6 @@ url = "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_n
 call1 <- GET(url, config(httpheader = c("Authorization" = token)))
 obj1 <- fromJSON(rawToChar(call1$content))
 @
-
-
-%references
-\bibliographystyle{plainnat}
-\bibliography{references}
 
 %end
 \end{document}

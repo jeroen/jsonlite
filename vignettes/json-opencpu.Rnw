@@ -132,9 +132,5 @@ y <- reshape2::melt(data = mydata, id = c("Month", "Day"))
 toJSON(y)
 @
 
-%references
-\bibliographystyle{plainnat}
-\bibliography{references}
-
 %end
 \end{document}
