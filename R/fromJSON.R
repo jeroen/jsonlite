@@ -90,7 +90,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   
   # simple check
   if (!grepl("^[ \t\r\n]*(\\{|\\[)", txt)) {
-    stop("String does not seem to be valid JSON: ", gsub("\\s+"," ",substring(txt, 0, 30)))
+    stop("String does not contain valid JSON: \"", gsub("\\s+", " ", substring(txt, 0, 25)), "...\"")
   }
   
   # parse JSON

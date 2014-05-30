@@ -24,5 +24,9 @@ download <- function(URL){
     SSL_CACERT = download_retry_ssl
   );
   httr::stop_for_status(req);
+  ctype <- req$headers[["content-type"]]
+  if(!grepl("json", ctype)){
+    warning("Unexpected Content-Type: ", ctype, call. = FALSE)
+  }
   rawToChar(req$content);  
 }
