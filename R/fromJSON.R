@@ -77,10 +77,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
         stop("Package httr not found. Please run: install.packages('httr')", 
           call. = FALSE)
       })
-      req <- httr::GET(txt, httr::config(httpheader=c(`User-Agent` = "RCurl-httr-jsonlite"), 
-        sslversion = 3, ssl.verifypeer=FALSE, ssl.verifyhost = FALSE))
-      httr::stop_for_status(req)
-      txt <- rawToChar(req$content)
+      txt <- download(txt)
     } else if (file.exists(txt)) {
       txt <- paste(readLines(txt, warn = FALSE), collapse = "\n")
     }
