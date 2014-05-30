@@ -301,7 +301,11 @@ R_json_parser_test_stream_chunk(SEXP r_filename)
     }
     
     int len = strlen(str), cur = 0, blocksize = 100;
-    int count = 0;
+
+#ifdef R_DEBUG_STREAM
+int count = 0;
+#endif    
+
     char tmp[blocksize + 1];
     tmp[blocksize] = '\0';
     while(cur < len) {
