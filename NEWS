@@ -1,5 +1,5 @@
 0.9.8
- - Default output of toJSON is now minified
+ - Remove whitespace from default output of toJSON
  - Split vignette in 3 documents
  - Add support for simplifyMatrix within a data frame
  - Add class "json" output of toJSON, simplify, minify
