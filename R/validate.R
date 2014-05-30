@@ -1,8 +1,8 @@
 #' Validate JSON
 #' 
-#' Test if a string is a valid JSON string. Characters vectors will be collapsed into a single string.
+#' Test if a string contains valid \code{JSON}. Characters vectors will be collapsed into a single string.
 #' 
-#' @param txt JSON string
+#' @param txt \code{JSON} string
 #' @export
 #' @examples #Output from toJSON and serializeJSON should pass validation
 #' myjson <- toJSON(mtcars)

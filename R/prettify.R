@@ -5,7 +5,7 @@
 #' @name prettify, minify
 #' @aliases minify prettify
 #' @export prettify minify
-#' @param txt JSON string
+#' @param txt \code{JSON} string
 #' @examples myjson <- toJSON(cars)
 #' cat(myjson)
 #' prettify(myjson)

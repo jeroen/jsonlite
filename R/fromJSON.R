@@ -1,15 +1,15 @@
-#' These functions are used to convert R objects into JSON and vice versa. The \code{\link{toJSON}} and \code{\link{fromJSON}}
-#' functions use a class based encoding schema which follows conventions outlines in the vignette of this 
-#' package. They implement a consitent and practical mapping between JSON structures and the standard data 
-#' structures in R. 
+#' These functions are used to convert between \code{JSON} data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
+#' functions use a class based mapping, whichs follows conventions outlined in the vignette of the package.
 #' 
 #' The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions
-#' in packages rjson and RJSONIO. Our implementation uses an alternative, somewhat more consistent mapping
-#' between R objects and JSON strings. The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions use an 
-#' alternative system to convert between R objects and JSON, which supports more classes but is much more verbose.
+#' in packages \code{rjson} and \code{RJSONIO}. Our implementation uses an alternative, somewhat more consistent mapping
+#' between \R{} objects and \code{JSON} strings. 
+#' 
+#' The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions in this package use an 
+#' alternative system to convert between \R{} objects and \code{JSON}, which supports more classes but is much more verbose.
 # 
 #' @rdname fromJSON
-#' @title Convert R objects to/from \code{JSON}
+#' @title Convert \R{} objects to/from \code{JSON}
 #' @name toJSON, fromJSON
 #' @aliases fromJSON toJSON 
 #' @export fromJSON toJSON
@@ -25,18 +25,15 @@
 #' @param digits max number of digits (after the dot) to print for numeric values
 #' @param na how to print NA values. One of 'null' or 'string'. Defaults are class specific
 #' @param force unclass/skip objects of classes with no defined json mapping
-#' @param pretty adds indentation whitespace to JSON output. See \code{\link{prettify}}
+#' @param pretty adds indentation whitespace to \code{JSON} output. See \code{\link{prettify}}
 #' @param txt a string in json format 
-#' @param simplifyVector coerse JSON arrays containing only scalars into a vector
-#' @param simplifyDataFrame coerse JSON arrays containing only records (JSON objects) into a data frame.
-#' @param simplifyMatrix coerse JSON arrays containing vectors of equal length and mode into matrix or array.
+#' @param simplifyVector coerse \code{JSON} arrays containing only scalars into a vector
+#' @param simplifyDataFrame coerse \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame.
+#' @param simplifyMatrix coerse \code{JSON} arrays containing vectors of equal length and mode into matrix or array.
 #' @param flatten flatten nested data frames into a single non-nested data frame
 #' @param ... arguments passed on to class specific \code{print} methods
-#' @note All encoded objects should pass the validation at www.jsonlint.org
 #' @useDynLib jsonlite
-#' @references
-#' \url{http://www.jsonlint.org}
-#' @author Jeroen Ooms \email{jeroen.ooms@@stat.ucla.edu}
+#' @references Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between \code{JSON} Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{http://arxiv.org/abs/1403.2805}
 #' @examples #stringify some data
 #' jsoncars <- toJSON(mtcars, pretty=TRUE)
 #' cat(jsoncars)

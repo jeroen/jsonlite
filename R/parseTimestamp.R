@@ -6,7 +6,6 @@ parseTimestamp <- function(x) {
 }
 
 #' @method parseTimestamp numeric
-#' @S3method parseTimestamp numeric
 parseTimestamp.numeric <- function(x) {
   if (any(x < 1e+10) && all(x < 1e+10)) {
     warning("Timestamps seem low. Make sure they are milliseconds and not seconds:\n\n", 
@@ -16,7 +15,6 @@ parseTimestamp.numeric <- function(x) {
 }
 
 #' @method parseTimestamp character
-#' @S3method parseTimestamp character
 parseTimestamp.character <- function(x) {
   if (length(na.omit(x)) == 0) {
     return(x)
@@ -49,5 +47,4 @@ parseTimestamp.character <- function(x) {
 }
 
 #' @method parseTimestamp POSIXt
-#' @S3method parseTimestamp POSIXt
 parseTimestamp.POSIXt <- identity 

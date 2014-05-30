@@ -1,4 +1,5 @@
-#' @S3method print json
+#' @method print json
+#' @export
 print.json <- function(x, ...){
   cat(x)
 }
