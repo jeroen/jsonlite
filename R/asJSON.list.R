@@ -35,7 +35,7 @@ setMethod("asJSON", "list", function(x, collapse = TRUE, na = NULL, oldna = NULL
     }
     #in case of named list:    
     objnames <- cleannames(names(x))
-    paste("{", paste(deparse_vector(objnames), tmp, sep = " : ", collapse = ", "), "}")
+    paste0("{", paste(deparse_vector(objnames), tmp, sep = ":", collapse = ","), "}")
   } else {
     #in case of unnamed list:
     if(collapse){
