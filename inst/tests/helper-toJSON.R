@@ -1,3 +1,3 @@
 toJSON <- function(...){
-  unclass(jsonlite::toJSON(...))
+  unclass(minify(jsonlite::toJSON(...)))
 }

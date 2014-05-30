@@ -10,10 +10,10 @@ test_that("Test NULL values", {
   expect_that(fromJSON(toJSON(x)), equals(list()))
 
   expect_that(validate(toJSON(y)), is_true())
-  expect_that(gsub("\\s", "", toJSON(y)), equals("{\"a\":{},\"b\":[null]}"))
+  expect_that(toJSON(y), equals("{\"a\":{},\"b\":[null]}"))
   expect_that(fromJSON(toJSON(y)), equals(list(a=list(), b=NA)))
 
   expect_that(validate(toJSON(z)), is_true())
-  expect_that(gsub("\\s", "", toJSON(z)), equals("{\"a\":[1],\"b\":[]}"))
+  expect_that(toJSON(z), equals("{\"a\":[1],\"b\":[]}"))
   expect_that(fromJSON(toJSON(z)), equals(list(a=1, b=list())))
 });
