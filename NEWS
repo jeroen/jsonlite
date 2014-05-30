@@ -1,7 +1,10 @@
 0.9.8
+ - Default output of toJSON is now minified
+ - Split vignette in 3 documents
  - Add support for simplifyMatrix within a data frame
  - Add class "json" output of toJSON, simplify, minify
  - Add print method for json
+ - Cleaned up unit tests
 
 0.9.7
  - formally expose 'force' argument in toJSON
