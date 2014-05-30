@@ -20,12 +20,12 @@
 #' @return Returns a singleton version of \code{x}.
 #' @export
 #' @references \url{http://en.wikipedia.org/wiki/Singleton_(mathematics)}
-#' @examples cat(toJSON(list(foo=123)))
-#' cat(toJSON(list(foo=unbox(123))))
+#' @examples toJSON(list(foo=123))
+#' toJSON(list(foo=unbox(123)))
 #' 
 #' x <- iris[1,]
-#' cat(toJSON(list(rec=x)))
-#' cat(toJSON(list(rec=unbox(x))))
+#' toJSON(list(rec=x))
+#' toJSON(list(rec=unbox(x)))
 unbox <- function(x){
   if(is.data.frame(x)){
     if(nrow(x) == 1){

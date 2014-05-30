@@ -8,8 +8,8 @@
 #' @param txt JSON string
 #' @examples myjson <- toJSON(cars)
 #' cat(myjson)
-#' cat(prettify(myjson))
-#' cat(minify(myjson))
+#' prettify(myjson)
+#' minify(myjson)
 prettify <- function(txt) {
   txt <- paste(as.character(txt), collapse = "\n")
   enc <- mapEncoding(Encoding(txt))
