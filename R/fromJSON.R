@@ -60,6 +60,10 @@
 #' names(data2)
 #' names(data2$owner)
 #' data2$owner$login
+#' 
+#' #flatten instead:
+#' data3 <- fromJSON("https://api.github.com/users/hadley/repos", flatten=TRUE)
+#' names(data3)
 #' }
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, 
   simplifyMatrix = simplifyVector, flatten = FALSE, ...) {
