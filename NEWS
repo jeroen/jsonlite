@@ -6,6 +6,7 @@
  - Add print method for json
  - Cleaned up unit tests
  - Workaround for SSL handshake issues in https downloads
+ - Raise warnings for SSL or Content-Type abnormalities
 
 0.9.7
  - formally expose 'force' argument in toJSON
