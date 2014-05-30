@@ -5,6 +5,7 @@
  - Add class "json" output of toJSON, simplify, minify
  - Add print method for json
  - Cleaned up unit tests
+ - Workaround for SSL handshake issues in https downloads
 
 0.9.7
  - formally expose 'force' argument in toJSON
