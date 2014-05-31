@@ -7,6 +7,12 @@ src/*.o
 src/*.so
 src/*.dll
 src/*.cpp
+paper/*.pdf
+paper/*.gz
+paper/*.log
+paper/*.tex
+paper/*concordance.tex
+paper/*.bbl
 src/Makevars
 vignettes/*.tex
 vignettes/*.log
@@ -18,3 +24,5 @@ man/as.scalar.Rd
 vignettes/framed.sty
 vignettes/.DS_Store
 .DS_Store
+
+
