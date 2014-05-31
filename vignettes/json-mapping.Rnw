@@ -139,7 +139,7 @@ The lesson here is that we need to be very specific and explicit about the mappi
 % - Natural class is implicit in the structure, rather than explicitly encode using metadata.
 % - Will show examples of why this is powerful.
 
-\subsection{Reference implementation: the \jsonlite package}
+\subsection{Reference implementation: the jsonlite package}
 
 The \jsonlite package provides a reference implementation of the conventions proposed in this document. It is a fork of the \RJSONIO package by Duncan Temple Lang, which builds on \texttt{libjson} \texttt{C++} library from Jonathan Wallace. \jsonlite uses the parser from \RJSONIO, but the \R code has been rewritten from scratch. Both packages implement \toJSON and \fromJSON functions, but their output is quite different. Finally, the \jsonlite package contains a large set of unit tests to validate that \R objects are correctly converted to \JSON and vice versa. These unit tests cover all classes and edge cases mentioned in this document, and could be used to validate if other implementations follow the same conventions. 
 
@@ -180,7 +180,7 @@ Finally, as mentioned earlier, \fromJSON is not a perfect inverse function of \t
 % \end{itemize}
 
 
-\section{Converting between \JSON and \R classes}
+\section{Converting between JSON data and R classes}
  
 This section lists examples of how the common \R classes are represented in \JSON. As explained before, the \toJSON function relies on method dispatch, which means that objects get encoded according to their \texttt{class} attribute. If an object has multiple \texttt{class} values, \R uses the first occurring class which has a \toJSON method. If none of the classes of an object has a \toJSON method, an error is raised.
 
