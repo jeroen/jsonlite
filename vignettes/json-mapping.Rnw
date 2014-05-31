@@ -56,16 +56,14 @@
 %placeholders for JSS/RJournal
 \newcommand{\pkg}[1]{\texttt{#1}}
 \newcommand{\code}[1]{\texttt{#1}}
-\newcommand{\file}[1]{\texttt{#1}}
-\newcommand{\dfn}[1]{\emph{#1}}
 \newcommand{\proglang}[1]{\texttt{#1}}
 
 %shorthands
 \newcommand{\JSON}{\texttt{JSON}\xspace}
-\newcommand{\R}{\texttt{R}\xspace}
-\newcommand{\C}{\texttt{C}\xspace}
-\newcommand{\toJSON}{\texttt{toJSON}\xspace}
-\newcommand{\fromJSON}{\texttt{fromJSON}\xspace}
+\newcommand{\R}{\proglang{R}\xspace}
+\newcommand{\C}{\proglang{C}\xspace}
+\newcommand{\toJSON}{\code{toJSON}\xspace}
+\newcommand{\fromJSON}{\code{fromJSON}\xspace}
 \newcommand{\XML}{\pkg{XML}\xspace}
 \newcommand{\jsonlite}{\pkg{jsonlite}\xspace}
 \newcommand{\RJSONIO}{\pkg{RJSONIO}\xspace}
@@ -157,7 +155,7 @@ Note that even though \JSON allows for inserting arbitrary white space and inden
 
 The \jsonlite package actually implements two systems for translating between \R objects and \JSON. This document focuses on the \toJSON and \fromJSON functions which use \R's class-based method dispatch. For all of the common classes in \R, the \jsonlite package implements \toJSON methods as described in this document. Users in \R can extend this system by implementing additional methods for other classes. This also means that classes that do not have the \toJSON method defined are not supported. Furthermore, the implementation of a specific \toJSON method determines which data and metadata in the objects of this class gets encoded in its \JSON representation, and how. In this respect, \toJSON is similar to e.g. the \texttt{print} function, which also provides a certain \emph{representation} of an object based on its class and optionally some print parameters. This representation does not necessarily reflect all information stored in the object, and there is no guaranteed one-to-one correspondence between \R objects and \JSON. I.e. calling \code{fromJSON(toJSON(object))} will return an object which only contains the data that was encoded by the \toJSON method for this particular class, and which might even have a different class than the original.
 
-The alternative to class-based method dispatch is to use type-based encoding, which \jsonlite implements in the functions \texttt{serializeJSON} and \texttt{unserializeJSON}. All data structures in \R get stored in memory using one of the internal \texttt{SEXP} storage types, and \texttt{serializeJSON} defines an encoding schema which captures the type, value, and attributes for each storage type. The resulting \JSON closely resembles the internal structure of the underlying \C data types, and can be perfectly restored to the original \R object using \texttt{unserializeJSON}. This system is relatively straightforward to implement, but the resulting \JSON is very verbose, hard to interpret, and cumbersome to generate in the context of another language or system. For most applications this is actually impractical because it requires the client/consumer to understand and manipulate \R data types, which is difficult and reduces interoperability. Instead we can make data in \R more accessible to third parties by defining sensible \JSON representations that are natural for the class of an object, rather than its internal storage type. This document does not discuss the \texttt{serializeJSON} system in any further detail, and solely treats the class based system implemented in \toJSON and \fromJSON. However the reader that is interested in full serialization of \R objects into \JSON is encouraged to have a look at the respective manual pages.
+The alternative to class-based method dispatch is to use type-based encoding, which \jsonlite implements in the functions \texttt{serializeJSON} and \code{unserializeJSON}. All data structures in \R get stored in memory using one of the internal \texttt{SEXP} storage types, and \code{serializeJSON} defines an encoding schema which captures the type, value, and attributes for each storage type. The resulting \JSON closely resembles the internal structure of the underlying \C data types, and can be perfectly restored to the original \R object using \code{unserializeJSON}. This system is relatively straightforward to implement, but the resulting \JSON is very verbose, hard to interpret, and cumbersome to generate in the context of another language or system. For most applications this is actually impractical because it requires the client/consumer to understand and manipulate \R data types, which is difficult and reduces interoperability. Instead we can make data in \R more accessible to third parties by defining sensible \JSON representations that are natural for the class of an object, rather than its internal storage type. This document does not discuss the \code{serializeJSON} system in any further detail, and solely treats the class based system implemented in \toJSON and \fromJSON. However the reader that is interested in full serialization of \R objects into \JSON is encouraged to have a look at the respective manual pages.
 
 \subsection{Scope and limitations}
 
@@ -165,7 +163,7 @@ Before continuing, we want to stress some limitations of encoding \R data struct
 
 Then there are limitations introduced by the format. Because \JSON is a human readable, text-based format, it does not support binary data, and numbers are stored in their decimal notation. The latter leads to loss of precision for real numbers, depending on how many digits the user decides to print. Several dialects of \JSON exists such as \texttt{BSON} \citep{chodorow2013mongodb} or \texttt{MSGPACK} \citep{msgpack}, which extend the format with various binary types. However, these formats are much less popular, less interoperable, and often impractical, precisely because they require binary parsing and abandon human readability. The simplicity of \JSON is what makes it an accessible and widely applicable data interchange format. In cases where it is really needed to include some binary data in \JSON, we can encode a blob as a string using \texttt{base64}.
 
-Finally, as mentioned earlier, \fromJSON is not a perfect inverse function of \toJSON, as is the case for \texttt{serialializeJSON} and \texttt{unserializeJSON}. The class based mappings are designed for concise and practical encoding of the various common data structures. Our implementation of \toJSON and \fromJSON approximates a reversible mapping between \R objects and \JSON for the standard data classes, but there are always limitations and edge cases. For example, the \JSON representation of an empty vector, empty list or empty data frame are all the same: \texttt{"[ ]"}. Also some special vector types such as factors, dates or timestamps get coerced to strings, as they would in for example \texttt{CSV}. This is a quite typical and expected behavior among text based formats, but it does require some additional interpretation on the consumer side.
+Finally, as mentioned earlier, \fromJSON is not a perfect inverse function of \toJSON, as is the case for \code{serialializeJSON} and \code{unserializeJSON}. The class based mappings are designed for concise and practical encoding of the various common data structures. Our implementation of \toJSON and \fromJSON approximates a reversible mapping between \R objects and \JSON for the standard data classes, but there are always limitations and edge cases. For example, the \JSON representation of an empty vector, empty list or empty data frame are all the same: \texttt{"[ ]"}. Also some special vector types such as factors, dates or timestamps get coerced to strings, as they would in for example \texttt{CSV}. This is a quite typical and expected behavior among text based formats, but it does require some additional interpretation on the consumer side.
 
 % \subsection{Goals: Consistent and Practical}
 % 
@@ -242,7 +240,7 @@ toJSON(factor(c("foo", "bar", "foo")))
 toJSON(complex(real=runif(3), imaginary=rnorm(3)))
 @
 
-When parsing such \JSON strings, these values will appear as character vectors. In order to obtain the original types, the user needs to manually coerce them back to the desired type using the corresponding \texttt{as} function, e.g. \texttt{as.POSIXct}, \texttt{as.Date}, \texttt{as.factor} or \texttt{as.complex}. In this respect, \JSON is subject to the same limitations as text based formats such as \texttt{CSV}.
+When parsing such \JSON strings, these values will appear as character vectors. In order to obtain the original types, the user needs to manually coerce them back to the desired type using the corresponding \texttt{as} function, e.g. \code{as.POSIXct}, \code{as.Date}, \code{as.factor} or \code{as.complex}. In this respect, \JSON is subject to the same limitations as text based formats such as \texttt{CSV}.
 
 \subsubsection{Special cases: vectors of length 0 or 1}
 
@@ -264,23 +262,11 @@ toJSON(list(pi))
 
 This might seem obvious but these cases result in very different behavior between different \JSON packages. This is probably caused by the fact that \R does not have a scalar type, and some package authors decided to treat vectors of length 1 as if they were a scalar. For example, in the current implementations, both \RJSONIO and \pkg{rjson} encode a vector of length one as a \JSON primitive when it appears within a list: 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Other packages make different choices:}
-\hlkwd{cat}\hlstd{(rjson::}\hlkwd{toJSON}\hlstd{(}\hlkwd{list}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{))))}
-\end{alltt}
-\begin{verbatim}
- {"n":1}
-\end{verbatim}
-\begin{alltt}
-\hlkwd{cat}\hlstd{(rjson::}\hlkwd{toJSON}\hlstd{(}\hlkwd{list}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{))))}
-\end{alltt}
-\begin{verbatim}
- {"n":[1,2]}
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+<<>>=
+# Other packages make different choices:
+cat(rjson::toJSON(list(n = c(1))))
+cat(rjson::toJSON(list(n = c(1, 2))))
+@
 
 When encoding a single dataset this seems harmless, but in the context of dynamic data this inconsistency is almost guaranteed to cause bugs. For example, imagine an \R web service which lets the user fit a linear model and sends back the fitted parameter estimates as a \JSON array. The client code then parses the \JSON, and iterates over the array of coefficients to display them in a \texttt{GUI}. All goes well, until the user decides to fit a model with only one predictor. If the \JSON encoder suddenly returns a primitive value where the client is assuming an array, the application will likely break. Therefore, any consumer or client would need to be aware of the special case where the vector becomes a primitive, and explicitly take this exception into account when processing the result. When the client fails to do so and proceeds as usual, it will probably call an iterator or loop method on a primitive value, resulting in the obvious errors. To avoid this, \jsonlite uses consistent encoding schemes which do not depend on variable object properties such as its length. Hence, a vector is always encoded as an array, even when it is of length 0 or 1.
 
@@ -349,7 +335,7 @@ print(y)
 toJSON(y, pretty=TRUE)
 @
 
-In some other cases, the column headers actually do contain variable names, and melting is inappropriate. For data sets with records consisting of a set of named columns (fields), \R has more natural and flexible class: the data-frame. The \toJSON method for data frames (described later) is more suitable when we want to refer to rows or fields by their name. Any matrix can easily be converted to a data-frame using the \texttt{as.data.frame} function:
+In some other cases, the column headers actually do contain variable names, and melting is inappropriate. For data sets with records consisting of a set of named columns (fields), \R has more natural and flexible class: the data-frame. The \toJSON method for data frames (described later) is more suitable when we want to refer to rows or fields by their name. Any matrix can easily be converted to a data-frame using the \code{as.data.frame} function:
 
 <<>>=
 toJSON(as.data.frame(x), pretty=TRUE)
@@ -408,7 +394,7 @@ x$foo
 x[[2]]
 @
 
- In a \JSON object, each element in an object must have a valid name. To ensure this property, \jsonlite uses the same solution as the \texttt{print} method, which is to fall back on indices for elements that do not have a proper name:
+ In a \JSON object, each element in an object must have a valid name. To ensure this property, \jsonlite uses the same solution as the \code{print} method, which is to fall back on indices for elements that do not have a proper name:
 
 <<>>=
 x <- list(foo=123, "test", TRUE)
@@ -429,13 +415,13 @@ print(iris[1:3, c(1,5)])
 print(iris[1:3, c("Sepal.Width", "Species")])
 @
 
- For the previously discussed classes such as vectors and matrices, behavior of \jsonlite was quite similar to the other available packages that implement \texttt{toJSON} and \texttt{toJSON} functions, with only minor differences for missing values and edge cases. But when it comes to data frames, \jsonlite takes a completely different approach. The behavior of \jsonlite is designed for compatibility with conventional ways of encoding table-like structures outside the \R community. The implementation is more involved, but results in a powerful and more natural way of representing data frames in \JSON.
+ For the previously discussed classes such as vectors and matrices, behavior of \jsonlite was quite similar to the other available packages that implement \toJSON and \fromJSON functions, with only minor differences for missing values and edge cases. But when it comes to data frames, \jsonlite takes a completely different approach. The behavior of \jsonlite is designed for compatibility with conventional ways of encoding table-like structures outside the \R community. The implementation is more involved, but results in a powerful and more natural way of representing data frames in \JSON.
 
 \subsubsection{Column based versus row based tables}
 
 Generally speaking, tabular data structures can be implemented in two different ways: in a column based, or row based fashion. A column based structure consists of a named collection of equal-length, homogeneous arrays representing the table columns. In a row-based structure on the other hand, the table is implemented as a set of heterogeneous associative arrays representing table rows with field values for each particular record. Even though most languages provide flexible and abstracted interfaces that hide these implementation details from the user, they can have huge implications for performance. A column based structure is efficient for inserting or extracting certain columns of the data, but it is inefficient for manipulating individual rows. For example to insert a single row somewhere in the middle, each of the columns has to be sliced and stitched back together. For row-based implementations, it is the exact other way around: we can easily manipulate a particular record, but to insert/extract a whole column we would need to iterate over all records in the table and read/modify the appropriate field in each of them.
 
-The data frame class in \R is implemented in a column based fashion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \texttt{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. \R simply binds the specified columns together into a matrix $X$ and calls out to a highly optimized \texttt{FORTRAN} subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the $QR$ factorization of $X$. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in \R.  
+The data frame class in \R is implemented in a column based fashion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \code{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. \R simply binds the specified columns together into a matrix $X$ and calls out to a highly optimized \proglang{FORTRAN} subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the $QR$ factorization of $X$. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in \R.  
 
 Unfortunately \R is an exception in its preference for column-based storage: most languages, systems, databases, \API's, etc, are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. The remaining of this section discusses details and challenges of consistently mapping record based \JSON data as frequently encountered on the web, into column-based data frames which are convenient for statistical computing.
 
@@ -522,7 +508,7 @@ Systems that automatically exchange information over some interface, protocol or
 
 \subsection{Classes, types and data}
 
-Most object-oriented languages are designed with the idea that all objects of a certain class implement the same fields and methods. In strong-typed languages such as \texttt{S4} or \texttt{Java}, names and types of the fields are formally declared in a class definition. In other languages such as \texttt{S3} or \texttt{JavaScript}, the fields are not enforced by the language but rather at the discretion of the programmer. One way or another they assume that members of a certain class agree on field names and types, so that the same methods can be applied to any object of a particular class. This basic principle holds for dynamic data exactly the same way as for objects. Software that process dynamic data can only work reliably if the various elements of the data have consistent names and structure. Consensus must exist between the different parties on data that is exchanged as part an interface or protocol. This requires the structure to follow some sort of template that specifies which attributes can appear in the data, what they mean and how they are composed. Thereby each possible scenario can be accounted for in the software so that data can be interpreted and processed appropriately with no exceptions during run-time. 
+Most object-oriented languages are designed with the idea that all objects of a certain class implement the same fields and methods. In strong-typed languages such as \proglang{S4} or \proglang{Java}, names and types of the fields are formally declared in a class definition. In other languages such as \proglang{S3} or \proglang{JavaScript}, the fields are not enforced by the language but rather at the discretion of the programmer. One way or another they assume that members of a certain class agree on field names and types, so that the same methods can be applied to any object of a particular class. This basic principle holds for dynamic data exactly the same way as for objects. Software that process dynamic data can only work reliably if the various elements of the data have consistent names and structure. Consensus must exist between the different parties on data that is exchanged as part an interface or protocol. This requires the structure to follow some sort of template that specifies which attributes can appear in the data, what they mean and how they are composed. Thereby each possible scenario can be accounted for in the software so that data can be interpreted and processed appropriately with no exceptions during run-time. 
 
 Some data interchange formats such as \texttt{XML} or \texttt{Protocol Buffers} take a formal approach to this matter, and have well established \emph{schema languages} and \emph{interface description languages}. Using such a meta language it is possible to define the exact structure, properties and actions of data interchange in a formal arrangement. However, in \JSON, such formal definitions are relatively uncommon. Some initiatives for \JSON schema languages exist \citep{jsonschema}, but they are not very well established and rarely seen in practice. One reason for this might be that defining and implementing formal schemas is complicated and a lot of work which defeats the purpose of using an lightweight format such as \JSON in the first place. But another reason is that it is often simply not necessary to be overly formal. The \JSON format is simple and intuitive, and under some general conventions, a well chosen example can suffice to characterize the structure. This section describes two important rules that are required to ensure that data exchange using \JSON is type safe.
 
@@ -556,7 +542,7 @@ In the context of \R, consistency of keys is closely related to Wikcham's concep
  
 \subsection{Rule 2: Consistent types}
 
-In a strong typed language, fields declare their class before any values are assigned. Thereby the type of a given field is identical in all objects of a particular class, and arrays only contain objects of a single type. The \texttt{S3} system in \R is weakly typed and puts no formal restrictions on the class of a certain properties, or the types of objects that can be combined into a collection. For example, the list below contains a character vector, a numeric vector and a list:
+In a strong typed language, fields declare their class before any values are assigned. Thereby the type of a given field is identical in all objects of a particular class, and arrays only contain objects of a single type. The \proglang{S3} system in \R is weakly typed and puts no formal restrictions on the class of a certain properties, or the types of objects that can be combined into a collection. For example, the list below contains a character vector, a numeric vector and a list:
 
 <<>>=
 #Heterogeneous lists are bad!
