@@ -83,7 +83,7 @@
 
 \section{Public \JSON data}
 
-This section lists some examples of public \texttt{HTTP} \API'ss that publish data in \JSON format. These are great to get a sense of the complex structures that are encountered in real world \JSON data. All services are free, but some require registration/authentication.
+This section lists some examples of public \texttt{HTTP} \API's that publish data in \JSON format. These are great to get a sense of the complex structures that are encountered in real world \JSON data. All services are free, but some require registration/authentication.
 
 Each example returns lots of data, therefore output is omitted in this document. The reader is encouraged to run the examples in \R and inspect the output manually. 
 
@@ -205,13 +205,13 @@ req <- POST("https://api.twitter.com/oauth2/token",
   multipart = FALSE
 );
 
-res <- fromJSON(rawToChar(req$content))
-token <- paste("Bearer", res$access_token);
+token <- paste("Bearer", content(req)$access_token);
 
 #Actual API call
 url = "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=UCLA"
 call1 <- GET(url, config(httpheader = c("Authorization" = token)))
 obj1 <- fromJSON(rawToChar(call1$content))
+print(obj1$text)
 @
 
 %end

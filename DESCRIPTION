@@ -25,5 +25,5 @@ Suggests:
     testthat,
     knitr,
     reshape2,
-    httr,
+    httr (>= 0.3),
     rjson
