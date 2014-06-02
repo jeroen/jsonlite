@@ -11,7 +11,7 @@ toJSON <- function(...){
 }
 
 #specific for JSS
-#opts_chunk$set(prompt=TRUE, highlight=FALSE, background="white")
+opts_chunk$set(prompt=TRUE, highlight=FALSE, background="white")
 options(prompt = "R> ", continue = "+  ", width = 68, useFancyQuotes = FALSE)
 @
 
