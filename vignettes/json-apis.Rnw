@@ -186,14 +186,14 @@ legislators <- fromJSON(paste0("http://congress.api.sunlightfoundation.com/",
  
 \subsubsection*{Twitter}
 
-The twitter \API requires a more elaborate authentication process based on the \texttt{OAuth2} protocol. Some example code:
+The twitter \API requires \texttt{OAuth2} authentication. Some example code:
 
 <<tidy=FALSE, eval=FALSE>>=
 #Create your own appication key at https://dev.twitter.com/apps
 consumer_key = "EZRy5JzOH2QQmVAe9B4j2w";
 consumer_secret = "OIDC4MdfZJ82nbwpZfoUO4WOLTYjoRhpHRAWj6JMec";
 
-#basic auth
+#Use basic auth
 library(httr)
 secret <- RCurl::base64(paste(consumer_key, consumer_secret, sep=":"));
 req <- POST("https://api.twitter.com/oauth2/token", 
@@ -205,6 +205,7 @@ req <- POST("https://api.twitter.com/oauth2/token",
   multipart = FALSE
 );
 
+#Extract the access token
 token <- paste("Bearer", content(req)$access_token);
 
 #Actual API call
