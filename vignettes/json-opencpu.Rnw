@@ -17,6 +17,7 @@
 \usepackage{fancyvrb}
 \usepackage[toc,page]{appendix}
 \usepackage{breakurl}
+\usepackage{upquote}
 
 %for table positioning
 \usepackage{float}
@@ -96,14 +97,14 @@ The \jsonlite package is used by \texttt{OpenCPU} to convert between \JSON data 
 To calculate the variance of some the numbers \texttt{1:9} in the command line using using \texttt{curl}:
 
 \begin{Verbatim}[frame=single]
-curl https://demo.ocpu.io/stats/R/var/json -d 'x=[1,2,3,4,5,6,7,8,9]'
+curl https://demo.ocpu.io/stats/R/var/json -d "x=[1,2,3,4,5,6,7,8,9]"
 \end{Verbatim}
 
 Or equivalently post the entire body in \JSON format:
 
 \begin{Verbatim}[frame=single]
 curl https://demo.ocpu.io/stats/R/var/json -H "Content-Type: application/json" \
--d '{"x":[1,2,3,4,5,6,7,8,9]}'
+-d "{\"x\":[1,2,3,4,5,6,7,8,9]}"
 \end{Verbatim}
 
 Below an example where we call the \texttt{melt} function from the \texttt{reshape2} package using some example rows from the \texttt{airquality} data. Here both input and output consist of a data frame.
