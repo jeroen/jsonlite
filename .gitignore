@@ -7,7 +7,6 @@ src/*.o
 src/*.so
 src/*.dll
 src/*.cpp
-paper/*.pdf
 paper/*.gz
 paper/*.log
 paper/*.tex
