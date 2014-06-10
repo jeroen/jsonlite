@@ -27,12 +27,12 @@ toJSON <- function(x, dataframe = c("rows", "columns"), matrix = c("rowmajor", "
   ans <- asJSON(x, dataframe = dataframe, Date = Date, POSIXt = POSIXt, factor = factor, 
     complex = complex, raw = raw, matrix = matrix, auto_unbox = auto_unbox, digits = digits, 
     na = na, force = force, ...)
-  
+    
   #prettify
   if (isTRUE(pretty)) {
     return(prettify(ans))
   } else {
-    return(ans)
+    return(structure(ans, class="json"))
   }
 }
 

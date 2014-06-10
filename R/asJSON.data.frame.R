@@ -75,15 +75,15 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"),
     tmp <- apply(out, 1, function(z){
       missings <- is.na(z);
       if(any(missings)){
-        paste("{", paste(dfnames[!missings], z[!missings], sep = " : ", collapse = ", "), "}")
+        paste0("{", paste(dfnames[!missings], z[!missings], sep = ":", collapse = ","), "}")
       } else {
-        paste("{", paste(dfnames, z, sep = " : ", collapse = ", "), "}")
+        paste0("{", paste(dfnames, z, sep = ":", collapse = ","), "}")
       }
     });
   } else {
     #tiny speed up because we don't have to check for NA 
     tmp <- apply(out, 1, function(z){
-      paste("{", paste(dfnames, z, sep = " : ", collapse = ", "), "}")
+      paste0("{", paste(dfnames, z, sep = ":", collapse = ","), "}")
     });    
   }
   

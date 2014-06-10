@@ -1,3 +1,13 @@
+0.9.8
+ - Remove whitespace from default output of toJSON
+ - Split vignette in 3 documents
+ - Add support for simplifyMatrix within a data frame
+ - Add class "json" output of toJSON, simplify, minify
+ - Add print method for json
+ - Cleaned up unit tests
+ - Workaround for SSL handshake issues in https downloads
+ - Raise warnings for SSL or Content-Type abnormalities
+
 0.9.7
  - formally expose 'force' argument in toJSON
  - formally expose 'flatten' argument in fromJSON

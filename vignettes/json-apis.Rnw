@@ -1,0 +1,219 @@
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Fetching JSON data from public HTTP APIs with jsonlite}
+
+<<echo=FALSE>>=
+#For JSS
+#opts_chunk$set(prompt=TRUE, highlight=FALSE, background="white")
+#options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
+@
+
+%This is a template. 
+%Actual text goes in sources/content.Rnw
+\documentclass{article}
+\author{Jeroen Ooms}
+
+%useful packages
+\usepackage{url}
+\usepackage{fullpage}
+\usepackage{xspace}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[round]{natbib}
+\usepackage{fancyvrb}
+\usepackage[toc,page]{appendix}
+\usepackage{breakurl}
+
+%for table positioning
+\usepackage{float}
+\restylefloat{table}
+
+%support for accents
+\usepackage[utf8]{inputenc}
+
+%support for ascii art 
+\usepackage{pmboxdraw}
+
+%use vspace instead of indentation for paragraphs
+\usepackage{parskip}
+
+%extra line spacing
+\usepackage{setspace}
+\setstretch{1.25}
+
+%knitr style verbatim blocks
+\newenvironment{codeblock}{
+  \VerbatimEnvironment
+  \definecolor{shadecolor}{rgb}{0.95, 0.95, 0.95}\color{fgcolor}
+  \color{black}
+  \begin{kframe}
+  \begin{BVerbatim}
+}{
+  \end{BVerbatim}
+  \end{kframe}
+}
+
+%placeholders for JSS/RJournal
+\newcommand{\pkg}[1]{\texttt{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\file}[1]{\texttt{#1}}
+\newcommand{\dfn}[1]{\emph{#1}}
+\newcommand{\proglang}[1]{\texttt{#1}}
+
+%shorthands
+\newcommand{\JSON}{\texttt{JSON}\xspace}
+\newcommand{\R}{\texttt{R}\xspace}
+\newcommand{\C}{\texttt{C}\xspace}
+\newcommand{\toJSON}{\texttt{toJSON}\xspace}
+\newcommand{\fromJSON}{\texttt{fromJSON}\xspace}
+\newcommand{\XML}{\pkg{XML}\xspace}
+\newcommand{\jsonlite}{\pkg{jsonlite}\xspace}
+\newcommand{\RJSONIO}{\pkg{RJSONIO}\xspace}
+\newcommand{\API}{\texttt{API}\xspace}
+
+%trick for using same content file as chatper and article
+\newcommand{\maintitle}[1]{
+  \title{#1}
+  \maketitle
+}
+
+%actual document
+\begin{document}
+
+
+\section{Public \JSON data}
+
+This section lists some examples of public \texttt{HTTP} \API's that publish data in \JSON format. These are great to get a sense of the complex structures that are encountered in real world \JSON data. All services are free, but some require registration/authentication.
+
+Each example returns lots of data, therefore output is omitted in this document. The reader is encouraged to run the examples in \R and inspect the output manually. 
+
+\subsection{No authentication required}
+
+%The following \API's allow for (limited) use without any form of registration:
+
+\subsubsection*{Github}
+
+Github is an online code repository and has \API's to get live data on almost all activity. Below some examples from a well known \R package and author:
+
+<<eval=FALSE>>=
+hadley_orgs <- fromJSON("https://api.github.com/users/hadley/orgs")
+hadley_repos <- fromJSON("https://api.github.com/users/hadley/repos")
+gg_issues <- fromJSON("https://api.github.com/repos/hadley/ggplot2/issues")
+gg_commits <- fromJSON("https://api.github.com/repos/hadley/ggplot2/commits")
+@
+
+\subsubsection*{CitiBike NYC}
+
+A single public \API that shows location, status and current availability for all stations in the New York City bike sharing imitative. 
+
+<<eval=FALSE>>=
+citibike <- fromJSON("http://citibikenyc.com/stations/json")
+@
+
+\subsubsection*{AngelList}
+
+AngelList is a job listing directory for startups:
+
+<<eval=FALSE>>=
+res <- fromJSON("http://api.angel.co/1/tags/59/startups")
+res$startups
+@
+
+\subsubsection*{Ergast}
+
+The Ergast Developer \API is an experimental web service which provides a historical record of motor racing data for non-commercial purposes.
+
+<<eval=FALSE>>=
+races <- fromJSON('http://ergast.com/api/f1/2012/1/results.json')
+races$MRData$RaceTable$Races$Results[[1]]$Driver
+@
+
+\subsection{Free registration required}
+
+The following \API's require (free) registration of a key/token. In each case, registration is easy and a key will be emailed. This key has to be appended to the requests to query the \API's. The code below includes some example keys for illustration purposes.
+
+\subsubsection*{New York Times}
+
+The New York Times has several free \API's that are part of the NYT developer network. These interface to data from various departments, such as news articles, book reviews, real estate, etc.
+ 
+<<eval=FALSE>>=
+#Register keys at http://developer.nytimes.com/docs/reference/keys
+
+#search for articles
+article_key = "&api-key=c2fede7bd9aea57c898f538e5ec0a1ee:6:68700045"
+url = "http://api.nytimes.com/svc/search/v2/articlesearch.json?q=obamacare+socialism"
+articles <- fromJSON(paste0(url, article_key))
+
+#search for best sellers
+bestseller_key = "&api-key=5e260a86a6301f55546c83a47d139b0d:3:68700045"
+url = "http://api.nytimes.com/svc/books/v2/lists/overview.json?published_date=2013-01-01"
+bestsellers <- fromJSON(paste0(url, bestseller_key))
+
+#movie reviews
+movie_key = "&api-key=5a3daaeee6bbc6b9df16284bc575e5ba:0:68700045"
+url = "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json?order=by-date"
+reviews <- fromJSON(paste0(url, movie_key))
+@
+
+
+\subsubsection*{CrunchBase}
+
+CrunchBase is the free database of technology companies, people, and investors that anyone can edit.
+
+<<eval=FALSE, tidy=FALSE>>=
+key <- "f6dv6cas5vw7arn5b9d7mdm3"
+res <- fromJSON(paste0("http://api.crunchbase.com/v/1/search.js?query=R&api_key=", key))
+str(res$results)
+@
+
+\subsubsection*{Sunlight Foundation}
+
+The Sunlight Foundation is a non-profit that helps to make government transparent and accountable through data, tools, policy and journalism.
+
+<<eval=FALSE, tidy=FALSE>>=
+#register key at http://sunlightfoundation.com/api/accounts/register/ 
+key <- "&apikey=39c83d5a4acc42be993ee637e2e4ba3d"
+
+#some queries
+drones <- fromJSON(paste0("http://openstates.org/api/v1/bills/?q=drone", key))
+word <- fromJSON(paste0("http://capitolwords.org/api/1/dates.json?phrase=obamacare", key))
+legislators <- fromJSON(paste0("http://congress.api.sunlightfoundation.com/",
+  "legislators/locate?latitude=42.96&longitude=-108.09", key))
+@
+
+ 
+\subsection{OAuth2 authentication} 
+ 
+\subsubsection*{Twitter}
+
+The twitter \API requires \texttt{OAuth2} authentication. Some example code:
+
+<<tidy=FALSE, eval=FALSE>>=
+#Create your own appication key at https://dev.twitter.com/apps
+consumer_key = "EZRy5JzOH2QQmVAe9B4j2w";
+consumer_secret = "OIDC4MdfZJ82nbwpZfoUO4WOLTYjoRhpHRAWj6JMec";
+
+#Use basic auth
+library(httr)
+secret <- RCurl::base64(paste(consumer_key, consumer_secret, sep=":"));
+req <- POST("https://api.twitter.com/oauth2/token", 
+  config(httpheader = c(
+    "Authorization" = paste("Basic", secret), 
+    "Content-Type" = "application/x-www-form-urlencoded;charset=UTF-8"
+  )),
+  body = "grant_type=client_credentials",
+  multipart = FALSE
+);
+
+#Extract the access token
+token <- paste("Bearer", content(req)$access_token);
+
+#Actual API call
+url = "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=UCLA"
+call1 <- GET(url, config(httpheader = c("Authorization" = token)))
+obj1 <- fromJSON(rawToChar(call1$content))
+print(obj1$text)
+@
+
+%end
+\end{document}

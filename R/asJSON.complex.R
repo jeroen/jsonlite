@@ -19,6 +19,6 @@ setMethod("asJSON", "complex", function(x, digits = 5, collapse = TRUE, complex 
     if(na == "NA"){
       na <- oldna;
     }
-    asJSON(list(real = Re(x), imaginary = Im(x)), na = na, ...)
+    asJSON(list(real = Re(x), imaginary = Im(x)), na = na, digits = digits, ...)
   }
 }) 

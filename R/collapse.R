@@ -1,3 +1,3 @@
 collapse <- function(x){
-  paste("[", paste0(x, collapse = ", "), "]")
+  paste0("[", paste0(x, collapse = ","), "]")
 }

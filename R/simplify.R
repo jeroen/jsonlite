@@ -1,5 +1,6 @@
 simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, 
-  simplifyDate = simplifyVector, homoList = TRUE, flatten = FALSE, columnmajor = FALSE) {
+  simplifyDate = simplifyVector, homoList = TRUE, flatten = FALSE, columnmajor = FALSE, 
+  simplifySubMatrix = simplifyMatrix) {
   if (is.list(x)) {
     if (!length(x)) {
       # In case of fromJSON('[]') returning a list is most neutral.  Because the user
@@ -10,7 +11,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     
     # list can be a dataframe recordlist
     if (isTRUE(simplifyDataFrame) && is.recordlist(x)) {
-      mydf <- simplifyDataFrame(x, flatten = flatten)
+      mydf <- simplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix)
       if(isTRUE(simplifyDate) && is.data.frame(mydf) && is.datelist(mydf)){
         return(structure(mydf[["$date"]]/1000, class=c("POSIXct", "POSIXt")))
       }
@@ -28,7 +29,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     
     # apply recursively
     out <- lapply(x, simplify, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
-      simplifyMatrix = simplifyMatrix, columnmajor = columnmajor)
+      simplifyMatrix = simplifySubMatrix, columnmajor = columnmajor)
     
     # fix for mongo style dates turning into scalars *after* simplifying
     # only happens when simplifyDataframe=FALSE
