@@ -1,5 +1,5 @@
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Fetching JSON data from public HTTP APIs with jsonlite}
+%\VignetteIndexEntry{Fetching JSON data from REST APIs}
 
 <<echo=FALSE>>=
 #For JSS
