@@ -1,3 +1,6 @@
+0.9.9
+ - Make asJSON automatically unname any named lists within a data frame
+
 0.9.8
  - Remove whitespace from default output of toJSON
  - Split vignette in 3 documents

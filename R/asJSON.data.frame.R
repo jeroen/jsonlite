@@ -39,7 +39,13 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"),
   rawvars <- which(as.logical(vapply(x, is.raw, integer(1))))
   for (i in rawvars) {
     x[[i]] <- as.character.hexmode(x[[i]])
-  }  
+  }
+  
+  # Unname named lists
+  namedlistvars <- which(as.logical(vapply(x, is.namedlistnotdf, integer(1))))
+  for (i in namedlistvars) {
+    x[[i]] <- unname(x[[i]])
+  }
   
   # Turn complex vectors into data frames
   if(complex == "list"){
@@ -93,4 +99,9 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"),
   } else {
     tmp
   }
-}) 
+})
+
+is.namedlistnotdf <- function(x){
+  isTRUE(is.list(x) && !is.data.frame(x) && !is.null(names(x)))
+}
+
