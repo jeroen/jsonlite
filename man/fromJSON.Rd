@@ -12,7 +12,7 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   "columnmajor"), Date = c("ISO8601", "epoch"), POSIXt = c("string",
   "ISO8601", "epoch", "mongo"), factor = c("string", "integer"),
   complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
-  na = c("null", "string"), auto_unbox = FALSE, digits = 2,
+  na = c("null", "string"), auto_unbox = FALSE, digits = 4,
   pretty = FALSE, force = FALSE, ...)
 }
 \arguments{
@@ -34,7 +34,8 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
 
 \item{auto_unbox}{automatically \code{\link{unbox}} all atomic vectors of length 1. Not recommended!}
 
-\item{digits}{max number of digits (after the dot) to print for numeric values}
+\item{digits}{max number of significant digits to
+  print for numeric values}
 
 \item{na}{how to print NA values. One of 'null' or 'string'. Defaults are class specific}
 
