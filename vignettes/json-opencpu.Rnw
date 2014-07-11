@@ -65,6 +65,7 @@
 \newcommand{\jsonlite}{\pkg{jsonlite}\xspace}
 \newcommand{\RJSONIO}{\pkg{RJSONIO}\xspace}
 \newcommand{\API}{\texttt{API}\xspace}
+\newcommand{\JavaScript}{\texttt{JavaScript}\xspace}
 
 %trick for using same content file as chatper and article
 \newcommand{\maintitle}[1]{

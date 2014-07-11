@@ -1,9 +1,9 @@
 \documentclass[article]{jss}
 
 <<echo=FALSE>>=
-library(jsonlite)
-library(knitr)
-opts_chunk$set(comment="")
+library("jsonlite")
+library("knitr")
+opts_chunk$set(comment="", tidy=TRUE)
 
 #this replaces tabs by spaces because latex-verbatim doesn't like tabs
 toJSON <- function(...){
@@ -15,6 +15,11 @@ opts_chunk$set(prompt=TRUE, highlight=FALSE, background="white")
 options(prompt = "R> ", continue = "+  ", width = 68, useFancyQuotes = FALSE)
 @
 
+%for JSS style
+\usepackage{setspace}
+\definecolor{fgcolor}{rgb}{0,0,0}
+\renewenvironment{knitrout}{\vspace{-2mm}\begin{onehalfspacing}}{\end{onehalfspacing}\vspace{-2mm}}
+
 %shorthands
 \newcommand{\JSON}{\texttt{JSON}\xspace}
 \newcommand{\R}{\proglang{R}\xspace}
@@ -25,6 +30,7 @@ options(prompt = "R> ", continue = "+  ", width = 68, useFancyQuotes = FALSE)
 \newcommand{\jsonlite}{\pkg{jsonlite}\xspace}
 \newcommand{\RJSONIO}{\pkg{RJSONIO}\xspace}
 \newcommand{\API}{\texttt{API}\xspace}
+\newcommand{\JavaScript}{\texttt{JavaScript}\xspace}
 
 %useful packages
 \usepackage{xspace}
@@ -125,7 +131,7 @@ The lesson here is that we need to be very specific and explicit about the mappi
 The \jsonlite package provides a reference implementation of the conventions proposed in this document. It is a fork of the \RJSONIO package by Duncan Temple Lang, which builds on \texttt{libjson} \texttt{C++} library from Jonathan Wallace. \jsonlite uses the parser from \RJSONIO, but the \R code has been rewritten from scratch. Both packages implement \toJSON and \fromJSON functions, but their output is quite different. Finally, the \jsonlite package contains a large set of unit tests to validate that \R objects are correctly converted to \JSON and vice versa. These unit tests cover all classes and edge cases mentioned in this document, and could be used to validate if other implementations follow the same conventions. 
 
 <<eval=FALSE>>=
-library(testthat)
+library("testthat")
 test_package("jsonlite")
 @
 
@@ -205,8 +211,6 @@ We expect that these conventions are most likely to result in the correct interp
 toJSON(c(TRUE, NA, NA, FALSE))
 toJSON(c("FOO", "BAR", NA, "NA"))
 toJSON(c(3.14, NA, NaN, 21, Inf, -Inf))
-
-#Non-default behavior
 toJSON(c(3.14, NA, NaN, 21, Inf, -Inf), na="null")
 @
 
@@ -310,7 +314,7 @@ toJSON(x)
 Wickham recommends that the data be \emph{melted} into its \emph{tidy} form. Once the data is tidy, the \JSON encoding will naturally contain the treatment values:
 
 <<>>=
-library(reshape2)
+library("reshape2")
 y <- melt(x, varnames=c("Subject", "Treatment"))
 print(y)
 toJSON(y, pretty=TRUE)
@@ -362,7 +366,7 @@ toJSON(list(foo=c(1,2), bar="test"))
 
  Because a list can contain other lists, this works recursively:
 
-<<tidy=FALSE>>=
+<<tidy=TRUE>>=
 toJSON(list(foo=list(bar=list(baz=pi))))
 @
 
@@ -402,7 +406,7 @@ print(iris[1:3, c("Sepal.Width", "Species")])
 
 Generally speaking, tabular data structures can be implemented in two different ways: in a column based, or row based fashion. A column based structure consists of a named collection of equal-length, homogeneous arrays representing the table columns. In a row-based structure on the other hand, the table is implemented as a set of heterogeneous associative arrays representing table rows with field values for each particular record. Even though most languages provide flexible and abstracted interfaces that hide these implementation details from the user, they can have huge implications for performance. A column based structure is efficient for inserting or extracting certain columns of the data, but it is inefficient for manipulating individual rows. For example to insert a single row somewhere in the middle, each of the columns has to be sliced and stitched back together. For row-based implementations, it is the exact other way around: we can easily manipulate a particular record, but to insert/extract a whole column we would need to iterate over all records in the table and read/modify the appropriate field in each of them.
 
-The data frame class in \R is implemented in a column based fashion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \code{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. \R simply binds the specified columns together into a matrix $X$ and calls out to a highly optimized \proglang{FORTRAN} subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the $QR$ factorization of $X$. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in \R.  
+The data frame class in \R is implemented in a column based fashion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \code{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. \R simply binds the specified columns together into a matrix $X$ and calls out to a highly optimized \proglang{Fortan} subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the $QR$ factorization of $X$. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in \R.  
 
 Unfortunately \R is an exception in its preference for column-based storage: most languages, systems, databases, \API's, etc, are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. The remaining of this section discusses details and challenges of consistently mapping record based \JSON data as frequently encountered on the web, into column-based data frames which are convenient for statistical computing.
 
@@ -526,7 +530,6 @@ In the context of \R, consistency of keys is closely related to Wikcham's concep
 In a strong typed language, fields declare their class before any values are assigned. Thereby the type of a given field is identical in all objects of a particular class, and arrays only contain objects of a single type. The \proglang{S3} system in \R is weakly typed and puts no formal restrictions on the class of a certain properties, or the types of objects that can be combined into a collection. For example, the list below contains a character vector, a numeric vector and a list:
 
 <<>>=
-#Heterogeneous lists are bad!
 x <- list("FOO", 1:3, list("bar"=pi))
 toJSON(x)
 @
@@ -536,7 +539,6 @@ toJSON(x)
  Note that consistency is somewhat subjective as it refers to the \emph{meaning} of the elements; they do not necessarily have precisely the same structure. What is important is to keep in mind that the consumer of the data can interpret and process each element identically, e.g. iterate over the elements in the collection and apply the same method to each of them. To illustrate this, lets take the example of the data frame: 
 
 <<>>=
-#conceptually homogenous array
 x <- data.frame(name=c("Jay", "Mary", NA, NA), gender=c("M", NA, NA, "F"))
 toJSON(x, pretty=TRUE)
 @
