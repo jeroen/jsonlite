@@ -4,7 +4,7 @@ download <- function(URL){
   #retry with different SSL settings
   download_retry_ssl <- function(e){
     res <- httr::GET(URL, httr::config(
-      httpheader=c(`User-Agent` = "RCurl-httr-jsonlite"), 
+      httpheader=c(`User-Agent` = "RCurl-httr-jsonlite", Accept="application/json, text/*, */*"), 
       sslversion = 3, 
       ssl.verifypeer = FALSE, 
       ssl.verifyhost = FALSE
@@ -16,7 +16,7 @@ download <- function(URL){
   
   req <- tryCatch(
     httr::GET(URL, httr::config(
-      httpheader=c(`User-Agent` = "RCurl-httr-jsonlite")
+      httpheader=c(`User-Agent` = "RCurl-httr-jsonlite", Accept="application/json, text/*, */*")
     )), 
     SSL_CONNECT_ERROR = download_retry_ssl, 
     SSL_PEER_CERTIFICATE = download_retry_ssl,

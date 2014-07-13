@@ -1,5 +1,6 @@
 0.9.9
  - Make asJSON automatically unname any named lists within a data frame
+ - fromJSON(url) now sets Accept header
 
 0.9.8
  - Remove whitespace from default output of toJSON
