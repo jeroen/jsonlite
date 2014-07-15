@@ -29,7 +29,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     
     # apply recursively
     out <- lapply(x, simplify, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
-      simplifyMatrix = simplifySubMatrix, columnmajor = columnmajor)
+      simplifyMatrix = simplifySubMatrix, columnmajor = columnmajor, flatten = flatten)
     
     # fix for mongo style dates turning into scalars *after* simplifying
     # only happens when simplifyDataframe=FALSE
