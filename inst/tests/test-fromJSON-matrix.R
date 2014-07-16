@@ -35,10 +35,10 @@ test_that("fromJSON Matrix datasets", {
   
   lapply(objects, function(object){
     class(object) <- "matrix";
-    newobject <- fromJSON(toJSON(object))
+    newobject <- fromJSON(toJSON(object, digits=4))
     expect_that(newobject, is_a("matrix"));
     expect_that(dim(newobject), equals(dim(object)));
     attributes(newobject) <- attributes(object);
-    expect_that(newobject, equals(round(object,2)));
+    expect_that(newobject, equals(round(object,4)));
   });
 });
