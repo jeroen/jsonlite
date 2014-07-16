@@ -2,6 +2,7 @@
  - Fix bug where 'flatten' argument wasn't passed down
  - Make asJSON automatically unname any named lists within a data frame
  - fromJSON(url) now sets Accept header
+ - Increase default to digits=4 in toJSON
 
 0.9.8
  - Remove whitespace from default output of toJSON
