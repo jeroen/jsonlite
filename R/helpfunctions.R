@@ -16,7 +16,11 @@ givename <- function(obj) {
 # vectorized deparse
 deparse_vector <- function(x) {
   stopifnot(is.character(x))
-  vapply(as.list(x), deparse, character(1))
+  
+  #For these characters deparse() generates invalid JSON escape sequences
+  #Compare ?Quotes and http://json.org/
+  x <- gsub("[\v\a]", "", x)
+  vapply(x, deparse, character(1), USE.NAMES=FALSE)
 }
 
 # trim whitespace

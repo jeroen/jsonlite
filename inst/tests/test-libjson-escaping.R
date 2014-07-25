@@ -16,3 +16,10 @@ test_that("escaping and parsing of special characters", {
   }
 
 });
+
+test_that("filter invalid escape characters", {
+  
+  #The \v and \a characters are not supported by JSON. This is a common bug
+  expect_that(validate(toJSON("foo\v\bar\abaz")), is_true());
+  
+});
