@@ -64,7 +64,7 @@
 #' names(data3)
 #' }
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, 
-  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, ...) {
+  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, ...) {
   
   # check type
   if (!is.character(txt)) {

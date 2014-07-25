@@ -6,7 +6,7 @@
 \title{Convert \R{} objects to/from \code{JSON}}
 \usage{
 fromJSON(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, ...)
+  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, ...)
 
 toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   "columnmajor"), Date = c("ISO8601", "epoch"), POSIXt = c("string",
