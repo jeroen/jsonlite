@@ -36,10 +36,7 @@ test_that("test that non ascii characters are ok", {
 #Test unicode escape notation
 test_that("escaped unicode gets parsed OK", {
   #disabled until fixed
-  #expect_that(fromJSON('["Z\\u00FCrich"]'), equals("Zürich"));
-  #expect_that(fromJSON('["Z\\xFCrich"]'), equals("Zürich"));
-  #expect_that(length(unique(fromJSON('["Z\\u00FCrich", "Zürich"]'))), equals(1L))
-  
-  #This certainly doesn't work because we need to enable #define JSON_UNICODE but R doesnt support this very well.
-  #expect_that(fromJSON('["\\u586B"]'), equals("填"));
+  expect_that(fromJSON('["Z\\u00FCrich"]', unicode = TRUE), equals("Zürich"));
+  expect_that(length(unique(fromJSON('["Z\\u00FCrich", "Zürich"]', unicode = TRUE))), equals(1L))
+  expect_that(fromJSON('["\\u586B"]', unicode = TRUE), equals("填"));
 });

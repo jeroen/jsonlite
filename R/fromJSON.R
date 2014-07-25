@@ -31,6 +31,7 @@
 #' @param simplifyDataFrame coerse \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame.
 #' @param simplifyMatrix coerse \code{JSON} arrays containing vectors of equal length and mode into matrix or array.
 #' @param flatten flatten nested data frames into a single non-nested data frame
+#' @param unicode parse escaped (hexadecimal) unicode characters \code{\\uXXXX}
 #' @param ... arguments passed on to class specific \code{print} methods
 #' @useDynLib jsonlite
 #' @references Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between \code{JSON} Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{http://arxiv.org/abs/1403.2805}
@@ -63,7 +64,7 @@
 #' names(data3)
 #' }
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, 
-  simplifyMatrix = simplifyVector, flatten = FALSE, ...) {
+  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, ...) {
   
   # check type
   if (!is.character(txt)) {
@@ -91,6 +92,11 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   # simple check
   if (!grepl("^[ \t\r\n]*(\\{|\\[)", txt)) {
     stop("String does not contain valid JSON: \"", gsub("\\s+", " ", substring(txt, 0, 25)), "...\"")
+  }
+  
+  # preparse escaped unicode characters
+  if(isTRUE(unicode)){
+    txt <- unescape_unicode(txt)
   }
   
   # parse JSON

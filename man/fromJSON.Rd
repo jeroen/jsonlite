@@ -6,7 +6,7 @@
 \title{Convert \R{} objects to/from \code{JSON}}
 \usage{
 fromJSON(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, ...)
+  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, ...)
 
 toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   "columnmajor"), Date = c("ISO8601", "epoch"), POSIXt = c("string",
@@ -51,6 +51,8 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
 \item{simplifyMatrix}{coerse \code{JSON} arrays containing vectors of equal length and mode into matrix or array.}
 
 \item{flatten}{flatten nested data frames into a single non-nested data frame}
+
+\item{unicode}{parse escaped (hexadecimal) unicode characters \code{\\uXXXX}}
 
 \item{...}{arguments passed on to class specific \code{print} methods}
 }
