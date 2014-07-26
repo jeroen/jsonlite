@@ -27,16 +27,12 @@ test_that("test that non ascii characters are ok", {
       expect_that(validate(prettyjson), is_true());
       expect_that(fromJSON(prettyjson), equals(x));      
     });
+    
+    #Test escaped unicode characters 
+    expect_that(fromJSON('["Z\\u00FCrich"]', unicode = TRUE), equals("Zürich"));
+    expect_that(length(unique(fromJSON('["Z\\u00FCrich", "Zürich"]', unicode = TRUE))), equals(1L))
+    expect_that(fromJSON('["\\u586B"]', unicode = TRUE), equals("填"));    
   } else {
     cat("skip")
   }
-});
-
-
-#Test unicode escape notation
-test_that("escaped unicode gets parsed OK", {
-  #disabled until fixed
-  expect_that(fromJSON('["Z\\u00FCrich"]', unicode = TRUE), equals("Zürich"));
-  expect_that(length(unique(fromJSON('["Z\\u00FCrich", "Zürich"]', unicode = TRUE))), equals(1L))
-  expect_that(fromJSON('["\\u586B"]', unicode = TRUE), equals("填"));
 });

@@ -8,7 +8,7 @@
 #'  
 #' @rdname serializeJSON
 #' @title serialize R objects to \code{JSON}
-#' @name (un)serializeJSON
+#' @name serializeJSON
 #' @aliases serializeJSON unserializeJSON
 #' @export serializeJSON unserializeJSON
 #' @param x an \R{} object to be serialized

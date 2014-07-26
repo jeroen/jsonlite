@@ -1,5 +1,5 @@
 #' These functions are used to convert between \code{JSON} data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
-#' functions use a class based mapping, whichs follows conventions outlined in the vignette of the package.
+#' functions use a class based mapping, whichs follows conventions outlined in this paper:  \url{http://arxiv.org/abs/1403.2805} (also available as vignette).
 #' 
 #' The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions
 #' in packages \code{rjson} and \code{RJSONIO}. Our implementation uses an alternative, somewhat more consistent mapping
@@ -13,25 +13,25 @@
 #' @name toJSON, fromJSON
 #' @aliases fromJSON toJSON 
 #' @export fromJSON toJSON
+#' @param txt a \code{JSON} string, URL or file 
+#' @param simplifyVector coerse \code{JSON} arrays containing only primitives into an atomic vector
+#' @param simplifyDataFrame coerse \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame
+#' @param simplifyMatrix coerse \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array
+#' @param flatten flatten nested data frames into a single non-nested data frame (see example)
+#' @param unicode parse escaped (hexadecimal) unicode characters \code{\\uXXXX}
 #' @param x the object to be encoded
-#' @param dataframe how to encode data.frame objects: must be one of 'row' or 'column'
-#' @param matrix should matrices and higher dimensional arrays be encoded in row-major or column-major.
+#' @param dataframe how to encode data.frame objects: must be one of 'rows' or 'columns'
+#' @param matrix how to encode matrices and higher dimensional arrays: must be one of 'rowmajor' or 'columnmajor'.
 #' @param Date how to encode Date objects: must be one of 'ISO8601' or 'epoch'
 #' @param POSIXt how to encode POSIXt (datetime) objects: must be one of 'string', 'ISO8601', 'epoch' or 'mongo'
 #' @param factor how to encode factor objects: must be one of 'string' or 'integer'
 #' @param complex how to encode complex numbers: must be one of 'string' or 'list'
 #' @param raw how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'
+#' @param na how to print NA values: must be one of 'null' or 'string'. Defaults are class specific
 #' @param auto_unbox automatically \code{\link{unbox}} all atomic vectors of length 1. Not recommended!
-#' @param digits max number of digits (after the dot) to print for numeric values
-#' @param na how to print NA values. One of 'null' or 'string'. Defaults are class specific
+#' @param digits max number of digits (after the dot) to print for numeric values. See: \code{\link{round}}
 #' @param force unclass/skip objects of classes with no defined json mapping
 #' @param pretty adds indentation whitespace to \code{JSON} output. See \code{\link{prettify}}
-#' @param txt a string in json format 
-#' @param simplifyVector coerse \code{JSON} arrays containing only scalars into a vector
-#' @param simplifyDataFrame coerse \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame.
-#' @param simplifyMatrix coerse \code{JSON} arrays containing vectors of equal length and mode into matrix or array.
-#' @param flatten flatten nested data frames into a single non-nested data frame
-#' @param unicode parse escaped (hexadecimal) unicode characters \code{\\uXXXX}
 #' @param ... arguments passed on to class specific \code{print} methods
 #' @useDynLib jsonlite
 #' @references Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between \code{JSON} Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{http://arxiv.org/abs/1403.2805}
@@ -43,9 +43,9 @@
 #' fromJSON(jsoncars)
 #' 
 #' #control scientific notation
-#' toJSON(10 ^ (0:10), digits=8)
+#' toJSON(10 ^ (0:10))
 #' options(scipen=3)
-#' toJSON(10 ^ (0:10), digits=8)
+#' toJSON(10 ^ (0:10))
 #' 
 #' \dontrun{ 
 #' # Parse data frame
@@ -59,7 +59,7 @@
 #' names(data2$owner)
 #' data2$owner$login
 #' 
-#' #flatten instead:
+#' #same data, but now flattened:
 #' data3 <- fromJSON("https://api.github.com/users/hadley/repos", flatten=TRUE)
 #' names(data3)
 #' }

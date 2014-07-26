@@ -10,7 +10,7 @@
 #' 
 #' It is usually recommended to avoid this function and stick with the default 
 #' encoding schema for the various \R{} classes. The only use case for this function
-#' is if you are bound to some specific predifined \code{JSON} structure (e.g. to
+#' is if you are bound to some specific predefined \code{JSON} structure (e.g. to
 #' submit to an API), which has no natural \R{} representation. Note that the default
 #' encoding for data frames naturally results in a collection of key-value pairs, 
 #' without using \code{unbox}. If you are frequently using \code{unbox}, 

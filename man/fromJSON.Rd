@@ -16,11 +16,23 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   pretty = FALSE, force = FALSE, ...)
 }
 \arguments{
+\item{txt}{a \code{JSON} string, URL or file}
+
+\item{simplifyVector}{coerse \code{JSON} arrays containing only primitives into an atomic vector}
+
+\item{simplifyDataFrame}{coerse \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame}
+
+\item{simplifyMatrix}{coerse \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array}
+
+\item{flatten}{flatten nested data frames into a single non-nested data frame (see example)}
+
+\item{unicode}{parse escaped (hexadecimal) unicode characters \code{\\uXXXX}}
+
 \item{x}{the object to be encoded}
 
-\item{dataframe}{how to encode data.frame objects: must be one of 'row' or 'column'}
+\item{dataframe}{how to encode data.frame objects: must be one of 'rows' or 'columns'}
 
-\item{matrix}{should matrices and higher dimensional arrays be encoded in row-major or column-major.}
+\item{matrix}{how to encode matrices and higher dimensional arrays: must be one of 'rowmajor' or 'columnmajor'.}
 
 \item{Date}{how to encode Date objects: must be one of 'ISO8601' or 'epoch'}
 
@@ -32,33 +44,21 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
 
 \item{raw}{how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'}
 
+\item{na}{how to print NA values: must be one of 'null' or 'string'. Defaults are class specific}
+
 \item{auto_unbox}{automatically \code{\link{unbox}} all atomic vectors of length 1. Not recommended!}
 
-\item{digits}{max number of digits (after the dot) to print for numeric values}
-
-\item{na}{how to print NA values. One of 'null' or 'string'. Defaults are class specific}
+\item{digits}{max number of digits (after the dot) to print for numeric values. See: \code{\link{round}}}
 
 \item{force}{unclass/skip objects of classes with no defined json mapping}
 
 \item{pretty}{adds indentation whitespace to \code{JSON} output. See \code{\link{prettify}}}
 
-\item{txt}{a string in json format}
-
-\item{simplifyVector}{coerse \code{JSON} arrays containing only scalars into a vector}
-
-\item{simplifyDataFrame}{coerse \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame.}
-
-\item{simplifyMatrix}{coerse \code{JSON} arrays containing vectors of equal length and mode into matrix or array.}
-
-\item{flatten}{flatten nested data frames into a single non-nested data frame}
-
-\item{unicode}{parse escaped (hexadecimal) unicode characters \code{\\uXXXX}}
-
 \item{...}{arguments passed on to class specific \code{print} methods}
 }
 \description{
 These functions are used to convert between \code{JSON} data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
-functions use a class based mapping, whichs follows conventions outlined in the vignette of the package.
+functions use a class based mapping, whichs follows conventions outlined in this paper:  \url{http://arxiv.org/abs/1403.2805} (also available as vignette).
 }
 \details{
 The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions
@@ -77,9 +77,9 @@ cat(jsoncars)
 fromJSON(jsoncars)
 
 #control scientific notation
-toJSON(10 ^ (0:10), digits=8)
+toJSON(10 ^ (0:10))
 options(scipen=3)
-toJSON(10 ^ (0:10), digits=8)
+toJSON(10 ^ (0:10))
 
 \dontrun{
 # Parse data frame
@@ -93,7 +93,7 @@ names(data2)
 names(data2$owner)
 data2$owner$login
 
-#flatten instead:
+#same data, but now flattened:
 data3 <- fromJSON("https://api.github.com/users/hadley/repos", flatten=TRUE)
 names(data3)
 }
