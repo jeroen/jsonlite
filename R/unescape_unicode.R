@@ -12,8 +12,9 @@ unescape_unicode <- function(x){
     }, character(1), USE.NAMES = FALSE)
     
     #substitute parsed into original
-    regmatches(x, m) <- p
+    regmatches(x, m) <- list(p)
   }
   
   x
 }
+
