@@ -78,7 +78,7 @@
 
 
 
-\section{Simple \JSON RPC with OpenCPU}
+\section*{Simple \JSON RPC with OpenCPU}
 
 The \jsonlite package is used by \texttt{OpenCPU} to convert between \JSON data and \R objects. Thereby clients can retrieve \R objects, or remotely call \R functions using \JSON where the function arguments as well as function return value are \JSON objects. For example to download the \texttt{Boston} data from the \texttt{MASS} package:\\
 
