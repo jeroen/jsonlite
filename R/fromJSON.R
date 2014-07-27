@@ -7,6 +7,14 @@
 #' 
 #' The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions in this package use an 
 #' alternative system to convert between \R{} objects and \code{JSON}, which supports more classes but is much more verbose.
+#' 
+#' A \code{JSON} string is always unicode, using \code{UTF-8} by default, hence there is usually no need to escape any characters. 
+#' However, the \code{JSON} format does support escaping of unicode characters, which are encoded using a backslash followed by 
+#' a lower case \code{"u"} and 4 hex characters, for example: \code{"Z\\u00FCrich"}. The \code{fromJSON} function 
+#' will only parse such escape sequences correctly when the \code{unicode} argument is set to \code{TRUE}. Because this introduces 
+#' significant performance overhead, it is disabled by default. It is strongly preferable to encode unicode characters in \code{JSON}
+#' using native \code{UTF-8} rather than escape sequences.
+#'
 # 
 #' @rdname fromJSON
 #' @title Convert \R{} objects to/from \code{JSON}
@@ -18,7 +26,7 @@
 #' @param simplifyDataFrame coerse \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame
 #' @param simplifyMatrix coerse \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array
 #' @param flatten flatten nested data frames into a single non-nested data frame (see example)
-#' @param unicode parse escaped (hexadecimal) unicode characters \code{\\uXXXX}
+#' @param unicode parse escaped (hexadecimal) unicode characters \code{\\uXXXX}. See details.
 #' @param x the object to be encoded
 #' @param dataframe how to encode data.frame objects: must be one of 'rows' or 'columns'
 #' @param matrix how to encode matrices and higher dimensional arrays: must be one of 'rowmajor' or 'columnmajor'.
@@ -64,7 +72,7 @@
 #' names(data3)
 #' }
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, 
-  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, ...) {
+  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, ...) {
   
   # check type
   if (!is.character(txt)) {

@@ -6,7 +6,7 @@
 \title{Convert \R{} objects to/from \code{JSON}}
 \usage{
 fromJSON(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, ...)
+  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, ...)
 
 toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   "columnmajor"), Date = c("ISO8601", "epoch"), POSIXt = c("string",
@@ -26,7 +26,7 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
 
 \item{flatten}{flatten nested data frames into a single non-nested data frame (see example)}
 
-\item{unicode}{parse escaped (hexadecimal) unicode characters \code{\\uXXXX}}
+\item{unicode}{parse escaped (hexadecimal) unicode characters \code{\\uXXXX}. See details.}
 
 \item{x}{the object to be encoded}
 
@@ -67,6 +67,13 @@ between \R{} objects and \code{JSON} strings.
 
 The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions in this package use an
 alternative system to convert between \R{} objects and \code{JSON}, which supports more classes but is much more verbose.
+
+A \code{JSON} string is always unicode, using \code{UTF-8} by default, hence there is usually no need to escape any characters.
+However, the \code{JSON} format does support escaping of unicode characters, which are encoded using a backslash followed by
+a lower case \code{"u"} and 4 hex characters, for example: \code{"Z\\u00FCrich"}. The \code{fromJSON} function
+will only parse such escape sequences correctly when the \code{unicode} argument is set to \code{TRUE}. Because this introduces
+significant performance overhead, it is disabled by default. It is strongly preferable to encode unicode characters in \code{JSON}
+using native \code{UTF-8} rather than escape sequences.
 }
 \examples{
 #stringify some data
