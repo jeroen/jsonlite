@@ -1,7 +1,6 @@
 unescape_unicode <- function(x){
   #single string only
-  stopifnot(is.character(x))
-  stopifnot(length(x) == 1)
+  stopifnot(is.character(x) && length(x) == 1)
   
   #find matches
   m <- gregexpr("(\\\\)+u[0-9a-z]{4}", x, ignore.case = TRUE)
