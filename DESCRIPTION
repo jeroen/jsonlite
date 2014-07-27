@@ -26,5 +26,6 @@ Suggests:
     knitr,
     reshape2,
     httr (>= 0.3),
+    RCurl,
     rjson,
     plyr
