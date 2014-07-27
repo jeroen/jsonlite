@@ -9,7 +9,7 @@ unescape_unicode <- function(x){
   if(m[[1]][1] > -1){
     #parse matches
     p <- vapply(regmatches(x, m)[[1]], function(txt){
-      gsub("\\", "\\\\", parse(text=paste0('"', txt, '"'))[[1]], fixed = TRUE)
+      gsub("\\", "\\\\", parse(text=paste0('"', txt, '"'))[[1]], fixed = TRUE, useBytes = TRUE)
     }, character(1), USE.NAMES = FALSE)
     
     #substitute parsed into original
