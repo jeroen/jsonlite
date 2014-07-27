@@ -83,10 +83,8 @@ cat(jsoncars)
 #parse it back
 fromJSON(jsoncars)
 
-#control scientific notation
-toJSON(10 ^ (0:10))
-options(scipen=3)
-toJSON(10 ^ (0:10))
+#parsing escaped unicode
+fromJSON('{"city" : "Z\\\\u00FCrich"}', unicode = TRUE)
 
 \dontrun{
 # Parse data frame
@@ -104,6 +102,11 @@ data2$owner$login
 data3 <- fromJSON("https://api.github.com/users/hadley/repos", flatten=TRUE)
 names(data3)
 }
+
+#control scientific notation
+toJSON(10 ^ (0:10))
+options(scipen=3)
+toJSON(10 ^ (0:10))
 }
 \references{
 Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between \code{JSON} Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{http://arxiv.org/abs/1403.2805}

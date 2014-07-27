@@ -49,12 +49,10 @@
 #' 
 #' #parse it back
 #' fromJSON(jsoncars)
-#' 
-#' #control scientific notation
-#' toJSON(10 ^ (0:10))
-#' options(scipen=3)
-#' toJSON(10 ^ (0:10))
-#' 
+#'
+#' #parsing escaped unicode
+#' fromJSON('{"city" : "Z\\u00FCrich"}', unicode = TRUE)
+#'
 #' \dontrun{ 
 #' # Parse data frame
 #' data1 <- fromJSON("https://api.github.com/users/hadley/orgs")
@@ -71,6 +69,11 @@
 #' data3 <- fromJSON("https://api.github.com/users/hadley/repos", flatten=TRUE)
 #' names(data3)
 #' }
+#' 
+#' #control scientific notation
+#' toJSON(10 ^ (0:10))
+#' options(scipen=3)
+#' toJSON(10 ^ (0:10))
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, 
   simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, ...) {
   
