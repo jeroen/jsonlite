@@ -27,6 +27,7 @@
 #' @param simplifyMatrix coerse \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array
 #' @param flatten flatten nested data frames into a single non-nested data frame (see example)
 #' @param unicode parse escaped (hexadecimal) unicode characters \code{\\uXXXX}. See details.
+#' @param validate automatically \code{\link{validate}} \code{JSON} before parsing it. 
 #' @param x the object to be encoded
 #' @param dataframe how to encode data.frame objects: must be one of 'rows' or 'columns'
 #' @param matrix how to encode matrices and higher dimensional arrays: must be one of 'rowmajor' or 'columnmajor'.
@@ -75,7 +76,7 @@
 #' options(scipen=3)
 #' toJSON(10 ^ (0:10))
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, 
-  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, ...) {
+  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, validate = FALSE, ...) {
   
   # check type
   if (!is.character(txt)) {
@@ -100,8 +101,13 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
     txt <- paste(txt, collapse = "\n")
   }
   
-  # simple check
-  if (!grepl("^[ \t\r\n]*(\\{|\\[)", txt)) {
+  # Validate JSON
+  if (isTRUE(validate)) {
+    if(!validate(txt)) {
+      stop("Validation failed! String contains invalid JSON.")
+    }
+  } else if (!grepl("^[ \t\r\n]*(\\{|\\[)", txt)) {
+    #Always do basic validation
     stop("String does not contain valid JSON: \"", gsub("\\s+", " ", substring(txt, 0, 25)), "...\"")
   }
   

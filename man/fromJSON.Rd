@@ -6,7 +6,8 @@
 \title{Convert \R{} objects to/from \code{JSON}}
 \usage{
 fromJSON(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, ...)
+  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE,
+  validate = FALSE, ...)
 
 toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   "columnmajor"), Date = c("ISO8601", "epoch"), POSIXt = c("string",
@@ -27,6 +28,8 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
 \item{flatten}{flatten nested data frames into a single non-nested data frame (see example)}
 
 \item{unicode}{parse escaped (hexadecimal) unicode characters \code{\\uXXXX}. See details.}
+
+\item{validate}{automatically \code{\link{validate}} \code{JSON} before parsing it.}
 
 \item{x}{the object to be encoded}
 
