@@ -20,12 +20,12 @@ test_that("test that non ascii characters are ok", {
     lapply(objects, function(x){
       myjson <- toJSON(x, pretty=TRUE);
       expect_that(validate(myjson), is_true());
-      expect_that(fromJSON(myjson), equals(x));
+      expect_that(fromJSON(myjson, unicode = TRUE), equals(x));
       
       #prettify needs to parse + output
       prettyjson <- prettify(myjson);
       expect_that(validate(prettyjson), is_true());
-      expect_that(fromJSON(prettyjson), equals(x));      
+      expect_that(fromJSON(prettyjson, unicode = TRUE), equals(x));      
     });
     
     #Test escaped unicode characters 
