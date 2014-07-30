@@ -56,9 +56,8 @@ mapEncoding <- function(encoding) {
 #' @rdname fromJSON
 View <- function(x, ...){
   #workaround for View() not supporting nested data frames
-  if(is.data.frame(x) && any(vapply(x, function(y){length(dim(y)) > 1}, integer(1), USE.NAMES=F))){
-    x <- format.data.frame(x)
-  }
+  #note that utils::View also does as.data.frame. We just add format.data.frame.
+  x <- format.data.frame(as.data.frame(x))
   as.environment("package:utils")$View(x, ...)
 }
 
