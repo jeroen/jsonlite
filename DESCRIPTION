@@ -16,10 +16,10 @@ VignetteBuilder: knitr
 Description: This package is a fork of the RJSONIO package by Duncan Temple
     Lang. It builds on the same libjson c++ parser, but implements a smarter
     mapping between JSON data and R classes. This is particulary useful when
-    using JSON data from pipelines and web APIs. The vignettes describe the
-    behavior in great detail. In addition to drop-in replacements for toJSON
-    and fromJSON, the package contains funtions to validate, prettify and
-    minify JSON, and many unit tests to verify that all edge cases are
+    working with JSON data from pipelines and web APIs. The vignettes describe
+    the behavior in great detail. In addition to drop-in replacements for 
+    toJSON and fromJSON, the package contains funtions to validate, prettify
+    and minify JSON, and many unit tests to verify that all edge cases are
     encoded and decoded consistently for use with dynamic data in systems
     and applications.
 Suggests:
