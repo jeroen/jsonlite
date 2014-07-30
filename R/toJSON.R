@@ -58,6 +58,8 @@ View <- function(x, ...){
   #workaround for View() not supporting nested data frames
   #note that utils::View also does as.data.frame. We just add format.data.frame.
   x <- format.data.frame(as.data.frame(x))
-  as.environment("package:utils")$View(x, ...)
+  
+  #In rstudio, utils::View is different from get("View", "package:utils")
+  get("View", "package:utils")(x, ...)
 }
 
