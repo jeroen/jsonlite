@@ -8,21 +8,21 @@ rbind.pages <- function(dfs){
   subdfs <- lapply(dfnames, function(colname){
     combine_pages(lapply(dfs, `[[`, colname))
   })
-  names(subdfs) <- dfnames
   
   # Remove data frame columns
   dfs <- lapply(dfs, function(df){
-    df[!vapply(df, is.data.frame, logical(1))]
+    df[vapply(df, is.data.frame, logical(1))] <- rep(NA, nrow(df));
+    df
   })
   
   # Bind rows
   outdf <- plyr::rbind.fill(dfs)
   
   # Combine wih sub dataframes
-  out <- c(outdf, subdfs)
-  class(out) <- "data.frame"
-  row.names(out) <- row.names(outdf)
-  
+  for(i in seq_along(subdfs)){
+    outdf[[dfnames[i]]] <- subdfs[[i]]
+  }
+
   #out
-  out  
+  outdf
 }
