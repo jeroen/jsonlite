@@ -19,8 +19,8 @@
 #' @rdname fromJSON
 #' @title Convert \R{} objects to/from \code{JSON}
 #' @name toJSON, fromJSON
-#' @aliases fromJSON toJSON 
-#' @export fromJSON toJSON
+#' @aliases View fromJSON toJSON 
+#' @export View fromJSON toJSON
 #' @param txt a \code{JSON} string, URL or file 
 #' @param simplifyVector coerse \code{JSON} arrays containing only primitives into an atomic vector
 #' @param simplifyDataFrame coerse \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame
@@ -126,4 +126,4 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   } else {
     return(obj)
   }
-} 
+}

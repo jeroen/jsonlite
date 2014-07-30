@@ -1,5 +1,6 @@
 0.9.10
  - Add support for escaped (hexadecimal) unicode characters in fromJSON(unicode = TRUE)
+ - Exporting a wrapper for View() that flattens nested data frames 
  - Add print method for scalar (unbox)
 
 0.9.9 

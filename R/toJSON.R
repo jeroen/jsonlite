@@ -50,4 +50,15 @@ mapEncoding <- function(encoding) {
     stop("unrecognized encoding:", encoding)
   }
   return(codes[enc])
-} 
+}
+
+
+#' @rdname fromJSON
+View <- function(x, ...){
+  #workaround for View() not supporting nested data frames
+  if(is.data.frame(x) && any(vapply(x, function(y){length(dim(y)) > 1}, integer(1), USE.NAMES=F))){
+    x <- format.data.frame(x)
+  }
+  as.environment("package:utils")$View(x, ...)
+}
+

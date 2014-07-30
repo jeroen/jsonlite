@@ -2,6 +2,7 @@
 
 S3method(print,json)
 S3method(print,scalar)
+export(View)
 export(fromJSON)
 export(minify)
 export(prettify)
