@@ -4,7 +4,7 @@ rbind.pages <- function(dfs){
   
   # Extract data frame column names
   dfdf <- lapply(dfs, vapply, is.data.frame, logical(1))
-  dfnames <- names(which(unlist(dfdf)))
+  dfnames <- unique(names(which(unlist(dfdf))))
   subdfs <- lapply(dfnames, function(colname){
     combine_pages(lapply(dfs, `[[`, colname))
   })
