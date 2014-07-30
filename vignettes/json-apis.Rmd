@@ -160,7 +160,7 @@ req <- POST("https://api.twitter.com/oauth2/token",
 token <- paste("Bearer", content(req)$access_token);
 
 #Actual API call
-url <- "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=UCLA"
+url <- "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=Rbloggers"
 call1 <- GET(url, config(httpheader = c("Authorization" = token)))
 obj1 <- fromJSON(rawToChar(call1$content))
 substring(obj1$text, 1, 100)
