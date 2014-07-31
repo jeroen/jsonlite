@@ -7,7 +7,7 @@
 
 This section lists some examples of public HTTP APIs that publish data in JSON format. These are great to get a sense of the complex structures that are encountered in real world JSON data. All services are free, but some require registration/authentication. Each example returns lots of data, therefore not all output is printed in this document.
 
-```{r}
+```{r message=FALSE}
 library(jsonlite)
 ```
 
@@ -45,9 +45,9 @@ drivers[1:10, c("givenName", "familyName", "code", "nationality")]
 ```
 
 
-## Pro Publica
+## ProPublica
 
-Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 10 pages of tax-exempt organizations in the USA, ordered by revenue. The `plyr` package is used to combine the pages into a single data frame. See also the [jsonlite paging vignette](http://cran.r-project.org/web/packages/jsonlite/vignettes/json-paging.html).
+Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 10 pages of tax-exempt organizations in the USA, ordered by revenue. The `rbind.pages` function is used to combine the pages into a single data frame.
 
 
 ```{r}
@@ -61,8 +61,7 @@ for(i in 0:10){
 }
 
 #combine all into one 
-library(plyr)
-filings <- rbind.fill(pages)
+filings <- rbind.pages(pages)
 
 #check output
 nrow(filings)
@@ -87,7 +86,6 @@ bestseller_key <- "&api-key=5e260a86a6301f55546c83a47d139b0d:3:68700045"
 url <- "http://api.nytimes.com/svc/books/v2/lists/overview.json?published_date=2013-01-01"
 req <- fromJSON(paste0(url, bestseller_key))
 bestsellers <- req$results$list
-print(bestsellers$display_name)
 category1 <- bestsellers[[1, "books"]]
 subset(category1, select = c("author", "title", "publisher"))
 
@@ -162,7 +160,7 @@ token <- paste("Bearer", content(req)$access_token);
 #Actual API call
 url <- "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=Rbloggers"
 call1 <- GET(url, config(httpheader = c("Authorization" = token)))
-obj1 <- fromJSON(rawToChar(call1$content))
+obj1 <- fromJSON(rawToChar(call1$content), unicode=TRUE)
 substring(obj1$text, 1, 100)
 ```
 
