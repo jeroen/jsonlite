@@ -33,7 +33,7 @@
 #' }
 rbind.pages <- function(pages){
   #Load plyr
-  rbind.fill <- plyr::rbind.fill;
+  loadpkg("plyr")
   
   #validate input
   stopifnot(is.list(pages))
@@ -70,7 +70,7 @@ rbind.pages <- function(pages){
   })
   
   # Bind rows
-  outdf <- rbind.fill(pages)
+  outdf <- plyr::rbind.fill(pages)
   
   # Combine wih sub dataframes
   for(i in seq_along(subpages)){

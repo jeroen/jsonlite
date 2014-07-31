@@ -86,10 +86,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   # overload for URL or path
   if (length(txt) == 1 && nchar(txt) < 1000) {
     if (grepl("^https?://", txt)) {
-      tryCatch(getNamespace("httr"), error = function(e) {
-        stop("Package httr not found. Please run: install.packages('httr')", 
-          call. = FALSE)
-      })
+      loadpkg("httr")
       txt <- download(txt)
     } else if (file.exists(txt)) {
       txt <- paste(readLines(txt, warn = FALSE), collapse = "\n")
