@@ -53,7 +53,7 @@ drivers[1:10, c("givenName", "familyName", "code", "nationality")]
 Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 10 pages of tax-exempt organizations in the USA, ordered by revenue. The `rbind.pages` function is used to combine the pages into a single data frame.
 
 
-```{r}
+```{r, message=FALSE}
 #store all pages in a list first
 baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
 pages <- list()
