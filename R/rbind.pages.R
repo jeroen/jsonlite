@@ -8,7 +8,7 @@
 #' \code{rbind.pages} function can be used to combine these pages back into a single dataset.
 #' 
 #' The \code{\link{rbind.pages}} function generalizes \code{\link{rbind}} and 
-#' \code{\link{rbind.fill}} with added upport for nested data frames. Not each column
+#' \code{plyr::rbind.fill} with added upport for nested data frames. Not each column
 #' has to be present in each of the individual data frames; missing columns will be filled 
 #' up in \code{NA} values.
 #'
@@ -20,10 +20,10 @@
 #' rbind.pages(list(x, y))
 #' 
 #' \dontrun{
-#' baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
+#' baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json"
 #' pages <- list()
 #' for(i in 0:20){
-#'   mydata <- fromJSON(paste0(baseurl, "&page=", i))
+#'   mydata <- fromJSON(paste0(baseurl, "?order=revenue&sort_order=desc&page=", i))
 #'   message("Retrieving page ", i)
 #'   pages[[i+1]] <- mydata$filings
 #' }
