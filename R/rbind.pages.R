@@ -1,19 +1,59 @@
-rbind.pages <- function(dfs){
-  stopifnot(is.list(dfs))
-  stopifnot(all(vapply(dfs, function(x){is.null(x) || is.data.frame(x)}, logical(1))))
+#' Combine pages into a single data frame
+#'
+#' The \code{rbind.pages} function is used to combine a list of data frames into a single 
+#' data frame. This is often needed when working with a \code{JSON} API that limits the amount
+#' of data per request. If we need more data than what fits in a single request, we need to
+#' perform multiple requests that each retrieve a fragment of data, not unlike pages in a 
+#' book. In practice this is often implemented using a \code{page} parameter in the API. The
+#' \code{rbind.pages} function can be used to combine these pages back into a single dataset.
+#' 
+#' The \code{\link{rbind.pages}} function generalizes \code{\link{rbind}} and 
+#' \code{\link{rbind.fill}} with added upport for nested data frames. Not each column
+#' has to be present in each of the individual data frames; missing columns will be filled 
+#' up in \code{NA} values.
+#'
+#' @export
+#' @param pages a list of data frames, each representing a \emph{page} of data
+#' @examples # Basic example
+#' x <- data.frame(foo = rnorm(3), bar = c(TRUE, FALSE, TRUE))
+#' y <- data.frame(foo = rnorm(2), col = c("blue", "red"))
+#' rbind.pages(list(x, y))
+#' 
+#' \dontrun{
+#' baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
+#' pages <- list()
+#' for(i in 0:20){
+#'   mydata <- fromJSON(paste0(baseurl, "&page=", i))
+#'   message("Retrieving page ", i)
+#'   pages[[i+1]] <- mydata$filings
+#' }
+#' filings <- rbind.pages(pages)
+#' nrow(filings)
+#' colnames(filings)
+#' }
+rbind.pages <- function(pages){
+  #Load plyr
+  rbind.fill <- plyr::rbind.fill;
+  
+  #validate input
+  stopifnot(is.list(pages))
+  
+  # All elements must be data frames or NULL.
+  pages <- Filter(function(x) {!is.null(x)}, pages);
+  stopifnot(all(vapply(pages, is.data.frame, logical(1))))
   
   # Extract data frame column names
-  dfdf <- lapply(dfs, vapply, is.data.frame, logical(1))
+  dfdf <- lapply(pages, vapply, is.data.frame, logical(1))
   dfnames <- unique(names(which(unlist(dfdf))))
   
   # No sub data frames
   if(!length(dfnames)){
-    return(plyr::rbind.fill(dfs))
+    return(plyr::rbind.fill(pages))
   }
   
   # Extract the nested data frames
-  subdfs <- lapply(dfnames, function(colname){
-    rbind.pages(lapply(dfs, function(df) {
+  subpages <- lapply(dfnames, function(colname){
+    rbind.pages(lapply(pages, function(df) {
       if(!is.null(df[[colname]])) 
         df[[colname]] 
       else 
@@ -22,17 +62,19 @@ rbind.pages <- function(dfs){
   })
   
   # Remove data frame columns
-  dfs <- lapply(dfs, function(df){
-    df[vapply(df, is.data.frame, logical(1))] <- rep(NA, nrow(df));
+  pages <- lapply(pages, function(df){
+    issubdf <- vapply(df, is.data.frame, logical(1))
+    if(any(issubdf))
+      df[issubdf] <- rep(NA, nrow(df))
     df
   })
   
   # Bind rows
-  outdf <- plyr::rbind.fill(dfs)
+  outdf <- rbind.fill(pages)
   
   # Combine wih sub dataframes
-  for(i in seq_along(subdfs)){
-    outdf[[dfnames[i]]] <- subdfs[[i]]
+  for(i in seq_along(subpages)){
+    outdf[[dfnames[i]]] <- subpages[[i]]
   }
 
   #out
