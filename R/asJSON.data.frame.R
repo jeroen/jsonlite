@@ -57,7 +57,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"),
   
   # Check for row names
   if (!isTRUE(all(grepl("[0-9]+", row.names(x))))) {
-    x <- cbind(data.frame(`$row` = row.names(x), check.names = FALSE), x)
+    x <- cbind(data.frame(`$row` = row.names(x), check.names = FALSE, stringsAsFactors = FALSE), x)
   }
   
   #create a matrix of json elements
