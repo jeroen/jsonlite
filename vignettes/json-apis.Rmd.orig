@@ -1,0 +1,170 @@
+<!--
+\usepackage[utf8]{inputenc}
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Fetching JSON data from REST APIs}
+-->
+
+# Fetching JSON data from REST APIs with jsonlite
+
+This section lists some examples of public HTTP APIs that publish data in JSON format. These are great to get a sense of the complex structures that are encountered in real world JSON data. All services are free, but some require registration/authentication. Each example returns lots of data, therefore not all output is printed in this document.
+
+```{r message=FALSE}
+library(jsonlite)
+```
+
+## Github
+
+Github is an online code repository and has APIs to get live data on almost all activity. Below some examples from a well known R package and author:
+
+```{r}
+hadley_orgs <- fromJSON("https://api.github.com/users/hadley/orgs")
+hadley_repos <- fromJSON("https://api.github.com/users/hadley/repos")
+gg_commits <- fromJSON("https://api.github.com/repos/hadley/ggplot2/commits")
+gg_issues <- fromJSON("https://api.github.com/repos/hadley/ggplot2/issues")
+
+#latest issues
+paste(format(gg_issues$user$login), ":", gg_issues$title)
+```
+
+## CitiBike NYC
+
+A single public API that shows location, status and current availability for all stations in the New York City bike sharing imitative.
+
+```{r}
+citibike <- fromJSON("http://citibikenyc.com/stations/json")
+stations <- citibike$stationBeanList
+colnames(stations)
+nrow(stations)
+```
+
+## Ergast
+
+The Ergast Developer API is an experimental web service which provides a historical record of motor racing data for non-commercial purposes.
+
+```{r}
+res <- fromJSON('http://ergast.com/api/f1/2012/1/results.json')
+drivers <- res$MRData$RaceTable$Races$Results[[1]]$Driver
+colnames(drivers)
+drivers[1:10, c("givenName", "familyName", "code", "nationality")]
+```
+
+
+## ProPublica
+
+Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 10 pages of tax-exempt organizations in the USA, ordered by revenue. The `rbind.pages` function is used to combine the pages into a single data frame.
+
+
+```{r, message=FALSE}
+#store all pages in a list first
+baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
+pages <- list()
+for(i in 0:10){
+  mydata <- fromJSON(paste0(baseurl, "&page=", i), flatten=TRUE)
+  message("Retrieving page ", i)
+  pages[[i+1]] <- mydata$filings
+}
+
+#combine all into one
+filings <- rbind.pages(pages)
+
+#check output
+nrow(filings)
+filings[1:10, c("organization.sub_name", "organization.city", "totrevenue")]
+```
+
+
+## New York Times
+
+The New York Times has several APIs as part of the NYT developer network. These interface to data from various departments, such as news articles, book reviews, real estate, etc. Registration is required (but free) and a key can be obtained at [here](http://developer.nytimes.com/docs/reference/keys). The code below includes some example keys for illustration purposes.
+
+```{r}
+#search for articles
+article_key <- "&api-key=c2fede7bd9aea57c898f538e5ec0a1ee:6:68700045"
+url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json?q=obamacare+socialism"
+req <- fromJSON(paste0(url, article_key))
+articles <- req$response$docs
+colnames(articles)
+
+#search for best sellers
+bestseller_key <- "&api-key=5e260a86a6301f55546c83a47d139b0d:3:68700045"
+url <- "http://api.nytimes.com/svc/books/v2/lists/overview.json?published_date=2013-01-01"
+req <- fromJSON(paste0(url, bestseller_key))
+bestsellers <- req$results$list
+category1 <- bestsellers[[1, "books"]]
+subset(category1, select = c("author", "title", "publisher"))
+
+#movie reviews
+movie_key <- "&api-key=5a3daaeee6bbc6b9df16284bc575e5ba:0:68700045"
+url <- "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json?order=by-date"
+req <- fromJSON(paste0(url, movie_key))
+reviews <- req$results
+colnames(reviews)
+reviews[1:5, c("display_title", "byline", "mpaa_rating")]
+
+```
+
+## CrunchBase
+
+CrunchBase is the free database of technology companies, people, and investors that anyone can edit.
+
+```{r eval=FALSE}
+key <- "f6dv6cas5vw7arn5b9d7mdm3"
+res <- fromJSON(paste0("http://api.crunchbase.com/v/1/search.js?query=R&api_key=", key))
+str(res$results)
+```
+
+## Sunlight Foundation
+
+The Sunlight Foundation is a non-profit that helps to make government transparent and accountable through data, tools, policy and journalism. Register a free key at [here](http://sunlightfoundation.com/api/accounts/register/). An example key is provided.
+
+```{r}
+key <- "&apikey=39c83d5a4acc42be993ee637e2e4ba3d"
+
+#Find bills about drones
+drone_bills <- fromJSON(paste0("http://openstates.org/api/v1/bills/?q=drone", key))
+drone_bills$title <- substring(drone_bills$title, 1, 40)
+print(drone_bills[1:5, c("title", "state", "chamber", "type")])
+
+#Congress mentioning "constitution"
+res <- fromJSON(paste0("http://capitolwords.org/api/1/dates.json?phrase=immigration", key))
+wordcount <- res$results
+wordcount$day <- as.Date(wordcount$day)
+summary(wordcount)
+
+#Local legislators
+legislators <- fromJSON(paste0("http://congress.api.sunlightfoundation.com/",
+  "legislators/locate?latitude=42.96&longitude=-108.09", key))
+subset(legislators$results, select=c("last_name", "chamber", "term_start", "twitter_id"))
+```
+
+## Twitter
+
+The twitter API requires \texttt{OAuth2} authentication. Some example code:
+
+```{r}
+#Create your own appication key at https://dev.twitter.com/apps
+consumer_key = "EZRy5JzOH2QQmVAe9B4j2w";
+consumer_secret = "OIDC4MdfZJ82nbwpZfoUO4WOLTYjoRhpHRAWj6JMec";
+
+#Use basic auth
+library(httr)
+secret <- RCurl::base64(paste(consumer_key, consumer_secret, sep=":"));
+req <- POST("https://api.twitter.com/oauth2/token",
+  config(httpheader = c(
+    "Authorization" = paste("Basic", secret),
+    "Content-Type" = "application/x-www-form-urlencoded;charset=UTF-8"
+  )),
+  body = "grant_type=client_credentials",
+  multipart = FALSE
+);
+
+#Extract the access token
+token <- paste("Bearer", content(req)$access_token);
+
+#Actual API call
+url <- "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=Rbloggers"
+call1 <- GET(url, config(httpheader = c("Authorization" = token)))
+obj1 <- fromJSON(rawToChar(call1$content), unicode=TRUE)
+substring(obj1$text, 1, 100)
+```
+

@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Getting started 1: Parsing JSON with jsonlite}
+%\VignetteIndexEntry{Getting started: Parsing JSON with jsonlite}
 -->
 
 ```{r echo=FALSE}
