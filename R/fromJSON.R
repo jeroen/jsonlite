@@ -1,5 +1,5 @@
 #' These functions are used to convert between \code{JSON} data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
-#' functions use a class based mapping, whichs follows conventions outlined in this paper:  \url{http://arxiv.org/abs/1403.2805} (also available as vignette).
+#' functions use a class based mapping, which follows conventions outlined in this paper:  \url{http://arxiv.org/abs/1403.2805} (also available as vignette).
 #'
 #' The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions
 #' in packages \code{rjson} and \code{RJSONIO}. Our implementation uses an alternative, somewhat more consistent mapping
@@ -22,9 +22,9 @@
 #' @aliases View fromJSON toJSON
 #' @export View fromJSON toJSON
 #' @param txt a \code{JSON} string, URL or file
-#' @param simplifyVector coerse \code{JSON} arrays containing only primitives into an atomic vector
-#' @param simplifyDataFrame coerse \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame
-#' @param simplifyMatrix coerse \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array
+#' @param simplifyVector coerce \code{JSON} arrays containing only primitives into an atomic vector
+#' @param simplifyDataFrame coerce \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame
+#' @param simplifyMatrix coerce \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array
 #' @param flatten flatten nested data frames into a single non-nested data frame (see example)
 #' @param unicode parse escaped (hexadecimal) unicode characters \code{\\uXXXX}. See details.
 #' @param validate automatically \code{\link{validate}} \code{JSON} before parsing it.
@@ -39,7 +39,7 @@
 #' @param na how to print NA values: must be one of 'null' or 'string'. Defaults are class specific
 #' @param auto_unbox automatically \code{\link{unbox}} all atomic vectors of length 1. Not recommended!
 #' @param digits max number of digits (after the dot) to print for numeric values. See: \code{\link{round}}
-#' @param force unclass/skip objects of classes with no defined json mapping
+#' @param force unclass/skip objects of classes with no defined \code{JSON} mapping
 #' @param pretty adds indentation whitespace to \code{JSON} output. See \code{\link{prettify}}
 #' @param ... arguments passed on to class specific \code{print} methods
 #' @useDynLib jsonlite
