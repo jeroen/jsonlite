@@ -7,4 +7,4 @@
 
 setMethod("asJSON", "classRepresentation", function(x, ...) {
   return(asJSON(attributes(x)$slots, ...))
-}) 
+})

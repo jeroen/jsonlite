@@ -14,4 +14,4 @@ as.iso.POSIXt <- function(x, UTC = FALSE, ...) {
   } else {
     as.character(x, format = "%Y-%m-%dT%H:%M:%S")
   }
-} 
+}

@@ -13,7 +13,7 @@ as.scalar <- function(obj) {
     warning("Tried to use as.scalar on a named list.", call.=FALSE)
     return(obj)
   }
-  
+
   class(obj) <- c("scalar", class(obj))
   return(obj)
-} 
+}

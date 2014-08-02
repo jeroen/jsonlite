@@ -1,5 +1,5 @@
-simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, 
-  simplifyDate = simplifyVector, homoList = TRUE, flatten = FALSE, columnmajor = FALSE, 
+simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE,
+  simplifyDate = simplifyVector, homoList = TRUE, flatten = FALSE, columnmajor = FALSE,
   simplifySubMatrix = simplifyMatrix) {
   if (is.list(x)) {
     if (!length(x)) {
@@ -8,7 +8,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
       # correct object.
       return(list())
     }
-    
+
     # list can be a dataframe recordlist
     if (isTRUE(simplifyDataFrame) && is.recordlist(x)) {
       mydf <- simplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix)
@@ -21,49 +21,49 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
       }
       return(mydf)
     }
-    
+
     # or a scalar list (atomic vector)
     if (isTRUE(simplifyVector) && is.null(names(x)) && is.scalarlist(x)) {
       return(null2na(x))
     }
-    
+
     # apply recursively
-    out <- lapply(x, simplify, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
+    out <- lapply(x, simplify, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
       simplifyMatrix = simplifySubMatrix, columnmajor = columnmajor, flatten = flatten)
-    
+
     # fix for mongo style dates turning into scalars *after* simplifying
     # only happens when simplifyDataframe=FALSE
     if(isTRUE(simplifyVector) && is.scalarlist(out) && all(vapply(out, is, logical(1), "POSIXt"))){
       return(structure(null2na(out), class=c("POSIXct", "POSIXt")))
     }
-    
+
     # test for matrix. Note that we have to take another look at x (before null2na on
     # its elements) to differentiate between matrix and vector
     if (isTRUE(simplifyMatrix) && isTRUE(simplifyVector) && is.matrixlist(out) && all(unlist(vapply(x, is.scalarlist, logical(1))))) {
       if(isTRUE(columnmajor)){
-        return(do.call(cbind, out))        
+        return(do.call(cbind, out))
       } else {
-        #this is currently the default        
-        return(do.call(rbind, out))        
+        #this is currently the default
+        return(do.call(rbind, out))
       }
     }
-    
+
     # Simplify higher arrays
     if (isTRUE(simplifyMatrix) && is.arraylist(out)){
       if(isTRUE(columnmajor)){
         return(array(
           data = do.call(cbind, out),
           dim = c(dim(out[[1]]), length(out))
-        ));        
+        ));
       } else {
         #this is currently the default
         return(array(
-          data = do.call(rbind, lapply(out, as.vector)), 
+          data = do.call(rbind, lapply(out, as.vector)),
           dim = c(length(out), dim(out[[1]]))
         ));
       }
     }
-    
+
     # try to enfoce homoList on unnamed lists
     if (isTRUE(homoList) && is.null(names(out))) {
       # coerse empty lists, caused by the ambiguous fromJSON('[]')
@@ -76,7 +76,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
           }
           return(out)
         }
-        
+
         # if all others look like atomic vectors, unlist all
         if (all(vapply(out[!isemptylist], function(z) {
           isTRUE(is.vector(z) && is.atomic(z))
@@ -88,12 +88,12 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
         }
       }
     }
-    
+
     # convert date object
     if( isTRUE(simplifyDate) && is.datelist(out) ){
       return(structure(out[["$date"]]/1000, class=c("POSIXct", "POSIXt")))
     }
-    
+
     # return object
     return(out)
   } else {
@@ -103,7 +103,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
 
 is.scalarlist <- function(x) {
   isTRUE(is.list(x) && all(sapply(x, function(y) {
-    mode(y) %in% c("numeric", "logical", "character", "complex", "NULL") && (length(y) <= 
+    mode(y) %in% c("numeric", "logical", "character", "complex", "NULL") && (length(y) <=
       1)
   })))
 }
@@ -129,14 +129,14 @@ is.recordlist <- function(x) {
 }
 
 is.matrixlist <- function(x) {
-  isTRUE(is.list(x) 
-    && length(x) 
-    && is.null(names(x)) 
-    && all(vapply(x, is.atomic, logical(1))) 
-    && all.identical(vapply(x, length, integer(1))) 
+  isTRUE(is.list(x)
+    && length(x)
+    && is.null(names(x))
+    && all(vapply(x, is.atomic, logical(1)))
+    && all.identical(vapply(x, length, integer(1)))
     #&& all.identical(vapply(x, mode, character(1))) #this fails for: [ [ 1, 2 ], [ "NA", "NA" ] ]
   );
-} 
+}
 
 is.arraylist <- function(x) {
   isTRUE(is.list(x)

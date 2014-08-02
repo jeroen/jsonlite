@@ -13,7 +13,7 @@ null2na <- function(x, unlist = TRUE) {
     missings <- x %in% c("NA", "Inf", "-Inf", "NaN")
     x[missings] <- lapply(x[missings], evaltext)
   }
-  
+
   # parse 'null' values
   x[unlist(sapply(x, is.null))] <- NA
   if (isTRUE(unlist)) {
@@ -21,4 +21,4 @@ null2na <- function(x, unlist = TRUE) {
   } else {
     return(x)
   }
-} 
+}

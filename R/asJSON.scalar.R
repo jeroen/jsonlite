@@ -6,7 +6,7 @@ setMethod("asJSON", "scalar", function(x, collapse, ...) {
   } else {
     x <- unclass(x)
   }
-  
+
   # Print JSON without []
   return(asJSON(x, collapse = FALSE, ...))
-}) 
+})

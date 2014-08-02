@@ -1,8 +1,8 @@
-setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch", 
+setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch",
   "mongo"), UTC = FALSE, digits, ...) {
   # note: UTC argument doesn't seem to be working consistently maybe use ?format
   # instead of ?as.character
-  
+
   # Validate
   POSIXt <- match.arg(POSIXt)
 
@@ -21,4 +21,4 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
   } else {
     stop("Invalid value for argument POSIXt:", POSIXt)
   }
-}) 
+})

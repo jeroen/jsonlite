@@ -21,4 +21,4 @@ setMethod("asJSON", "ANY", function(x, force = FALSE, ...) {
     # If even that doesn't work, we give up.
     stop("No method asJSON S3 class: ", class(x))
   }
-}) 
+})

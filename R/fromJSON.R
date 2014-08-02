@@ -1,33 +1,33 @@
 #' These functions are used to convert between \code{JSON} data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
 #' functions use a class based mapping, whichs follows conventions outlined in this paper:  \url{http://arxiv.org/abs/1403.2805} (also available as vignette).
-#' 
+#'
 #' The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions
 #' in packages \code{rjson} and \code{RJSONIO}. Our implementation uses an alternative, somewhat more consistent mapping
-#' between \R{} objects and \code{JSON} strings. 
-#' 
-#' The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions in this package use an 
+#' between \R{} objects and \code{JSON} strings.
+#'
+#' The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions in this package use an
 #' alternative system to convert between \R{} objects and \code{JSON}, which supports more classes but is much more verbose.
-#' 
-#' A \code{JSON} string is always unicode, using \code{UTF-8} by default, hence there is usually no need to escape any characters. 
-#' However, the \code{JSON} format does support escaping of unicode characters, which are encoded using a backslash followed by 
-#' a lower case \code{"u"} and 4 hex characters, for example: \code{"Z\\u00FCrich"}. The \code{fromJSON} function 
-#' will only parse such escape sequences correctly when the \code{unicode} argument is set to \code{TRUE}. Because this introduces 
+#'
+#' A \code{JSON} string is always unicode, using \code{UTF-8} by default, hence there is usually no need to escape any characters.
+#' However, the \code{JSON} format does support escaping of unicode characters, which are encoded using a backslash followed by
+#' a lower case \code{"u"} and 4 hex characters, for example: \code{"Z\\u00FCrich"}. The \code{fromJSON} function
+#' will only parse such escape sequences correctly when the \code{unicode} argument is set to \code{TRUE}. Because this introduces
 #' significant performance overhead, it is disabled by default. It is strongly preferable to encode unicode characters in \code{JSON}
 #' using native \code{UTF-8} rather than escape sequences.
 #'
-# 
+#
 #' @rdname fromJSON
 #' @title Convert \R{} objects to/from \code{JSON}
 #' @name toJSON, fromJSON
-#' @aliases View fromJSON toJSON 
+#' @aliases View fromJSON toJSON
 #' @export View fromJSON toJSON
-#' @param txt a \code{JSON} string, URL or file 
+#' @param txt a \code{JSON} string, URL or file
 #' @param simplifyVector coerse \code{JSON} arrays containing only primitives into an atomic vector
 #' @param simplifyDataFrame coerse \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame
 #' @param simplifyMatrix coerse \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array
 #' @param flatten flatten nested data frames into a single non-nested data frame (see example)
 #' @param unicode parse escaped (hexadecimal) unicode characters \code{\\uXXXX}. See details.
-#' @param validate automatically \code{\link{validate}} \code{JSON} before parsing it. 
+#' @param validate automatically \code{\link{validate}} \code{JSON} before parsing it.
 #' @param x the object to be encoded
 #' @param dataframe how to encode data.frame objects: must be one of 'rows' or 'columns'
 #' @param matrix how to encode matrices and higher dimensional arrays: must be one of 'rowmajor' or 'columnmajor'.
@@ -47,42 +47,42 @@
 #' @examples #stringify some data
 #' jsoncars <- toJSON(mtcars, pretty=TRUE)
 #' cat(jsoncars)
-#' 
+#'
 #' #parse it back
 #' fromJSON(jsoncars)
 #'
 #' #parsing escaped unicode
 #' fromJSON('{"city" : "Z\\u00FCrich"}', unicode = TRUE)
 #'
-#' \dontrun{ 
+#' \dontrun{
 #' # Parse data frame
 #' data1 <- fromJSON("https://api.github.com/users/hadley/orgs")
 #' names(data1)
 #' data1$login
-#' 
+#'
 #' #nested data frames:
 #' data2 <- fromJSON("https://api.github.com/users/hadley/repos")
 #' names(data2)
 #' names(data2$owner)
 #' data2$owner$login
-#' 
+#'
 #' #same data, but now flattened:
 #' data3 <- fromJSON("https://api.github.com/users/hadley/repos", flatten=TRUE)
 #' names(data3)
 #' }
-#' 
+#'
 #' #control scientific notation
 #' toJSON(10 ^ (0:10))
 #' options(scipen=3)
 #' toJSON(10 ^ (0:10))
-fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, 
+fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
   simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, validate = FALSE, ...) {
-  
+
   # check type
   if (!is.character(txt)) {
     stop("Argument 'txt' must be a JSON string, URL or path to existing file.")
   }
-  
+
   # overload for URL or path
   if (length(txt) == 1 && nchar(txt) < 1000) {
     if (grepl("^https?://", txt)) {
@@ -92,12 +92,12 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
       txt <- paste(readLines(txt, warn = FALSE), collapse = "\n")
     }
   }
-  
+
   # collapse
   if (length(txt) > 1) {
     txt <- paste(txt, collapse = "\n")
   }
-  
+
   # Validate JSON
   if (isTRUE(validate)) {
     if(!validate(txt)) {
@@ -107,18 +107,18 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
     #Always do basic validation
     stop("String does not contain valid JSON: \"", gsub("\\s+", " ", substring(txt, 0, 25)), "...\"")
   }
-  
+
   # preparse escaped unicode characters
   if(isTRUE(unicode)){
     txt <- unescape_unicode(txt)
   }
-  
+
   # parse JSON
   obj <- parseJSON(txt)
-  
+
   # post processing
   if (any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))) {
-    return(simplify(obj, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
+    return(simplify(obj, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
       simplifyMatrix = simplifyMatrix, flatten = flatten, ...))
   } else {
     return(obj)

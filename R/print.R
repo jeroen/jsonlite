@@ -13,7 +13,7 @@ print.scalar <- function(x, ...){
   } else {
     names(x) <- "[X]"
   }
-  class(x) <- class(x)[-1]  
+  class(x) <- class(x)[-1]
   print(x)
   invisible(original)
 }

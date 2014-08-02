@@ -1,11 +1,11 @@
 #' The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions convert between
-#' \R{} objects to \code{JSON} data. Instead of using a class based mapping like 
+#' \R{} objects to \code{JSON} data. Instead of using a class based mapping like
 #' \code{\link{toJSON}} and \code{\link{fromJSON}}, the serialize functions base the encoding
 #' schema on the storage type, and capture all data and attributes from any object.
 #' Thereby the object can be restored almost perfectly from its \code{JSON} representation, but
 #' the resulting \code{JSON} output is very verbose. Apart from environments, all standard storage
 #' types are supported.
-#'  
+#'
 #' @rdname serializeJSON
 #' @title serialize R objects to \code{JSON}
 #' @name serializeJSON
@@ -18,7 +18,7 @@
 #' @examples jsoncars <- serializeJSON(mtcars)
 #' mtcars2 <- unserializeJSON(jsoncars)
 #' identical(mtcars, mtcars2)
-#' 
+#'
 #' set.seed('123')
 #' myobject <- list(
 #'   mynull = NULL,
@@ -44,4 +44,4 @@ serializeJSON <- function(x, digits = 8, pretty = FALSE) {
 #' @rdname serializeJSON
 unserializeJSON <- function(txt) {
   unpack(parseJSON(txt))
-} 
+}

@@ -6,4 +6,4 @@ makesymbol <- function(x) {
   } else {
     as.name(x)
   }
-} 
+}
