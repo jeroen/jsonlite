@@ -1,15 +1,29 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Combining pages of JSON data with jsonlite and plyr}
+%\VignetteIndexEntry{Combining pages of JSON data with jsonlite}
 -->
 
-# Combining pages of JSON data with jsonlite and plyr
+```{r echo=FALSE}
+library(knitr)
+opts_chunk$set(comment="")
+
+#this replaces tabs by spaces because latex-verbatim doesn't like tabs
+toJSON <- function(...){
+  gsub("\t", "  ", jsonlite::toJSON(...), fixed=TRUE);
+}
+```
+
+```{r echo=FALSE, message=FALSE}
+library(jsonlite)
+```
+
+# Combining pages of JSON data with jsonlite
 
 The [jsonlite](http://cran.r-project.org/web/packages/jsonlite/index.html) package is a `JSON` parser/generator for R which is optimized for pipelines and web APIs. It is used by the OpenCPU system and many other packages to get data in and out of R using the `JSON` format.
 
 ## A bidirectional mapping
 
-One of the main strenghts of `jsonlite` is that it implements a bidirectional [mapping](http://arxiv.org/abs/1403.2805) between data frames and `JSON`. Thereby it can convert nested collections of `JSON` records, as they often appear on the web, immediately into the appropriate R structures, without complicated manual data munging by the user. For example, if a journalist wants to grab some data from ProPublica, she can simply use something like:
+One of the main strenghts of `jsonlite` is that it implements a bidirectional [mapping](http://arxiv.org/abs/1403.2805) between JSON and data frames. Thereby it can convert nested collections of JSON records, as they often appear on the web, immediately into the appropriate R structure. For example to grab some data from ProPublica we can simply use:
   
 ```{r eval=FALSE}
 library(jsonlite)
@@ -17,38 +31,34 @@ mydata <- fromJSON("http://projects.propublica.org/forensics/geos.json", flatten
 View(mydata)
 ```
 
-Here, the `mydata` object is a data frame which can be used directly for modeling or visualization, without the need for advanced data minipulation skills.
+The `mydata` object is a data frame which can be used directly for modeling or visualization, without the need for any further complicated data manipulation.
 
-## Paging with jsonlite and plyr
+## Paging with jsonlite
 
 A question that comes up frequently is how to combine pages of data. Most web APIs limit the amount of data that can be retrieved per request. If the client needs more data than what can fits in a single request, it needs to break down the data into multiple requests that each retrieve a fragment (page) of data, not unlike pages in a book. In practice this is often implemented using a `page` parameter in the API. Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 3 pages of tax-exempt organizations in the USA, ordered by revenue:
   
-```{r eval=FALSE}
-baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
-mydata0 <- fromJSON(paste0(baseurl, "&page=0"))
-mydata1 <- fromJSON(paste0(baseurl, "&page=1"))
-mydata2 <- fromJSON(paste0(baseurl, "&page=2"))
-
-#The actual data is in the filings element
-print(mydata0$filings)
-print(mydata0$filings$organization)
-```
-
-To analyze or visualize these data, we need to combine the pages into a single dataset. This is best done using `rbind.fill` from the `plyr` package. However because `rbind.fill` does not support nested data frames, we need to flatten the `JSON` data by passing the `flatten = TRUE` argument to `fromJSON`.
-
-```{r eval=FALSE}
-#Note flatten=TRUE requires jsonlite => 0.9.9
+```{r}
 baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
 mydata0 <- fromJSON(paste0(baseurl, "&page=0"), flatten = TRUE)
 mydata1 <- fromJSON(paste0(baseurl, "&page=1"), flatten = TRUE)
 mydata2 <- fromJSON(paste0(baseurl, "&page=2"), flatten = TRUE)
 
-#Combine data pages
-library(plyr)
-filings <- rbind.fill(mydata0$filings, mydata1$filings, mydata2$filings)
+#The actual data is in the filings element
+mydata0$filings[1:10, c("organization.sub_name", "organization.city", "totrevenue")]
+```
 
-#Check output
-colnames(filings)
+To analyze or visualize these data, we need to combine the pages into a single dataset. We can do this with the `rbind.pages` function. Note that in this example, the actual data is contained by the `filings` field:
+
+```{r}
+#Rows per data frame
+nrow(mydata0$filings)
+
+#Combine data frames
+filings <- rbind.pages(
+  list(mydata0$filings, mydata1$filings, mydata2$filings)
+)
+
+#Total number of rows
 nrow(filings)
 ```
 
@@ -56,26 +66,22 @@ nrow(filings)
 
 We can write a simple loop that automatically downloads and combines many pages. For example to retrieve the first 20 pages with non-profits from the example above:
   
-```{r eval=FALSE}
-#requires jsonlite >= 0.9.9
-library(jsonlite)
-
+```{r, message=FALSE}
 #store all pages in a list first
 baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
 pages <- list()
 for(i in 0:20){
-  mydata <- fromJSON(paste0(baseurl, "&page=", i), flatten=TRUE)
+  mydata <- fromJSON(paste0(baseurl, "&page=", i))
   message("Retrieving page ", i)
   pages[[i+1]] <- mydata$filings
 }
 
 #combine all into one 
-library(plyr)
-filings <- rbind.fill(pages)
+filings <- rbind.pages(pages)
 
 #check output
 nrow(filings)
 colnames(filings)
 ```
 
-From here, our journalist can go straight to analyzing the data without any further tedious, complicated and time consuming data manipulation.
+From here, we can go straight to analyzing the filings data without any further tedious data manipulation.
