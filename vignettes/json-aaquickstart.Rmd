@@ -69,7 +69,7 @@ mydf <- fromJSON(json)
 mydf
 ```
 
-The data frame can be converted back into the original JSON structure using `toJSON` (whitespace and linebreaks are ignorable in JSON).
+The data frame can be converted back into the original JSON structure using `toJSON` (whitespace and line breaks are ignorable in JSON).
 
 ```{r}
 mydf$Ranking <- c(3, 1, 2, 4)
