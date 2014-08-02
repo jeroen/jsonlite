@@ -1,0 +1,114 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Getting started 1: Parsing JSON with jsonlite}
+-->
+
+```{r echo=FALSE}
+library(knitr)
+opts_chunk$set(comment="")
+
+#this replaces tabs by spaces because latex-verbatim doesn't like tabs
+toJSON <- function(...){
+  gsub("\t", "  ", jsonlite::toJSON(...), fixed=TRUE);
+}
+```
+
+# Getting started 1: Parsing JSON with jsonlite
+
+The jsonlite package is a JSON parser/generator optimized for the web. Its main strength is that it implements a bidirectional mapping between JSON data and the most important R data types. Thereby we can convert between R objects and JSON without loss of type or information, and without the need for any manual data munging. This is ideal for interacting with web APIs, or to build pipelines where data structures seamlessly flow in and out of R using JSON.
+
+```{r message=FALSE}
+library(jsonlite)
+identical(mtcars, fromJSON(toJSON(mtcars)))
+```
+
+This vignette introduces basic concepts to get started with jsonlite. For a more detailed outline and motivation of the mapping: [arXiv:1403.2805](http://arxiv.org/abs/1403.2805).
+
+## Simplification
+
+Simplification is the process where **homogeneous JSON arrays** automatically get converted from a list into a more specific R class. The `fromJSON` function has 3 arguments which control the simplification process: `simplifyVector`, `simplifiyDataFrame` and `simplifyMatrix`. Each one is enabled by default.
+
+| Argument          | JSON structure               | R class       |
+| ------------------|------------------------------|----------------
+| simplifyVector    | Array of primitives          | Atomic Vector |
+| simplifyDataFrame | Array of objects             | Data Frame    |
+| simplifyMatrix    | Array of equal length arrays | Matrix        |
+
+### Atomic Vectors
+
+A JSON array containing primitives (strings, numbers or booleans) gets converted into an atomic vector. Any possible `null` values turn into `NA`.
+
+```{r}
+# An array with primitives
+json <- '["Mario", "Peach", null, "Bowser"]'
+
+#This turns into an (atomic) vector
+fromJSON(json)
+```
+
+Without simplification, an array always turns into a list: 
+
+```{r}
+#If we disable simplifyVector it would be a list
+fromJSON(json, simplifyVector = FALSE)
+```
+
+### Data Frames
+
+A JSON array containing JSON objects (key-value pairs) turns into a data frame. Missing fields turn into `NA` values.
+
+```{r}
+json <-
+'[
+  {"Name" : "Mario", "Age" : 32, "Occupation" : "Plumber"}, 
+  {"Name" : "Peach", "Age" : 21, "Occupation" : "Princess"},
+  {},
+  {"Name" : "Bowser", "Occupation" : "Koopa"}
+]'
+mydf <- fromJSON(json)
+mydf
+```
+
+The data frame can be converted back into the original JSON structure using `toJSON` (whitespace and linebreaks are ignorable in JSON).
+
+```{r}
+mydf$Ranking <- c(3, 1, 2, 4)
+toJSON(mydf, pretty=TRUE)
+```
+
+### Matrices and Arrays
+
+A JSON array containing equal-length arrays turns into a matrix or higher order array. Using `simplifyMatrix` only makes sense in conjunction with `simplifyVector`.
+
+```{r}
+json <- '[
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12]
+]'
+mymatrix <- fromJSON(json)
+mymatrix
+```
+
+Again, we can use `toJSON` to convert the matrix or array back into the original JSON format:
+
+```{r}
+toJSON(mymatrix)
+```
+
+The simplification works for arrays of arbitrary dimensionality, as long as the dimensions (length of the arrays) match, because R has no special data structure for ragged arrays.
+
+```{r}
+json <- '[
+   [[1, 2], 
+    [3, 4]],
+   [[5, 6], 
+    [7, 8]],
+   [[9, 10],
+    [11, 12]]
+]'
+myarray <- fromJSON(json)
+myarray[1, , ]
+myarray[ , ,1]
+```
+
