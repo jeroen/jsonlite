@@ -139,7 +139,7 @@ subset(legislators$results, select=c("last_name", "chamber", "term_start", "twit
 
 ## Twitter
 
-The twitter API requires \texttt{OAuth2} authentication. Some example code:
+The twitter API requires OAuth2 authentication. Some example code:
 
 ```{r}
 #Create your own appication key at https://dev.twitter.com/apps
