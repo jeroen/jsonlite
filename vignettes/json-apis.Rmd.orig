@@ -4,6 +4,16 @@
 %\VignetteIndexEntry{Fetching JSON data from REST APIs}
 -->
 
+```{r echo=FALSE}
+library(knitr)
+opts_chunk$set(comment="")
+
+#this replaces tabs by spaces because latex-verbatim doesn't like tabs
+toJSON <- function(...){
+  gsub("\t", "  ", jsonlite::toJSON(...), fixed=TRUE);
+}
+```
+
 # Fetching JSON data from REST APIs with jsonlite
 
 This section lists some examples of public HTTP APIs that publish data in JSON format. These are great to get a sense of the complex structures that are encountered in real world JSON data. All services are free, but some require registration/authentication. Each example returns lots of data, therefore not all output is printed in this document.
