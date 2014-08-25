@@ -70,7 +70,8 @@ extern bool used_ascii_one;
 void internalJSONNode::WriteName(bool formatted, bool arrayChild, json_string & output) const json_nothrow {
     if (!arrayChild){
 		output += JSON_TEXT("\"");
-		JSONWorker::UnfixString(_name, _name_encoded, output);
+		//hack by jeroen: always escape json object names
+		JSONWorker::UnfixString(_name, true, output);
 		output += ((formatted) ? JSON_TEXT("\" : ") : JSON_TEXT("\":"));
     }
 }
