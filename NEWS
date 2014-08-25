@@ -1,9 +1,12 @@
+0.9.11
+ - Fix bug in prettify object name escaping
+
 0.9.10
  - Add support for escaped (hexadecimal) unicode characters in fromJSON(unicode = TRUE)
- - Exporting a wrapper for View() that flattens nested data frames 
+ - Exporting a wrapper for View() that flattens nested data frames
  - Add print method for scalar (unbox)
 
-0.9.9 
+0.9.9
  - Fix bug where 'flatten' argument wasn't passed down
  - Make asJSON automatically unname any named lists within a data frame
  - fromJSON(url) now sets Accept header
