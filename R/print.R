@@ -1,7 +1,7 @@
 #' @method print json
 #' @export
 print.json <- function(x, ...){
-  cat(x)
+  cat(x, "\n")
 }
 
 #' @method print scalar
