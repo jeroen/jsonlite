@@ -14,17 +14,17 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   "columnmajor"), Date = c("ISO8601", "epoch"), POSIXt = c("string",
   "ISO8601", "epoch", "mongo"), factor = c("string", "integer"),
   complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
-  na = c("null", "string"), auto_unbox = FALSE, digits = 4,
-  pretty = FALSE, force = FALSE, ...)
+  null = c("list", "null"), na = c("null", "string"), auto_unbox = FALSE,
+  digits = 4, pretty = FALSE, force = FALSE, ...)
 }
 \arguments{
 \item{txt}{a \code{JSON} string, URL or file}
 
-\item{simplifyVector}{coerse \code{JSON} arrays containing only primitives into an atomic vector}
+\item{simplifyVector}{coerce \code{JSON} arrays containing only primitives into an atomic vector}
 
-\item{simplifyDataFrame}{coerse \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame}
+\item{simplifyDataFrame}{coerce \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame}
 
-\item{simplifyMatrix}{coerse \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array}
+\item{simplifyMatrix}{coerce \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array}
 
 \item{flatten}{flatten nested data frames into a single non-nested data frame (see example)}
 
@@ -48,13 +48,15 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
 
 \item{raw}{how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'}
 
+\item{null}{how to encode NULL values within a list: must be one of 'null' or 'list'}
+
 \item{na}{how to print NA values: must be one of 'null' or 'string'. Defaults are class specific}
 
 \item{auto_unbox}{automatically \code{\link{unbox}} all atomic vectors of length 1. Not recommended!}
 
 \item{digits}{max number of digits (after the dot) to print for numeric values. See: \code{\link{round}}}
 
-\item{force}{unclass/skip objects of classes with no defined json mapping}
+\item{force}{unclass/skip objects of classes with no defined \code{JSON} mapping}
 
 \item{pretty}{adds indentation whitespace to \code{JSON} output. See \code{\link{prettify}}}
 
@@ -62,7 +64,7 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
 }
 \description{
 These functions are used to convert between \code{JSON} data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
-functions use a class based mapping, whichs follows conventions outlined in this paper:  \url{http://arxiv.org/abs/1403.2805} (also available as vignette).
+functions use a class based mapping, which follows conventions outlined in this paper:  \url{http://arxiv.org/abs/1403.2805} (also available as vignette).
 }
 \details{
 The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions

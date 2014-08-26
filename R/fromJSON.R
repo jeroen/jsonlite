@@ -36,6 +36,7 @@
 #' @param factor how to encode factor objects: must be one of 'string' or 'integer'
 #' @param complex how to encode complex numbers: must be one of 'string' or 'list'
 #' @param raw how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'
+#' @param null how to encode NULL values within a list: must be one of 'null' or 'list'
 #' @param na how to print NA values: must be one of 'null' or 'string'. Defaults are class specific
 #' @param auto_unbox automatically \code{\link{unbox}} all atomic vectors of length 1. Not recommended!
 #' @param digits max number of digits (after the dot) to print for numeric values. See: \code{\link{round}}

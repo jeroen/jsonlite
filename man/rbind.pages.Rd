@@ -18,7 +18,7 @@ book. In practice this is often implemented using a \code{page} parameter in the
 }
 \details{
 The \code{\link{rbind.pages}} function generalizes \code{\link{rbind}} and
-\code{plyr::rbind.fill} with added upport for nested data frames. Not each column
+\code{plyr::rbind.fill} with added support for nested data frames. Not each column
 has to be present in each of the individual data frames; missing columns will be filled
 up in \code{NA} values.
 }

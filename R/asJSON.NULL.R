@@ -1,4 +1,8 @@
 # Note that this is different from RJSONIO because null values are NA.
-setMethod("asJSON", "NULL", function(x, ...) {
-  return("{}")
+setMethod("asJSON", "NULL", function(x, null = "null", ...) {
+  if(null == "null"){
+    return("null")
+  } else {
+    return("{}")
+  }
 })

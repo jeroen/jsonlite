@@ -6,7 +6,8 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
       # In case of fromJSON('[]') returning a list is most neutral.  Because the user
       # can do as.vector(list()) and as.data.frame(list()) which both results in the
       # correct object.
-      return(list())
+      # This also covers fromJSON('{}')
+      return(x)
     }
 
     # list can be a dataframe recordlist
