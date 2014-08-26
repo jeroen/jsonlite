@@ -540,9 +540,10 @@ void JSONWorker::UnfixString(const json_string & value_t, bool flag, json_string
 			 case JSON_TEXT('\r'):	//return character
 				res += JSON_TEXT("\\r");
 				break;
-			 case JSON_TEXT('/'):	//forward slash
-				res += JSON_TEXT("\\/");
-				break;
+ 			//jeroen: do not escape forward slash for consinstency
+			// case JSON_TEXT('/'):	//forward slash
+			//	res += JSON_TEXT("\\/");
+			//	break;
 			 case JSON_TEXT('\b'):	//backspace
 				res += JSON_TEXT("\\b");
 				break;
