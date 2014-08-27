@@ -1,5 +1,5 @@
 0.9.11
- - Added toJSON 'null' argument
+ - Added toJSON null argument. Default to "null"
  - Fix bug in prettify object name escaping
 
 0.9.10
