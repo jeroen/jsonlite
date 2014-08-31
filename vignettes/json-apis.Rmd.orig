@@ -158,23 +158,24 @@ consumer_secret = "OIDC4MdfZJ82nbwpZfoUO4WOLTYjoRhpHRAWj6JMec";
 
 #Use basic auth
 library(httr)
-secret <- RCurl::base64(paste(consumer_key, consumer_secret, sep=":"));
+secret <- RCurl::base64(paste(consumer_key, consumer_secret, sep = ":"));
 req <- POST("https://api.twitter.com/oauth2/token",
   config(httpheader = c(
     "Authorization" = paste("Basic", secret),
     "Content-Type" = "application/x-www-form-urlencoded;charset=UTF-8"
   )),
   body = "grant_type=client_credentials",
-  multipart = FALSE
+  encode = "multipart"
 );
 
 #Extract the access token
-token <- paste("Bearer", content(req)$access_token);
+token <- paste("Bearer", content(req)$access_token)
 
 #Actual API call
 url <- "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=Rbloggers"
-call1 <- GET(url, config(httpheader = c("Authorization" = token)))
-obj1 <- fromJSON(rawToChar(call1$content), unicode=TRUE)
-substring(obj1$text, 1, 100)
+req <- GET(url, config(httpheader = c("Authorization" = token)))
+json <- content(req, as = "text")
+tweets <- fromJSON(json, unicode = TRUE)
+substring(tweets$text, 1, 100)
 ```
 

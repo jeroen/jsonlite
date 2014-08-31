@@ -7,7 +7,7 @@
 #options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
 @
 
-%This is a template. 
+%This is a template.
 %Actual text goes in sources/content.Rnw
 \documentclass{article}
 \author{Jeroen Ooms}
@@ -31,7 +31,7 @@
 %support for accents
 \usepackage[utf8]{inputenc}
 
-%support for ascii art 
+%support for ascii art
 \usepackage{pmboxdraw}
 
 %use vspace instead of indentation for paragraphs
@@ -83,7 +83,7 @@
 
 \maintitle{The \jsonlite Package: A Practical and Consistent Mapping Between \JSON Data and \R Objects}
 
-<<echo=FALSE>>=
+<<echo=FALSE, message=FALSE>>=
 library(jsonlite)
 library(knitr)
 opts_chunk$set(comment="")
@@ -126,13 +126,13 @@ x <- fromJSON(txt)
 is(x)
 print(x)
 @
- 
-This seems very reasonable and it is the only practical solution to represent vectors in \JSON. However the price we pay is that automatic simplification can compromise type-safety in the context of dynamic data. For example, suppose an \R package uses \fromJSON to pull data from a \JSON \API on the web and that for some particular combination of parameters the result includes a \texttt{null} value, e.g: \texttt{[12, null, 7]}. This is actually quite common, many \API's use \texttt{null} for missing values or unset fields. This case makes the behavior of parser ambiguous, because the \JSON array is technically no longer homogeneous. And indeed, some implementations will now return a \texttt{list} instead of a \texttt{vector}. If the user had not anticipated this scenario and the script assumes a \texttt{vector}, the code is likely to run into type errors. 
+
+This seems very reasonable and it is the only practical solution to represent vectors in \JSON. However the price we pay is that automatic simplification can compromise type-safety in the context of dynamic data. For example, suppose an \R package uses \fromJSON to pull data from a \JSON \API on the web and that for some particular combination of parameters the result includes a \texttt{null} value, e.g: \texttt{[12, null, 7]}. This is actually quite common, many \API's use \texttt{null} for missing values or unset fields. This case makes the behavior of parser ambiguous, because the \JSON array is technically no longer homogeneous. And indeed, some implementations will now return a \texttt{list} instead of a \texttt{vector}. If the user had not anticipated this scenario and the script assumes a \texttt{vector}, the code is likely to run into type errors.
 
 The lesson here is that we need to be very specific and explicit about the mapping that is implemented to convert between \JSON data and \R objects. When relying on \JSON as a data interchange format, the behavior of the parser must be consistent and unambiguous. Clients relying on \JSON to get data in and out of \R must know exactly what to expect in order to facilitate reliable communication, even if the content of the data is dynamic. Similarly, \R code using dynamic \JSON data from an external source is only reliable when the conversion from \JSON to \R is consistent. Moreover a practical mapping must incorporate existing conventions and use the most natural representation of certain structures in \R.  In the example above, we could argue that instead of falling back on a \texttt{list}, the array is more naturally interpreted as a numeric vector where the \texttt{null} becomes a missing value (\texttt{NA}). These principles will extrapolate as we start discussing more complex \JSON structures representing matrices and data frames.
 
 % \subsection{A Bidirectional Mapping}
-% 
+%
 % - bidirectional: one-to-one correspondence between JSON and \R classes with minimal coersing.
 % - relation is functional in each direction: json interface to \R objects, and \R objects can be used to manipulate a JSON structure.
 % - Results in unique coupling between json and objects that makes it natural to manipulate JSON in \R, and access \R objects from their JSON representation.
@@ -143,7 +143,7 @@ The lesson here is that we need to be very specific and explicit about the mappi
 
 \subsection[Reference implementation: the jsonlite package]{Reference implementation: the \jsonlite package}
 
-The \jsonlite package provides a reference implementation of the conventions proposed in this document. It is a fork of the \RJSONIO package by Duncan Temple Lang, which builds on \texttt{libjson} \texttt{C++} library from Jonathan Wallace. \jsonlite uses the parser from \RJSONIO, but the \R code has been rewritten from scratch. Both packages implement \toJSON and \fromJSON functions, but their output is quite different. Finally, the \jsonlite package contains a large set of unit tests to validate that \R objects are correctly converted to \JSON and vice versa. These unit tests cover all classes and edge cases mentioned in this document, and could be used to validate if other implementations follow the same conventions. 
+The \jsonlite package provides a reference implementation of the conventions proposed in this document. It is a fork of the \RJSONIO package by Duncan Temple Lang, which builds on \texttt{libjson} \texttt{C++} library from Jonathan Wallace. \jsonlite uses the parser from \RJSONIO, but the \R code has been rewritten from scratch. Both packages implement \toJSON and \fromJSON functions, but their output is quite different. Finally, the \jsonlite package contains a large set of unit tests to validate that \R objects are correctly converted to \JSON and vice versa. These unit tests cover all classes and edge cases mentioned in this document, and could be used to validate if other implementations follow the same conventions.
 
 <<eval=FALSE>>=
 library(testthat)
@@ -168,11 +168,11 @@ Then there are limitations introduced by the format. Because \JSON is a human re
 Finally, as mentioned earlier, \fromJSON is not a perfect inverse function of \toJSON, as is the case for \code{serialializeJSON} and \code{unserializeJSON}. The class based mappings are designed for concise and practical encoding of the various common data structures. Our implementation of \toJSON and \fromJSON approximates a reversible mapping between \R objects and \JSON for the standard data classes, but there are always limitations and edge cases. For example, the \JSON representation of an empty vector, empty list or empty data frame are all the same: \texttt{"[ ]"}. Also some special vector types such as factors, dates or timestamps get coerced to strings, as they would in for example \texttt{CSV}. This is a quite typical and expected behavior among text based formats, but it does require some additional interpretation on the consumer side.
 
 % \subsection{Goals: Consistent and Practical}
-% 
-% It can be helpful to see the problem from both sides. The \R user needs to interface external \JSON data from within \R.  This includes reading data from a public source/API, or posting a specific \JSON structure to an online service. From perspective of the \R user, \JSON data should be realized in \R using classes which are most natural in \R for a particular structure. A proper mapping is one which allows the \R user to read any incoming data or generate a specific \JSON structures using the familiar methods and classes in \R.  Ideally, the \R user would like to forget about the interchange format at all, and think about the external data interface in terms of its corresponding \R structures rather than a \JSON schema. The other perspective is that of an third party client or language, which needs to interface data in \R using \JSON. This actor wants to access and manipulate \R objects via their \JSON representation. A good mapping is one that allows a 3rd party client to get data in and out of \R, without necessarily understanding the specifics of the underlying \R classes. Ideally, the external client could forget about the \R objects and classes at all, and think about input and output of data in terms of the \JSON schema, or the corresponding realization in the language of the client. 
-% 
+%
+% It can be helpful to see the problem from both sides. The \R user needs to interface external \JSON data from within \R.  This includes reading data from a public source/API, or posting a specific \JSON structure to an online service. From perspective of the \R user, \JSON data should be realized in \R using classes which are most natural in \R for a particular structure. A proper mapping is one which allows the \R user to read any incoming data or generate a specific \JSON structures using the familiar methods and classes in \R.  Ideally, the \R user would like to forget about the interchange format at all, and think about the external data interface in terms of its corresponding \R structures rather than a \JSON schema. The other perspective is that of an third party client or language, which needs to interface data in \R using \JSON. This actor wants to access and manipulate \R objects via their \JSON representation. A good mapping is one that allows a 3rd party client to get data in and out of \R, without necessarily understanding the specifics of the underlying \R classes. Ideally, the external client could forget about the \R objects and classes at all, and think about input and output of data in terms of the \JSON schema, or the corresponding realization in the language of the client.
+%
 % Both sides come together in the context of an RPC service such as OpenCPU. OpenCPU exposes a HTTP API to let 3rd party clients call \R functions over HTTP. The function arguments are posted using \JSON and OpenCPU automatically converts these into \R objects to construct the \R function call. The return value of the function is then converted to \JSON and sent back to the client. To the client, the service works as a \JSON API, but it is implemented as standard \R function uses standard data structures for its arguments and return value. For this to work, the conversion between \JSON data and \R objects must be consistent and unambiguous. In the design of our mapping we have pursued the following requirements:
-% 
+%
 % \begin{itemize}
 %   \item{Recognize and comply with existing conventions of encoding common data structures in \JSON, in particular (relational) data sets.}
 %   \item{Consistently use a particular schema for a class of objects, including edge cases.}
@@ -183,7 +183,7 @@ Finally, as mentioned earlier, \fromJSON is not a perfect inverse function of \t
 
 
 \section[Converting between JSON data and R classes]{Converting between \JSON data and \R classes}
- 
+
 This section lists examples of how the common \R classes are represented in \JSON. As explained before, the \toJSON function relies on method dispatch, which means that objects get encoded according to their \texttt{class} attribute. If an object has multiple \texttt{class} values, \R uses the first occurring class which has a \toJSON method. If none of the classes of an object has a \toJSON method, an error is raised.
 
 \subsection{Atomic vectors}
@@ -262,7 +262,7 @@ toJSON(list(vector()))
 toJSON(list(pi))
 @
 
-This might seem obvious but these cases result in very different behavior between different \JSON packages. This is probably caused by the fact that \R does not have a scalar type, and some package authors decided to treat vectors of length 1 as if they were a scalar. For example, in the current implementations, both \RJSONIO and \pkg{rjson} encode a vector of length one as a \JSON primitive when it appears within a list: 
+This might seem obvious but these cases result in very different behavior between different \JSON packages. This is probably caused by the fact that \R does not have a scalar type, and some package authors decided to treat vectors of length 1 as if they were a scalar. For example, in the current implementations, both \RJSONIO and \pkg{rjson} encode a vector of length one as a \JSON primitive when it appears within a list:
 
 <<>>=
 # Other packages make different choices:
@@ -274,7 +274,7 @@ When encoding a single dataset this seems harmless, but in the context of dynami
 
 \subsection{Matrices}
 
-Arguably one of the strongest sides of \R is its ability to interface libraries for basic linear algebra subprograms \citep{lawson1979basic} such as \texttt{LAPACK} \citep{anderson1999lapack}. These libraries provide well tuned, high performance implementations of important linear algebra operations to calculate anything from inner products and eigen values to singular value decompositions, which are in turn building blocks of statistical methods such as linear regression or principal component analysis. Linear algebra methods operate on \emph{matrices}, making the matrix one of the most central data classes in \R. Conceptually, a matrix consists of a 2 dimensional structure of homogeneous values. It is indexed using 2 numbers (or vectors), representing the rows and columns of the matrix respectively. 
+Arguably one of the strongest sides of \R is its ability to interface libraries for basic linear algebra subprograms \citep{lawson1979basic} such as \texttt{LAPACK} \citep{anderson1999lapack}. These libraries provide well tuned, high performance implementations of important linear algebra operations to calculate anything from inner products and eigen values to singular value decompositions, which are in turn building blocks of statistical methods such as linear regression or principal component analysis. Linear algebra methods operate on \emph{matrices}, making the matrix one of the most central data classes in \R. Conceptually, a matrix consists of a 2 dimensional structure of homogeneous values. It is indexed using 2 numbers (or vectors), representing the rows and columns of the matrix respectively.
 
 <<>>=
 x <- matrix(1:12, nrow=3, ncol=4)
@@ -282,7 +282,7 @@ print(x)
 print(x[2,4])
 @
 
- A matrix is stored in memory as a single atomic vector with an attribute called \texttt{"dim"} defining the dimensions of the matrix. The product of the dimensions is equal to the length of the vector. 
+ A matrix is stored in memory as a single atomic vector with an attribute called \texttt{"dim"} defining the dimensions of the matrix. The product of the dimensions is equal to the length of the vector.
 
 <<>>=
 attributes(volcano)
@@ -299,8 +299,8 @@ toJSON(x)
 We expect this representation will be the most intuitive to interpret, also within languages that do not have a native notion of a matrix. Note that even though \R stores matrices in \emph{column major} order, \jsonlite encodes matrices in \emph{row major} order. This is a more conventional and intuitive way to represent matrices and is consistent with the row-based encoding of data frames discussed in the next section. When the \JSON string is properly indented (recall that white space and line breaks are optional in \JSON), it looks very similar to the way \R prints matrices:
 
 \begin{verbatim}
-[ [ 1, 4, 7, 10 ], 
-  [ 2, 5, 8, 11 ], 
+[ [ 1, 4, 7, 10 ],
+  [ 2, 5, 8, 11 ],
   [ 3, 6, 9, 12 ] ]
 \end{verbatim}
 
@@ -371,7 +371,7 @@ x <- list(c(1,2,NA), "test", FALSE, list(foo="bar"))
 identical(fromJSON(toJSON(x)), x)
 @
 
- The only exception is the empty list and empty vector, which are both encoded as \texttt{[ ]} and therefore indistinguishable, but this is rarely a problem in practice. 
+ The only exception is the empty list and empty vector, which are both encoded as \texttt{[ ]} and therefore indistinguishable, but this is rarely a problem in practice.
 
 \subsubsection{Named lists}
 
@@ -423,7 +423,7 @@ print(iris[1:3, c("Sepal.Width", "Species")])
 
 Generally speaking, tabular data structures can be implemented in two different ways: in a column based, or row based fashion. A column based structure consists of a named collection of equal-length, homogeneous arrays representing the table columns. In a row-based structure on the other hand, the table is implemented as a set of heterogeneous associative arrays representing table rows with field values for each particular record. Even though most languages provide flexible and abstracted interfaces that hide these implementation details from the user, they can have huge implications for performance. A column based structure is efficient for inserting or extracting certain columns of the data, but it is inefficient for manipulating individual rows. For example to insert a single row somewhere in the middle, each of the columns has to be sliced and stitched back together. For row-based implementations, it is the exact other way around: we can easily manipulate a particular record, but to insert/extract a whole column we would need to iterate over all records in the table and read/modify the appropriate field in each of them.
 
-The data frame class in \R is implemented in a column based fashion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \code{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. \R simply binds the specified columns together into a matrix $X$ and calls out to a highly optimized \proglang{FORTRAN} subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the $QR$ factorization of $X$. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in \R.  
+The data frame class in \R is implemented in a column based fashion: it constitutes of a \texttt{named list} of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc. Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the \code{lm} function fits a \emph{linear regression} by extracting the columns from a data frame as specified by the \texttt{formula} argument. \R simply binds the specified columns together into a matrix $X$ and calls out to a highly optimized \proglang{FORTRAN} subroutine to calculate the OLS estimates $\hat{\beta} = (X^TX)X^Ty$ using the $QR$ factorization of $X$. Many other statistical modeling functions follow similar steps, and are computationally efficient because of the column-based data storage in \R.
 
 Unfortunately \R is an exception in its preference for column-based storage: most languages, systems, databases, \API's, etc, are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in \JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and \JSON. The remaining of this section discusses details and challenges of consistently mapping record based \JSON data as frequently encountered on the web, into column-based data frames which are convenient for statistical computing.
 
@@ -501,7 +501,7 @@ x$poems <- list(
 toJSON(x, pretty=TRUE)
 @
 
- Because \R doesn't have native support for relational data, there is no natural class to store such structures. The best we can do is a column containing a list of sub-dataframes. This does the job, and allows the \R user to access or generate nested \JSON structures. However, a data frame like this cannot be flattened, and the class does not guarantee that each of the individual nested data frames contain the same fields, as would be the case in an actual relational data base. 
+ Because \R doesn't have native support for relational data, there is no natural class to store such structures. The best we can do is a column containing a list of sub-dataframes. This does the job, and allows the \R user to access or generate nested \JSON structures. However, a data frame like this cannot be flattened, and the class does not guarantee that each of the individual nested data frames contain the same fields, as would be the case in an actual relational data base.
 
 
 \section{Structural consistency and type safety in dynamic data}
@@ -510,14 +510,14 @@ Systems that automatically exchange information over some interface, protocol or
 
 \subsection{Classes, types and data}
 
-Most object-oriented languages are designed with the idea that all objects of a certain class implement the same fields and methods. In strong-typed languages such as \proglang{S4} or \proglang{Java}, names and types of the fields are formally declared in a class definition. In other languages such as \proglang{S3} or \proglang{JavaScript}, the fields are not enforced by the language but rather at the discretion of the programmer. One way or another they assume that members of a certain class agree on field names and types, so that the same methods can be applied to any object of a particular class. This basic principle holds for dynamic data exactly the same way as for objects. Software that process dynamic data can only work reliably if the various elements of the data have consistent names and structure. Consensus must exist between the different parties on data that is exchanged as part an interface or protocol. This requires the structure to follow some sort of template that specifies which attributes can appear in the data, what they mean and how they are composed. Thereby each possible scenario can be accounted for in the software so that data can be interpreted and processed appropriately with no exceptions during run-time. 
+Most object-oriented languages are designed with the idea that all objects of a certain class implement the same fields and methods. In strong-typed languages such as \proglang{S4} or \proglang{Java}, names and types of the fields are formally declared in a class definition. In other languages such as \proglang{S3} or \proglang{JavaScript}, the fields are not enforced by the language but rather at the discretion of the programmer. One way or another they assume that members of a certain class agree on field names and types, so that the same methods can be applied to any object of a particular class. This basic principle holds for dynamic data exactly the same way as for objects. Software that process dynamic data can only work reliably if the various elements of the data have consistent names and structure. Consensus must exist between the different parties on data that is exchanged as part an interface or protocol. This requires the structure to follow some sort of template that specifies which attributes can appear in the data, what they mean and how they are composed. Thereby each possible scenario can be accounted for in the software so that data can be interpreted and processed appropriately with no exceptions during run-time.
 
 Some data interchange formats such as \texttt{XML} or \texttt{Protocol Buffers} take a formal approach to this matter, and have well established \emph{schema languages} and \emph{interface description languages}. Using such a meta language it is possible to define the exact structure, properties and actions of data interchange in a formal arrangement. However, in \JSON, such formal definitions are relatively uncommon. Some initiatives for \JSON schema languages exist \citep{jsonschema}, but they are not very well established and rarely seen in practice. One reason for this might be that defining and implementing formal schemas is complicated and a lot of work which defeats the purpose of using an lightweight format such as \JSON in the first place. But another reason is that it is often simply not necessary to be overly formal. The \JSON format is simple and intuitive, and under some general conventions, a well chosen example can suffice to characterize the structure. This section describes two important rules that are required to ensure that data exchange using \JSON is type safe.
 
 \subsection{Rule 1: Fixed keys}
 
-When using \JSON without a schema, there are no restrictions on the keys (field names) that can appear in a particular object. However, a source of data that returns a different set of keys every time it is called makes it very difficult to write software to process these data. Hence, the first rule is to limit \JSON interfaces to a finite set of keys that are known \emph{a priory} by all parties. It can be helpful to think about this in analogy with for example a relational database. Here, the database model separates the data from metadata. At run time, records can be inserted or deleted, and a certain query might return different content each time it is executed. But for a given query, each execution will return exactly the same \emph{field names}; hence as long as the table definitions are unchanged, the \emph{structure} of the output consistent. Client software needs this structure to validate input, optimize implementation, and process each part of the data appropriately. In \JSON, data and metadata are not formally separated as in a database, but similar principles that hold for fields in a database, apply to keys in dynamic \JSON data.  
- 
+When using \JSON without a schema, there are no restrictions on the keys (field names) that can appear in a particular object. However, a source of data that returns a different set of keys every time it is called makes it very difficult to write software to process these data. Hence, the first rule is to limit \JSON interfaces to a finite set of keys that are known \emph{a priory} by all parties. It can be helpful to think about this in analogy with for example a relational database. Here, the database model separates the data from metadata. At run time, records can be inserted or deleted, and a certain query might return different content each time it is executed. But for a given query, each execution will return exactly the same \emph{field names}; hence as long as the table definitions are unchanged, the \emph{structure} of the output consistent. Client software needs this structure to validate input, optimize implementation, and process each part of the data appropriately. In \JSON, data and metadata are not formally separated as in a database, but similar principles that hold for fields in a database, apply to keys in dynamic \JSON data.
+
 A beautiful example of this in practice was given by Mike Dewar at the New York Open Statistical Programming Meetup on Jan. 12, 2012 \citep{jsonkeys}. In his talk he emphasizes to use \JSON keys only for \emph{names}, and not for \emph{data}. He refers to this principle as the ``golden rule'', and explains how he learned his lesson the hard way. In one of his early applications, timeseries data was encoded by using the epoch timestamp as the \JSON key. Therefore the keys are different each time the query is executed:
 
 \begin{verbatim}
@@ -538,10 +538,10 @@ A beautiful example of this in practice was given by Mike Dewar at the New York 
 ]
 \end{verbatim}
 
- This structure will play much nicer with existing software that assumes fixed keys. Moreover, the structure can easily be described in documentation, or captured in a schema. Even when we have no intention of writing documentation or a schema for a dynamic \JSON source, it is still wise to design the structure in such away that it \emph{could} be described by a schema. When the keys are fixed, a well chosen example can provide all the information required for the consumer to implement client code. Also note that the new structure is extensible: additional properties can be added to each observation without breaking backward compatibility.  
+ This structure will play much nicer with existing software that assumes fixed keys. Moreover, the structure can easily be described in documentation, or captured in a schema. Even when we have no intention of writing documentation or a schema for a dynamic \JSON source, it is still wise to design the structure in such away that it \emph{could} be described by a schema. When the keys are fixed, a well chosen example can provide all the information required for the consumer to implement client code. Also note that the new structure is extensible: additional properties can be added to each observation without breaking backward compatibility.
 
-In the context of \R, consistency of keys is closely related to Wikcham's concept of \emph{tidy data} discussed earlier. Wickham states that the most common reason for messy data are column headers containing values instead of variable names. Column headers in tabular datasets become keys when converted to \JSON. Therefore, when headers are actually values, \JSON keys contain in fact data and can become unpredictable. The cure to inconsistent keys is almost always to tidy the data according to recommendations given by \cite{tidydata}. 
- 
+In the context of \R, consistency of keys is closely related to Wikcham's concept of \emph{tidy data} discussed earlier. Wickham states that the most common reason for messy data are column headers containing values instead of variable names. Column headers in tabular datasets become keys when converted to \JSON. Therefore, when headers are actually values, \JSON keys contain in fact data and can become unpredictable. The cure to inconsistent keys is almost always to tidy the data according to recommendations given by \cite{tidydata}.
+
 \subsection{Rule 2: Consistent types}
 
 In a strong typed language, fields declare their class before any values are assigned. Thereby the type of a given field is identical in all objects of a particular class, and arrays only contain objects of a single type. The \proglang{S3} system in \R is weakly typed and puts no formal restrictions on the class of a certain properties, or the types of objects that can be combined into a collection. For example, the list below contains a character vector, a numeric vector and a list:
@@ -552,9 +552,9 @@ x <- list("FOO", 1:3, list("bar"=pi))
 toJSON(x)
 @
 
- However even though it is possible to generate such \JSON, it is bad practice. Fields or collections with ambiguous object types are difficult to describe, interpret and process in the context of inter-system communication. When using \JSON to exchange dynamic data, it is important that each property and array is \emph{type consistent}. In dynamically typed languages, the programmer needs to make sure that properties are of the correct type before encoding into \JSON. For \R, this means that the  \texttt{unnamed lists} type is best avoided when designing interoperable structures because this type is not homogeneous. 
- 
- Note that consistency is somewhat subjective as it refers to the \emph{meaning} of the elements; they do not necessarily have precisely the same structure. What is important is to keep in mind that the consumer of the data can interpret and process each element identically, e.g. iterate over the elements in the collection and apply the same method to each of them. To illustrate this, lets take the example of the data frame: 
+ However even though it is possible to generate such \JSON, it is bad practice. Fields or collections with ambiguous object types are difficult to describe, interpret and process in the context of inter-system communication. When using \JSON to exchange dynamic data, it is important that each property and array is \emph{type consistent}. In dynamically typed languages, the programmer needs to make sure that properties are of the correct type before encoding into \JSON. For \R, this means that the  \texttt{unnamed lists} type is best avoided when designing interoperable structures because this type is not homogeneous.
+
+ Note that consistency is somewhat subjective as it refers to the \emph{meaning} of the elements; they do not necessarily have precisely the same structure. What is important is to keep in mind that the consumer of the data can interpret and process each element identically, e.g. iterate over the elements in the collection and apply the same method to each of them. To illustrate this, lets take the example of the data frame:
 
 <<>>=
 #conceptually homogenous array
