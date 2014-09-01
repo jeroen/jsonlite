@@ -103,7 +103,11 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
 }
 
 is.scalarlist <- function(x) {
-  isTRUE(is.list(x) && all_true(x, function(y) { is.atomic(y) && (length(y) <= 1)}))
+  if(!is.list(x)) return(FALSE)
+  for(i in x){
+    if(!is.atomic(i) || length(i) > 1) return(FALSE)
+  }
+  return(TRUE)
 }
 
 is.namedlist <- function(x) {
@@ -155,13 +159,9 @@ is.datelist <- function(x){
 }
 
 all.identical <- function(x){
-  length(unique(x)) == 1
-}
-
-all_true <- function(x, FUN){
+  if(!length(x)) return(FALSE)
   for(i in x){
-    if(!isTRUE(FUN(i))) return(FALSE)
+    if(x[1] != i) return(FALSE)
   }
   return(TRUE)
 }
-

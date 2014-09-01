@@ -6,16 +6,31 @@ null2na <- function(x, unlist = TRUE) {
       return(list())
     }
   }
-  # parse explicitly quoted missing values, unless in the case of character vectors
-  if (!isTRUE(any(vapply(x, function(y) {
-    is.character(y) && !(y %in% c("NA", "Inf", "-Inf", "NaN"))
-  }, logical(1))))) {
-    missings <- x %in% c("NA", "Inf", "-Inf", "NaN")
-    x[missings] <- lapply(x[missings], evaltext)
+
+  #Start parsing missing values
+  x2 <- x
+  looks_like_character_vector = FALSE
+  for(i in seq_along(x2)){
+    if(is.character(x2[[i]])){
+      x2[[i]] <- switch(x2[[i]],
+        "NA" = NA,
+        "NaN" = NaN,
+        "Inf" = Inf,
+        "-Inf" = -Inf,
+        {looks_like_character_vector=TRUE; break}
+      )
+    }
   }
 
-  # parse 'null' values
-  x[unlist(sapply(x, is.null))] <- NA
+  # Set x
+  if(!looks_like_character_vector){
+    x <- x2
+  }
+
+  # Convert NULL to NA
+  x[vapply(x, is.null, logical(1))] <- NA
+
+  # Unlist only if set
   if (isTRUE(unlist)) {
     return(unlist(x))
   } else {
