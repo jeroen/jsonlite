@@ -30,13 +30,12 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
   }
 
   # make new recordlist with requested only requested values
-  recordlist <- lapply(recordlist, function(x) {
-    # a new record with each requested column
-    y <- structure(as.list(x)[columns], names = columns)
-
-    # replace NULL with NA values in each record lapply(y, function(z) {
-    # if(is.null(z)) NA else z; })
-  })
+  #recordlist <- lapply(recordlist, function(x) {
+  #  # a new record with each requested column
+  #  x <- as.list(x)[columns]
+  #  names(x) <- columns
+  #  x
+  #})
 
   # create a list of lists
   columnlist <- lapply(columns, function(x) lapply(recordlist, "[[", x))

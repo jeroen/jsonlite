@@ -1,7 +1,8 @@
 0.9.11
  - Added toJSON null argument. Default to "null"
- - Use gsub instead of deparse for escaping character vectors (better performance)
+ - Use gsub instead of deparse for escaping character vectors in toJSON (performance)
  - Fix bug in prettify object name escaping
+ - Several performance enhancements in fromJSON/simplify code
 
 0.9.10
  - Add support for escaped (hexadecimal) unicode characters in fromJSON(unicode = TRUE)
