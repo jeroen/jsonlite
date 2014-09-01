@@ -103,10 +103,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
 }
 
 is.scalarlist <- function(x) {
-  isTRUE(is.list(x) && all(sapply(x, function(y) {
-    mode(y) %in% c("numeric", "logical", "character", "complex", "NULL") && (length(y) <=
-      1)
-  })))
+  isTRUE(is.list(x) && all_true(x, function(y) { is.atomic(y) && (length(y) <= 1)}))
 }
 
 is.namedlist <- function(x) {
@@ -120,13 +117,15 @@ is.unnamedlist <- function(x) {
 is.recordlist <- function(x) {
   # recordlist is an array with only objects or NULL NULL appears when this is a
   # nested data frame, but some records do not contain this data frame at all.
-  if (!isTRUE(is.unnamedlist(x) && length(x))) {
+  if (!(is.unnamedlist(x) && length(x))) {
     return(FALSE)
   }
-  if (!any(namedlists <- vapply(x, is.namedlist, logical(1)))) {
-    return(FALSE)
+  at_least_one_object = FALSE
+  for(i in x){
+    if(!(is.namedlist(i) || is.null(i))) return(FALSE)
+    if(!at_least_one_object && is.namedlist(i)) at_least_one_object <- TRUE
   }
-  return(isTRUE(all(namedlists | vapply(x, is.null, logical(1)))))
+  return(at_least_one_object)
 }
 
 is.matrixlist <- function(x) {
@@ -158,3 +157,11 @@ is.datelist <- function(x){
 all.identical <- function(x){
   length(unique(x)) == 1
 }
+
+all_true <- function(x, FUN){
+  for(i in x){
+    if(!isTRUE(FUN(i))) return(FALSE)
+  }
+  return(TRUE)
+}
+
