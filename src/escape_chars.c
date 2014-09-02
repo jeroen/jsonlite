@@ -35,7 +35,7 @@ SEXP C_escape_chars_one(SEXP x) {
   // Copy old string to new string, replacing where necessary.
   old_p = (char*)old;
   // Allocate string memory; add 2 for start and end quotes.
-  char* newstr = Calloc(strlen(old) + matches + 2, char);
+  char* newstr = (char*)malloc(strlen(old) + matches + 3);
   char* new_p = newstr;
   *new_p = '"';
   new_p++;
@@ -93,7 +93,7 @@ SEXP C_escape_chars_one(SEXP x) {
   } while(oldc != '\0');
 
   SEXP val = mkChar(newstr);
-  Free(newstr);
+  free(newstr);
   return val;
 }
 
