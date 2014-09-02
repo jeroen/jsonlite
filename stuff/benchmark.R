@@ -1,0 +1,6 @@
+library(jsonlite)
+library(microbenchmark)
+data(diamonds, package="ggplot2")
+system.time(json <- toJSON(diamonds))
+microbenchmark(toJSON(diamonds), times=10)
+microbenchmark(fromJSON(json), times=10)
