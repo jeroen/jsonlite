@@ -11,22 +11,13 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
   }
 
   # only empty records and unknown columns
-  if (!any(unlist(vapply(recordlist, length, integer(1)))) && missing(columns)) {
+  if (!any(vapply(recordlist, length, integer(1), USE.NAMES = FALSE)) && missing(columns)) {
     return(data.frame(matrix(nrow = length(recordlist), ncol = 0)))
   }
 
-  # flatten list if set must be a more efficient way to do this. also 'null' values
-  # get lost (although they might come back later) also breaks when records contain
-  # nested lists of variable length
-  #if (isTRUE(flatten)) {
-  #  recordlist <- lapply(recordlist, function(mylist) {
-  #    lapply(rapply(mylist, base::enquote, how = "unlist"), eval)
-  #  })
-  #}
-
   # find columns if not specified
   if (missing(columns)) {
-    columns <- unique(unlist(lapply(recordlist, names)))
+    columns <- unique(unlist(lapply(recordlist, names), recursive = FALSE, use.names = FALSE))
   }
 
   # make new recordlist with requested only requested values
@@ -37,17 +28,12 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
   #  x
   #})
 
-  # create a list of lists
+  # Convert row lists to column lists. This is the heavy lifting
   columnlist <- lapply(columns, function(x) lapply(recordlist, "[[", x))
-  names(columnlist) <- columns
 
   # simplify vectors and nested data frames
   columnlist <- lapply(columnlist, simplify, simplifyVector = TRUE, simplifyDataFrame = TRUE,
     simplifyMatrix = FALSE, simplifySubMatrix = simplifyMatrix, flatten = flatten)
-
-  # columnlist <- lapply(columnlist, function(x){ if(is.scalarlist(x)){
-  # return(null2na(x)) } else if(is.recordlist(x)) { return(simplifyDataFrame(x,
-  # flatten=flatten)); } else { return(x); } });
 
   # check that all elements have equal length
   columnlengths <- unlist(vapply(columnlist, function(z) {
@@ -67,5 +53,8 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
   }
 
   # make into data frame
-  return(structure(columnlist, class = "data.frame", row.names = 1:n))
+  class(columnlist) <- "data.frame"
+  colnames(columnlist) <- columns
+  row.names(columnlist) <- 1:n
+  return(columnlist)
 }
