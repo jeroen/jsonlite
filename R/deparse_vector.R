@@ -17,7 +17,7 @@ deparse_vector_r <- function(x) {
 }
 
 # Which implementation to use
-deparse_vector <- deparse_vector_r
+deparse_vector <- deparse_vector_c
 
 #Below are older implementations of the same function
 deparse_vector_old <- function(x) {
