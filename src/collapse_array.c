@@ -7,7 +7,7 @@ SEXP C_collapse_array(SEXP x) {
 
   int len = length(x);
   size_t nchar[len];
-  int nchar_total = 0;
+  size_t nchar_total = 0;
 
   for (int i=0; i<len; i++) {
     nchar[i] = strlen(CHAR(STRING_ELT(x, i)));
@@ -17,16 +17,12 @@ SEXP C_collapse_array(SEXP x) {
   char *s = malloc(nchar_total+len+2);
   char *olds = s;
 
-  s[0] = '[';
-  s++;
   for (int i=0; i<len; i++) {
-    if(i > 0){
-      s[0] = ',';
-      s++;
-    }
-    memcpy(s, CHAR(STRING_ELT(x, i)), nchar[i]);
+    s[0] = ',';
+    memcpy(++s, CHAR(STRING_ELT(x, i)), nchar[i]);
     s += nchar[i];
   }
+  olds[0] = '[';
   s[0] = ']';
   s[1] = '\0';
 
