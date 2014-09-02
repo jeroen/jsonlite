@@ -1,3 +1,4 @@
+#' @useDynLib jsonlite R_fromJSON
 parseJSON <- function(txt) {
   # this is always a bad idea
   simplifyWithNames <- FALSE

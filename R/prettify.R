@@ -6,6 +6,7 @@
 #' @aliases minify prettify
 #' @export prettify minify
 #' @param txt \code{JSON} string
+#' @useDynLib jsonlite R_jsonPrettyPrint R_jsonMiniPrint
 #' @examples myjson <- toJSON(cars)
 #' cat(myjson)
 #' prettify(myjson)

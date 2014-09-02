@@ -4,6 +4,7 @@
 #'
 #' @param txt \code{JSON} string
 #' @export
+#' @useDynLib jsonlite R_isValidJSON
 #' @examples #Output from toJSON and serializeJSON should pass validation
 #' myjson <- toJSON(mtcars)
 #' validate(myjson) #TRUE

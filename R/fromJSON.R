@@ -43,7 +43,6 @@
 #' @param force unclass/skip objects of classes with no defined \code{JSON} mapping
 #' @param pretty adds indentation whitespace to \code{JSON} output. See \code{\link{prettify}}
 #' @param ... arguments passed on to class specific \code{print} methods
-#' @useDynLib jsonlite
 #' @references Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between \code{JSON} Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{http://arxiv.org/abs/1403.2805}
 #' @examples #stringify some data
 #' jsoncars <- toJSON(mtcars, pretty=TRUE)
