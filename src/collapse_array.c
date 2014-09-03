@@ -6,21 +6,21 @@ SEXP C_collapse_array(SEXP x) {
     error("x must be a character vector.");
 
   int len = length(x);
-  size_t nchar[len];
   size_t nchar_total = 0;
 
   for (int i=0; i<len; i++) {
-    nchar[i] = strlen(CHAR(STRING_ELT(x, i)));
-    nchar_total += nchar[i];
+    nchar_total += strlen(CHAR(STRING_ELT(x, i)));
   }
 
-  char *s = malloc(nchar_total+len+2);
+  char *s = malloc(nchar_total+len+3);
   char *olds = s;
+  size_t size;
 
   for (int i=0; i<len; i++) {
     s[0] = ',';
-    memcpy(++s, CHAR(STRING_ELT(x, i)), nchar[i]);
-    s += nchar[i];
+    size = strlen(CHAR(STRING_ELT(x, i)));
+    memcpy(++s, CHAR(STRING_ELT(x, i)), size);
+    s += size;
   }
   olds[0] = '[';
   s[0] = ']';

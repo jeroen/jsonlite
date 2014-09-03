@@ -3,6 +3,8 @@ collapse_r <- function(x){
 }
 
 #' @useDynLib jsonlite C_collapse_array
-collapse <- function(x) {
+collapse_c <- function(x) {
   .Call("C_collapse_array", PACKAGE = "jsonlite", x)
 }
+
+collapse <- collapse_c;
