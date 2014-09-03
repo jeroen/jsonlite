@@ -9,7 +9,7 @@ SEXP C_collapse_array(SEXP x) {
   size_t nchar_total = 0;
 
   for (int i=0; i<len; i++) {
-    nchar_total += strlen(CHAR(STRING_ELT(x, i)));
+    nchar_total += strlen(translateCharUTF8(STRING_ELT(x, i)));
   }
 
   char *s = malloc(nchar_total+len+3); //if len is 0, we need at least: '[]\0'
@@ -18,8 +18,8 @@ SEXP C_collapse_array(SEXP x) {
 
   for (int i=0; i<len; i++) {
     s[0] = ',';
-    size = strlen(CHAR(STRING_ELT(x, i)));
-    memcpy(++s, CHAR(STRING_ELT(x, i)), size);
+    size = strlen(translateCharUTF8(STRING_ELT(x, i)));
+    memcpy(++s, translateCharUTF8(STRING_ELT(x, i)), size);
     s += size;
   }
   if(len == 0) s++;
@@ -28,15 +28,8 @@ SEXP C_collapse_array(SEXP x) {
   s[1] = '\0';
 
   //get character encoding from first element
-  int encoding;
-  if(len == 0){
-    encoding = CE_UTF8;
-  } else {
-    encoding = getCharCE(STRING_ELT(x, 0));
-  }
-
   SEXP out = PROTECT(allocVector(STRSXP, 1));
-  SET_STRING_ELT(out, 0, mkCharCE(olds, encoding));
+  SET_STRING_ELT(out, 0, mkCharCE(olds,  CE_UTF8));
   UNPROTECT(1);
   free(olds);
   return out;
