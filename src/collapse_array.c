@@ -12,7 +12,7 @@ SEXP C_collapse_array(SEXP x) {
     nchar_total += strlen(CHAR(STRING_ELT(x, i)));
   }
 
-  char *s = malloc(nchar_total+len+3);
+  char *s = malloc(nchar_total+len+3); //if len is 0, we need at least: '[]\0'
   char *olds = s;
   size_t size;
 
@@ -22,6 +22,7 @@ SEXP C_collapse_array(SEXP x) {
     memcpy(++s, CHAR(STRING_ELT(x, i)), size);
     s += size;
   }
+  if(len == 0) s++;
   olds[0] = '[';
   s[0] = ']';
   s[1] = '\0';
