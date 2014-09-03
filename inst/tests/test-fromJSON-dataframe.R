@@ -23,9 +23,6 @@ test_that("recover nested data frames", {
 
   #test all in list
   expect_that(fromJSON(toJSON(objects)), equals(objects))
-
-  #test flattening
-
 });
 
 test_that("recover lists in data frames", {
