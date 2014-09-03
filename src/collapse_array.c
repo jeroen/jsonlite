@@ -27,8 +27,16 @@ SEXP C_collapse_array(SEXP x) {
   s[0] = ']';
   s[1] = '\0';
 
+  //get character encoding from first element
+  int encoding;
+  if(len == 0){
+    encoding = CE_UTF8;
+  } else {
+    encoding = getCharCE(STRING_ELT(x, 0));
+  }
+
   SEXP out = PROTECT(allocVector(STRSXP, 1));
-  SET_STRING_ELT(out, 0, mkCharCE(olds, CE_UTF8));
+  SET_STRING_ELT(out, 0, mkCharCE(olds, encoding));
   UNPROTECT(1);
   free(olds);
   return out;
