@@ -28,7 +28,7 @@ SEXP C_collapse_array(SEXP x) {
   s[1] = '\0';
 
   SEXP out = PROTECT(allocVector(STRSXP, 1));
-  SET_STRING_ELT(out, 0, mkChar(olds));
+  SET_STRING_ELT(out, 0, mkCharCE(olds, CE_UTF8));
   UNPROTECT(1);
   free(olds);
   return out;
