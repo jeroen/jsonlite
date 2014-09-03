@@ -44,6 +44,9 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
     stop("Elements not of equal length: ", paste(columnlengths, collapse = " "))
   }
 
+  # add the column names before flattening
+  names(columnlist) <- columns
+
   # flatten nested data frames
   if(isTRUE(flatten)) {
     dfcolumns <- vapply(columnlist, is.data.frame, logical(1))
@@ -54,7 +57,6 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
 
   # make into data frame
   class(columnlist) <- "data.frame"
-  colnames(columnlist) <- columns
   row.names(columnlist) <- 1:n
   return(columnlist)
 }

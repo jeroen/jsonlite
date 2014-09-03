@@ -14,7 +14,7 @@ The [jsonlite](http://cran.r-project.org/web/packages/jsonlite/index.html) packa
 ## A bidirectional mapping
 
 One of the main strengths of `jsonlite` is that it implements a bidirectional [mapping](http://arxiv.org/abs/1403.2805) between JSON and data frames. Thereby it can convert nested collections of JSON records, as they often appear on the web, immediately into the appropriate R structure. For example to grab some data from ProPublica we can simply use:
-  
+
 
 ```r
 library(jsonlite)
@@ -27,7 +27,7 @@ The `mydata` object is a data frame which can be used directly for modeling or v
 ## Paging with jsonlite
 
 A question that comes up frequently is how to combine pages of data. Most web APIs limit the amount of data that can be retrieved per request. If the client needs more data than what can fits in a single request, it needs to break down the data into multiple requests that each retrieve a fragment (page) of data, not unlike pages in a book. In practice this is often implemented using a `page` parameter in the API. Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 3 pages of tax-exempt organizations in the USA, ordered by revenue:
-  
+
 
 ```r
 baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
@@ -82,7 +82,7 @@ nrow(filings)
 ## Automatically combining many pages
 
 We can write a simple loop that automatically downloads and combines many pages. For example to retrieve the first 20 pages with non-profits from the example above:
-  
+
 
 ```r
 #store all pages in a list first
@@ -94,7 +94,7 @@ for(i in 0:20){
   pages[[i+1]] <- mydata$filings
 }
 
-#combine all into one 
+#combine all into one
 filings <- rbind.pages(pages)
 
 #check output
