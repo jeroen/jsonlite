@@ -92,7 +92,7 @@ SEXP C_escape_chars_one(SEXP x) {
     new_p++;
   } while(oldc != '\0');
 
-  SEXP val = mkChar(newstr);
+  SEXP val = mkCharCE(newstr, getCharCE(x));
   free(newstr);
   return val;
 }
