@@ -3,12 +3,12 @@ setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "st
   # vectorized escaping
   tmp <- deparse_vector(x)
 
-  # workaround for deparsing problem of UTF-8
-  if(identical(Encoding(x), "UTF-8")){
-    if(!grepl("UTF", Sys.getlocale("LC_CTYPE"), ignore.case=TRUE)){
-      tmp <- utf8conv(tmp);
-    }
-  }
+  # this was used with deparse_vector_old
+  #if(identical(Encoding(x), "UTF-8")){
+  #  if(!grepl("UTF", Sys.getlocale("LC_CTYPE"), ignore.case=TRUE)){
+  #    tmp <- utf8conv(tmp);
+  #  }
+  #}
 
   # validate NA
   if (any(missings <- which(is.na(x)))) {

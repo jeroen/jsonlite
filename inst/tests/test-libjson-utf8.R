@@ -8,16 +8,18 @@ context("libjson UTF-8 characters")
 
 test_that("test that non ascii characters are ok", {
   #only run these tests with UTF8 locale (reported by BR)
-  if(grepl("utf|UTF", Sys.getlocale("LC_CTYPE"))) {
+  if(TRUE || grepl("utf|UTF", Sys.getlocale("LC_CTYPE"))) {
     #create random strings
     objects <- list(
       "Zürich",
       "北京填鴨们",
       "ผัดไทย",
-      "寿司"
+      "寿司",
+      c("寿司", "Zürich", "foo")
     );
 
     lapply(objects, function(x){
+      Encoding(x) <- "UTF-8"
       myjson <- toJSON(x, pretty=TRUE);
       expect_that(validate(myjson), is_true());
       expect_that(fromJSON(myjson, unicode = TRUE), equals(x));
@@ -29,15 +31,12 @@ test_that("test that non ascii characters are ok", {
     });
 
     #Test escaped unicode characters
-    expect_that(fromJSON('["Z\\u00FCrich"]', unicode = TRUE), equals("Zürich"));
-    expect_that(fromJSON(prettify('["Z\\u00FCrich"]'), unicode = TRUE), equals("Zürich"));
+    expect_that(fromJSON('["Z\\u00FCrich"]', unicode = TRUE), equals("Z\u00fcrich"));
+    expect_that(fromJSON(prettify('["Z\\u00FCrich"]'), unicode = TRUE), equals("Z\u00fcrich"));
 
-    expect_that(length(unique(fromJSON('["Z\\u00FCrich", "Zürich"]', unicode = TRUE))), equals(1L))
-    expect_that(fromJSON('["\\u586B"]', unicode = TRUE), equals("填"));
-    expect_that(fromJSON(prettify('["\\u586B"]'), unicode = TRUE), equals("填"));
-
-    #Mixed encodings
-    test = c("寿司", "Zürich", "foo")
+    expect_that(length(unique(fromJSON('["Z\\u00FCrich", "Z\u00fcrich"]', unicode = TRUE))), equals(1L))
+    expect_that(fromJSON('["\\u586B"]', unicode = TRUE), equals("\u586b"));
+    expect_that(fromJSON(prettify('["\\u586B"]'), unicode = TRUE), equals("\u586B"));
 
   } else {
     cat("skip")
