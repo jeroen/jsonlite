@@ -7,38 +7,34 @@ context("libjson UTF-8 characters")
 
 
 test_that("test that non ascii characters are ok", {
-  #only run these tests with UTF8 locale (reported by BR)
-  if(TRUE || grepl("utf|UTF", Sys.getlocale("LC_CTYPE"))) {
-    #create random strings
-    objects <- list(
-      "Zürich",
-      "北京填鴨们",
-      "ผัดไทย",
-      "寿司",
-      c("寿司", "Zürich", "foo")
-    );
 
-    lapply(objects, function(x){
-      Encoding(x) <- "UTF-8"
-      myjson <- toJSON(x, pretty=TRUE);
-      expect_that(validate(myjson), is_true());
-      expect_that(fromJSON(myjson, unicode = TRUE), equals(x));
+  #create random strings
+  objects <- list(
+    "Zürich",
+    "北京填鴨们",
+    "ผัดไทย",
+    "寿司",
+    c("寿司", "Zürich", "foo")
+  );
 
-      #prettify needs to parse + output
-      prettyjson <- prettify(myjson);
-      expect_that(validate(prettyjson), is_true());
-      expect_that(fromJSON(prettyjson, unicode = TRUE), equals(x));
-    });
+  lapply(objects, function(x){
+    Encoding(x) <- "UTF-8"
+    myjson <- toJSON(x, pretty=TRUE);
+    expect_that(validate(myjson), is_true());
+    expect_that(fromJSON(myjson, unicode = TRUE), equals(x));
 
-    #Test escaped unicode characters
-    expect_that(fromJSON('["Z\\u00FCrich"]', unicode = TRUE), equals("Z\u00fcrich"));
-    expect_that(fromJSON(prettify('["Z\\u00FCrich"]'), unicode = TRUE), equals("Z\u00fcrich"));
+    #prettify needs to parse + output
+    prettyjson <- prettify(myjson);
+    expect_that(validate(prettyjson), is_true());
+    expect_that(fromJSON(prettyjson, unicode = TRUE), equals(x));
+  });
 
-    expect_that(length(unique(fromJSON('["Z\\u00FCrich", "Z\u00fcrich"]', unicode = TRUE))), equals(1L))
-    expect_that(fromJSON('["\\u586B"]', unicode = TRUE), equals("\u586b"));
-    expect_that(fromJSON(prettify('["\\u586B"]'), unicode = TRUE), equals("\u586B"));
+  #Test escaped unicode characters
+  expect_that(fromJSON('["Z\\u00FCrich"]', unicode = TRUE), equals("Z\u00fcrich"));
+  expect_that(fromJSON(prettify('["Z\\u00FCrich"]'), unicode = TRUE), equals("Z\u00fcrich"));
 
-  } else {
-    cat("skip")
-  }
+  expect_that(length(unique(fromJSON('["Z\\u00FCrich", "Z\u00fcrich"]', unicode = TRUE))), equals(1L))
+  expect_that(fromJSON('["\\u586B"]', unicode = TRUE), equals("\u586b"));
+  expect_that(fromJSON(prettify('["\\u586B"]'), unicode = TRUE), equals("\u586B"));
+
 });
