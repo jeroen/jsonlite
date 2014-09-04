@@ -1,8 +1,9 @@
 0.9.11
- - Added toJSON null argument. Default to "null"
+ - Added toJSON null argument.
  - Fix bug in prettify object name escaping
  - Use Winstons C code for escaping character vectors
  - Several performance enhancements in fromJSON/simplify code
+ - The auto_unbox argument is ignored for dataframes when dataframe="column"
 
 0.9.10
  - Add support for escaped (hexadecimal) unicode characters in fromJSON(unicode = TRUE)
