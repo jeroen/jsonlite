@@ -14,7 +14,7 @@ test_that("Test NULL values", {
   expect_that(validate(toJSON(y)), is_true())
   expect_that(toJSON(y, null="list"), equals("{\"a\":{},\"b\":[null]}"))
   expect_that(toJSON(y, null="null"), equals("{\"a\":null,\"b\":[null]}"))
-  expect_that(fromJSON(toJSON(y)), equals(y))
+  expect_that(fromJSON(toJSON(y, null="null")), equals(y))
   expect_that(fromJSON(toJSON(y, null="list")), equals(list(a=namedlist, b=NA)))
 
   expect_that(validate(toJSON(z)), is_true())

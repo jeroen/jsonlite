@@ -14,7 +14,7 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   "columnmajor"), Date = c("ISO8601", "epoch"), POSIXt = c("string",
   "ISO8601", "epoch", "mongo"), factor = c("string", "integer"),
   complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
-  null = c("null", "list"), na = c("null", "string"), auto_unbox = FALSE,
+  null = c("list", "null"), na = c("null", "string"), auto_unbox = FALSE,
   digits = 4, pretty = FALSE, force = FALSE, ...)
 }
 \arguments{
