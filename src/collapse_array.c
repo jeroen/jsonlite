@@ -1,5 +1,6 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
+#include <stdlib.h>
 
 SEXP C_collapse_array(SEXP x) {
   if (!isString(x))

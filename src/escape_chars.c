@@ -1,5 +1,6 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
+#include <stdlib.h>
 
 /*
 Fast escaping of character vectors (Winston Chang)
