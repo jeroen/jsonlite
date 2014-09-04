@@ -100,14 +100,14 @@ The Ergast Developer API is an experimental web service which provides a histori
 
 
 ```r
-res <- fromJSON('http://ergast.com/api/f1/2012/1/results.json')
+res <- fromJSON('http://ergast.com/api/f1/2004/1/results.json')
 drivers <- res$MRData$RaceTable$Races$Results[[1]]$Driver
 colnames(drivers)
 ```
 
 ```
-[1] "driverId"        "permanentNumber" "code"            "url"            
-[5] "givenName"       "familyName"      "dateOfBirth"     "nationality"    
+[1] "driverId"        "code"            "url"             "givenName"      
+[5] "familyName"      "dateOfBirth"     "nationality"     "permanentNumber"
 ```
 
 ```r
@@ -115,17 +115,17 @@ drivers[1:10, c("givenName", "familyName", "code", "nationality")]
 ```
 
 ```
-   givenName familyName code nationality
-1     Jenson     Button  BUT     British
-2  Sebastian     Vettel  VET      German
-3      Lewis   Hamilton  HAM     British
-4       Mark     Webber  WEB  Australian
-5   Fernando     Alonso  ALO     Spanish
-6      Kamui  Kobayashi  KOB    Japanese
-7       Kimi  Räikkönen  RAI     Finnish
-8     Sergio      Pérez  PER     Mexican
-9     Daniel  Ricciardo  RIC  Australian
-10      Paul   di Resta  DIR    Scottish
+   givenName    familyName code nationality
+1    Michael    Schumacher  MSC      German
+2     Rubens   Barrichello  BAR   Brazilian
+3   Fernando        Alonso  ALO     Spanish
+4       Ralf    Schumacher  SCH      German
+5       Juan Pablo Montoya  MON   Colombian
+6     Jenson        Button  BUT     British
+7      Jarno        Trulli  TRU     Italian
+8      David     Coulthard  COU     British
+9     Takuma          Sato  SAT    Japanese
+10 Giancarlo    Fisichella  FIS     Italian
 ```
 
 
@@ -344,20 +344,20 @@ token <- paste("Bearer", content(req)$access_token)
 url <- "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=Rbloggers"
 req <- GET(url, config(httpheader = c("Authorization" = token)))
 json <- content(req, as = "text")
-tweets <- fromJSON(json, unicode = TRUE)
+tweets <- fromJSON(json)
 substring(tweets$text, 1, 100)
 ```
 
 ```
- [1] "PS: Clustering whiskies http://t.co/xAAUb3OiwY #rstats"                                              
- [2] "SAS on the road http://t.co/UvnyKq0KAD #rstats"                                                      
- [3] "Shoutout for Atlassian http://t.co/FQ4KuuPVaX #rstats"                                               
- [4] "Comparing ifelse with C++ for loop with ifs http://t.co/aSdfdcqzVG #rstats"                          
- [5] "Scratching that itch from ifelse http://t.co/6T5Qbd8ifD #rstats"                                     
- [6] "Baseball: Probability of winning conditional on runs, hits, walks and errors http://t.co/QsDWEAVxsq "
- [7] "Win Books and T-shirts in Our DataScience.LA Meetup Raffles, Powered by R and dplyr! http://t.co/QPk"
- [8] "The Importance of ‘Janitorial Work’ in Research http://t.co/2ue94S8AYa #rstats"                      
- [9] "littler is faster at doing nothing! http://t.co/7aFnAmQtGV #rstats"                                  
-[10] "Using R to simulate the finances of public sector pension funds http://t.co/xc9BIuVq3Y #rstats"      
+ [1] "LAST CHANCE TO REGISTER FOR EARL (15-17 September, London) http://t.co/7ZT7cKGP8N #rstats"
+ [2] "Looking For Life http://t.co/luFwXnyF78 #rstats"                                          
+ [3] "Adding the SPSS MEAN.n Function to R http://t.co/gTw60cxWEd #rstats"                      
+ [4] "Brazilian Presidential Election http://t.co/G08Tu63YFn #rstats"                           
+ [5] "Hortonworks Seminar Series: The Modern Data Architecture http://t.co/M4A1S3SRMy #rstats"  
+ [6] "Introducing simmer: Discrete Event Simulation for R http://t.co/vBImwcKP3F #rstats"       
+ [7] "Notifications from R http://t.co/KaQqzFKd6F #rstats"                                      
+ [8] "rNOMADS 2.0.2 released http://t.co/Bcy2D1QBgk #rstats"                                    
+ [9] "New R job: Senior Operations Research Consultant http://t.co/Fimizb8mwg #rstats #jobs"    
+[10] "httr 0.5 http://t.co/hGWvZxrhdu #rstats"                                                  
 ```
 

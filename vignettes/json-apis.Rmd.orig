@@ -52,7 +52,7 @@ nrow(stations)
 The Ergast Developer API is an experimental web service which provides a historical record of motor racing data for non-commercial purposes.
 
 ```{r}
-res <- fromJSON('http://ergast.com/api/f1/2012/1/results.json')
+res <- fromJSON('http://ergast.com/api/f1/2004/1/results.json')
 drivers <- res$MRData$RaceTable$Races$Results[[1]]$Driver
 colnames(drivers)
 drivers[1:10, c("givenName", "familyName", "code", "nationality")]
@@ -175,7 +175,7 @@ token <- paste("Bearer", content(req)$access_token)
 url <- "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=Rbloggers"
 req <- GET(url, config(httpheader = c("Authorization" = token)))
 json <- content(req, as = "text")
-tweets <- fromJSON(json, unicode = TRUE)
+tweets <- fromJSON(json)
 substring(tweets$text, 1, 100)
 ```
 
