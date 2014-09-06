@@ -5,7 +5,6 @@
 #' We can flatten such data frames into a regular 2 dimensional tabular structure.
 #'
 #' @export
-#' @title Flatten data frames
 #' @param x a data frame
 #' @param recursive flatten recursively
 #' @examples options(stringsAsFactors=FALSE)
