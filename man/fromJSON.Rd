@@ -16,6 +16,8 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
   null = c("list", "null"), na = c("null", "string"), auto_unbox = FALSE,
   digits = 4, pretty = FALSE, force = FALSE, ...)
+
+View(x, ...)
 }
 \arguments{
 \item{txt}{a \code{JSON} string, URL or file}
@@ -26,7 +28,7 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
 
 \item{simplifyMatrix}{coerce \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array}
 
-\item{flatten}{flatten nested data frames into a single non-nested data frame (see example)}
+\item{flatten}{automatically \code{\link{flatten}} nested data frames into a single non-nested data frame}
 
 \item{unicode}{parse escaped (hexadecimal) unicode characters \code{\\uXXXX}. See details.}
 

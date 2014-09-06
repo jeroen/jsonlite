@@ -25,7 +25,7 @@
 #' @param simplifyVector coerce \code{JSON} arrays containing only primitives into an atomic vector
 #' @param simplifyDataFrame coerce \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame
 #' @param simplifyMatrix coerce \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array
-#' @param flatten flatten nested data frames into a single non-nested data frame (see example)
+#' @param flatten automatically \code{\link{flatten}} nested data frames into a single non-nested data frame
 #' @param unicode parse escaped (hexadecimal) unicode characters \code{\\uXXXX}. See details.
 #' @param validate automatically \code{\link{validate}} \code{JSON} before parsing it.
 #' @param x the object to be encoded
