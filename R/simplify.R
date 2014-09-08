@@ -96,28 +96,6 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
   return(out)
 }
 
-is.namedlist <- function(x) {
-  isTRUE(is.list(x) && !is.null(names(x)))
-}
-
-is.unnamedlist <- function(x) {
-  isTRUE(is.list(x) && is.null(names(x)))
-}
-
-is.recordlist <- function(x) {
-  # recordlist is an array with only objects or NULL NULL appears when this is a
-  # nested data frame, but some records do not contain this data frame at all.
-  if (!(is.unnamedlist(x) && length(x))) {
-    return(FALSE)
-  }
-  at_least_one_object = FALSE
-  for(i in x){
-    if(!(is.namedlist(i) || is.null(i))) return(FALSE)
-    if(!at_least_one_object && is.namedlist(i)) at_least_one_object <- TRUE
-  }
-  return(at_least_one_object)
-}
-
 is.matrixlist <- function(x) {
   isTRUE(is.list(x)
     && length(x)

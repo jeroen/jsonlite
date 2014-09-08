@@ -14,7 +14,7 @@
 prettify <- function(txt) {
   txt <- paste(as.character(txt), collapse = "\n")
   enc <- mapEncoding(Encoding(txt))
-  ans <- .Call("R_jsonPrettyPrint", txt, enc)
+  ans <- .Call(R_jsonPrettyPrint, txt, enc)
   structure(ans, class="json")
 }
 
@@ -22,6 +22,6 @@ prettify <- function(txt) {
 minify <- function(txt) {
   txt <- paste(as.character(txt), collapse = "\n")
   enc <- mapEncoding(Encoding(txt))
-  ans <- .Call("R_jsonMiniPrint", txt, enc)
+  ans <- .Call(R_jsonMiniPrint, txt, enc)
   structure(ans, class="json")
 }

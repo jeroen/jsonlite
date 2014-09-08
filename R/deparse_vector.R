@@ -1,6 +1,6 @@
 #' @useDynLib jsonlite C_escape_chars
 deparse_vector_c <- function(x) {
-  .Call("C_escape_chars", PACKAGE = "jsonlite", x)
+  .Call(C_escape_chars, x)
 }
 
 deparse_vector_r <- function(x) {

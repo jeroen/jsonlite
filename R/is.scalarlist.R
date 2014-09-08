@@ -8,7 +8,7 @@ is_scalarlist_r <- function(x) {
 
 #' @useDynLib jsonlite C_is_scalarlist
 is_scalarlist_c <- function(x){
-  .Call("C_is_scalarlist", PACKAGE = "jsonlite", x)
+  .Call(C_is_scalarlist, x)
 }
 
 is.scalarlist <- is_scalarlist_c;

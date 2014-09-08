@@ -10,7 +10,7 @@ collapse_object_r <- function(names, values){
 
 #' @useDynLib jsonlite C_collapse_object
 collapse_object_c <- function(x, y) {
-  .Call("C_collapse_object", PACKAGE = "jsonlite", x, y)
+  .Call(C_collapse_object, x, y)
 }
 
 collapse_object <- collapse_object_c;

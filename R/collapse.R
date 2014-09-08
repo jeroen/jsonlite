@@ -4,7 +4,7 @@ collapse_r <- function(x){
 
 #' @useDynLib jsonlite C_collapse_array
 collapse_c <- function(x) {
-  .Call("C_collapse_array", PACKAGE = "jsonlite", x)
+  .Call(C_collapse_array, x)
 }
 
 collapse <- collapse_c;
