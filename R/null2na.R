@@ -1,4 +1,4 @@
-null2na <- function(x, unlist = TRUE) {
+null2na <- function(x) {
   if (!length(x)) {
     if (isTRUE(unlist)) {
       return(vector())
@@ -31,9 +31,5 @@ null2na <- function(x, unlist = TRUE) {
   x[vapply(x, is.null, logical(1))] <- NA
 
   # Unlist only if set
-  if (isTRUE(unlist)) {
-    return(unlist(x, recursive = FALSE, use.names = FALSE))
-  } else {
-    return(x)
-  }
+  return(unlist(x, recursive = FALSE, use.names = FALSE))
 }
