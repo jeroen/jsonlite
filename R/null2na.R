@@ -32,7 +32,7 @@ null2na <- function(x, unlist = TRUE) {
 
   # Unlist only if set
   if (isTRUE(unlist)) {
-    return(unlist(x))
+    return(unlist(x, recursive = FALSE, use.names = FALSE))
   } else {
     return(x)
   }
