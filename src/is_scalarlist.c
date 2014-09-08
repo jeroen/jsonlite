@@ -19,6 +19,8 @@ SEXP C_is_scalarlist(SEXP x) {
         case REALSXP:
         case STRSXP:
         case NILSXP:
+        case RAWSXP: //not used but for compatibility with is.atomic
+        case CPLXSXP: //not used but for compatibility with is.atomic
           if(length(el) < 2) continue;
           //else fall through
         default:
