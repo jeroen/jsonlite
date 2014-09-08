@@ -96,14 +96,6 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
   return(out)
 }
 
-is.scalarlist <- function(x) {
-  if(!is.list(x)) return(FALSE)
-  for(i in x){
-    if(!is.atomic(i) || length(i) > 1) return(FALSE)
-  }
-  return(TRUE)
-}
-
 is.namedlist <- function(x) {
   isTRUE(is.list(x) && !is.null(names(x)))
 }
