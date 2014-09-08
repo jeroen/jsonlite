@@ -1,4 +1,9 @@
-null_to_na <- function(x){
+#' @useDynLib jsonlite C_null_to_na
+null_to_na_c <- function(x) {
+  .Call(C_null_to_na, x)
+}
+
+null_to_na_r <- function(x){
   if (!length(x)) {
     return(vector())
   }
@@ -29,3 +34,5 @@ null_to_na <- function(x){
   #return
   return(x)
 }
+
+null_to_na <- null_to_na_c;
