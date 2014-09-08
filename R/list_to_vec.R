@@ -1,4 +1,4 @@
-null2na <- function(x) {
+list_to_vec <- function(x) {
   if (!length(x)) {
     return(vector())
   }

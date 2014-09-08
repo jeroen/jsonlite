@@ -22,7 +22,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
 
   # or a scalar list (atomic vector)
   if (isTRUE(simplifyVector) && is.null(names(x)) && is.scalarlist(x)) {
-    return(null2na(x))
+    return(list_to_vec(x))
   }
 
   # apply recursively
@@ -32,11 +32,11 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
   # fix for mongo style dates turning into scalars *after* simplifying
   # only happens when simplifyDataframe=FALSE
   if(isTRUE(simplifyVector) && is.scalarlist(out) && all(vapply(out, is, logical(1), "POSIXt"))){
-    return(structure(null2na(out), class=c("POSIXct", "POSIXt")))
+    return(structure(list_to_vec(out), class=c("POSIXct", "POSIXt")))
   }
 
-  # test for matrix. Note that we have to take another look at x (before null2na on
-  # its elements) to differentiate between matrix and vector
+  # test for matrix. Note that we have to take another look at x (before
+  # list_to_vec on its elements) to differentiate between matrix and vector.
   if (isTRUE(simplifyMatrix) && isTRUE(simplifyVector) && is.matrixlist(out) && all(unlist(vapply(x, is.scalarlist, logical(1))))) {
     if(isTRUE(columnmajor)){
       return(do.call(cbind, out))
