@@ -1,10 +1,6 @@
 null2na <- function(x) {
   if (!length(x)) {
-    if (isTRUE(unlist)) {
-      return(vector())
-    } else {
-      return(list())
-    }
+    return(vector())
   }
 
   #Start parsing missing values
