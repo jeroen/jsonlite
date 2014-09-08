@@ -1,3 +1,7 @@
+0.9.12
+ - Ported collapse_object to C: speedup for toJSON on data frames
+ - Expose 'flatten' function
+
 0.9.11
  - Added toJSON null argument
  - Fix bug in prettify object name escaping

@@ -77,21 +77,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"),
   }
 
   #turn the matrix into json records
-  if(na == "NA") {
-    tmp <- apply(out, 1, function(z){
-      missings <- is.na(z);
-      if(any(missings)){
-        paste0("{", paste(dfnames[!missings], z[!missings], sep = ":", collapse = ","), "}")
-      } else {
-        paste0("{", paste(dfnames, z, sep = ":", collapse = ","), "}")
-      }
-    });
-  } else {
-    #tiny speed up because we don't have to check for NA
-    tmp <- apply(out, 1, function(z){
-      paste0("{", paste(dfnames, z, sep = ":", collapse = ","), "}")
-    });
-  }
+  tmp <- apply(out, 1, collapse_object, x=dfnames);
 
   #collapse
   if(isTRUE(collapse)){

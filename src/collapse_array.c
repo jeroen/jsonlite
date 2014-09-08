@@ -23,7 +23,7 @@ SEXP C_collapse_array(SEXP x) {
     memcpy(++s, translateCharUTF8(STRING_ELT(x, i)), size);
     s += size;
   }
-  if(len == 0) s++;
+  if(olds == s) s++;
   olds[0] = '[';
   s[0] = ']';
   s[1] = '\0';
