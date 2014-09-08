@@ -31,8 +31,5 @@ SEXP C_is_scalarlist(SEXP x) {
   }
 
   //get character encoding from first element
-  SEXP out = PROTECT(allocVector(LGLSXP, 1));
-  LOGICAL(out)[0] = is_scalarlist;
-  UNPROTECT(1);
-  return out;
+  return ScalarLogical(is_scalarlist);
 }
