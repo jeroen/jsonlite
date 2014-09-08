@@ -41,8 +41,5 @@ bool is_recordlist(SEXP x){
 }
 
 SEXP C_is_recordlist(SEXP x){
-  SEXP out = PROTECT(allocVector(LGLSXP, 1));
-  LOGICAL(out)[0] = is_recordlist(x);
-  UNPROTECT(1);
-  return out;
+  return ScalarLogical(is_recordlist(x));
 }
