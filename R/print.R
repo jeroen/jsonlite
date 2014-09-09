@@ -8,12 +8,12 @@ print.json <- function(x, ...){
 #' @export
 print.scalar <- function(x, ...){
   original <- x;
-  if(is.data.frame(x)){
-    row.names(x) <- "[X]"
-  } else {
-    names(x) <- "[X]"
-  }
   class(x) <- class(x)[-1]
-  print(x)
+  if(is.data.frame(x)){
+    row.names(x) <- "[x]"
+    print(x)
+  } else {
+    cat("[x] ", x, "\n", sep="")
+  }
   invisible(original)
 }
