@@ -30,3 +30,5 @@ src/Makevars$
 ^tidy.R$
 ^.travis.yml$
 paper$
+^.*\.pro$
+^.*\.pro\.user$
