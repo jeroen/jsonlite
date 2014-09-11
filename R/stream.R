@@ -84,7 +84,7 @@ stream_out <- function(x, con = stdout(), pagesize = 100, verbose = TRUE, ...) {
   }
   if(lastpage){
     from <- nr - lastpage + 1;
-    if(verbose) message("Writing ", pagesize, " lines.")
+    if(verbose) message("Writing ", lastpage, " lines.")
     stream_out_page(x[from:nr, ,drop = FALSE], con = con, verbose = verbose, ...)
   }
 
