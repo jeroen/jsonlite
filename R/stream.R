@@ -24,7 +24,7 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
   }
 
   if(!isOpen(con, "r")){
-    if(verbose) message("opening connection.")
+    if(verbose) message("opening ", is(con) ," connection.")
     con_opened <- TRUE;
     open(con, "r")
   }
@@ -35,7 +35,7 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
 
   i <- 1L;
   while(length(page <- readLines(con, n = pagesize))){
-    if(verbose) message("Page ", i, ": found ", length(page), " lines.")
+    if(verbose) message("Reading ", length(page), " lines (", i,").")
     mydf <- simplify(lapply(page, parseJSON), ...);
     if(!missing(handler)) handler(mydf);
     if(bind_pages){
@@ -45,7 +45,7 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
   }
 
   if(con_opened){
-    if(verbose) message("closing connection")
+    if(verbose) message("opening ", is(con) ," connection.")
     close(con)
   }
 
@@ -68,7 +68,7 @@ stream_out <- function(x, con = stdout(), pagesize = 100, verbose = TRUE, ...) {
   }
 
   if(!isOpen(con, "w")){
-    if(verbose) message("opening connection.")
+    if(verbose) message("opening ", is(con) ," connection.")
     con_opened = TRUE;
     open(con, "w")
   }
@@ -81,16 +81,16 @@ stream_out <- function(x, con = stdout(), pagesize = 100, verbose = TRUE, ...) {
   for(i in seq_len(npages)){
     from <- pagesize * (i-1) + 1;
     to <- pagesize * i
-    if(verbose) message("Writing page ", i, ": ", pagesize, " lines.")
+    if(verbose) message("Writing ", pagesize, " lines (",i ,").")
     stream_out_page(x[from:to, ,drop = FALSE], con = con, verbose = verbose, ...)
   }
   if(lastpage){
     from <- nr - lastpage + 1;
-    if(verbose) message("Writing page ", npages + 1, ": ", lastpage, " lines.")
+    if(verbose) message("Writing ", pagesize, " lines.")
     stream_out_page(x[from:nr, ,drop = FALSE], con = con, verbose = verbose, ...)
   }
   if(con_opened){
-    message("closing connection.")
+    if(verbose) message("opening ", is(con) ," connection.")
     close(con)
   }
   invisible();
