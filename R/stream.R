@@ -11,7 +11,6 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
 
   # check if we use a custom handler
   bind_pages <- missing(handler) || is.null(handler);
-  con_opened = FALSE;
 
   if(!is(con, "connection")){
     # Maybe handle URLs here in future.
@@ -25,8 +24,11 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
 
   if(!isOpen(con, "r")){
     if(verbose) message("opening ", is(con) ," connection.")
-    con_opened <- TRUE;
     open(con, "r")
+    on.exit({
+      if(verbose) message("closing ", is(con) ," connection.")
+      close(con)
+    })
   }
 
   if(bind_pages){
@@ -44,11 +46,6 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
     i <- i + 1L;
   }
 
-  if(con_opened){
-    if(verbose) message("opening ", is(con) ," connection.")
-    close(con)
-  }
-
   # Either return a big data frame, or nothing.
   if(bind_pages){
     if(verbose) message("binding pages together (no custom handler).")
@@ -60,8 +57,6 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
 
 stream_out <- function(x, con = stdout(), pagesize = 100, verbose = TRUE, ...) {
 
-  con_opened = FALSE;
-
   if(!is(con, "connection")){
     # Maybe handle URLs here in future.
     stop("Argument 'con' must be a connection.")
@@ -69,8 +64,11 @@ stream_out <- function(x, con = stdout(), pagesize = 100, verbose = TRUE, ...) {
 
   if(!isOpen(con, "w")){
     if(verbose) message("opening ", is(con) ," connection.")
-    con_opened = TRUE;
     open(con, "w")
+    on.exit({
+      if(verbose) message("closing ", is(con) ," connection.")
+      close(con)
+    })
   }
 
   stopifnot(is.data.frame(x))
@@ -89,10 +87,7 @@ stream_out <- function(x, con = stdout(), pagesize = 100, verbose = TRUE, ...) {
     if(verbose) message("Writing ", pagesize, " lines.")
     stream_out_page(x[from:nr, ,drop = FALSE], con = con, verbose = verbose, ...)
   }
-  if(con_opened){
-    if(verbose) message("opening ", is(con) ," connection.")
-    close(con)
-  }
+
   invisible();
 }
 
