@@ -98,14 +98,14 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
     txt <- paste(txt, collapse = "\n")
   }
 
-  # Validate JSON
+  # validate JSON
   if (isTRUE(validate)) {
     if(!validate(txt)) {
       stop("Validation failed! String contains invalid JSON.")
     }
   } else if (!grepl("^[ \t\r\n]*(\\{|\\[)", txt)) {
-    #Always do basic validation
-    stop("String does not contain valid JSON: \"", gsub("\\s+", " ", substring(txt, 0, 25)), "...\"")
+    # always do basic validation
+    stop("String does not look like JSON: \"", gsub("\\s+", " ", substring(txt, 0, 25)), "...\"")
   }
 
   # preparse escaped unicode characters
