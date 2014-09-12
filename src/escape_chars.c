@@ -9,92 +9,63 @@ http://stackoverflow.com/questions/25609174/fast-escaping-deparsing-of-character
 */
 
 SEXP C_escape_chars_one(SEXP x) {
+
   if (TYPEOF(x) != CHARSXP)
     error("x must be a CHARSXP");
 
-  const char* old = CHAR(x);
-  char* old_p = (char*)old;
+  // Allocate a string with a guaranteed amount of length for escaping
+  // Add 2 for initial, ending '"' and 1 for NUL
+  const char* p = CHAR(x);
+  int n = strlen(p);
 
-  // Count up the number of matches
-  int matches = 0;
-  char oldc;
-  do {
-    oldc = *old_p;
-    switch(oldc) {
+  char* out = (char*) malloc(n * 2 + 3);
+
+  int counter = 0;
+  out[counter++] = '"';
+
+  for (int i = 0; i < n; ++i) {
+    switch(p[i]) {
       case '\\':
-      case '"':
-      case '\n':
-      case '\r':
-      case '\t':
-      case '\b':
-      case '\f':
-        matches++;
-    }
-    old_p++;
-  } while(oldc != '\0');
-
-  // Copy old string to new string, replacing where necessary.
-  old_p = (char*)old;
-  // Allocate string memory; add 2 for start and end quotes.
-  char* newstr = (char*)malloc(strlen(old) + matches + 3);
-  char* new_p = newstr;
-  *new_p = '"';
-  new_p++;
-
-  do {
-    oldc = *old_p;
-    switch(oldc) {
-      case '\\':
-        *new_p = '\\';
-        new_p++;
-        *new_p = '\\';
+        out[counter++] = '\\';
+        out[counter++] = '\\';
         break;
       case '"':
-        *new_p = '\\';
-        new_p++;
-        *new_p = '"';
+        out[counter++] = '\\';
+        out[counter++] = '"';
         break;
       case '\n':
-        *new_p = '\\';
-        new_p++;
-        *new_p = 'n';
+        out[counter++] = '\\';
+        out[counter++] = 'n';
         break;
       case '\r':
-        *new_p = '\\';
-        new_p++;
-        *new_p = 'r';
+        out[counter++] = '\\';
+        out[counter++] = 'r';
         break;
       case '\t':
-        *new_p = '\\';
-        new_p++;
-        *new_p = 't';
+        out[counter++] = '\\';
+        out[counter++] = 't';
         break;
       case '\b':
-        *new_p = '\\';
-        new_p++;
-        *new_p = 'b';
+        out[counter++] = '\\';
+        out[counter++] = 'b';
         break;
       case '\f':
-        *new_p = '\\';
-        new_p++;
-        *new_p = 'f';
-        break;
-      case '\0':
-        // End with a quote char
-        *new_p = '"';
-        new_p++;
-        *new_p = '\0';
+        out[counter++] = '\\';
+        out[counter++] = 'f';
         break;
       default:
-        *new_p = oldc;
+        out[counter++] = p[i];
     }
+  }
 
-    old_p++;
-    new_p++;
-  } while(oldc != '\0');
+  out[counter++] = '"';
 
-  SEXP val = mkCharCE(newstr, getCharCE(x));
-  free(newstr);
+  // NOTE: this is technically unnecessary given the call to
+  // mkCharLenCE following, but it is still 'hygenic' to do so
+  out[counter + 1] = '\0';
+
+  SEXP val = mkCharLenCE(out, counter, getCharCE(x));
+  free(out);
   return val;
 }
 
