@@ -9,12 +9,12 @@
 #' Because parsing huge JSON strings is difficult and inefficient, JSON streaming
 #' is done using \strong{lines of minified JSON records}. This is pretty
 #' standard: JSON databases such as MongoDB use the same format to import/export
-#' large datasets. Note that this means that the total stream combined is in itself
-#' not valid JSON; only the individual lines are. Also note that because line-breaks
+#' large datasets. Note that this means that the total stream combined is
+#' not valid JSON itself; only the individual lines are. Also note that because line-breaks
 #' are used as separators, prettified JSON is not permitted: the JSON lines \emph{must}
 #' be minified. In this respect, the format is a bit different from \code{\link{fromJSON}}
-#' and \code{\link{toJSON}} where all lines are part of a single JSON structure, and
-#' line breaks are optional.
+#' and \code{\link{toJSON}} where all lines are part of a single JSON structure with
+#' optional line breaks.
 #'
 #' The \code{handler} is a callback function which is called for each page (batch) of
 #' JSON data with exactly one argument (usually a data frame with \code{pagesize} rows).
