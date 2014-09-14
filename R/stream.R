@@ -49,6 +49,7 @@
 #' @aliases stream_in stream_out
 #' @export stream_in stream_out
 #' @rdname stream_in
+#' @references MongoDB export format: \url{http://docs.mongodb.org/manual/reference/program/mongoexport/#cmdoption--query}
 #' @return The \code{stream_out} function always returns \code{NULL}.
 #' When no custom handler is specified, \code{stream_in} returns a data frame of all pages binded together.
 #' When a custom handler function is specified, \code{stream_in} always returns \code{NULL}.

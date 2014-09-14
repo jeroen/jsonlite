@@ -112,4 +112,7 @@ nrow(mydata)
 unlink(tmp)
 }
 }
+\references{
+MongoDB export format: \url{http://docs.mongodb.org/manual/reference/program/mongoexport/#cmdoption--query}
+}
 
