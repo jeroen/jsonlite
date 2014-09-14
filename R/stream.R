@@ -20,10 +20,10 @@
 #' JSON data with exactly one argument (usually a data frame with \code{pagesize} rows).
 #' If \code{handler} is missing or \code{NULL}, a default handler is used which stores all
 #' intermediate pages of data in a list, and at the very end uses \code{\link{rbind.pages}}
-#' to bind all pages together into one single data frame that is returned by \code{\link{stream_in}}.
+#' to bind all pages together into one single data frame that is returned by \code{stream_in}.
 #' On the other hand, when a custom \code{handler} function is specified, \code{stream_in}
 #' does not store any intermediate results and returns \code{NULL}.
-#' It is then assumed that the \code{handler} takes care of processing intermediate pages.
+#' It is then up to the \code{handler} to process and/or store data pages.
 #' A \code{handler} function that does not store intermediate results in memory (for
 #' example by writing output to another connection) results in a pipeline that can process an
 #' unlimited amount of data. See example.
@@ -47,10 +47,9 @@
 #' @name stream_in, stream_out
 #' @aliases stream_in stream_out
 #' @export stream_in stream_out
-#' @return \code{stream_out} always returns \code{NULL}.
+#' @return The \code{stream_out} function always returns \code{NULL}.
+#' When no custom handler is specified, \code{stream_in} returns a data frame of all pages binded together.
 #' When a custom handler function is specified, \code{stream_in} returns \code{NULL}.
-#' When no custom handler is specified, \code{stream_in} returns a data frame of all pages
-#' binded together.
 #' @examples # compare formats
 #' x <- iris[1:3,]
 #' toJSON(x)
@@ -68,11 +67,11 @@
 #' flights3 <- stream_in(gzcon(url("http://jeroenooms.github.io/data/nycflights13.mjson.gz")))
 #' all.equal(flights3, as.data.frame(flights))
 #'
-#' #stream HTTPS (HTTP+SSL) via curl pipe
+#' # stream HTTPS (HTTP+SSL) via curl pipe
 #' flights4 <- stream_in(gzcon(pipe("curl https://jeroenooms.github.io/data/nycflights13.mjson.gz")))
 #' all.equal(flights4, as.data.frame(flights))
 #'
-#' # Full JSON stream IO: stream from URL to file.
+#' # Full JSON IO stream: stream from URL to file.
 #' # Calculate delays for flights over 1000 miles in batches of 5k
 #' library(dplyr)
 #' con_in <- gzcon(url("http://jeroenooms.github.io/data/nycflights13.mjson.gz"))
@@ -107,10 +106,10 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
   }
 
   if(!isOpen(con, "r")){
-    if(verbose) message("opening ", is(con) ," connection.")
+    if(verbose) message("opening ", is(con) ," input connection.")
     open(con, "r")
     on.exit({
-      if(verbose) message("closing ", is(con) ," connection.")
+      if(verbose) message("closing ", is(con) ," input connection.")
       close(con)
     })
   }
@@ -139,6 +138,7 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
   }
 }
 
+#' @rdname stream_in
 stream_out <- function(x, con = stdout(), pagesize = 100, verbose = TRUE, ...) {
 
   if(!is(con, "connection")){
@@ -147,10 +147,10 @@ stream_out <- function(x, con = stdout(), pagesize = 100, verbose = TRUE, ...) {
   }
 
   if(!isOpen(con, "w")){
-    if(verbose) message("opening ", is(con) ," connection.")
+    if(verbose) message("opening ", is(con) ," output connection.")
     open(con, "w")
     on.exit({
-      if(verbose) message("closing ", is(con) ," connection.")
+      if(verbose) message("closing ", is(con) ," output connection.")
       close(con)
     })
   }
