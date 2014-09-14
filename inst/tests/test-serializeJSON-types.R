@@ -1,4 +1,4 @@
-#test serializeJSON 
+#test serializeJSON
 
 context("Serializing Data Types")
 
@@ -20,19 +20,19 @@ test_that("Serializing Data Objects", {
     quote(rnorm(10)),
     expression("to be or not to be"),
     expression(foo),
-    parse(text="rnorm(10);"),    
+    parse(text="rnorm(10);"),
     call("rnorm", n=10),
-    emptyenv(),
+    #emptyenv(),
     `if`, #builtin
     `list`, #special
     getNamespace("graphics") #namespace
-  ) 
-  
+  )
+
   #test all but list
   lapply(objects, function(object){
-    expect_that(unserializeJSON(serializeJSON(object)), equals(object))   
+    expect_that(unserializeJSON(serializeJSON(object)), equals(object))
   });
-  
+
   #test all in list
   expect_that(unserializeJSON(serializeJSON(objects)), equals(objects))
 });

@@ -1,12 +1,11 @@
 #' Stream JSON input/output
 #'
 #' @export
-#' @examples library(hflights)
-#' row.names(hflights) <- NULL
-#' stream_out(hflights, file(tmp <- tempfile()), pagesize = 200)
-#' hf2 <- stream_in(file(tmp))
+#' @examples library(nycflights13)
+#' stream_out(flights, file(tmp <- tempfile()), pagesize = 200)
+#' flights2 <- stream_in(file(tmp))
 #' unlink(tmp)
-#' all.equal(hflights, hf2)
+#' all.equal(flights2, as.data.frame(flights))
 stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
 
   # check if we use a custom handler
@@ -38,7 +37,7 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
   i <- 1L;
   while(length(page <- readLines(con, n = pagesize))){
     if(verbose) message("Reading ", length(page), " lines (", i,").")
-    mydf <- simplify(lapply(page, parseJSON), ...);
+    mydf <- import_json_page(page, ...);
     if(!missing(handler)) handler(mydf);
     if(bind_pages){
       dfstack[[i]] <- mydf;
