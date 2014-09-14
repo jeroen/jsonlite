@@ -21,8 +21,8 @@
 #' If \code{handler} is missing or \code{NULL}, a default handler is used which stores all
 #' intermediate pages of data in a list, and at the very end uses \code{\link{rbind.pages}}
 #' to bind all pages together into one single data frame that is returned by \code{stream_in}.
-#' On the other hand, when a custom \code{handler} function is specified, \code{stream_in}
-#' does not store any intermediate results and returns \code{NULL}.
+#' When a custom \code{handler} function is specified, \code{stream_in}
+#' does not store any intermediate results and always returns \code{NULL}.
 #' It is then up to the \code{handler} to process and/or store data pages.
 #' A \code{handler} function that does not store intermediate results in memory (for
 #' example by writing output to another connection) results in a pipeline that can process an
@@ -30,32 +30,35 @@
 #'
 #' If a connection is not opened yet, \code{stream_in} and \code{stream_out}
 #' will automatically open and later close the connection. Because R destroys connections
-#' when they are closed, they cannot be reused. To reuse a connection object for multiple
-#' calls to \code{stream_in} and \code{stream_out}, it needs to be opened beforehand. See
-#' example.
+#' when they are closed, they cannot be reused. To use a single connection for multiple
+#' calls to \code{stream_in} or \code{stream_out}, it needs to be opened
+#' beforehand. See example.
 #'
-#' @param con A \code{\link{connection}} object. If the connection is not open,
+#' @param con a \code{\link{connection}} object. If the connection is not open,
 #' \code{stream_in} and \code{stream_out} will automatically open
 #' and later close (and destroy) the connection. See details.
 #' @param handler a custom function that is called on each page of JSON data. If not specified,
 #' the default handler stores all pages and binds them into a single data frame that will be
 #' returned by \code{stream_in}. See details.
+#' @param x object to be streamed out. Currently only data frames are supported.
 #' @param pagesize number of lines to read/write from/to the connection per iteration.
 #' @param verbose print some information on what is going on.
-#' @param ... arguments passed to \code{\link{fromJSON}} and \code{\link{toJSON}} to
+#' @param ... arguments for \code{\link{fromJSON}} and \code{\link{toJSON}} that
 #' control JSON formatting/parsing where applicable. Use with caution.
 #' @name stream_in, stream_out
 #' @aliases stream_in stream_out
 #' @export stream_in stream_out
+#' @rdname stream_in
 #' @return The \code{stream_out} function always returns \code{NULL}.
 #' When no custom handler is specified, \code{stream_in} returns a data frame of all pages binded together.
-#' When a custom handler function is specified, \code{stream_in} returns \code{NULL}.
+#' When a custom handler function is specified, \code{stream_in} always returns \code{NULL}.
 #' @examples # compare formats
 #' x <- iris[1:3,]
 #' toJSON(x)
 #' stream_out(x)
 #'
 #' \dontrun{
+#'
 #' # stream large dataset to file and back
 #' library(nycflights13)
 #' stream_out(flights, file(tmp <- tempfile()), pagesize = 200)
@@ -63,15 +66,18 @@
 #' unlink(tmp)
 #' all.equal(flights2, as.data.frame(flights))
 #'
-#' # stream from HTTP
+#' # stream over HTTP
+#' diamonds2 <- stream_in(url("http://jeroenooms.github.io/data/diamonds.mjson"))
+#'
+#' # stream over HTTP with gzip compression
 #' flights3 <- stream_in(gzcon(url("http://jeroenooms.github.io/data/nycflights13.mjson.gz")))
 #' all.equal(flights3, as.data.frame(flights))
 #'
-#' # stream HTTPS (HTTP+SSL) via curl pipe
+#' # stream over HTTPS (HTTP+SSL) via curl pipe
 #' flights4 <- stream_in(gzcon(pipe("curl https://jeroenooms.github.io/data/nycflights13.mjson.gz")))
 #' all.equal(flights4, as.data.frame(flights))
 #'
-#' # Full JSON IO stream: stream from URL to file.
+#' # Full JSON IO stream from URL to file connection.
 #' # Calculate delays for flights over 1000 miles in batches of 5k
 #' library(dplyr)
 #' con_in <- gzcon(url("http://jeroenooms.github.io/data/nycflights13.mjson.gz"))

@@ -6,9 +6,11 @@
 \title{Streaming JSON input/output}
 \usage{
 stream_in(con, handler, pagesize = 100, verbose = TRUE, ...)
+
+stream_out(x, con = stdout(), pagesize = 100, verbose = TRUE, ...)
 }
 \arguments{
-\item{con}{A \code{\link{connection}} object. If the connection is not open,
+\item{con}{a \code{\link{connection}} object. If the connection is not open,
 \code{stream_in} and \code{stream_out} will automatically open
 and later close (and destroy) the connection. See details.}
 
@@ -16,18 +18,19 @@ and later close (and destroy) the connection. See details.}
 the default handler stores all pages and binds them into a single data frame that will be
 returned by \code{stream_in}. See details.}
 
+\item{x}{object to be streamed out. Currently only data frames are supported.}
+
 \item{pagesize}{number of lines to read/write from/to the connection per iteration.}
 
 \item{verbose}{print some information on what is going on.}
 
-\item{...}{arguments passed to \code{\link{fromJSON}} and \code{\link{toJSON}} to
+\item{...}{arguments for \code{\link{fromJSON}} and \code{\link{toJSON}} that
 control JSON formatting/parsing where applicable. Use with caution.}
 }
 \value{
-\code{stream_out} always returns \code{NULL}.
-When a custom handler function is specified, \code{stream_in} returns \code{NULL}.
-When no custom handler is specified, \code{stream_in} returns a data frame of all pages
-binded together.
+The \code{stream_out} function always returns \code{NULL}.
+When no custom handler is specified, \code{stream_in} returns a data frame of all pages binded together.
+When a custom handler function is specified, \code{stream_in} always returns \code{NULL}.
 }
 \description{
 The \code{stream_in} and \code{stream_out} functions implement
@@ -51,19 +54,19 @@ The \code{handler} is a callback function which is called for each page (batch) 
 JSON data with exactly one argument (usually a data frame with \code{pagesize} rows).
 If \code{handler} is missing or \code{NULL}, a default handler is used which stores all
 intermediate pages of data in a list, and at the very end uses \code{\link{rbind.pages}}
-to bind all pages together into one single data frame that is returned by \code{\link{stream_in}}.
-On the other hand, when a custom \code{handler} function is specified, \code{stream_in}
-does not store any intermediate results and returns \code{NULL}.
-It is then assumed that the \code{handler} takes care of processing intermediate pages.
+to bind all pages together into one single data frame that is returned by \code{stream_in}.
+When a custom \code{handler} function is specified, \code{stream_in}
+does not store any intermediate results and always returns \code{NULL}.
+It is then up to the \code{handler} to process and/or store data pages.
 A \code{handler} function that does not store intermediate results in memory (for
 example by writing output to another connection) results in a pipeline that can process an
 unlimited amount of data. See example.
 
 If a connection is not opened yet, \code{stream_in} and \code{stream_out}
 will automatically open and later close the connection. Because R destroys connections
-when they are closed, they cannot be reused. To reuse a connection object for multiple
-calls to \code{stream_in} and \code{stream_out}, it needs to be opened beforehand. See
-example.
+when they are closed, they cannot be reused. To use a single connection for multiple
+calls to \code{stream_in} or \code{stream_out}, it needs to be opened
+beforehand. See example.
 }
 \examples{
 # compare formats
@@ -72,6 +75,7 @@ toJSON(x)
 stream_out(x)
 
 \dontrun{
+
 # stream large dataset to file and back
 library(nycflights13)
 stream_out(flights, file(tmp <- tempfile()), pagesize = 200)
@@ -79,15 +83,18 @@ flights2 <- stream_in(file(tmp))
 unlink(tmp)
 all.equal(flights2, as.data.frame(flights))
 
-# stream from HTTP
+# stream over HTTP
+diamonds2 <- stream_in(url("http://jeroenooms.github.io/data/diamonds.mjson"))
+
+# stream over HTTP with gzip compression
 flights3 <- stream_in(gzcon(url("http://jeroenooms.github.io/data/nycflights13.mjson.gz")))
 all.equal(flights3, as.data.frame(flights))
 
-#stream HTTPS (HTTP+SSL) via curl pipe
+# stream over HTTPS (HTTP+SSL) via curl pipe
 flights4 <- stream_in(gzcon(pipe("curl https://jeroenooms.github.io/data/nycflights13.mjson.gz")))
 all.equal(flights4, as.data.frame(flights))
 
-# Full JSON stream IO: stream from URL to file.
+# Full JSON IO stream from URL to file connection.
 # Calculate delays for flights over 1000 miles in batches of 5k
 library(dplyr)
 con_in <- gzcon(url("http://jeroenooms.github.io/data/nycflights13.mjson.gz"))
