@@ -38,6 +38,11 @@ rbind.pages <- function(pages){
   #validate input
   stopifnot(is.list(pages))
 
+  # edge case
+  if(!length(pages)){
+    return(data.frame())
+  }
+
   # All elements must be data frames or NULL.
   pages <- Filter(function(x) {!is.null(x)}, pages);
   stopifnot(all(vapply(pages, is.data.frame, logical(1))))

@@ -138,9 +138,10 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
   while(length(page <- readLines(con, n = pagesize))){
     if(verbose) message("Reading ", length(page), " lines (", i,").")
     mydf <- import_json_page(page, ...);
-    if(!missing(handler)) handler(mydf);
     if(bind_pages){
       dfstack[[i]] <- mydf;
+    } else {
+      handler(mydf);
     }
     i <- i + 1L;
   }
@@ -171,24 +172,7 @@ stream_out <- function(x, con = stdout(), pagesize = 100, verbose = TRUE, ...) {
     })
   }
 
-  stopifnot(is.data.frame(x))
-  nr <- nrow(x)
-  npages <- nr %/% pagesize;
-  lastpage <- nr %% pagesize;
-
-  for(i in seq_len(npages)){
-    from <- pagesize * (i-1) + 1;
-    to <- pagesize * i
-    if(verbose) message("Writing ", pagesize, " lines (",i ,").")
-    stream_out_page(x[from:to, ,drop = FALSE], con = con, verbose = verbose, ...)
-  }
-  if(lastpage){
-    from <- nr - lastpage + 1;
-    if(verbose) message("Writing ", lastpage, " lines.")
-    stream_out_page(x[from:nr, ,drop = FALSE], con = con, verbose = verbose, ...)
-  }
-
-  invisible();
+  apply_by_pages(x, stream_out_page, pagesize = pagesize, con = con, verbose = verbose, ...);
 }
 
 stream_out_page <- function(page, con, ...){
