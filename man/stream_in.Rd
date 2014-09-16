@@ -110,6 +110,15 @@ close(con_out)
 mydata <- stream_in(file(tmp))
 nrow(mydata)
 unlink(tmp)
+
+# Data from http://openweathermap.org/current#bulk
+daily14 <- stream_in(gzcon(url("http://78.46.48.103/sample/daily_14.json.gz")))
+subset(daily14, city$name == "Berlin")$data
+
+# Or with dplyr:
+library(dplyr)
+daily14f <- flatten(daily14)
+filter(daily14f, city.name == "Berlin")$data
 }
 }
 \references{
