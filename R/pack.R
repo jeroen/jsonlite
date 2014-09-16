@@ -53,7 +53,7 @@ unpack <- function(obj) {
   newdata <- c(
     list(.Data = switch(encoding.mode,
       `NULL` = NULL,
-      environment = emptyenv(),
+      environment = new.env(parent=emptyenv()),
       namespace = getNamespace(obj$value$name),
       externalptr = NULL,
       S4 = getClass(obj$value$class, where = getNamespace(obj$value$package)),
