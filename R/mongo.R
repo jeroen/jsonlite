@@ -9,21 +9,20 @@ mongo_write <- function(x, mongo, ns, pagesize = 100, verbose = TRUE, ...){
 
 mongo_write_page <- function(x, ns, mongo, ...){
   jsonlist <- parseJSON(asJSON(x, ...))
-  records <- lapply(jsonlist, mongo_bson_from_list)
+  records <- lapply(jsonlist, mongo_create_record)
   rmongodb::mongo.insert.batch(mongo, ns, records)
 }
 
 # This is a temporary hack because mongo.bson.from.list does not work for lists of length 0
-mongo_bson_from_list <- function(x){
+mongo_create_record <- function(x){
   if(length(x)){
     rmongodb::mongo.bson.from.list(x)
   } else {
-    rmongodb::mongo.bson.from.buffer(rmongodb::mongo.bson.buffer.create())
+    rmongodb::mongo.bson.empty()
   }
 }
 
 mongo_read <- function(mongo, ns, handler, pagesize = 100, verbose = TRUE, ...){
-  stopifnot(is(mongo, "mongo"))
   stopifnot(rmongodb::mongo.is.connected(mongo))
   stopifnot(is.character("ns"))
   if(missing(handler)){

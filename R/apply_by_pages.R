@@ -18,3 +18,13 @@ apply_by_pages <- function(x, FUN, pagesize, verbose, ...){
   }
   invisible();
 }
+
+#this is another slightly slower implementation
+apply_by_pages2 <- function(x, FUN, pagesize, verbose, ...){
+  x2 <- split(x, seq_len(nrow(x)) %/% pagesize)
+  for(page in x2){
+    if(verbose) message("Writing ", nrow(page), " lines (", ").")
+    FUN(page)
+  }
+  invisible()
+}
