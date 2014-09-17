@@ -53,6 +53,10 @@ memory, or even too large to store on a single disk by setting up a cluster.
 MongoDB makes it easy to query, filter, sort, aggregate or map-reduce our (big)
 data collections into something smaller and more managable that lends itself
 to analysis and visualization in R.
+
+Interacting with MongoDB works very similar as JSON streaming. See the
+\code{\link{stream_in}} manual page for details and examples of using
+a custom \code{handler} function or IO pipe.
 }
 \examples{
 \dontrun{

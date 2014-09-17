@@ -24,6 +24,10 @@
 #' data collections into something smaller and more managable that lends itself
 #' to analysis and visualization in R.
 #'
+#' Interacting with MongoDB works very similar as JSON streaming. See the
+#' \code{\link{stream_in}} manual page for details and examples of using
+#' a custom \code{handler} function or IO pipe.
+#'
 #' @aliases mongo_read mongo_write
 #' @export mongo_read mongo_write
 #' @rdname mongo_read
@@ -62,13 +66,15 @@ mongo_read <- function(mongo, ns, handler, pagesize = 100, verbose = TRUE, ...){
     verbose = verbose, ...)
 }
 
-mongo_find_internal <- function(mongo, ns, query = rmongodb::mongo.bson.empty(),
-  sort = rmongodb::mongo.bson.empty(), fields = '{"_id": 0}', limit = 0L,
-  skip = 0L, options = 0L, ...) {
+mongo_find_internal <- function(mongo, ns, query = rmongodb::mongo.bson.empty(), skip = 0L,
+  sort = '{"_row" : 1}', fields = '{"_id" : 0, "_row" : 0}', limit = 0L, options = 0L, ...) {
 
   # perform query
   cursor <- rmongodb::mongo.find (mongo = mongo, ns = ns, query = query, sort = sort,
     fields = fields, limit = limit, skip = skip, options = options);
+
+  # clean up
+  on.exit(rmongodb::mongo.cursor.destroy(cursor))
 
   # retrieve data
   mongo_process_records(cursor, ...)
@@ -103,9 +109,12 @@ mongo_process_records <- function(cursor, handler, pagesize, verbose, ...){
     }
   }
 
+  # Warn for no data
+  if(verbose && !length(dfstack)) message("Query returned no data.")
+
   # Either return a big data frame, or nothing.
   if(bind_pages){
-    if(verbose) message("Binding pages together (no custom handler).")
+    if(verbose && length(dfstack)) message("Binding pages together (no custom handler).")
     rbind.pages(dfstack)
   } else {
     invisible();
