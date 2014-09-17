@@ -24,4 +24,4 @@ setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NUL
 })
 
 # Some objects have class Matrix but not class Array
-setMethod("asJSON", "matrix", getMethod("asJSON", "array"))
+#setMethod("asJSON", "matrix", getMethod("asJSON", "array"))

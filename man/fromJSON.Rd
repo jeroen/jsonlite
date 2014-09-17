@@ -16,8 +16,6 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
   null = c("list", "null"), na = c("null", "string"), auto_unbox = FALSE,
   digits = 4, pretty = FALSE, force = FALSE, ...)
-
-View(x, ...)
 }
 \arguments{
 \item{txt}{a \code{JSON} string, URL or file}

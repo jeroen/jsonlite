@@ -1,3 +1,4 @@
+#' @rdname mongo_read
 mongo_write <- function(x, mongo, ns, pagesize = 100, verbose = TRUE, ...){
   # basic validation
   stopifnot(is.data.frame(x))

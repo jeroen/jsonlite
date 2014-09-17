@@ -1,3 +1,53 @@
+#' Read and write MongoDB collections
+#'
+#' These functions are used to import or export MongoDB collections as a
+#' data frames, and vice versa. Because BSON uses the same structures as
+#' JSON, the mapping between BSON data and R classes is the same as for JSON.
+#' The functions in jsonlite have been implemented to support streaming (batch
+#' processing) in order to be able to handle large amounts of data with limited
+#' memory.
+#'
+#' In mongo terminology, a set of records is called a \emph{collection} and it
+#' maps to a data frame in R. A single record within the collection is called
+#' a \emph{document}, and it maps to a row within the data frame. MongoDB uses
+#' BSON, which extends the JSON format with some additional primitive types such
+#' as integer, timestamp and binary. Storing data in its native types is a bit
+#' more efficient in comparison with storing everything as text as is done for JSON.
+#' However most of the time, the R user won't notice much difference between
+#' BSON and JSON because the majority of most performance overhead happens
+#' elsewhere.
+#'
+#' The main selling point of MongoDB is that we can easily store and access big
+#' data. MongoDB is designed to store collections that are too large to hold in
+#' memory, or even too large to store on a single disk by setting up a cluster.
+#' MongoDB makes it easy to query, filter, sort, aggregate or map-reduce our (big)
+#' data collections into something smaller and more managable that lends itself
+#' to analysis and visualization in R.
+#'
+#' @aliases mongo_read mongo_write
+#' @export mongo_read mongo_write
+#' @rdname mongo_read
+#' @param mongo a mongo connection from \code{\link{mongo.create}}
+#' @param ns a mongo namespace
+#' @param a handler function
+#' @param pagesize number of records (dataframe rows) per iteration
+#' @param verbose some debugging output
+#' @param ... additional parameters for \code{\link{mongo.find}} and \code{\link{fromJSON}}
+#' (\code{mongo_read}) or for \code{\link{toJSON}} (\code{mongo_write}).
+#' @return The \code{mongo_write} function always returns \code{NULL}.
+#' When no custom handler is specified, \code{mongo_read} returns a data frame of
+#' the entire collection (all pages binded together). When a custom handler
+#' function is specified, \code{mongo_read} always returns \code{NULL}.
+#' @examples \dontrun{
+#' library(rmongodb)
+#' library(nycflights13)
+#' m <- mongo.create()
+#' mongo_write(flights, m, "test.flights", pagesize = 1000)
+#' mongo.count(m, "test.flights")
+#' flights2 <- mongo_read(m, "test.flights", pagesize = 500)
+#' identical(flights2, as.data.frame(flights))
+#' mongo.remove(m, "test.flights")
+#' }
 mongo_read <- function(mongo, ns, handler, pagesize = 100, verbose = TRUE, ...){
   stopifnot(rmongodb::mongo.is.connected(mongo))
   stopifnot(is.character("ns"))
@@ -24,7 +74,7 @@ mongo_find_internal <- function(mongo, ns, query = rmongodb::mongo.bson.empty(),
   mongo_process_records(cursor, ...)
 }
 
-mongo_process_records <- function(cursor, handler, pagesize = 100, verbose = TRUE, ...){
+mongo_process_records <- function(cursor, handler, pagesize, verbose, ...){
 
   # check if we use a custom handler
   bind_pages <- missing(handler) || is.null(handler);
@@ -34,7 +84,7 @@ mongo_process_records <- function(cursor, handler, pagesize = 100, verbose = TRU
     loadpkg("plyr")
   } else{
     stopifnot(is.function(handler))
-    if(verbose) message("using a custom handler function.")
+    if(verbose) message("Using a custom handler function.")
   }
 
   # buffer
@@ -44,6 +94,7 @@ mongo_process_records <- function(cursor, handler, pagesize = 100, verbose = TRU
 
   # iterate
   while(length(page <- mongo_read_page(cursor, pagesize))){
+    if(verbose) message("Reading ", length(page), " lines (", length(dfstack)+1, ").")
     df <- simplify(page, ...);
     if(bind_pages){
       dfstack[[length(dfstack)+1]] <- df;
@@ -54,7 +105,7 @@ mongo_process_records <- function(cursor, handler, pagesize = 100, verbose = TRU
 
   # Either return a big data frame, or nothing.
   if(bind_pages){
-    if(verbose) message("binding pages together (no custom handler).")
+    if(verbose) message("Binding pages together (no custom handler).")
     rbind.pages(dfstack)
   } else {
     invisible();

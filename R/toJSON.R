@@ -59,8 +59,6 @@ mapEncoding <- function(encoding) {
   return(codes[enc])
 }
 
-
-#' @rdname fromJSON
 View <- function(x, ...){
   #workaround for View() not supporting nested data frames
   #note that utils::View also does as.data.frame. We just add format.data.frame.
