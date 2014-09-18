@@ -60,8 +60,20 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
 
   # set row names
   if("_row" %in% names(columnlist)) {
-    row.names(columnlist) <- columnlist[["_row"]]
-    columnlist["_row"] <- NULL
+    rn <- columnlist[["_row"]];
+    columnlist["_row"] <- NULL;
+
+    # row.names() casts double to character which is undesired.
+    if(is.double(rn)) {
+      rn <- as.integer(rn);
+    }
+
+    # set row names
+    if(any(duplicated(rn))){
+      warning('Duplicate names in "_row" fields.')
+    } else {
+      row.names(columnlist) <- rn;
+    }
   } else {
     row.names(columnlist) <- seq_len(n)
   }
