@@ -4,15 +4,18 @@ mongo_write <- function(x, mongo, ns, pagesize = 100, verbose = TRUE, ...){
   stopifnot(is.data.frame(x))
   stopifnot(is.character(ns))
   stopifnot(rmongodb::mongo.is.connected(mongo))
-  x[["_row"]] <- seq_len(nrow(x))
+
+  # Break down data frame in pieces of `pagesize` rows
   apply_by_pages(x, mongo_write_page, pagesize = pagesize, verbose = verbose,
     ns = ns, mongo = mongo, ...)
+
+  # Add rowname index. This assumes 'rownames = TRUE' (below)
   mongo.index.create(mongo, ns, "_row")
   invisible()
 }
 
 mongo_write_page <- function(x, ns, mongo, ...){
-  jsonlist <- parseJSON(asJSON(x, ...))
+  jsonlist <- parseJSON(asJSON(x, rownames = TRUE, ...))
   records <- lapply(jsonlist, mongo_create_record)
   rmongodb::mongo.insert.batch(mongo, ns, records)
 }

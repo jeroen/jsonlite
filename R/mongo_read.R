@@ -49,7 +49,7 @@
 #' mongo_write(flights, m, "test.flights", pagesize = 1000)
 #' mongo.count(m, "test.flights")
 #' flights2 <- mongo_read(m, "test.flights", pagesize = 500)
-#' identical(flights2, as.data.frame(flights))
+#' all.equal(flights2, as.data.frame(flights))
 #' mongo.remove(m, "test.flights")
 #' }
 mongo_read <- function(mongo, ns, handler, pagesize = 100, verbose = TRUE, ...){

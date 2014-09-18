@@ -57,6 +57,14 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
 
   # make into data frame
   class(columnlist) <- "data.frame"
-  row.names(columnlist) <- 1:n
+
+  # set row names
+  if("_row" %in% names(columnlist)) {
+    row.names(columnlist) <- columnlist[["_row"]]
+    columnlist["_row"] <- NULL
+  } else {
+    row.names(columnlist) <- seq_len(n)
+  }
+
   return(columnlist)
 }

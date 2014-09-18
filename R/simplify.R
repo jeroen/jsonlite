@@ -13,10 +13,6 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     if(isTRUE(simplifyDate) && is.data.frame(mydf) && is.datelist(mydf)){
       return(structure(mydf[["$date"]]/1000, class=c("POSIXct", "POSIXt")))
     }
-    if ("$row" %in% names(mydf)) {
-      row.names(mydf) <- mydf[["$row"]]
-      mydf["$row"] <- NULL
-    }
     return(mydf)
   }
 
