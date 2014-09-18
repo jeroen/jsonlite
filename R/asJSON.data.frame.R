@@ -9,8 +9,8 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
     x <- as.vector(x, mode = "list")
   }
 
-  # Add row names only if strings (not integers)
-  if(isTRUE(rownames) || (is.null(rownames) && is.character(attr(x, "row.names")))){
+  # Default to adding row names only if they are strings and not just stringified numbers
+  if(isTRUE(rownames) || (is.null(rownames) && is.character(attr(x, "row.names")) && !all(grepl("^\\d+$", row.names(x))))){
     # we don't use row.names() because this converts numbers to strings,
     # which will break sorting
     x[["_row"]] <- attr(x, "row.names")
