@@ -12,7 +12,7 @@ mongo_write <- function(x, mongo, ns, pagesize = 100, verbose = TRUE, ...){
     ns = ns, mongo = mongo, ...)
 
   # Add rowname index.
-  mongo.index.create(mongo, ns, "_row")
+  rmongodb::mongo.index.create(mongo, ns, "_row")
   invisible()
 }
 
