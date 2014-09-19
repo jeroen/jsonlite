@@ -125,7 +125,7 @@ mongo_read_page <- function(cursor, pagesize){
   records <- list();
   for(i in seq_len(pagesize)){
     if(rmongodb::mongo.cursor.next(cursor)){
-      records[[i]] <- rmongodb::mongo.bson.to.list(rmongodb::mongo.cursor.value(cursor))
+      records[[i]] <- rmongodb::mongo.bson.to.list(rmongodb::mongo.cursor.value(cursor), simplify = FALSE)
     } else {
       break;
     }
