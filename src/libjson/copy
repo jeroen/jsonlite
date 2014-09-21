@@ -1,8 +1,0 @@
-SRC=/tmp/libjson
-cp $SRC/libjson.h $SRC/makefile .
-
-diff -qr Source $SRC/Source/ | grep 'Only in Source'
-# git rm  files
-
-/bin/cp -fr $SRC/Source .
-

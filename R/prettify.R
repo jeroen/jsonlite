@@ -6,22 +6,31 @@
 #' @aliases minify prettify
 #' @export prettify minify
 #' @param txt \code{JSON} string
-#' @useDynLib jsonlite R_jsonPrettyPrint R_jsonMiniPrint
+#' @useDynLib jsonlite R_reformat
 #' @examples myjson <- toJSON(cars)
 #' cat(myjson)
 #' prettify(myjson)
 #' minify(myjson)
 prettify <- function(txt) {
   txt <- paste(as.character(txt), collapse = "\n")
-  enc <- mapEncoding(Encoding(txt))
-  ans <- .Call(R_jsonPrettyPrint, txt, enc)
-  structure(ans, class="json")
+  ans <- reformat(txt, TRUE)
+  class(ans) <- "json"
+  ans
 }
 
 #' @rdname prettify
 minify <- function(txt) {
   txt <- paste(as.character(txt), collapse = "\n")
-  enc <- mapEncoding(Encoding(txt))
-  ans <- .Call(R_jsonMiniPrint, txt, enc)
-  structure(ans, class="json")
+  ans <- reformat(txt, FALSE)
+  class(ans) <- "json"
+  ans
+}
+
+reformat <- function(x, pretty){
+  out <- .Call(R_reformat, x, pretty);
+  if(out[[1]] == 0) {
+    return(out[[2]])
+  } else {
+    stop(out[[2]], call.=FALSE)
+  }
 }

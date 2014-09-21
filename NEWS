@@ -1,6 +1,13 @@
 0.9.12
- - Ported collapse_object to C: speedup for toJSON on data frames
+ - NEW JSON PARSER: yajl
+    * faster
+    * better error messages
+    * integer parsing
+    * much smaller
+ - Ported to C: collapse_object, null_to_na, is_recordlist, is_scalarlist
  - Expose 'flatten' function
+ - Start with streaming functions
+ - Some internal changes to support BSON/MongoDB
 
 0.9.11
  - Added toJSON null argument

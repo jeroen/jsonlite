@@ -6,9 +6,8 @@ License: Apache License 2.0
 NeedsCompilation: yes
 Depends:
     methods
-Author: Jeroen Ooms, Duncan Temple Lang, Jonathan Wallace
-URL: http://github.com/jeroenooms/jsonlite#readme,
-    http://arxiv.org/abs/1403.2805,
+Author: Jeroen Ooms, Duncan Temple Lang, Lloyd Hilaiel (yajl)
+URL: http://arxiv.org/abs/1403.2805,
     https://www.opencpu.org/posts/jsonlite-a-smarter-json-encoder
 BugReports: http://github.com/jeroenooms/jsonlite/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
