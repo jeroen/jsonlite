@@ -1,6 +1,6 @@
 cleannames <- function(objnames){
-  objnames[is.na(objnames)] <- ""
-  objnames[objnames == ""] <- as.character(1:length(objnames))[objnames == ""]
-  objnames <- make.unique(objnames)
-  objnames
+  objnames[objnames == ""] <- NA_character_
+  is_missing <- is.na(objnames)
+  objnames[is_missing] <- as.character(seq_len(length(objnames)))[is_missing]
+  make.unique(objnames)
 }

@@ -8,9 +8,10 @@ library(knitr)
 opts_chunk$set(comment="")
 
 #this replaces tabs by spaces because latex-verbatim doesn't like tabs
-toJSON <- function(...){
-  gsub("\t", "  ", jsonlite::toJSON(...), fixed=TRUE);
-}
+#no longer needed because yajl does not use tabs.
+#toJSON <- function(...){
+#  gsub("\t", "  ", jsonlite::toJSON(...), fixed=TRUE);
+#}
 ```
 
 # Getting started with JSON and jsonlite
@@ -19,7 +20,7 @@ The jsonlite package is a JSON parser/generator optimized for the web. Its main 
 
 ```{r message=FALSE}
 library(jsonlite)
-identical(mtcars, fromJSON(toJSON(mtcars)))
+all.equal(mtcars, fromJSON(toJSON(mtcars)))
 ```
 
 This vignette introduces basic concepts to get started with jsonlite. For a more detailed outline and motivation of the mapping, see: [arXiv:1403.2805](http://arxiv.org/abs/1403.2805).

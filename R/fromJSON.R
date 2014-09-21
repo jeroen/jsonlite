@@ -11,10 +11,8 @@
 #' A JSON string is always unicode, using \code{UTF-8} by default, hence there is usually no need to escape any characters.
 #' However, the JSON format does support escaping of unicode characters, which are encoded using a backslash followed by
 #' a lower case \code{"u"} and 4 hex characters, for example: \code{"Z\\u00FCrich"}. The \code{fromJSON} function
-#' will only parse such escape sequences correctly when the \code{unicode} argument is set to \code{TRUE}. Because this introduces
-#' significant performance overhead, it is disabled by default. It is strongly preferable to encode unicode characters in JSON
-#' using native \code{UTF-8} rather than escape sequences.
-#'
+#' will parse such escape sequences but it is usually preferable to encode unicode characters in JSON using native
+#' \code{UTF-8} rather than escape sequences.
 #
 #' @rdname fromJSON
 #' @title Convert \R{} objects to/from JSON
@@ -26,8 +24,6 @@
 #' @param simplifyDataFrame coerce JSON arrays containing only records (JSON objects) into a data frame
 #' @param simplifyMatrix coerce JSON arrays containing vectors of equal mode and dimension into matrix or array
 #' @param flatten automatically \code{\link{flatten}} nested data frames into a single non-nested data frame
-#' @param unicode parse escaped (hexadecimal) unicode characters \code{\\uXXXX}. See details.
-#' @param validate automatically \code{\link{validate}} JSON before parsing it.
 #' @param x the object to be encoded
 #' @param dataframe how to encode data.frame objects: must be one of 'rows' or 'columns'
 #' @param matrix how to encode matrices and higher dimensional arrays: must be one of 'rowmajor' or 'columnmajor'.
@@ -38,7 +34,7 @@
 #' @param raw how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'
 #' @param null how to encode NULL values within a list: must be one of 'null' or 'list'
 #' @param na how to print NA values: must be one of 'null' or 'string'. Defaults are class specific
-#' @param auto_unbox automatically \code{\link{unbox}} all atomic vectors of length 1. Not recommended!
+#' @param auto_unbox automatically \code{\link{unbox}} all atomic vectors of length 1. It is usually safer to avoid this and instead use the \code{\link{unbox}} function to unbox individual elements.
 #' @param digits max number of digits (after the dot) to print for numeric values. See: \code{\link{round}}
 #' @param force unclass/skip objects of classes with no defined JSON mapping
 #' @param pretty adds indentation whitespace to JSON output. See \code{\link{prettify}}
@@ -52,7 +48,7 @@
 #' fromJSON(jsoncars)
 #'
 #' #parsing escaped unicode
-#' fromJSON('{"city" : "Z\\u00FCrich"}', unicode = TRUE)
+#' fromJSON('{"city" : "Z\\u00FCrich"}')
 #'
 #' \dontrun{
 #' # Parse data frame
@@ -76,7 +72,7 @@
 #' options(scipen=3)
 #' toJSON(10 ^ (0:10))
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE, validate = FALSE, ...) {
+  simplifyMatrix = simplifyVector, flatten = FALSE, ...) {
 
   # check type
   if (!is.character(txt)) {
@@ -98,8 +94,24 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
     txt <- paste(txt, collapse = "\n")
   }
 
-  # parse JSON
-  obj <- import_json_single(txt, validate = validate, unicode = unicode)
+  # call the actual function (with deprecated arguments)
+  fromJSON_string(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
+    simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
+}
+
+fromJSON_string <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
+  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, validate = TRUE, ...){
+
+  if(!missing(unicode)){
+    message("Argument unicode has been deprecated. YAJL always parses unicode.")
+  }
+
+  if(!missing(validate)){
+    message("Argument validate has been deprecated. YAJL automatically validates json while parsing.")
+  }
+
+  # parse
+  obj <- parseJSON(txt)
 
   # post processing
   if (any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))) {
@@ -109,3 +121,4 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
     return(obj)
   }
 }
+

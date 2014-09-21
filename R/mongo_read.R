@@ -14,8 +14,7 @@
 #' as integer, timestamp and binary. Storing data in its native types is a bit
 #' more efficient in comparison with storing everything as text as is done for JSON.
 #' However most of the time, the R user won't notice much difference between
-#' BSON and JSON because the majority of most performance overhead happens
-#' elsewhere.
+#' BSON and JSON because the majority of performance overhead happens elsewhere.
 #'
 #' The main selling point of MongoDB is that we can easily store and access big
 #' data. MongoDB is designed to store collections that are too large to hold in

@@ -28,9 +28,9 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
     x[[i]] <- as.POSIXct(x[[i]])
   }
 
-  # Colum based is same as list based
+  # Column based is same as list. Do not pass collapse arg because it is a named list.
   if (dataframe == "columns") {
-    return(asJSON(as.list(x), is_df = TRUE, na = na, collapse = collapse, dataframe = dataframe,
+    return(asJSON(as.list(x), is_df = TRUE, na = na, dataframe = dataframe,
       complex = complex, rownames = rownames, ...))
   }
 

@@ -10,7 +10,7 @@ SEXP R_validate(SEXP x) {
     //yajl_config(hand, yajl_allow_comments, 1);
 
     /* get data from R */
-    const char* json = CHAR(asChar(x));
+    const char* json = translateCharUTF8(asChar(x));
     const size_t rd = strlen(json);
 
     /* allocate a parser */

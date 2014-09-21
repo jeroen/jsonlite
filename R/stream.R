@@ -96,13 +96,14 @@
 #' unlink(tmp)
 #'
 #' # Data from http://openweathermap.org/current#bulk
-#' daily14 <- stream_in(gzcon(url("http://78.46.48.103/sample/daily_14.json.gz")))
-#' subset(daily14, city$name == "Berlin")$data
+#' # Each row contains a nested data frame.
+#' daily14 <- stream_in(gzcon(url("http://78.46.48.103/sample/daily_14.json.gz")), pagesize=50)
+#' subset(daily14, city$name == "Berlin")$data[[1]]
 #'
 #' # Or with dplyr:
 #' library(dplyr)
 #' daily14f <- flatten(daily14)
-#' filter(daily14f, city.name == "Berlin")$data
+#' filter(daily14f, city.name == "Berlin")$data[[1]]
 #' }
 stream_in <- function(con, handler, pagesize = 500, verbose = TRUE, ...) {
 
@@ -137,7 +138,7 @@ stream_in <- function(con, handler, pagesize = 500, verbose = TRUE, ...) {
   i <- 1L;
   while(length(page <- readLines(con, n = pagesize))){
     if(verbose) message("Reading ", length(page), " lines (", i,").")
-    mydf <- import_json_page(page, ...);
+    mydf <- simplify(lapply(page, parseJSON), ...);
     if(bind_pages){
       dfstack[[i]] <- mydf;
     } else {
