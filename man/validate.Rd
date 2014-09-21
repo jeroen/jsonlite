@@ -6,10 +6,10 @@
 validate(txt)
 }
 \arguments{
-\item{txt}{\code{JSON} string}
+\item{txt}{JSON string}
 }
 \description{
-Test if a string contains valid \code{JSON}. Characters vectors will be collapsed into a single string.
+Test if a string contains valid JSON. Characters vectors will be collapsed into a single string.
 }
 \examples{
 #Output from toJSON and serializeJSON should pass validation

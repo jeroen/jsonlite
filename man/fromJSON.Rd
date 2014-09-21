@@ -4,7 +4,7 @@
 \alias{fromJSON}
 \alias{toJSON}
 \alias{toJSON, fromJSON}
-\title{Convert \R{} objects to/from \code{JSON}}
+\title{Convert \R{} objects to/from JSON}
 \usage{
 fromJSON(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
   simplifyMatrix = simplifyVector, flatten = FALSE, unicode = FALSE,
@@ -18,19 +18,19 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
   digits = 4, pretty = FALSE, force = FALSE, ...)
 }
 \arguments{
-\item{txt}{a \code{JSON} string, URL or file}
+\item{txt}{a JSON string, URL or file}
 
-\item{simplifyVector}{coerce \code{JSON} arrays containing only primitives into an atomic vector}
+\item{simplifyVector}{coerce JSON arrays containing only primitives into an atomic vector}
 
-\item{simplifyDataFrame}{coerce \code{JSON} arrays containing only records (\code{JSON} objects) into a data frame}
+\item{simplifyDataFrame}{coerce JSON arrays containing only records (JSON objects) into a data frame}
 
-\item{simplifyMatrix}{coerce \code{JSON} arrays containing vectors of equal mode and dimension into matrix or array}
+\item{simplifyMatrix}{coerce JSON arrays containing vectors of equal mode and dimension into matrix or array}
 
 \item{flatten}{automatically \code{\link{flatten}} nested data frames into a single non-nested data frame}
 
 \item{unicode}{parse escaped (hexadecimal) unicode characters \code{\\uXXXX}. See details.}
 
-\item{validate}{automatically \code{\link{validate}} \code{JSON} before parsing it.}
+\item{validate}{automatically \code{\link{validate}} JSON before parsing it.}
 
 \item{x}{the object to be encoded}
 
@@ -56,29 +56,29 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
 
 \item{digits}{max number of digits (after the dot) to print for numeric values. See: \code{\link{round}}}
 
-\item{force}{unclass/skip objects of classes with no defined \code{JSON} mapping}
+\item{force}{unclass/skip objects of classes with no defined JSON mapping}
 
-\item{pretty}{adds indentation whitespace to \code{JSON} output. See \code{\link{prettify}}}
+\item{pretty}{adds indentation whitespace to JSON output. See \code{\link{prettify}}}
 
 \item{...}{arguments passed on to class specific \code{print} methods}
 }
 \description{
-These functions are used to convert between \code{JSON} data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
+These functions are used to convert between JSON data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
 functions use a class based mapping, which follows conventions outlined in this paper:  \url{http://arxiv.org/abs/1403.2805} (also available as vignette).
 }
 \details{
 The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions
 in packages \code{rjson} and \code{RJSONIO}. Our implementation uses an alternative, somewhat more consistent mapping
-between \R{} objects and \code{JSON} strings.
+between \R{} objects and JSON strings.
 
 The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions in this package use an
-alternative system to convert between \R{} objects and \code{JSON}, which supports more classes but is much more verbose.
+alternative system to convert between \R{} objects and JSON, which supports more classes but is much more verbose.
 
-A \code{JSON} string is always unicode, using \code{UTF-8} by default, hence there is usually no need to escape any characters.
-However, the \code{JSON} format does support escaping of unicode characters, which are encoded using a backslash followed by
+A JSON string is always unicode, using \code{UTF-8} by default, hence there is usually no need to escape any characters.
+However, the JSON format does support escaping of unicode characters, which are encoded using a backslash followed by
 a lower case \code{"u"} and 4 hex characters, for example: \code{"Z\\u00FCrich"}. The \code{fromJSON} function
 will only parse such escape sequences correctly when the \code{unicode} argument is set to \code{TRUE}. Because this introduces
-significant performance overhead, it is disabled by default. It is strongly preferable to encode unicode characters in \code{JSON}
+significant performance overhead, it is disabled by default. It is strongly preferable to encode unicode characters in JSON
 using native \code{UTF-8} rather than escape sequences.
 }
 \examples{
@@ -115,6 +115,6 @@ options(scipen=3)
 toJSON(10 ^ (0:10))
 }
 \references{
-Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between \code{JSON} Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{http://arxiv.org/abs/1403.2805}
+Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{http://arxiv.org/abs/1403.2805}
 }
 

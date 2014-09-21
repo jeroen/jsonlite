@@ -2,7 +2,7 @@
 \name{serializeJSON}
 \alias{serializeJSON}
 \alias{unserializeJSON}
-\title{serialize R objects to \code{JSON}}
+\title{serialize R objects to JSON}
 \usage{
 serializeJSON(x, digits = 8, pretty = FALSE)
 
@@ -13,21 +13,21 @@ unserializeJSON(txt)
 
 \item{digits}{max number of digits (after the dot) to print for numeric values}
 
-\item{pretty}{add indentation/whitespace to \code{JSON} output. See \code{\link{prettify}}}
+\item{pretty}{add indentation/whitespace to JSON output. See \code{\link{prettify}}}
 
-\item{txt}{a \code{JSON} string which was created using \code{serializeJSON}}
+\item{txt}{a JSON string which was created using \code{serializeJSON}}
 }
 \description{
 The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions convert between
-\R{} objects to \code{JSON} data. Instead of using a class based mapping like
+\R{} objects to JSON data. Instead of using a class based mapping like
 \code{\link{toJSON}} and \code{\link{fromJSON}}, the serialize functions base the encoding
 schema on the storage type, and capture all data and attributes from any object.
-Thereby the object can be restored almost perfectly from its \code{JSON} representation, but
-the resulting \code{JSON} output is very verbose. Apart from environments, all standard storage
+Thereby the object can be restored almost perfectly from its JSON representation, but
+the resulting JSON output is very verbose. Apart from environments, all standard storage
 types are supported.
 }
 \note{
-\code{JSON} is a text based format which leads to loss of precision when printing numbers.
+JSON is a text based format which leads to loss of precision when printing numbers.
 }
 \examples{
 jsoncars <- serializeJSON(mtcars)

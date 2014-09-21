@@ -10,15 +10,15 @@ rbind.pages(pages)
 }
 \description{
 The \code{rbind.pages} function is used to combine a list of data frames into a single
-data frame. This is often needed when working with a \code{JSON} API that limits the amount
+data frame. This is often needed when working with a JSON API that limits the amount
 of data per request. If we need more data than what fits in a single request, we need to
 perform multiple requests that each retrieve a fragment of data, not unlike pages in a
 book. In practice this is often implemented using a \code{page} parameter in the API. The
 \code{rbind.pages} function can be used to combine these pages back into a single dataset.
 }
 \details{
-The \code{\link{rbind.pages}} function generalizes \code{\link{rbind}} and
-\code{plyr::rbind.fill} with added support for nested data frames. Not each column
+The \code{\link{rbind.pages}} function generalizes \code{\link[base:rbind]{base::rbind}} and
+\code{\link[plyr:rbind.fill]{plyr::rbind.fill}} with added support for nested data frames. Not each column
 has to be present in each of the individual data frames; missing columns will be filled
 up in \code{NA} values.
 }

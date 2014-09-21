@@ -5,9 +5,9 @@
 \alias{stream_out}
 \title{Streaming JSON input/output}
 \usage{
-stream_in(con, handler, pagesize = 100, verbose = TRUE, ...)
+stream_in(con, handler, pagesize = 500, verbose = TRUE, ...)
 
-stream_out(x, con = stdout(), pagesize = 100, verbose = TRUE, ...)
+stream_out(x, con = stdout(), pagesize = 500, verbose = TRUE, ...)
 }
 \arguments{
 \item{con}{a \code{\link{connection}} object. If the connection is not open,
@@ -78,7 +78,7 @@ stream_out(x)
 
 # stream large dataset to file and back
 library(nycflights13)
-stream_out(flights, file(tmp <- tempfile()), pagesize = 200)
+stream_out(flights, file(tmp <- tempfile()))
 flights2 <- stream_in(file(tmp))
 unlink(tmp)
 all.equal(flights2, as.data.frame(flights))

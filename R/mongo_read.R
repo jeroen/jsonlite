@@ -31,12 +31,13 @@
 #' @aliases mongo_read mongo_write
 #' @export mongo_read mongo_write
 #' @rdname mongo_read
-#' @param mongo a mongo connection from \code{\link{mongo.create}}
+#' @param x object to be streamed out. Currently only data frames are supported.
+#' @param mongo a mongo connection from \code{\link[rmongodb]{mongo.create}}
 #' @param ns a mongo namespace
-#' @param a handler function
+#' @param handler a handler function
 #' @param pagesize number of records (dataframe rows) per iteration
 #' @param verbose some debugging output
-#' @param ... additional parameters for \code{\link{mongo.find}} and \code{\link{fromJSON}}
+#' @param ... additional parameters for \code{\link[rmongodb]{mongo.find}} and \code{\link{fromJSON}}
 #' (\code{mongo_read}) or for \code{\link{toJSON}} (\code{mongo_write}).
 #' @return The \code{mongo_write} function always returns \code{NULL}.
 #' When no custom handler is specified, \code{mongo_read} returns a data frame of
@@ -52,7 +53,7 @@
 #' all.equal(flights2, as.data.frame(flights))
 #' mongo.remove(m, "test.flights")
 #' }
-mongo_read <- function(mongo, ns, handler, pagesize = 100, verbose = TRUE, ...){
+mongo_read <- function(mongo, ns, handler, pagesize = 500, verbose = TRUE, ...){
   stopifnot(rmongodb::mongo.is.connected(mongo))
   stopifnot(is.character("ns"))
   if(missing(handler)){

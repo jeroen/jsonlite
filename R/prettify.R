@@ -1,11 +1,11 @@
-#' Prettify adds indentation to a \code{JSON} string; minify removes all indentation/whitespace.
+#' Prettify adds indentation to a JSON string; minify removes all indentation/whitespace.
 #'
 #' @rdname prettify
-#' @title Prettify or minify a \code{JSON} string
+#' @title Prettify or minify a JSON string
 #' @name prettify, minify
 #' @aliases minify prettify
 #' @export prettify minify
-#' @param txt \code{JSON} string
+#' @param txt JSON string
 #' @useDynLib jsonlite R_reformat
 #' @examples myjson <- toJSON(cars)
 #' cat(myjson)

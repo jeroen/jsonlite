@@ -3,14 +3,14 @@
 #' This function marks an atomic vector or data frame as a
 #' \href{http://en.wikipedia.org/wiki/Singleton_(mathematics)}{singleton}, i.e.
 #' a set with exactly 1 element. Thereby, the value will not turn into an
-#' \code{array} when encoded into \code{JSON}. This can only be done for
+#' \code{array} when encoded into JSON. This can only be done for
 #' atomic vectors of length 1, or data frames with exactly 1 row. Because
 #' this function alters how \R{} objects are encoded, it should be used
 #' very sparsely, if at all.
 #'
 #' It is usually recommended to avoid this function and stick with the default
 #' encoding schema for the various \R{} classes. The only use case for this function
-#' is if you are bound to some specific predefined \code{JSON} structure (e.g. to
+#' is if you are bound to some specific predefined JSON structure (e.g. to
 #' submit to an API), which has no natural \R{} representation. Note that the default
 #' encoding for data frames naturally results in a collection of key-value pairs,
 #' without using \code{unbox}. If you are frequently using \code{unbox},

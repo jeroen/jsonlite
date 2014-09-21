@@ -1,4 +1,8 @@
 PKG_CFLAGS += -Iyajl -Iyajl/api -I.
 SOURCES = $(wildcard yajl/*.c *.c)
 OBJECTS = $(SOURCES:.c=.o)
-all: $(OBJECTS)
+
+all: clean $(OBJECTS)
+
+clean:
+	rm -f $(OBJECTS)

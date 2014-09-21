@@ -22,8 +22,8 @@ Exports a dataframe to a format that can be imported with the
 }
 \details{
 By default \code{mongoimport} expects a datafile in which every line is a record
-in the collection. Hence the complete output is not valid \code{JSON} itself.
-Alternatively, if \code{array=TRUE} the output will be wrapped a \code{JSON} array.
+in the collection. Hence the complete output is not valid JSON itself.
+Alternatively, if \code{array=TRUE} the output will be wrapped a JSON array.
 When using the latter, we need to pass \code{--jsonArray} to \code{mongoimport}.
 }
 

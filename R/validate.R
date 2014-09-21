@@ -1,8 +1,8 @@
 #' Validate JSON
 #'
-#' Test if a string contains valid \code{JSON}. Characters vectors will be collapsed into a single string.
+#' Test if a string contains valid JSON. Characters vectors will be collapsed into a single string.
 #'
-#' @param txt \code{JSON} string
+#' @param txt JSON string
 #' @export
 #' @useDynLib jsonlite R_validate
 #' @examples #Output from toJSON and serializeJSON should pass validation

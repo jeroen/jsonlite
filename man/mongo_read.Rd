@@ -4,22 +4,24 @@
 \alias{mongo_write}
 \title{Read and write MongoDB collections}
 \usage{
-mongo_read(mongo, ns, handler, pagesize = 100, verbose = TRUE, ...)
+mongo_read(mongo, ns, handler, pagesize = 500, verbose = TRUE, ...)
 
-mongo_write(x, mongo, ns, pagesize = 100, verbose = TRUE, ...)
+mongo_write(x, mongo, ns, pagesize = 500, verbose = TRUE, ...)
 }
 \arguments{
-\item{mongo}{a mongo connection from \code{\link{mongo.create}}}
+\item{x}{object to be streamed out. Currently only data frames are supported.}
+
+\item{mongo}{a mongo connection from \code{\link[rmongodb]{mongo.create}}}
 
 \item{ns}{a mongo namespace}
 
-\item{a}{handler function}
+\item{handler}{a handler function}
 
 \item{pagesize}{number of records (dataframe rows) per iteration}
 
 \item{verbose}{some debugging output}
 
-\item{...}{additional parameters for \code{\link{mongo.find}} and \code{\link{fromJSON}}
+\item{...}{additional parameters for \code{\link[rmongodb]{mongo.find}} and \code{\link{fromJSON}}
 (\code{mongo_read}) or for \code{\link{toJSON}} (\code{mongo_write}).}
 }
 \value{

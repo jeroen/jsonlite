@@ -62,7 +62,7 @@
 #'
 #' # stream large dataset to file and back
 #' library(nycflights13)
-#' stream_out(flights, file(tmp <- tempfile()), pagesize = 200)
+#' stream_out(flights, file(tmp <- tempfile()))
 #' flights2 <- stream_in(file(tmp))
 #' unlink(tmp)
 #' all.equal(flights2, as.data.frame(flights))
@@ -104,7 +104,7 @@
 #' daily14f <- flatten(daily14)
 #' filter(daily14f, city.name == "Berlin")$data
 #' }
-stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
+stream_in <- function(con, handler, pagesize = 500, verbose = TRUE, ...) {
 
   # check if we use a custom handler
   bind_pages <- missing(handler) || is.null(handler);
@@ -156,7 +156,7 @@ stream_in <- function(con, handler, pagesize = 100, verbose = TRUE, ...) {
 }
 
 #' @rdname stream_in
-stream_out <- function(x, con = stdout(), pagesize = 100, verbose = TRUE, ...) {
+stream_out <- function(x, con = stdout(), pagesize = 500, verbose = TRUE, ...) {
 
   if(!is(con, "connection")){
     # Maybe handle URLs here in future.
