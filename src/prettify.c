@@ -104,7 +104,9 @@ SEXP R_reformat(SEXP x, SEXP pretty) {
 
     /* parse */
     stat = yajl_parse(hand, (const unsigned char*) json, rd);
-    stat = yajl_complete_parse(hand);
+    if(stat == yajl_status_ok) {
+      stat = yajl_complete_parse(hand);
+    }
 
     //error message
     if (stat != yajl_status_ok) {

@@ -4,3 +4,4 @@ Changes in yajl code by Jeroen:
  - Comment out call to abort() in src/yajl/yajl_parser.c (for CMD check)
  - Manually generated yajl.version.h from yajl.version.h.in (by running cmake)
  - Patch for CMD check warnings on Windows: https://github.com/lloyd/yajl/issues/143
+ - Patch for error messages in yajl_tree_parse: https://github.com/lloyd/yajl/issues/144
