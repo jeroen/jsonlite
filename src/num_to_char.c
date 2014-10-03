@@ -6,7 +6,7 @@
 SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string) {
   int len = length(x);
   int na_string = asLogical(na_as_string);
-  char *buf = malloc(32);
+  char buf[32];
   SEXP out = PROTECT(allocVector(STRSXP, len));
   if(isInteger(x)){
     for (int i=0; i<len; i++) {
@@ -55,7 +55,7 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string) {
         //fall back on sprintf (includes scientific notation)
         //limit total precision to 17 significant digits
         //Rprintf("Using sprintf with %d digits\n",(int) fmin(17, log10(val) + precision));
-        sprintf(buf, "%.*g", (int) ceil(fmin(17, log10(val) + precision)), val);
+        snprintf(buf, 32, "%.*g", (int) ceil(fmin(17, log10(val) + precision)), val);
         SET_STRING_ELT(out, i, mkChar(buf));
       }
     }
@@ -63,7 +63,6 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string) {
     error("num_to_char called with invalid object type.");
   }
 
-  free(buf);
   UNPROTECT(1);
   return out;
 }
