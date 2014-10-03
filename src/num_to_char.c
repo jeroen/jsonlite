@@ -1,0 +1,69 @@
+#include <Rdefines.h>
+#include <Rinternals.h>
+#include <stdlib.h>
+#include <modp_numtoa.h>
+
+SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string) {
+  int len = length(x);
+  int na_string = asLogical(na_as_string);
+  char *buf = malloc(32);
+  SEXP out = PROTECT(allocVector(STRSXP, len));
+  if(isInteger(x)){
+    for (int i=0; i<len; i++) {
+      if(INTEGER(x)[i] == NA_INTEGER){
+        if(na_string == NA_LOGICAL){
+          SET_STRING_ELT(out, i, NA_STRING);
+        } else if(na_string){
+          SET_STRING_ELT(out, i, mkChar("\"NA\""));
+        } else {
+          SET_STRING_ELT(out, i, mkChar("null"));
+        }
+      } else {
+        modp_itoa10(INTEGER(x)[i], buf);
+        SET_STRING_ELT(out, i, mkChar(buf));
+      }
+    }
+  } else if(isReal(x)) {
+    int precision = asInteger(digits);
+    for (int i=0; i<len; i++) {
+      double val = REAL(x)[i];
+      if(!R_FINITE(val)){
+        if(na_string == NA_LOGICAL){
+          SET_STRING_ELT(out, i, NA_STRING);
+        } else if(na_string){
+          if(ISNA(val)){
+            SET_STRING_ELT(out, i, mkChar("\"NA\""));
+          } else if(ISNAN(val)){
+            SET_STRING_ELT(out, i, mkChar("\"NaN\""));
+          } else if(val == R_PosInf){
+            SET_STRING_ELT(out, i, mkChar("\"Inf\""));
+          } else if(val == R_NegInf){
+            SET_STRING_ELT(out, i, mkChar("\"-Inf\""));
+          } else {
+            error("Unrecognized non finite value.");
+          }
+        } else {
+          SET_STRING_ELT(out, i, mkChar("null"));
+        }
+      } else if(precision > -1 && precision < 10 && fabs(val) < 2147483647) {
+        //preferred method: fast with fixed decimal digits
+        //does not support large numbers
+        //Rprintf("Using modp_dtoa2\n");
+        modp_dtoa2(val, buf, precision);
+        SET_STRING_ELT(out, i, mkChar(buf));
+      } else {
+        //fall back on sprintf (includes scientific notation)
+        //limit total precision to 17 significant digits
+        //Rprintf("Using sprintf with %d digits\n",(int) fmin(17, log10(val) + precision));
+        sprintf(buf, "%.*g", (int) ceil(fmin(17, log10(val) + precision)), val);
+        SET_STRING_ELT(out, i, mkChar(buf));
+      }
+    }
+  } else {
+    error("num_to_char called with invalid object type.");
+  }
+
+  free(buf);
+  UNPROTECT(1);
+  return out;
+}
