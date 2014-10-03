@@ -53,9 +53,9 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string) {
         SET_STRING_ELT(out, i, mkChar(buf));
       } else {
         //fall back on sprintf (includes scientific notation)
-        //limit total precision to 17 significant digits
+        //limit total precision to 15 significant digits
         //Rprintf("Using sprintf with %d digits\n",(int) fmin(17, log10(val) + precision));
-        snprintf(buf, 32, "%.*g", (int) ceil(fmin(17, log10(val) + precision)), val);
+        snprintf(buf, 32, "%.*g", (int) ceil(fmin(15, log10(val) + precision)), val);
         SET_STRING_ELT(out, i, mkChar(buf));
       }
     }
