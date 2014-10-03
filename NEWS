@@ -1,3 +1,6 @@
+0.9.13
+ - Prevent auto unboxing within a matrix
+
 0.9.12
  - New JSON parser based on yajl. Some changes:
     * smaller and faster than libjson
