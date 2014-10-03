@@ -45,7 +45,7 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string) {
         } else {
           SET_STRING_ELT(out, i, mkChar("null"));
         }
-      } else if(precision > -1 && precision < 10 && fabs(val) < 2147483647) {
+      } else if(precision > -1 && precision < 10 && fabs(val) < 2147483647 && fabs(val) > 1e-5) {
         //preferred method: fast with fixed decimal digits
         //does not support large numbers
         //Rprintf("Using modp_dtoa2\n");
@@ -55,7 +55,7 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string) {
         //fall back on sprintf (includes scientific notation)
         //limit total precision to 15 significant digits
         //Rprintf("Using sprintf with %d digits\n",(int) fmin(17, log10(val) + precision));
-        snprintf(buf, 32, "%.*g", (int) ceil(fmin(15, log10(val) + precision)), val);
+        snprintf(buf, 32, "%.*g", (int) ceil(fmin(15, fmax(1, log10(val)) + precision)), val);
         SET_STRING_ELT(out, i, mkChar(buf));
       }
     }
