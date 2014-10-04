@@ -47,16 +47,17 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string) {
         }
       } else if(precision > -1 && precision < 10 && fabs(val) < 2147483647 && fabs(val) > 1e-5) {
         //preferred method: fast with fixed decimal digits
-        //does not support large numbers
-        //Rprintf("Using modp_dtoa2\n");
+        //does not support large numbers or scientific notation
         modp_dtoa2(val, buf, precision);
         SET_STRING_ELT(out, i, mkChar(buf));
+        //Rprintf("Using modp_dtoa2\n");
       } else {
         //fall back on sprintf (includes scientific notation)
-        //limit total precision to 15 significant digits
-        //Rprintf("Using sprintf with %d digits\n",(int) fmin(17, log10(val) + precision));
+        //limit total precision to 15 significant digits to avoid noise
+        //funky formula is mostly to convert decimal digits into significant digits
         snprintf(buf, 32, "%.*g", (int) ceil(fmin(15, fmax(1, log10(val)) + precision)), val);
         SET_STRING_ELT(out, i, mkChar(buf));
+        //Rprintf("Using sprintf with precision %d digits\n",(int) ceil(fmin(15, fmax(1, log10(val)) + precision)));
       }
     }
   } else {
