@@ -45,6 +45,9 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string) {
         } else {
           SET_STRING_ELT(out, i, mkChar("null"));
         }
+      } if(precision == NA_INTEGER){
+        snprintf(buf, 32, "%.15g", val);
+        SET_STRING_ELT(out, i, mkChar(buf));
       } else if(precision > -1 && precision < 10 && fabs(val) < 2147483647 && fabs(val) > 1e-5) {
         //preferred method: fast with fixed decimal digits
         //does not support large numbers or scientific notation

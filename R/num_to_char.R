@@ -1,16 +1,18 @@
 #' @useDynLib jsonlite R_num_to_char
-num_to_char <- function(x, digits = 4, na_as_string = NA){
+num_to_char <- function(x, digits = NA, na_as_string = NA){
+  if(is.na(digits)) digits <- NA_integer_;
   stopifnot(is.numeric(x))
   stopifnot(is.numeric(digits))
   stopifnot(is.logical(na_as_string))
   .Call(R_num_to_char, x, digits, na_as_string)
 }
 
-num_to_char_R <- function(x, digits = 4, na_as_string = NA){
+num_to_char_R <- function(x, digits = NA, na_as_string = NA){
+  if(is.na(digits)) digits <- NA_integer_;
   stopifnot(is.numeric(x))
   stopifnot(is.numeric(digits))
   stopifnot(is.logical(na_as_string))
-  if(!is.integer(x)){
+  if(!is.integer(x) && !is.null(digits) && !is.na(digits)){
     x <- round(x, digits)
   }
 
