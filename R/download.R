@@ -25,7 +25,7 @@ download <- function(URL){
   );
   httr::stop_for_status(req);
   ctype <- req$headers[["content-type"]]
-  if(!grepl("json", ctype)){
+  if(length(ctype) && !grepl("json", ctype)){
     warning("Unexpected Content-Type: ", ctype, call. = FALSE)
   }
   rawToChar(req$content);
