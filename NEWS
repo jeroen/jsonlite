@@ -1,4 +1,6 @@
 0.9.13
+ - Ported some number formatting to C.
+ - Fix when http server gives no content-type header
  - Prevent auto unboxing within a matrix
 
 0.9.12
