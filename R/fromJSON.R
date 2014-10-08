@@ -89,7 +89,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
       # With files we can never know for sure the encoding. Lets try UTF8 first.
       txt <- paste(readLines(filename, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
       isvalid <- validate(txt)
-      if(!isvalid && grepl("invalid bytes in UTF8", attr(isvalid, "err"), fixed=TRUE)){
+      if(!isvalid && grepl("invalid bytes in UTF8", attr(isvalid, "err"), fixed=TRUE, useBytes=TRUE)){
         # Seems like it wasn't UTF8 after all. Fall back on native encoding.
         txt <- paste(readLines(filename, warn = FALSE), collapse = "\n")
       }
