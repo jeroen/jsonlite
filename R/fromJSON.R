@@ -83,17 +83,10 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   if (length(txt) == 1 && nchar(txt, type="bytes") < 1000) {
     if (grepl("^https?://", txt, useBytes=TRUE)) {
       loadpkg("httr")
-      txt <- download(txt)
+      txt <- raw_to_json(download_raw(txt))
     } else if (file.exists(txt)) {
       # With files we can never know for sure the encoding. Lets try UTF8 first.
-      txt <- rawToChar(readBin(txt, raw(), file.info(txt)$size));
-      Encoding(txt) <- "UTF-8"
-      isvalid <- validate(txt)
-      if(!isvalid && grepl("invalid bytes in UTF8", attr(isvalid, "err"), fixed=TRUE, useBytes=TRUE)){
-        # Seems like it wasn't UTF8 after all. Fall back on native encoding.
-        message("File does not seem to be UTF-8. Using native encoding instead.")
-        Encoding(txt) <- "";
-      }
+      txt <- raw_to_json(readBin(txt, raw(), file.info(txt)$size));
     }
   }
 

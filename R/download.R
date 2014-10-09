@@ -1,5 +1,5 @@
 #This is a workaround for SSL handshake problems in curl
-download <- function(URL){
+download_raw <- function(URL){
 
   #retry with different SSL settings
   download_retry_ssl <- function(e){
@@ -30,7 +30,5 @@ download <- function(URL){
   }
 
   # JSON from the internet should always be UTF-8
-  out <- rawToChar(req$content);
-  Encoding(out) <- "UTF-8"
-  return(out)
+  return(req$content);
 }
