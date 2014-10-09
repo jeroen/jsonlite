@@ -178,5 +178,5 @@ stream_out <- function(x, con = stdout(), pagesize = 500, verbose = TRUE, ...) {
 }
 
 stream_out_page <- function(page, con, ...){
-  writeLines(asJSON(page, collapse = FALSE, ...), con = con)
+  writeLines(enc2utf8(asJSON(page, collapse = FALSE, ...)), con = con, useBytes = TRUE)
 }
