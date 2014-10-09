@@ -28,5 +28,9 @@ download <- function(URL){
   if(length(ctype) && !grepl("json", ctype)){
     warning("Unexpected Content-Type: ", ctype, call. = FALSE)
   }
-  rawToChar(req$content);
+
+  # JSON from the internet should always be UTF-8
+  out <- rawToChar(req$content);
+  Encoding(out) <- "UTF-8"
+  return(out)
 }
