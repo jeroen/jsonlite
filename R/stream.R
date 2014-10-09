@@ -136,7 +136,8 @@ stream_in <- function(con, handler, pagesize = 500, verbose = TRUE, ...) {
   }
 
   i <- 1L;
-  while(length(page <- readLines(con, n = pagesize))){
+  # JSON must be UTF-8 by spec
+  while(length(page <- readLines(con, n = pagesize, encoding = "UTF-8"))){
     if(verbose) message("Reading ", length(page), " lines (", i,").")
     mydf <- simplify(lapply(page, parseJSON), ...);
     if(bind_pages){
