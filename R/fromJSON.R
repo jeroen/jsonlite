@@ -80,8 +80,8 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   }
 
   # overload for URL or path
-  if (length(txt) == 1 && nchar(txt) < 1000) {
-    if (grepl("^https?://", txt)) {
+  if (length(txt) == 1 && nchar(txt, type="bytes") < 1000) {
+    if (grepl("^https?://", txt, useBytes=TRUE)) {
       loadpkg("httr")
       txt <- download(txt)
     } else if (file.exists(txt)) {
