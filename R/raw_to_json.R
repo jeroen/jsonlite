@@ -6,7 +6,7 @@ raw_to_json <- function(x){
   Encoding(txt) <- "UTF-8"
   isvalid <- validate(txt)
   if(!isvalid && grepl("invalid bytes in UTF8", attr(isvalid, "err"), fixed=TRUE, useBytes=TRUE)){
-    message("File does not seem to be UTF-8. Using native encoding instead.")
+    warning("The json string is not valid UTF-8. Assuming native encoding.", call. = FALSE)
     Encoding(txt) <- "";
   }
   return(txt)
