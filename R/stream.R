@@ -124,7 +124,8 @@ stream_in <- function(con, handler, pagesize = 500, verbose = TRUE, ...) {
 
   if(!isOpen(con, "r")){
     if(verbose) message("opening ", is(con) ," input connection.")
-    open(con, "r")
+    # binary prevents recoding of utf8 to latin1 on windows
+    open(con, "rb")
     on.exit({
       if(verbose) message("closing ", is(con) ," input connection.")
       close(con)
@@ -178,5 +179,6 @@ stream_out <- function(x, con = stdout(), pagesize = 500, verbose = TRUE, ...) {
 }
 
 stream_out_page <- function(page, con, ...){
+  # useBytes prevents recoding of utf8 to latin1 on windows
   writeLines(enc2utf8(asJSON(page, collapse = FALSE, ...)), con = con, useBytes = TRUE)
 }
