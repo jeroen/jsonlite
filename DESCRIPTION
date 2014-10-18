@@ -28,5 +28,4 @@ Suggests:
     reshape2,
     httr (>= 0.4),
     rjson,
-    plyr,
-    rmongodb (>= 1.7.3)
+    plyr

@@ -3,6 +3,7 @@
  - Fix when http server gives no content-type header
  - Prevent auto unboxing within a matrix
  - Assume UTF8 but fall back on native encoding for files and urls in fromJSON
+ - Fix for 32 bit windows XP.
 
 0.9.12
  - New JSON parser based on yajl. Some changes:
