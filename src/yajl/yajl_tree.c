@@ -25,7 +25,13 @@
 
 #include "yajl_parser.h"
 
+/*
 #if defined(_WIN32) || defined(WIN32)
+Fix for windows XP from https://rt.cpan.org/Public/Bug/Display.html?id=69113
+*/
+#if((defined(_WIN32) || defined(WIN32)) && defined(_MSC_VER))
+/* end fix */
+
 #define snprintf sprintf_s
 #endif
 

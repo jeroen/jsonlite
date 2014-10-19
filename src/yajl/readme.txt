@@ -5,3 +5,4 @@ Changes in yajl code by Jeroen:
  - Manually generated yajl.version.h from yajl.version.h.in (by running cmake)
  - Patch for CMD check warnings on Windows: https://github.com/lloyd/yajl/issues/143
  - Patch for error messages in yajl_tree_parse: https://github.com/lloyd/yajl/issues/144
+ - Fix for windows XP: https://rt.cpan.org/Public/Bug/Display.html?id=69113
