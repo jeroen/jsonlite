@@ -179,6 +179,7 @@ stream_out <- function(x, con = stdout(), pagesize = 500, verbose = TRUE, ...) {
 }
 
 stream_out_page <- function(page, con, ...){
-  # useBytes can sometimes prevent recoding of utf8 to latin1 on windows
+  # useBytes can sometimes prevent recoding of utf8 to latin1 on windows.
+  # on windows there is a bug when useBytes is used with a (non binary) text connection.
   writeLines(enc2utf8(asJSON(page, collapse = FALSE, ...)), con = con, useBytes = TRUE)
 }
