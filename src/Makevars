@@ -6,8 +6,8 @@ SOURCES = yajl/yajl.c yajl/yajl_alloc.c yajl/yajl_buf.c yajl/yajl_encode.c \
           escape_chars.c is_recordlist.c is_scalarlist.c null_to_na.c parse.c \
           prettify.c validate.c modp_numtoa.c num_to_char.c
 
-# Comment out for CRAN (BR says no GNU extensions):
-SOURCES = $(wildcard yajl/*.c *.c)
+# For development only (GNU extensions not allowed on CRAN):
+# SOURCES = $(wildcard yajl/*.c *.c)
 
 OBJECTS = $(SOURCES:.c=.o)
 
