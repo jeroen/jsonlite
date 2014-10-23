@@ -12,14 +12,14 @@
 #' prettify(myjson)
 #' minify(myjson)
 prettify <- function(txt) {
-  txt <- paste(as.character(txt), collapse = "\n")
-  ans <- reformat(txt, TRUE)
+  txt <- paste(txt, collapse = "\n")
+  reformat(txt, TRUE)
 }
 
 #' @rdname prettify
 minify <- function(txt) {
-  txt <- paste(as.character(txt), collapse = "\n")
-  ans <- reformat(txt, FALSE)
+  txt <- paste(txt, collapse = "\n")
+  reformat(txt, FALSE)
 }
 
 reformat <- function(x, pretty){
