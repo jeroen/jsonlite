@@ -13,7 +13,7 @@ setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5,
   # tmp <- num_to_char_R(x, digits, na_as_string);
 
   # use decimal or significant digits
-  use_signif <- precision == "signif"
+  use_signif <- identical(precision, "signif")
 
   # fast C implementation
   tmp <- num_to_char(x, digits, na_as_string, use_signif);
