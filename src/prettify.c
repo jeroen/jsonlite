@@ -122,6 +122,7 @@ SEXP R_reformat(SEXP x, SEXP pretty) {
       //force as UTF8 string
       output = PROTECT(allocVector(STRSXP, 1));
       SET_STRING_ELT(output, 0, mkCharCE((const char*) buf, CE_UTF8));
+      setAttrib(output, R_ClassSymbol, mkString("json"));
       UNPROTECT(1);
     }
 

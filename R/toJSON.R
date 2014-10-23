@@ -37,26 +37,11 @@ toJSON <- function(x, dataframe = c("rows", "columns"), matrix = c("rowmajor", "
 
   #prettify
   if (isTRUE(pretty)) {
-    return(prettify(ans))
+    prettify(ans)
   } else {
-    return(structure(ans, class="json"))
+    class(ans) <- "json"
+    return(ans)
   }
-}
-
-# maps encoding name to integer
-mapEncoding <- function(encoding) {
-  if (is.na(encoding)) {
-    return(0L)
-  }
-
-  codes <- c(unknown = 0L, native = 0L, utf8 = 1L, `utf-8` = 1L, latin1 = 2L, bytes = 3L,
-    symbol = 5L, any = 99L)
-
-  enc <- pmatch(tolower(encoding), names(codes))
-  if (is.na(enc)) {
-    stop("unrecognized encoding:", encoding)
-  }
-  return(codes[enc])
 }
 
 View <- function(x, ...){
