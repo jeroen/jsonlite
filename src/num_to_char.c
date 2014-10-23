@@ -3,9 +3,10 @@
 #include <stdlib.h>
 #include <modp_numtoa.h>
 
-SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string) {
+SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif) {
   int len = length(x);
   int na_string = asLogical(na_as_string);
+  int signif = asLogical(use_signif);
   char buf[32];
   SEXP out = PROTECT(allocVector(STRSXP, len));
   if(isInteger(x)){
@@ -47,6 +48,10 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string) {
         }
       } else if(precision == NA_INTEGER){
         snprintf(buf, 32, "%.15g", val);
+        SET_STRING_ELT(out, i, mkChar(buf));
+      } else if(signif){
+        //use signifant digits rather than decimal digits
+        snprintf(buf, 32, "%.*g", (int) ceil(fmin(15, precision)), val);
         SET_STRING_ELT(out, i, mkChar(buf));
       } else if(precision > -1 && precision < 10 && fabs(val) < 2147483647 && fabs(val) > 1e-5) {
         //preferred method: fast with fixed decimal digits

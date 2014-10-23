@@ -1,4 +1,5 @@
-setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = c("string", "null", "NA"), auto_unbox = FALSE, ...) {
+setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5,
+  precision = "decimal", na = c("string", "null", "NA"), auto_unbox = FALSE, ...) {
 
   na <- match.arg(na);
   na_as_string <- switch(na,
@@ -8,11 +9,14 @@ setMethod("asJSON", "numeric", function(x, collapse = TRUE, digits = 5, na = c("
     stop("invalid na_as_string")
   )
 
-  # slower R implementation
+  # old R implementation
   # tmp <- num_to_char_R(x, digits, na_as_string);
 
+  # use decimal or significant digits
+  use_signif <- precision == "signif"
+
   # fast C implementation
-  tmp <- num_to_char(x, digits, na_as_string);
+  tmp <- num_to_char(x, digits, na_as_string, use_signif);
 
   if(isTRUE(auto_unbox) && length(tmp) == 1){
     return(tmp);
