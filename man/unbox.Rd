@@ -16,9 +16,9 @@ This function marks an atomic vector or data frame as a
 \href{http://en.wikipedia.org/wiki/Singleton_(mathematics)}{singleton}, i.e.
 a set with exactly 1 element. Thereby, the value will not turn into an
 \code{array} when encoded into JSON. This can only be done for
-atomic vectors of length 1, or data frames with exactly 1 row. Because
-this function alters how \R{} objects are encoded, it should be used
-very sparsely, if at all.
+atomic vectors of length 1, or data frames with exactly 1 row. To automatically
+unbox all vectors of length 1 within an object, use the \code{auto_unbox} argument
+in \code{\link{toJSON}}.
 }
 \details{
 It is usually recommended to avoid this function and stick with the default
@@ -26,12 +26,16 @@ encoding schema for the various \R{} classes. The only use case for this functio
 is if you are bound to some specific predefined JSON structure (e.g. to
 submit to an API), which has no natural \R{} representation. Note that the default
 encoding for data frames naturally results in a collection of key-value pairs,
-without using \code{unbox}. If you are frequently using \code{unbox},
-you're probably doing it wrong.
+without using \code{unbox}.
 }
 \examples{
 toJSON(list(foo=123))
 toJSON(list(foo=unbox(123)))
+
+# Auto unbox vectors of length one:
+x = list(x=1:3, y = 4, z = "foo", k = NULL)
+toJSON(x)
+toJSON(x, auto_unbox = TRUE)
 
 x <- iris[1,]
 toJSON(list(rec=x))
