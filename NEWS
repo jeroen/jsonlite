@@ -1,3 +1,6 @@
+0.9.14
+ - Add support for digits = I(n) to use significant precision.
+
 0.9.13
  - Ported some number formatting to C
  - Fix when http server gives no content-type header
