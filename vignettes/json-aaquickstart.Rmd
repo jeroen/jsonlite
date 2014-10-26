@@ -1,5 +1,11 @@
+---
+Title: "Getting started with JSON and jsonlite"
+output:
+  html_document:
+    theme: flatly
+---
 <!--
-%\VignetteEngine{knitr::knitr}
+%\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{Getting started with JSON and jsonlite}
 -->
 
