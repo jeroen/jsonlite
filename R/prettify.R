@@ -6,14 +6,15 @@
 #' @aliases minify prettify
 #' @export prettify minify
 #' @param txt JSON string
+#' @param indent number of spaces to indent
 #' @useDynLib jsonlite R_reformat
 #' @examples myjson <- toJSON(cars)
 #' cat(myjson)
 #' prettify(myjson)
 #' minify(myjson)
-prettify <- function(txt) {
+prettify <- function(txt, indent = 4) {
   txt <- paste(txt, collapse = "\n")
-  reformat(txt, TRUE)
+  reformat(txt, TRUE, indent_string = paste(rep(" ", as.integer(indent)), collapse=""))
 }
 
 #' @rdname prettify
@@ -22,8 +23,8 @@ minify <- function(txt) {
   reformat(txt, FALSE)
 }
 
-reformat <- function(x, pretty){
-  out <- .Call(R_reformat, x, pretty);
+reformat <- function(x, pretty, indent_string = ""){
+  out <- .Call(R_reformat, x, pretty, indent_string = indent_string);
   if(out[[1]] == 0) {
     return(out[[2]])
   } else {

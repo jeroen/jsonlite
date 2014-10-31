@@ -5,12 +5,14 @@
 \alias{prettify, minify}
 \title{Prettify or minify a JSON string}
 \usage{
-prettify(txt)
+prettify(txt, indent = 4)
 
 minify(txt)
 }
 \arguments{
 \item{txt}{JSON string}
+
+\item{indent}{number of spaces to indent}
 }
 \description{
 Prettify adds indentation to a JSON string; minify removes all indentation/whitespace.

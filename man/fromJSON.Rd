@@ -53,7 +53,7 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
 
 \item{digits}{max number of digits (after the dot) to print for numeric values. See: \code{\link{round}}}
 
-\item{pretty}{adds indentation whitespace to JSON output. See \code{\link{prettify}}}
+\item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}}
 
 \item{force}{unclass/skip objects of classes with no defined JSON mapping}
 }

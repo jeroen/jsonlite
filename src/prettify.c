@@ -84,7 +84,7 @@ static yajl_callbacks callbacks = {
     reformat_end_array
 };
 
-SEXP R_reformat(SEXP x, SEXP pretty) {
+SEXP R_reformat(SEXP x, SEXP pretty, SEXP indent_string) {
     yajl_status stat;
     yajl_handle hand;
     yajl_gen g;
@@ -93,6 +93,7 @@ SEXP R_reformat(SEXP x, SEXP pretty) {
     /* init generator */
     g = yajl_gen_alloc(NULL);
     yajl_gen_config(g, yajl_gen_beautify, asInteger(pretty));
+    yajl_gen_config(g, yajl_gen_indent_string, translateCharUTF8(asChar(indent_string)));
     yajl_gen_config(g, yajl_gen_validate_utf8, 0);
 
     /* init parser */
