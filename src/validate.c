@@ -22,7 +22,7 @@ SEXP R_validate(SEXP x) {
       stat = yajl_complete_parse(hand);
     }
 
-    SEXP output = ScalarLogical(!stat);
+    SEXP output = PROTECT(duplicate(ScalarLogical(!stat)));
 
     //error message
     if (stat != yajl_status_ok) {
@@ -34,5 +34,6 @@ SEXP R_validate(SEXP x) {
 
     /* return boolean vec (0 means no errors, means is valid) */
     yajl_free(hand);
+    UNPROTECT(1);
     return output;
 }
