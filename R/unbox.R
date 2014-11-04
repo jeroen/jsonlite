@@ -31,6 +31,9 @@
 #' toJSON(list(rec=x))
 #' toJSON(list(rec=unbox(x)))
 unbox <- function(x){
+  if(is.null(x)){
+    return(x)
+  }
   if(is.data.frame(x)){
     if(nrow(x) == 1){
       return(as.scalar(x))
