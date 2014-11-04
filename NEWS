@@ -1,4 +1,5 @@
 0.9.14
+ - Change license to MIT (for GPL2 compatibility).
  - Add support for digits = I(n) to use significant precision.
  - When 'pretty' in toJSON is numeric, it specifies the number of spaces to indent.
 
