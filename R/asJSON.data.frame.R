@@ -66,7 +66,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   #create a matrix of json elements
   dfnames <- deparse_vector(cleannames(names(x)))
   out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, complex = complex, na = na,
-    oldna = oldna, rownames = rownames, ..., USE.NAMES = FALSE)
+    oldna = oldna, rownames = rownames, dataframe = dataframe, ..., USE.NAMES = FALSE)
 
   # This would be another way of doing the missing values
   # This does not require the individual classes to support na="NA"
