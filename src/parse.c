@@ -103,11 +103,6 @@ SEXP ParseArray(yajl_val node){
 
 //checks for \uFEFF byte order mark
 int has_bom(const char* str){
-  for(int i = 0; i < 3; i++){
-    if(str[i] == '\0') {
-      return 0;
-    }
-  }
   if(str[0] == '\xEF' && str[1] == '\xBB' && str[2] == '\xBF'){
     return 1;
   }
