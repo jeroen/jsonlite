@@ -74,9 +74,7 @@ x <- iris[1:3,]
 toJSON(x)
 stream_out(x)
 
-\dontrun{
-
-# stream large dataset to file and back
+\dontrun{stream large dataset to file and back
 library(nycflights13)
 stream_out(flights, file(tmp <- tempfile()))
 flights2 <- stream_in(file(tmp))
