@@ -13,10 +13,20 @@
 SEXP ParseObject(yajl_val node);
 SEXP ParseArray(yajl_val node);
 SEXP ParseValue(yajl_val node);
+int len_at_least(const char* str, int len);
 
 SEXP R_parse(SEXP x) {
     /* get data from R */
     const char* json = translateCharUTF8(asChar(x));
+
+    /* ignore BOM as suggested by RFC */
+    if (len_at_least(json, 3)) {
+      if (memcmp(json, "\xEF\xBB\xBF", 3) == 0){
+        warning("JSON string contains illegal UTF8 byte-order-mark!");
+        json = json + 3;
+      }
+    }
+
     yajl_val node;
     char errbuf[1024];
 
@@ -92,5 +102,15 @@ SEXP ParseArray(yajl_val node){
   }
   UNPROTECT(1);
   return vec;
+}
+
+//more efficient than strlen
+int len_at_least(const char* str, int len){
+  for(int i = 0; i< len; i++){
+    if(str[i] == '\0') {
+      return 0;
+    }
+  }
+  return 1;
 }
 
