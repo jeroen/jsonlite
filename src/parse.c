@@ -23,10 +23,9 @@ SEXP R_parse(SEXP x) {
       json = json + 3;
     }
 
-    yajl_val node;
+    /* parse json */
     char errbuf[1024];
-
-    node = yajl_tree_parse(json, errbuf, sizeof(errbuf));
+    yajl_val node = yajl_tree_parse(json, errbuf, sizeof(errbuf));
 
     /* parse error handling */
     if (!node) {
@@ -60,7 +59,8 @@ SEXP ParseValue(yajl_val node){
   }
   if(YAJL_IS_NUMBER(node)){
     /* A number that is not int or double (very rare) */
-    return(mkString(YAJL_GET_NUMBER(node)));
+    /* This seems to correctly round to Inf/0/-Inf */
+    return(ScalarReal(YAJL_GET_DOUBLE(node)));
   }
   if(YAJL_IS_TRUE(node)){
     return(ScalarLogical(1));
