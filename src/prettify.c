@@ -101,6 +101,13 @@ SEXP R_reformat(SEXP x, SEXP pretty, SEXP indent_string) {
 
     /* get data from R */
     const char* json = translateCharUTF8(asChar(x));
+
+    /* ignore BOM */
+    if(json[0] == '\xEF' && json[1] == '\xBB' && json[2] == '\xBF'){
+      json = json + 3;
+    }
+
+    /* Get length (after removing bom) */
     const size_t rd = strlen(json);
 
     /* parse */

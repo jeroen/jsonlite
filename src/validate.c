@@ -8,7 +8,13 @@ SEXP R_validate(SEXP x) {
 
     /* get data from R */
     const char* json = translateCharUTF8(asChar(x));
-    const size_t rd = strlen(json);
+
+    /* test for BOM */
+    if(json[0] == '\xEF' && json[1] == '\xBB' && json[2] == '\xBF'){
+      SEXP output = duplicate(ScalarLogical(0));
+      setAttrib(output, install("err"), mkString("JSON string contains UTF8 byte-order-mark."));
+      return(output);
+    }
 
     /* allocate a parser */
     hand = yajl_alloc(NULL, NULL, NULL);
@@ -17,6 +23,7 @@ SEXP R_validate(SEXP x) {
     //yajl_config(hand, yajl_dont_validate_strings, 1);
 
     /* go parse */
+    const size_t rd = strlen(json);
     stat = yajl_parse(hand, (const unsigned char*) json, rd);
     if(stat == yajl_status_ok) {
       stat = yajl_complete_parse(hand);
