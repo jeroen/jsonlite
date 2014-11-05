@@ -42,7 +42,9 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   }
 
   # Set default for row based, don't do it earlier because it will affect 'oldna' or dataframe="columns"
-  na <- match.arg(na)
+  if(dataframe == "rows"){
+    na <- match.arg(na)
+  }
 
   # no records
   if (!nrow(x)) {
