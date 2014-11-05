@@ -7,24 +7,21 @@
 */
 
 #include <Rinternals.h>
-#include <string.h>
 #include <yajl_tree.h>
 
 SEXP ParseObject(yajl_val node);
 SEXP ParseArray(yajl_val node);
 SEXP ParseValue(yajl_val node);
-int len_at_least(const char* str, int len);
+int has_bom(const char* str);
 
 SEXP R_parse(SEXP x) {
     /* get data from R */
     const char* json = translateCharUTF8(asChar(x));
 
     /* ignore BOM as suggested by RFC */
-    if (len_at_least(json, 3)) {
-      if (memcmp(json, "\xEF\xBB\xBF", 3) == 0){
-        warning("JSON string contains illegal UTF8 byte-order-mark!");
-        json = json + 3;
-      }
+    if (has_bom(json)){
+      warning("JSON string contains UTF8 byte-order-mark!");
+      json = json + 3;
     }
 
     yajl_val node;
@@ -104,13 +101,16 @@ SEXP ParseArray(yajl_val node){
   return vec;
 }
 
-//more efficient than strlen
-int len_at_least(const char* str, int len){
-  for(int i = 0; i< len; i++){
+//checks for \uFEFF byte order mark
+int has_bom(const char* str){
+  for(int i = 0; i < 3; i++){
     if(str[i] == '\0') {
       return 0;
     }
   }
-  return 1;
+  if(str[0] == '\xEF' && str[1] == '\xBB' && str[2] == '\xBF'){
+    return 1;
+  }
+  return 0;
 }
 
