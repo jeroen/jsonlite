@@ -3,9 +3,6 @@
 #include <yajl_parse.h>
 
 SEXP R_validate(SEXP x) {
-    yajl_status stat;
-    yajl_handle hand;
-
     /* get data from R */
     const char* json = translateCharUTF8(asChar(x));
 
@@ -17,14 +14,14 @@ SEXP R_validate(SEXP x) {
     }
 
     /* allocate a parser */
-    hand = yajl_alloc(NULL, NULL, NULL);
+    yajl_handle hand = yajl_alloc(NULL, NULL, NULL);
 
     /* parser options */
     //yajl_config(hand, yajl_dont_validate_strings, 1);
 
     /* go parse */
     const size_t rd = strlen(json);
-    stat = yajl_parse(hand, (const unsigned char*) json, rd);
+    yajl_status stat = yajl_parse(hand, (const unsigned char*) json, rd);
     if(stat == yajl_status_ok) {
       stat = yajl_complete_parse(hand);
     }

@@ -27,7 +27,7 @@ SEXP R_parse(SEXP x) {
     char errbuf[1024];
     yajl_val node = yajl_tree_parse(json, errbuf, sizeof(errbuf));
 
-    /* parse error handling */
+    /* parser error */
     if (!node) {
       error(errbuf);
     }
