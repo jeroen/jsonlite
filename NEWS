@@ -4,6 +4,7 @@
  - When 'pretty' in toJSON is numeric, it specifies the number of spaces to indent.
  - Bug fix in validate() related to ScalarLogical
  - Add support for dataframe = "values"
+ - Byte-order-marks are now ignored as suggested by rfc7159
 
 0.9.13
  - Ported some number formatting to C
