@@ -25,7 +25,7 @@
 #' @param simplifyMatrix coerce JSON arrays containing vectors of equal mode and dimension into matrix or array
 #' @param flatten automatically \code{\link{flatten}} nested data frames into a single non-nested data frame
 #' @param x the object to be encoded
-#' @param dataframe how to encode data.frame objects: must be one of 'rows' or 'columns'
+#' @param dataframe how to encode data.frame objects: must be one of 'rows', 'columns' or 'values'
 #' @param matrix how to encode matrices and higher dimensional arrays: must be one of 'rowmajor' or 'columnmajor'.
 #' @param Date how to encode Date objects: must be one of 'ISO8601' or 'epoch'
 #' @param POSIXt how to encode POSIXt (datetime) objects: must be one of 'string', 'ISO8601', 'epoch' or 'mongo'

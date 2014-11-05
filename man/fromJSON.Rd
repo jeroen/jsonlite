@@ -9,7 +9,7 @@
 fromJSON(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
   simplifyMatrix = simplifyVector, flatten = FALSE, ...)
 
-toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
+toJSON(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor",
   "columnmajor"), Date = c("ISO8601", "epoch"), POSIXt = c("string",
   "ISO8601", "epoch", "mongo"), factor = c("string", "integer"),
   complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
@@ -31,7 +31,7 @@ toJSON(x, dataframe = c("rows", "columns"), matrix = c("rowmajor",
 
 \item{x}{the object to be encoded}
 
-\item{dataframe}{how to encode data.frame objects: must be one of 'rows' or 'columns'}
+\item{dataframe}{how to encode data.frame objects: must be one of 'rows', 'columns' or 'values'}
 
 \item{matrix}{how to encode matrices and higher dimensional arrays: must be one of 'rowmajor' or 'columnmajor'.}
 

@@ -1,5 +1,5 @@
 setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), collapse = TRUE,
-  dataframe = c("rows", "columns"), complex = "string", oldna = NULL, rownames = NULL, ...) {
+  dataframe = c("rows", "columns", "values"), complex = "string", oldna = NULL, rownames = NULL, ...) {
 
   # Validate some args
   dataframe <- match.arg(dataframe)
@@ -81,7 +81,11 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   }
 
   #turn the matrix into json records
-  tmp <- apply(out, 1, collapse_object, x = dfnames);
+  tmp <- if(dataframe == "rows") {
+    apply(out, 1, collapse_object, x = dfnames);
+  } else {
+    apply(out, 1, collapse);
+  }
 
   #collapse
   if(isTRUE(collapse)){

@@ -1,5 +1,5 @@
 #' @rdname fromJSON
-toJSON <- function(x, dataframe = c("rows", "columns"), matrix = c("rowmajor", "columnmajor"),
+toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor", "columnmajor"),
   Date = c("ISO8601", "epoch"), POSIXt = c("string", "ISO8601", "epoch", "mongo"),
   factor = c("string", "integer"), complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
   null = c("list", "null"), na = c("null", "string"), auto_unbox = FALSE, digits = 4,
