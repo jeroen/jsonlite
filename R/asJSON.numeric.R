@@ -13,7 +13,11 @@ setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "
   # tmp <- num_to_char_R(x, digits, na_as_string);
 
   # fast C implementation
-  tmp <- num_to_char(x, digits, na_as_string, use_signif);
+  tmp <- if(is(x, "integer64")){
+    integer64_to_char(x, na_as_string)
+  } else {
+    num_to_char(x, digits, na_as_string, use_signif);
+  }
 
   if(isTRUE(auto_unbox) && length(tmp) == 1){
     return(tmp);
@@ -25,3 +29,7 @@ setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "
     tmp
   }
 })
+
+# This is for the bit64 package
+setOldClass("integer64")
+setMethod("asJSON", "integer64", getMethod("asJSON", "numeric"));

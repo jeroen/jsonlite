@@ -5,6 +5,7 @@
  - Bug fix in validate() related to ScalarLogical
  - Add support for dataframe = "values"
  - Byte-order-marks are now ignored as suggested by rfc7159
+ - Add support for integer64 class (bit64 package)
 
 0.9.13
  - Ported some number formatting to C

@@ -4,7 +4,7 @@ SOURCES = yajl/yajl.c yajl/yajl_alloc.c yajl/yajl_buf.c yajl/yajl_encode.c \
           yajl/yajl_gen.c yajl/yajl_lex.c yajl/yajl_parser.c yajl/yajl_tree.c \
           yajl/yajl_version.c base64.c collapse_array.c collapse_object.c \
           escape_chars.c is_recordlist.c is_scalarlist.c null_to_na.c parse.c \
-          prettify.c validate.c modp_numtoa.c num_to_char.c
+          prettify.c validate.c modp_numtoa.c num_to_char.c integer64_to_na.c
 
 # For development only (GNU extensions not allowed on CRAN):
 # SOURCES = $(wildcard yajl/*.c *.c)

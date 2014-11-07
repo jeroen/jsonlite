@@ -7,6 +7,11 @@ num_to_char <- function(x, digits = NA, na_as_string = NA, use_signif = FALSE){
   .Call(R_num_to_char, x, digits, na_as_string, use_signif)
 }
 
+#' @useDynLib jsonlite R_integer64_to_char
+integer64_to_char <- function(x, na_as_string = TRUE){
+  .Call(R_integer64_to_char, x, na_as_string)
+}
+
 num_to_char_R <- function(x, digits = NA, na_as_string = NA){
   if(is.na(digits)) digits <- NA_integer_;
   stopifnot(is.numeric(x))
