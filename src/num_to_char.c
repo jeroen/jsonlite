@@ -26,8 +26,9 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif) {
     }
   } else if(isReal(x)) {
     int precision = asInteger(digits);
+    double * xreal = REAL(x);
     for (int i=0; i<len; i++) {
-      double val = REAL(x)[i];
+      double val = xreal[i];
       if(!R_FINITE(val)){
         if(na_string == NA_LOGICAL){
           SET_STRING_ELT(out, i, NA_STRING);
