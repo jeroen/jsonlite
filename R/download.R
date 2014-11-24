@@ -22,7 +22,7 @@ download_raw <- function(URL){
       ssl.verifyhost = FALSE
     ));
     #if this worked, show a warning. If not, it will just error.
-    warning("SSL connect error. Falling back on SSL v3"., call. = FALSE)
+    warning("SSL connect error. Falling back on SSL v3", call. = FALSE)
     return(res)
   }
 
