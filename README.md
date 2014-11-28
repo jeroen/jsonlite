@@ -1,6 +1,8 @@
 jsonlite
 ========
 
+[![Build Status](https://travis-ci.org/jeroenooms/jsonlite.svg?branch=master)](https://travis-ci.org/jeroenooms/jsonlite)
+
 The announcement [blog post](https://public.opencpu.org/posts/jsonlite-a-smarter-json-encoder/) has a one minute introduction to the package.
 
 > Premature optimization is the root of all evil. - Donald Knuth
