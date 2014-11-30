@@ -86,6 +86,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   tmp <- if(dataframe == "rows") {
     apply(out, 1, collapse_object, x = dfnames);
   } else {
+    # for dataframe = "values"
     apply(out, 1, collapse);
   }
 
