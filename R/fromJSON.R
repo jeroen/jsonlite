@@ -35,36 +35,42 @@
 #' @param null how to encode NULL values within a list: must be one of 'null' or 'list'
 #' @param na how to print NA values: must be one of 'null' or 'string'. Defaults are class specific
 #' @param auto_unbox automatically \code{\link{unbox}} all atomic vectors of length 1. It is usually safer to avoid this and instead use the \code{\link{unbox}} function to unbox individual elements.
-#' @param digits max number of digits (after the dot) to print for numeric values. See: \code{\link{round}}
+#' @param digits max number of decimal digits to print for numeric values. Use \code{I()} to specify significant digits.
 #' @param force unclass/skip objects of classes with no defined JSON mapping
 #' @param pretty adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}
 #' @param ... arguments passed on to class specific \code{print} methods
 #' @references Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{http://arxiv.org/abs/1403.2805}
-#' @examples #stringify some data
+#' @examples # Stringify some data
 #' jsoncars <- toJSON(mtcars, pretty=TRUE)
 #' cat(jsoncars)
 #'
-#' #parse it back
+#' # Parse it back
 #' fromJSON(jsoncars)
 #'
-#' #parsing escaped unicode
+#' # Parse escaped unicode
 #' fromJSON('{"city" : "Z\\u00FCrich"}')
 #'
-#' \dontrun{
-#' # Parse data frame
+#' # Decimal vs significant digits
+#' toJSON(pi, digits=3)
+#' toJSON(pi, digits=I(3))
+#'
+#' \dontrun{retrieve data frame
 #' data1 <- fromJSON("https://api.github.com/users/hadley/orgs")
 #' names(data1)
 #' data1$login
 #'
-#' #nested data frames:
+#' # Nested data frames:
 #' data2 <- fromJSON("https://api.github.com/users/hadley/repos")
 #' names(data2)
 #' names(data2$owner)
 #' data2$owner$login
 #'
-#' #same data, but now flattened:
-#' data3 <- fromJSON("https://api.github.com/users/hadley/repos", flatten=TRUE)
-#' names(data3)
+#' # Flatten the data into a regular non-nested dataframe
+#' names(flatten(data2))
+#'
+#' # Flatten directly (more efficient):
+#' data3 <- fromJSON("https://api.github.com/users/hadley/repos", flatten = TRUE)
+#' identical(data3, flatten(data2))
 #' }
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
   simplifyMatrix = simplifyVector, flatten = FALSE, ...) {

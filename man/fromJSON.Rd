@@ -51,7 +51,7 @@ toJSON(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor",
 
 \item{auto_unbox}{automatically \code{\link{unbox}} all atomic vectors of length 1. It is usually safer to avoid this and instead use the \code{\link{unbox}} function to unbox individual elements.}
 
-\item{digits}{max number of digits (after the dot) to print for numeric values. See: \code{\link{round}}}
+\item{digits}{max number of decimal digits to print for numeric values. Use \code{I()} to specify significant digits.}
 
 \item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}}
 
@@ -76,31 +76,37 @@ will parse such escape sequences but it is usually preferable to encode unicode 
 \code{UTF-8} rather than escape sequences.
 }
 \examples{
-#stringify some data
+# Stringify some data
 jsoncars <- toJSON(mtcars, pretty=TRUE)
 cat(jsoncars)
 
-#parse it back
+# Parse it back
 fromJSON(jsoncars)
 
-#parsing escaped unicode
+# Parse escaped unicode
 fromJSON('{"city" : "Z\\\\u00FCrich"}')
 
-\dontrun{
-# Parse data frame
+# Decimal vs significant digits
+toJSON(pi, digits=3)
+toJSON(pi, digits=I(3))
+
+\dontrun{retrieve data frame
 data1 <- fromJSON("https://api.github.com/users/hadley/orgs")
 names(data1)
 data1$login
 
-#nested data frames:
+# Nested data frames:
 data2 <- fromJSON("https://api.github.com/users/hadley/repos")
 names(data2)
 names(data2$owner)
 data2$owner$login
 
-#same data, but now flattened:
-data3 <- fromJSON("https://api.github.com/users/hadley/repos", flatten=TRUE)
-names(data3)
+# Flatten the data into a regular non-nested dataframe
+names(flatten(data2))
+
+# Flatten directly (more efficient):
+data3 <- fromJSON("https://api.github.com/users/hadley/repos", flatten = TRUE)
+identical(data3, flatten(data2))
 }
 }
 \references{
