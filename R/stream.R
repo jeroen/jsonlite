@@ -7,8 +7,9 @@
 #' \code{\link{fromJSON}} and \code{\link{toJSON}}, see details for more information.
 #'
 #' Because parsing huge JSON strings is difficult and inefficient, JSON streaming
-#' is done using \strong{lines of minified JSON records}. This is pretty
-#' standard: JSON databases such as MongoDB use the same format to import/export
+#' is done using \strong{lines of minified JSON records}, sometimes also called
+#' \href{http://jsonlines.org/}{jsonlines}. This is pretty standard: JSON databases such
+#' as MongoDB or \href{http://dat-data.com/}{dat} use the same format to import/export
 #' large datasets. Note that this means that the total stream combined is
 #' not valid JSON itself; only the individual lines are. Also note that because line-breaks
 #' are used as separators, prettified JSON is not permitted: the JSON lines \emph{must}
@@ -50,6 +51,7 @@
 #' @export stream_in stream_out
 #' @rdname stream_in
 #' @references MongoDB export format: \url{http://docs.mongodb.org/manual/reference/program/mongoexport/#cmdoption--query}
+#' @references Documentation for the JSON Lines text file format: \url{http://jsonlines.org/}
 #' @return The \code{stream_out} function always returns \code{NULL}.
 #' When no custom handler is specified, \code{stream_in} returns a data frame of all pages binded together.
 #' When a custom handler function is specified, \code{stream_in} always returns \code{NULL}.
