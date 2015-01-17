@@ -49,7 +49,7 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
 View <- function(x, title, ...){
 
   if(missing(title)) {
-    title <- deparse(substitute(x))
+    title <- deparse(substitute(x))[1]
   }
 
   #workaround for View() not supporting nested data frames
