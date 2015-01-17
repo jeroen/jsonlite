@@ -46,11 +46,16 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
   }
 }
 
-View <- function(x, ...){
+View <- function(x, title, ...){
+
+  if(missing(title)) {
+    title <- deparse(substitute(x))
+  }
+
   #workaround for View() not supporting nested data frames
   #note that utils::View also does as.data.frame. We just add format.data.frame.
   x <- format.data.frame(as.data.frame(x))
 
   #In rstudio, utils::View is different from get("View", "package:utils")
-  get("View", "package:utils")(x, ...)
+  get("View", "package:utils")(x, title, ...)
 }
