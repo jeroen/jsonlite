@@ -31,8 +31,9 @@ SEXP R_parse(SEXP x) {
     if (!node) {
       error(errbuf);
     }
-
-    return(ParseValue(node));
+    SEXP out = ParseValue(node);
+    yajl_tree_free(node);
+    return(out);
 }
 
 SEXP ParseValue(yajl_val node){
