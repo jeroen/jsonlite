@@ -76,24 +76,20 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   simplifyMatrix = simplifyVector, flatten = FALSE, ...) {
 
   # check type
-  if (!is.character(txt)) {
-    stop("Argument 'txt' must be a JSON string, URL or path to existing file.")
+  if (!is.character(txt) && !is(txt, "connection")) {
+    stop("Argument 'txt' must be a JSON string, URL or file.")
   }
 
   # overload for URL or path
   if (length(txt) == 1 && nchar(txt, type="bytes") < 1000) {
     if (grepl("^https?://", txt, useBytes=TRUE)) {
-      loadpkg("httr")
-      txt <- raw_to_json(download_raw(txt))
+      loadpkg("curl")
+      txt <- curl::curl(txt)
     } else if (file.exists(txt)) {
       # With files we can never know for sure the encoding. Lets try UTF8 first.
-      txt <- raw_to_json(readBin(txt, raw(), file.info(txt)$size));
+      # txt <- raw_to_json(readBin(txt, raw(), file.info(txt)$size));
+      txt <- file(txt)
     }
-  }
-
-  # collapse
-  if (length(txt) > 1) {
-    txt <- paste(txt, collapse = "\n")
   }
 
   # call the actual function (with deprecated arguments)

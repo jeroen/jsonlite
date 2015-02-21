@@ -23,10 +23,10 @@ Description: A fast JSON parser and generator optimized for statistical data
     tests included with the package verify that all edge cases are encoded and
     decoded consistently for use with dynamic data in systems and applications.
 Suggests:
+    curl (>= 0.5),
+    reshape2,
     testthat,
     knitr,
-    reshape2,
-    httr (>= 0.4),
+    httr,
     rjson,
-    plyr,
-    curl
+    plyr
