@@ -512,3 +512,41 @@ void yajl_tree_free (yajl_val v)
         free(v);
     }
 }
+
+/*
+ * Stuff below added by Jeroen to support push parsing over connection interface.
+ */
+
+yajl_handle push_parser_new () {
+
+  /* init callback handlers */
+  yajl_callbacks *callbacks = malloc(sizeof(yajl_callbacks));
+  callbacks->yajl_null = handle_null;
+  callbacks->yajl_boolean = handle_boolean;
+  callbacks->yajl_number = handle_number;
+  callbacks->yajl_integer = NULL;
+  callbacks->yajl_double = NULL;
+  callbacks->yajl_string = handle_string;
+  callbacks->yajl_start_map = handle_start_map;
+  callbacks->yajl_map_key = handle_string;
+  callbacks->yajl_end_map = handle_end_map;
+  callbacks->yajl_start_array = handle_start_array;
+  callbacks->yajl_end_array = handle_end_array;
+
+  /* init context */
+  context_t *ctx = malloc(sizeof(context_t));
+  ctx->root = NULL;
+  ctx->stack = NULL;
+  ctx->errbuf = malloc(1024);
+  ctx->errbuf_size = 1024;
+
+  /* init handle */
+  yajl_handle handle = yajl_alloc(callbacks, NULL, ctx);
+  yajl_config(handle, yajl_allow_comments, 1);
+  return handle;
+}
+
+yajl_val push_parser_get(yajl_handle handle){
+  context_t *ctx = (context_t*) handle->ctx;
+  return ctx->root;
+}
