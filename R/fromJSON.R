@@ -19,7 +19,6 @@
 #' @name toJSON, fromJSON
 #' @aliases View fromJSON toJSON
 #' @export View fromJSON toJSON
-#' @importFrom curl curl
 #' @param txt a JSON string, URL or file
 #' @param simplifyVector coerce JSON arrays containing only primitives into an atomic vector
 #' @param simplifyDataFrame coerce JSON arrays containing only records (JSON objects) into a data frame
@@ -84,7 +83,8 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   # overload for URL or path
   if (length(txt) == 1 && nchar(txt, type="bytes") < 1000) {
     if (grepl("^https?://", txt, useBytes=TRUE)) {
-      txt <- curl(txt)
+      loadpkg("curl")
+      txt <- curl::curl(txt)
     } else if (file.exists(txt)) {
       # With files we can never know for sure the encoding. Lets try UTF8 first.
       # txt <- raw_to_json(readBin(txt, raw(), file.info(txt)$size));

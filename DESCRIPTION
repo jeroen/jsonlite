@@ -22,9 +22,8 @@ Description: A fast JSON parser and generator optimized for statistical data
     contains functions to stream, validate, and prettify JSON data. The unit
     tests included with the package verify that all edge cases are encoded and
     decoded consistently for use with dynamic data in systems and applications.
-Imports:
-    curl (>= 0.5)
 Suggests:
+    curl (>= 0.5),
     reshape2,
     testthat,
     knitr,
