@@ -81,7 +81,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   }
 
   # overload for URL or path
-  if (length(txt) == 1 && nchar(txt, type="bytes") < 1000) {
+  if (is.character(txt) && length(txt) == 1 && nchar(txt, type="bytes") < 1000) {
     if (grepl("^https?://", txt, useBytes=TRUE)) {
       loadpkg("curl")
       txt <- curl::curl(txt)
