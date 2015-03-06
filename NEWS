@@ -2,6 +2,7 @@
  - Replaced RCurl dependency with the new curl package.
  - New push parser for incrementally parsing json from connection interfaces (e.g. files or urls)
  - The toMongo function has been removed. Use stream_out instead.
+ - The `View` function will not be exposed in recent versions of rstudio that supported nested data natively.
 
 0.9.14
  - Change license to MIT (for GPL2 compatibility).
