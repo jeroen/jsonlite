@@ -27,6 +27,7 @@ Suggests:
     reshape2,
     testthat,
     knitr,
+    rmarkdown,
     httr,
     rjson,
     plyr
