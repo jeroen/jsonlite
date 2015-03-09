@@ -5,6 +5,7 @@ r_check_revdep: true
 
 apt_packages:
   - libv8-dev
+  - texlive-latex-base
 
 notifications:
   email:
