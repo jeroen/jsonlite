@@ -1,10 +1,9 @@
 language: r
 
 warnings_are_errors: true
-r_check_revdep: true
+#r_check_revdep: true
 
 apt_packages:
-  - libv8-dev
   - texlive-full
 
 notifications:
