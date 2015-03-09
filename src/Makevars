@@ -9,7 +9,7 @@ SOURCES = yajl/yajl.c yajl/yajl_alloc.c yajl/yajl_buf.c yajl/yajl_encode.c \
 
 # For development only (GNU/GCC specific not allowed on CRAN):
 # SOURCES = $(wildcard yajl/*.c *.c)
-PKG_CFLAGS= -Wall -pedantic
+# PKG_CFLAGS= -Wall -pedantic
 
 OBJECTS = $(SOURCES:.c=.o)
 
