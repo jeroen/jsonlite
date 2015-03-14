@@ -49,10 +49,14 @@ SEXP ParseValue(yajl_val node){
   if(YAJL_IS_INTEGER(node)){
     long long int val = YAJL_GET_INTEGER(node);
     /* see .Machine$integer.max in R */
-    if(val > 2147483647 || val < -2147483647){
-      return(ScalarReal(val));
+    if(val > 9e15 || val < -9e15){
+      char buf[32];
+      snprintf(buf, 32, "%lld", val);
+      return mkString(buf);
+    } else if(val > 2147483647 || val < -2147483647){
+      return ScalarReal(val);
     } else {
-      return(ScalarInteger(val));
+      return ScalarInteger(val);
     }
   }
   if(YAJL_IS_DOUBLE(node)){
