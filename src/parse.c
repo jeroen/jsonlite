@@ -51,7 +51,11 @@ SEXP ParseValue(yajl_val node){
     /* see .Machine$integer.max in R */
     if(val > 9e15 || val < -9e15){
       char buf[32];
+      #ifdef _WIN32
+      snprintf(buf, 32, "%I64d", val);
+      #else
       snprintf(buf, 32, "%lld", val);
+      #endif
       return mkString(buf);
     } else if(val > 2147483647 || val < -2147483647){
       return ScalarReal(val);
