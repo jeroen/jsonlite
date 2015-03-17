@@ -50,7 +50,8 @@ toJSON(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor",
 
 \item{na}{how to print NA values: must be one of 'null' or 'string'. Defaults are class specific}
 
-\item{auto_unbox}{automatically \code{\link{unbox}} all atomic vectors of length 1. It is usually safer to avoid this and instead use the \code{\link{unbox}} function to unbox individual elements.}
+\item{auto_unbox}{automatically \code{\link{unbox}} all atomic vectors of length 1. It is usually safer to avoid this and instead use the \code{\link{unbox}} function to unbox individual elements.
+An exception is that objects of class \code{AsIs} (i.e. wrapped in \code{I()}) are not automatically unboxed. This is a way to mark single values as length-1 arrays.}
 
 \item{digits}{max number of decimal digits to print for numeric values. Use \code{I()} to specify significant digits.}
 
