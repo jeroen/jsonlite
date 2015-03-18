@@ -48,8 +48,8 @@ SEXP ParseValue(yajl_val node){
   }
   if(YAJL_IS_INTEGER(node)){
     long long int val = YAJL_GET_INTEGER(node);
-    /* see .Machine$integer.max in R */
-    if(val > 9e15 || val < -9e15){
+    /* 2^53 is highest int stored as double without loss */
+    if(val > 9007199254740992 || val < -9007199254740992){
       char buf[32];
       #ifdef _WIN32
       snprintf(buf, 32, "%I64d", val);
@@ -57,6 +57,7 @@ SEXP ParseValue(yajl_val node){
       snprintf(buf, 32, "%lld", val);
       #endif
       return mkString(buf);
+    /* see .Machine$integer.max in R */
     } else if(val > 2147483647 || val < -2147483647){
       return ScalarReal(val);
     } else {
