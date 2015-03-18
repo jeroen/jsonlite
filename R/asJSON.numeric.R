@@ -1,5 +1,6 @@
 setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "AsIs"),
-  na = c("string", "null", "NA"), auto_unbox = FALSE, collapse = TRUE, ...) {
+  na = c("string", "null", "NA"), auto_unbox = FALSE, collapse = TRUE,
+  ..., keep_vec_names = FALSE) {
 
   na <- match.arg(na);
   na_as_string <- switch(na,
@@ -11,6 +12,12 @@ setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "
 
   # old R implementation
   # tmp <- num_to_char_R(x, digits, na_as_string);
+
+  if (isTRUE(keep_vec_names) && !is.null(names(x))) {
+    warn_keep_vec_names()
+    return(asJSON(as.list(x), digits = digits, use_signif = use_signif, na = na,
+      auto_unbox = TRUE, collapse = collapse, ...))
+  }
 
   # fast C implementation
   tmp <- if(is(x, "integer64")){

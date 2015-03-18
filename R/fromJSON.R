@@ -39,6 +39,10 @@
 #' @param digits max number of decimal digits to print for numeric values. Use \code{I()} to specify significant digits.
 #' @param force unclass/skip objects of classes with no defined JSON mapping
 #' @param pretty adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}
+#' @param keep_vec_names if \code{FALSE} (the default), named vectors will be converted to JSON arrays, dropping names.
+#'   If \code{TRUE}, they will be converted to JSON objects (with names), similar to named lists.
+#'   The \code{TRUE} setting is only for backward compatibility with RJSONIO, and a message will be printed each time a named vector is encountered.
+#'   This option will stop being supported in a future version of jsonlite.
 #' @param ... arguments passed on to class specific \code{print} methods
 #' @references Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{http://arxiv.org/abs/1403.2805}
 #' @examples # Stringify some data

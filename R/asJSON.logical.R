@@ -1,4 +1,6 @@
-setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "string", "NA"), auto_unbox = FALSE, ...) {
+setMethod("asJSON", "logical", function(x, collapse = TRUE,
+  na = c("null", "string", "NA"), auto_unbox = FALSE, ..., keep_vec_names = FALSE) {
+
   # validate arg
   na <- match.arg(na)
 
@@ -16,6 +18,11 @@ setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "stri
   #this is needed when !length(tmp) or all(is.na(tmp))
   if(!is.character(tmp)){
     tmp <- as.character(tmp);
+  }
+
+  if (isTRUE(keep_vec_names) && !is.null(names(x))) {
+    warn_keep_vec_names()
+    return(asJSON(as.list(x), collapse = collapse, na = na, auto_unbox = TRUE, ...))
   }
 
   if(isTRUE(auto_unbox) && length(tmp) == 1){
