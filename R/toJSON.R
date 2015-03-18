@@ -30,6 +30,11 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
     na <- NULL
   }
 
+  # Make sure that length-1 atomic vectors are in [], even when auto_unbox is TRUE
+  if (auto_unbox && length(x) == 1 && (is.atomic(x) || inherits(x, "POSIXt"))) {
+    auto_unbox <- FALSE
+  }
+
   # dispatch
   ans <- asJSON(x, dataframe = dataframe, Date = Date, POSIXt = POSIXt, factor = factor,
     complex = complex, raw = raw, matrix = matrix, auto_unbox = auto_unbox, digits = digits,
