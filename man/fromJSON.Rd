@@ -15,7 +15,8 @@ toJSON(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor",
   "ISO8601", "epoch", "mongo"), factor = c("string", "integer"),
   complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
   null = c("list", "null"), na = c("null", "string"), auto_unbox = FALSE,
-  digits = 4, pretty = FALSE, force = FALSE, ...)
+  digits = 4, pretty = FALSE, force = FALSE, keep_vec_names = FALSE,
+  ...)
 }
 \arguments{
 \item{txt}{a JSON string, URL or file}
@@ -58,6 +59,11 @@ An exception is that objects of class \code{AsIs} (i.e. wrapped in \code{I()}) a
 \item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}}
 
 \item{force}{unclass/skip objects of classes with no defined JSON mapping}
+
+\item{keep_vec_names}{if \code{FALSE} (the default), named vectors will be converted to JSON arrays, dropping names.
+If \code{TRUE}, they will be converted to JSON objects (with names), similar to named lists.
+The \code{TRUE} setting is only for backward compatibility with RJSONIO, and a message will be printed each time a named vector is encountered.
+This option will stop being supported in a future version of jsonlite.}
 }
 \description{
 These functions are used to convert between JSON data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}

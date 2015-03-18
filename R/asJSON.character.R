@@ -1,4 +1,5 @@
-setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "string", "NA"), auto_unbox = FALSE, ...) {
+setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "string", "NA"),
+  auto_unbox = FALSE, ..., keep_vec_names = FALSE) {
 
   # vectorized escaping
   tmp <- deparse_vector(x)
@@ -20,6 +21,11 @@ setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "st
     } else {
       tmp[missings] <- NA_character_
     }
+  }
+
+  if (isTRUE(keep_vec_names) && !is.null(names(x))) {
+    warn_keep_vec_names()
+    return(asJSON(as.list(x), collapse = collapse, na = na, auto_unbox = TRUE, ...))
   }
 
   if(isTRUE(auto_unbox) && length(tmp) == 1){
