@@ -1,5 +1,5 @@
 setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NULL,
-  matrix = c("rowmajor", "columnmajor"), auto_unbox = FALSE, ...) {
+  matrix = c("rowmajor", "columnmajor"), auto_unbox = FALSE, keep_vec_names = FALSE, ...) {
 
   #validate
   matrix <- match.arg(matrix);

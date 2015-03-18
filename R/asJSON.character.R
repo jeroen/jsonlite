@@ -1,4 +1,11 @@
-setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "string", "NA"), auto_unbox = FALSE, ...) {
+setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "string", "NA"),
+  auto_unbox = FALSE, keep_vec_names = FALSE, ...) {
+
+  # shiny legacy exception
+  if(isTRUE(keep_vec_names) && length(names(x))){
+    return(asJSON(as.list(x), digits = digits, use_signif = use_signif, na = na,
+      auto_unbox = TRUE, collapse = collapse, ...))
+  }
 
   # vectorized escaping
   tmp <- deparse_vector(x)

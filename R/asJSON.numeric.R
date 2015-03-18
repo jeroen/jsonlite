@@ -1,5 +1,11 @@
 setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "AsIs"),
-  na = c("string", "null", "NA"), auto_unbox = FALSE, collapse = TRUE, ...) {
+  na = c("string", "null", "NA"), auto_unbox = FALSE, collapse = TRUE, keep_vec_names = FALSE, ...) {
+
+  # shiny legacy exception
+  if(isTRUE(keep_vec_names) && length(names(x))){
+    return(asJSON(as.list(x), digits = digits, use_signif = use_signif, na = na,
+      auto_unbox = TRUE, collapse = collapse, ...))
+  }
 
   na <- match.arg(na);
   na_as_string <- switch(na,
