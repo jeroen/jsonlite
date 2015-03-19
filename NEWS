@@ -6,6 +6,7 @@
  - Fixed a memory leak in fromJSON.
  - I() forces boxing of a scalar when auto_unbox = TRUE.
  - Integer values higher than 2^53 are converted to string instead of double to prevent loss of precision.
+ - Secret toJSON argument 'keep_vec_names=TRUE' will mimic RJSONIO legacy behavior.
 
 0.9.14
  - Change license to MIT (for GPL2 compatibility).
