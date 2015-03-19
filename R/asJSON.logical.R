@@ -3,6 +3,7 @@ setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "stri
 
   # shiny legacy exception
   if(isTRUE(keep_vec_names) && length(names(x))){
+    warn_keep_vec_names()
     return(asJSON(as.list(x), collapse = collapse, na = na, auto_unbox = TRUE, ...))
   }
 

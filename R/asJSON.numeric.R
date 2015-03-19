@@ -3,6 +3,7 @@ setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "
 
   # shiny legacy exception
   if(isTRUE(keep_vec_names) && length(names(x))){
+    warn_keep_vec_names()
     return(asJSON(as.list(x), digits = digits, use_signif = use_signif, na = na,
       auto_unbox = TRUE, collapse = collapse, ...))
   }
