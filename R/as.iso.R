@@ -8,10 +8,13 @@ as.iso.Date <- function(x, ...) {
 }
 
 #' @method as.iso POSIXt
-as.iso.POSIXt <- function(x, UTC = FALSE, ...) {
+as.iso.POSIXt <- function(x, UTC = FALSE, format = NULL, ...) {
+  if(is.null(format)){
+    format <- ifelse(isTRUE(UTC), "%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%M:%S")
+  }
   if (isTRUE(UTC)) {
-    as.character(x, format = "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+    as.character(x, format = format, tz = "UTC")
   } else {
-    as.character(x, format = "%Y-%m-%dT%H:%M:%S")
+    as.character(x, format = format)
   }
 }

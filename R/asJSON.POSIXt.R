@@ -1,5 +1,5 @@
 setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch",
-  "mongo"), UTC = FALSE, digits, ...) {
+  "mongo"), UTC = FALSE, digits, format = NULL, ...) {
   # note: UTC argument doesn't seem to be working consistently maybe use ?format
   # instead of ?as.character
 
@@ -13,7 +13,7 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
     }
     return(asJSON(data.frame("$date" = floor(unclass(x) * 1000), check.names = FALSE), digits = 0, ...))
   } else if (POSIXt == "ISO8601") {
-    return(asJSON(as.iso(x, UTC = UTC), ...))
+    return(asJSON(as.iso(x, UTC = UTC, format = format), ...))
   } else if (POSIXt == "string") {
     return(asJSON(as.character(x), ...))
   } else if (POSIXt == "epoch") {
