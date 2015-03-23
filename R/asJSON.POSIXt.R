@@ -1,5 +1,5 @@
 setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch",
-  "mongo"), UTC = FALSE, digits, format = NULL, ...) {
+  "mongo"), UTC = FALSE, digits, time_format = NULL, ...) {
   # note: UTC argument doesn't seem to be working consistently maybe use ?format
   # instead of ?as.character
 
@@ -20,8 +20,8 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
   }
 
   # Strings
-  if(is.null(format)){
-    format <- if(POSIXt == "string"){
+  if(is.null(time_format)){
+    time_format <- if(POSIXt == "string"){
       ""
     } else if(isTRUE(UTC)){
       "%Y-%m-%dT%H:%M:%SZ"
@@ -31,8 +31,8 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
   }
 
   if (isTRUE(UTC)) {
-    asJSON(as.character(x, format = format, tz = "UTC"), ...)
+    asJSON(as.character(x, format = time_format, tz = "UTC"), ...)
   } else {
-    asJSON(as.character(x, format = format), ...)
+    asJSON(as.character(x, format = time_format), ...)
   }
 })
