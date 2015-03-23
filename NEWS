@@ -1,10 +1,10 @@
 0.9.15
  - Replaced RCurl dependency with the new curl package.
- - New push parser for incrementally parsing json from connection interfaces (e.g. files or urls).
+ - New push parser results in more efficient parsing from connection interfaces (e.g. files or urls).
  - The toMongo function has been removed. Use stream_out instead.
  - The `View` function will not be exposed in recent versions of rstudio that supported nested data natively.
  - Fixed a memory leak in fromJSON.
- - I() forces boxing of a scalar when auto_unbox = TRUE for RJSONIO compatibility.
+ - I() forces boxing of a scalar when 'auto_unbox = TRUE' for RJSONIO compatibility.
  - Integer values higher than 2^53 are converted to string instead of double to prevent loss of precision.
  - toJSON now supports 'keep_vec_names=TRUE' will mimic RJSONIO legacy behavior.
  - toJSON now supports 'time_format' argument to customize formatting of POSIXt strings.
