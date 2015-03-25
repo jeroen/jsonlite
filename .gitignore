@@ -17,7 +17,6 @@ vignettes/*.log
 vignettes/*.gz
 vignettes/*.aux
 vignettes/*.bbl
-vignettes/*.pdf
 man/as.scalar.Rd
 vignettes/framed.sty
 vignettes/.DS_Store
