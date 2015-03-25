@@ -9,13 +9,14 @@
 #include <Rinternals.h>
 #include <yajl_tree.h>
 
-SEXP ParseObject(yajl_val node);
-SEXP ParseArray(yajl_val node);
-SEXP ParseValue(yajl_val node);
+SEXP ParseObject(yajl_val node, int bigint);
+SEXP ParseArray(yajl_val node, int bigint);
+SEXP ParseValue(yajl_val node, int bigint);
 
-SEXP R_parse(SEXP x) {
+SEXP R_parse(SEXP x, SEXP bigint_as_char) {
     /* get data from R */
     const char* json = translateCharUTF8(asChar(x));
+    const int bigint = asLogical(bigint_as_char);
 
     /* ignore BOM as suggested by RFC */
     if(json[0] == '\xEF' && json[1] == '\xBB' && json[2] == '\xBF'){
@@ -31,12 +32,12 @@ SEXP R_parse(SEXP x) {
     if (!node) {
       error(errbuf);
     }
-    SEXP out = ParseValue(node);
+    SEXP out = ParseValue(node, bigint);
     yajl_tree_free(node);
     return(out);
 }
 
-SEXP ParseValue(yajl_val node){
+SEXP ParseValue(yajl_val node, int bigint){
   if(YAJL_IS_NULL(node)){
     return R_NilValue;
   }
@@ -49,7 +50,7 @@ SEXP ParseValue(yajl_val node){
   if(YAJL_IS_INTEGER(node)){
     long long int val = YAJL_GET_INTEGER(node);
     /* 2^53 is highest int stored as double without loss */
-    if(val > 9007199254740992 || val < -9007199254740992){
+    if(bigint && (val > 9007199254740992 || val < -9007199254740992)){
       char buf[32];
       #ifdef _WIN32
       snprintf(buf, 32, "%I64d", val);
@@ -79,32 +80,32 @@ SEXP ParseValue(yajl_val node){
     return(ScalarLogical(0));
   }
   if(YAJL_IS_OBJECT(node)){
-    return(ParseObject(node));
+    return(ParseObject(node, bigint));
   }
   if(YAJL_IS_ARRAY(node)){
-    return(ParseArray(node));
+    return(ParseArray(node, bigint));
   }
   error("Invalid YAJL node type.");
 }
 
-SEXP ParseObject(yajl_val node){
+SEXP ParseObject(yajl_val node, int bigint){
   int len = YAJL_GET_OBJECT(node)->len;
   SEXP keys = PROTECT(allocVector(STRSXP, len));
   SEXP vec = PROTECT(allocVector(VECSXP, len));
   for (int i = 0; i < len; ++i) {
     SET_STRING_ELT(keys, i, mkCharCE(YAJL_GET_OBJECT(node)->keys[i], CE_UTF8));
-    SET_VECTOR_ELT(vec, i, ParseValue(YAJL_GET_OBJECT(node)->values[i]));
+    SET_VECTOR_ELT(vec, i, ParseValue(YAJL_GET_OBJECT(node)->values[i], bigint));
   }
   setAttrib(vec, R_NamesSymbol, keys);
   UNPROTECT(2);
   return vec;
 }
 
-SEXP ParseArray(yajl_val node){
+SEXP ParseArray(yajl_val node, int bigint){
   int len = YAJL_GET_ARRAY(node)->len;
   SEXP vec = PROTECT(allocVector(VECSXP, len));
   for (int i = 0; i < len; ++i) {
-    SET_VECTOR_ELT(vec, i, ParseValue(YAJL_GET_ARRAY(node)->values[i]));
+    SET_VECTOR_ELT(vec, i, ParseValue(YAJL_GET_ARRAY(node)->values[i], bigint));
   }
   UNPROTECT(1);
   return vec;

@@ -99,7 +99,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
 }
 
 fromJSON_string <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, validate = TRUE, ...){
+  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, validate = TRUE, bigint_as_char = FALSE, ...){
 
   if(!missing(unicode)){
     message("Argument unicode has been deprecated. YAJL always parses unicode.")
@@ -110,7 +110,7 @@ fromJSON_string <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simp
   }
 
   # parse
-  obj <- parseJSON(txt)
+  obj <- parseJSON(txt, bigint_as_char)
 
   # post processing
   if (any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))) {

@@ -3,7 +3,7 @@
  - Added push parser for more efficient parsing from connection interfaces (e.g. files or urls).
  - The toMongo function has been removed. Use stream_out instead.
  - The `View` function will not be exposed in recent versions of rstudio that supported nested data natively.
- - Integer values higher than 2^53 are converted to string instead of double to prevent loss of precision.
+ - Add hidden bigint_as_char argument in fromJSON
  - Fixed a memory leak in fromJSON.
  - I() forces boxing of a scalar when 'auto_unbox = TRUE' for RJSONIO compatibility.
  - toJSON now supports 'keep_vec_names=TRUE' will mimic RJSONIO legacy behavior.
