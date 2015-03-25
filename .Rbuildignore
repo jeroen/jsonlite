@@ -15,6 +15,7 @@ vignettes/*.log$
 vignettes/*.gz$
 vignettes/*.aux$
 vignettes/*.bbl$
+vignettes/*.pdf$
 vignettes/framed.sty$
 ^README.md$
 ^tidy.R$
