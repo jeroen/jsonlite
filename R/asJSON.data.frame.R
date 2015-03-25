@@ -1,6 +1,6 @@
 setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), collapse = TRUE,
   dataframe = c("rows", "columns", "values"), complex = "string", oldna = NULL, rownames = NULL,
-  keep_vec_names = FALSE, ...) {
+  keep_vec_names = FALSE, indent = 0, ...) {
 
   # Validate some args
   dataframe <- match.arg(dataframe)
@@ -32,7 +32,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   # Column based is same as list. Do not pass collapse arg because it is a named list.
   if (dataframe == "columns") {
     return(asJSON(as.list(x), is_df = TRUE, na = na, dataframe = dataframe,
-      complex = complex, rownames = rownames, ...))
+      complex = complex, rownames = rownames, indent = indent, ...))
   }
 
   # Determine "oldna". This is needed when the data frame contains a list column
@@ -49,7 +49,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
 
   # no records
   if (!nrow(x)) {
-    return(asJSON(list(), collapse=collapse))
+    return(asJSON(list(), collapse=collapse, indent=indent))
   }
 
   # Convert raw vectors
@@ -69,7 +69,8 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   #create a matrix of json elements
   dfnames <- deparse_vector(cleannames(names(x)))
   out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, complex = complex, na = na,
-    oldna = oldna, rownames = rownames, dataframe = dataframe, ..., USE.NAMES = FALSE)
+    oldna = oldna, rownames = rownames, dataframe = dataframe, indent = indent + 2,
+    ..., USE.NAMES = FALSE)
 
   # This would be another way of doing the missing values
   # This does not require the individual classes to support na="NA"
@@ -85,15 +86,15 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
 
   #turn the matrix into json records
   tmp <- if(dataframe == "rows") {
-    apply(out, 1, collapse_object, x = dfnames);
+    apply(out, 1, collapse_object, x = dfnames, indent = indent + 2);
   } else {
     # for dataframe = "values"
-    apply(out, 1, collapse);
+    apply(out, 1, collapse, indent = indent);
   }
 
   #collapse
   if(isTRUE(collapse)){
-    collapse(tmp)
+    collapse(tmp, inner = FALSE, indent = indent)
   } else {
     tmp
   }

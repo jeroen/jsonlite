@@ -33,7 +33,7 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
   # dispatch
   ans <- asJSON(x, dataframe = dataframe, Date = Date, POSIXt = POSIXt, factor = factor,
     complex = complex, raw = raw, matrix = matrix, auto_unbox = auto_unbox, digits = digits,
-    na = na, null = null, force = force, ...)
+    na = na, null = null, force = force, indent = 0, ...)
 
   #prettify
   if (isTRUE(pretty)) {
