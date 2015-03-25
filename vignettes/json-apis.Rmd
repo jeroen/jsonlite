@@ -1,8 +1,14 @@
-<!--
-\usepackage[utf8]{inputenc}
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Fetching JSON data from REST APIs}
--->
+---
+title: "The curl package: a modern R interface to libcurl"
+date: "2015-03-25"
+output:
+  html_document:
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Fetching JSON data from REST APIs}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
 
 
 
@@ -31,36 +37,36 @@ paste(format(gg_issues$user$login), ":", gg_issues$title)
 ```
 
 ```
- [1] "Henrik-P      : 'guides' documentation, possible improvement in last example"                                    
- [2] "richierocks   : scatterplots of categorical variables cause 'row names were found from a short variable' warning"
- [3] "lselzer       : created fortify.glm"                                                                             
- [4] "petrbouchal   : scale_colour_manual fails when elements of named matrix are passed to values"                    
- [5] "smirarab      : stat_ecdf plots extra points"                                                                    
- [6] "dorvak        : Suggestion: Geom replace infix operator"                                                         
- [7] "rpruim        : documentation of fun.data (in stat_summary) incorrect?"                                          
- [8] "ttuggle       : Memory overflow with scale_x_discrete()"                                                         
- [9] "pengyu        : Added ..Name to each prototype so that str.proto() can show the names correctly"                 
-[10] "pharaveej     : ggplot - geom_step error"                                                                        
-[11] "noamross      : New theme option to put panel/grid on top of data"                                               
-[12] "krlmlr        : geom_boxplot with continuous x and without group aesthetics"                                     
-[13] "lccanon       : rqss in stat_quantile ignore the quantile with large number of values"                           
-[14] "bergsmat      : Geom not exported?"                                                                              
-[15] "iagomosqueira : size in geom_point using variable with all but 1 as NAs"                                         
-[16] "xsaintmleux   : allow ggplot_build to return an additional value: the processed data as ..."                     
-[17] "mkcor         : Edit warning message to reflect intuitive use"                                                   
-[18] "tsibley       : Rebased and redocumented version of PR #744"                                                     
-[19] "BrianDiggs    : sqrt_trans, scale limit expansion, and missing breaks"                                           
-[20] "marvel64      : Documentation for geom_boxplot"                                                                  
-[21] "blaquans      : Would it be possible to add notes to a ggplot graph ?"                                           
-[22] "jiho          : New theme_void(), completely empty"                                                              
-[23] "veraanadi     : Add new function geom_curve"                                                                     
-[24] "lionelgit     : Facet titles"                                                                                    
-[25] "kent37        : Error in stat_density example text"                                                              
-[26] "tonytonov     : geom_violin throws error on data with zero variance"                                             
-[27] "cboettig      : scales=\"free\" on facet_grid no longer has any effect on `y` axis within rows"                  
-[28] "baptiste      : check.class argument to ggsave"                                                                  
-[29] "lionelgit     : Coord expand"                                                                                    
-[30] "croach        : Fix for bad URL in qplot docs"                                                                   
+ [1] "bakerwm         : error with facet_grid(), but it's OK for facet_wrap()."                                     
+ [2] "seaaan          : Fixed two typos in documentation"                                                           
+ [3] "naught101       : Inconsistent facet labeller behaviour when using characters to facet"                       
+ [4] "beanumber       : Lyndon Johnson's name is misspelled in \"presidential\""                                    
+ [5] "wnstnsmth       : Width of error bars is calculated by the number of groups and not by the `width` argument. "
+ [6] "richierocks     : Facetting fails with \"undefined columns selected\" error for non-standard variable names"  
+ [7] "raidsteel       : stat_contour fill - 2 issues"                                                               
+ [8] "ddiez           : ggplot2 requires X11 in OSX causes R to crash when closing it"                              
+ [9] "PeterNSteinmetz : Order of arguments in documentation of geom_vline"                                          
+[10] "Tungurahua      : mapping slot is empty when aes(x,y) is declared in geom_polygon()"                          
+[11] "angeloklin      : OHLC and Themes"                                                                            
+[12] "ghaarsma        : stat_bin() does not seem to work for integer data"                                          
+[13] "marvel64        : x axis labels wrong using facet_grid"                                                       
+[14] "chappers        : Fixed typo in help file for scale-continuous.R"                                             
+[15] "lbergelson      : ggplot2 installation fails on R 3.0.2"                                                      
+[16] "Blahah          : typo in annotate docs"                                                                      
+[17] "trufanov-nok    : Typo in diamonds.Rd"                                                                        
+[18] "ajschumacher    : typo: \"funciton\" to \"function\""                                                         
+[19] "elbamos         : vline not working as annotation"                                                            
+[20] "zachcp          : Documentation: link in coord_map is incorrect"                                              
+[21] "beamgau         : adds flip.legend option for boxplot"                                                        
+[22] "stevencb        : geom_vline requires converting to numeric when intercept is a POSIXct"                      
+[23] "DarioS          : cut_number Doesn't Work With Duplicated Values"                                             
+[24] "schloerke       : options(OutDec= \",\") and aes_string()"                                                    
+[25] "thomasp85       : Custom geom with custom grob not working"                                                   
+[26] "alex23lemm      : Update stat_summary fun.data documentation"                                                 
+[27] "jonadler        : ggplotGrob sometimes plots blank objects"                                                   
+[28] "gaborcsardi     : Need to explicitly import density() from stats?"                                            
+[29] "Robinlovelace   : Buffer for text option"                                                                     
+[30] "annoporci       : labs() does not process argument NULL"                                                      
 ```
 
 ## CitiBike NYC
@@ -161,17 +167,17 @@ filings[1:10, c("organization.sub_name", "organization.city", "totrevenue")]
 ```
 
 ```
-               organization.sub_name organization.city totrevenue
-1  KAISER FOUNDATION HEALTH PLAN INC          PORTLAND  4.015e+10
-2  KAISER FOUNDATION HEALTH PLAN INC          PORTLAND  3.779e+10
-3        KAISER FOUNDATION HOSPITALS          PORTLAND  1.854e+10
-4        KAISER FOUNDATION HOSPITALS          PORTLAND  1.798e+10
-5    PARTNERS HEALTHCARE SYSTEM INC             BOSTON  1.045e+10
-6    PARTNERS HEALTHCARE SYSTEM INC             BOSTON  9.637e+09
-7                     DIGNITY HEALTH           PHOENIX  9.212e+09
-8   THRIVENT FINANCIAL FOR LUTHERANS       MINNEAPOLIS  8.507e+09
-9                         UPMC GROUP        PITTSBURGH  7.698e+09
-10      CLEVELAND CLINIC FOUNDATION          CLEVELAND  7.011e+09
+               organization.sub_name organization.city  totrevenue
+1  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 40148558254
+2  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 37786011714
+3        KAISER FOUNDATION HOSPITALS           OAKLAND 18543043972
+4        KAISER FOUNDATION HOSPITALS           OAKLAND 17980030355
+5    PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN 10452560305
+6    PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN  9636630380
+7                     DIGNITY HEALTH     SAN FRANCISCO  9484767832
+8                     DIGNITY HEALTH     SAN FRANCISCO  9211708211
+9   THRIVENT FINANCIAL FOR LUTHERANS       MINNEAPOLIS  8507178655
+10                        UPMC GROUP        PITTSBURGH  8298512589
 ```
 
 
@@ -241,12 +247,12 @@ reviews[1:5, c("display_title", "byline", "mpaa_rating")]
 ```
 
 ```
-                   display_title              byline mpaa_rating
-1                        Boyhood      Manohla Dargis           R
-2 Dawn of the Planet of the Apes         A. O. Scott       PG-13
-3                The Empty Hours Jeannette Catsoulis        <NA>
-4                      Gabrielle      Stephen Holden           R
-5                       Wrinkles Jeannette Catsoulis          NR
+     display_title              byline mpaa_rating
+1 Valley of Saints      Stephen Holden        <NA>
+2            Selma         A. O. Scott       PG-13
+3   Into the Woods      Stephen Holden          PG
+4  Song of the Sea Jeannette Catsoulis          PG
+5         Top Five      Manohla Dargis           R
 ```
 
 ## CrunchBase
@@ -275,12 +281,18 @@ print(drone_bills[1:5, c("title", "state", "chamber", "type")])
 ```
 
 ```
-                                     title state chamber type
-1 "An Act relating to a prohibition on the    ak   upper bill
-2            DRONE SURVEIL-LAW ENFORCEMENT    il   upper bill
-3 Sets forth certain standards to be follo    nj   upper bill
-4  Unmanned aerial vehicle regulation act.    ks   lower bill
-5 Prohibiting the use of drones by law enf    ks   lower bill
+                                     title state chamber
+1 Allowing the filing of a special allegat    wa   upper
+2 Relating to: criminal procedure and prov    wi   upper
+3 FREEDOM FROM UNWARRANTED SURVEILLANCE AC    nm   upper
+4 REQUESTING THE STATE DEPARTMENT OF TRANS    hi   lower
+5 REQUESTING THE STATE DEPARTMENT OF TRANS    hi   lower
+                   type
+1                  bill
+2                  bill
+3                  bill
+4 concurrent resolution
+5            resolution
 ```
 
 ```r
@@ -292,13 +304,13 @@ summary(wordcount)
 ```
 
 ```
-     count             day               raw_count     
- Min.   :   1.0   Min.   :1996-01-02   Min.   :   1.0  
- 1st Qu.:   3.0   1st Qu.:2000-10-26   1st Qu.:   3.0  
- Median :   8.0   Median :2005-07-16   Median :   8.0  
- Mean   :  25.1   Mean   :2005-06-01   Mean   :  25.1  
- 3rd Qu.:  21.0   3rd Qu.:2009-11-28   3rd Qu.:  21.0  
- Max.   :1835.0   Max.   :2014-08-05   Max.   :1835.0  
+     count              day               raw_count      
+ Min.   :   1.00   Min.   :1996-01-02   Min.   :   1.00  
+ 1st Qu.:   3.00   1st Qu.:2000-12-05   1st Qu.:   3.00  
+ Median :   8.00   Median :2005-10-04   Median :   8.00  
+ Mean   :  25.41   Mean   :2005-08-04   Mean   :  25.41  
+ 3rd Qu.:  21.00   3rd Qu.:2010-03-03   3rd Qu.:  21.00  
+ Max.   :1835.00   Max.   :2015-03-24   Max.   :1835.00  
 ```
 
 ```r
@@ -310,8 +322,8 @@ subset(legislators$results, select=c("last_name", "chamber", "term_start", "twit
 
 ```
   last_name chamber term_start      twitter_id
-1    Lummis   house 2013-01-03   CynthiaLummis
-2      Enzi  senate 2009-01-06     SenatorEnzi
+1    Lummis   house 2015-01-06   CynthiaLummis
+2      Enzi  senate 2015-01-06     SenatorEnzi
 3  Barrasso  senate 2013-01-03 SenJohnBarrasso
 ```
 
@@ -349,15 +361,15 @@ substring(tweets$text, 1, 100)
 ```
 
 ```
- [1] "LAST CHANCE TO REGISTER FOR EARL (15-17 September, London) http://t.co/7ZT7cKGP8N #rstats"
- [2] "Looking For Life http://t.co/luFwXnyF78 #rstats"                                          
- [3] "Adding the SPSS MEAN.n Function to R http://t.co/gTw60cxWEd #rstats"                      
- [4] "Brazilian Presidential Election http://t.co/G08Tu63YFn #rstats"                           
- [5] "Hortonworks Seminar Series: The Modern Data Architecture http://t.co/M4A1S3SRMy #rstats"  
- [6] "Introducing simmer: Discrete Event Simulation for R http://t.co/vBImwcKP3F #rstats"       
- [7] "Notifications from R http://t.co/KaQqzFKd6F #rstats"                                      
- [8] "rNOMADS 2.0.2 released http://t.co/Bcy2D1QBgk #rstats"                                    
- [9] "New R job: Senior Operations Research Consultant http://t.co/Fimizb8mwg #rstats #jobs"    
-[10] "httr 0.5 http://t.co/hGWvZxrhdu #rstats"                                                  
+ [1] "How to Make a Histogram with ggvis in R http://t.co/ebV3FUCIqU #rstats"                              
+ [2] "Short R tutorial: Scraping Javascript Generated Data with R http://t.co/ph9JXVef6E #rstats"          
+ [3] "A Speed Comparison Between Flexible Linear Regression Alternatives in R http://t.co/EQEKxcJaNm #rsta"
+ [4] "2015-02 New Zealand’s Climate Data in R – An Introduction to clifro http://t.co/Q147czEoYt #rstats"  
+ [5] "R Package 'smbinning': Optimal Binning for Scoring Modeling http://t.co/a0Yj5WvcNN #rstats"          
+ [6] "Spliting a Node in a Tree http://t.co/aEwdNsy2gG #rstats"                                            
+ [7] "Hash Table Performance in R: Part I http://t.co/BeQC5OYMAr #rstats"                                  
+ [8] "Bio7 2.0 for Windows 32 bit Release http://t.co/KyisKYN4uf #rstats"                                  
+ [9] "Welcome http://t.co/r17LZOvA71 #rstats"                                                              
+[10] "Accelerating the Random Forest Algorithm, I:  the Algorithm http://t.co/mKhZgVaFoS #rstats"          
 ```
 

@@ -1,7 +1,15 @@
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Combining pages of JSON data with jsonlite}
--->
+---
+title: "The curl package: a modern R interface to libcurl"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Combining pages of JSON data with jsonlite}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
 
 ```{r echo=FALSE}
 library(knitr)

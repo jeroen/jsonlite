@@ -1,7 +1,15 @@
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Combining pages of JSON data with jsonlite}
--->
+---
+title: "The curl package: a modern R interface to libcurl"
+date: "2015-03-25"
+output:
+  html_document:
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Combining pages of JSON data with jsonlite}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
 
 
 
@@ -40,17 +48,17 @@ mydata0$filings[1:10, c("organization.sub_name", "organization.city", "totrevenu
 ```
 
 ```
-               organization.sub_name organization.city totrevenue
-1  KAISER FOUNDATION HEALTH PLAN INC          PORTLAND  4.015e+10
-2  KAISER FOUNDATION HEALTH PLAN INC          PORTLAND  3.779e+10
-3        KAISER FOUNDATION HOSPITALS          PORTLAND  1.854e+10
-4        KAISER FOUNDATION HOSPITALS          PORTLAND  1.798e+10
-5    PARTNERS HEALTHCARE SYSTEM INC             BOSTON  1.045e+10
-6    PARTNERS HEALTHCARE SYSTEM INC             BOSTON  9.637e+09
-7                     DIGNITY HEALTH           PHOENIX  9.212e+09
-8   THRIVENT FINANCIAL FOR LUTHERANS       MINNEAPOLIS  8.507e+09
-9                         UPMC GROUP        PITTSBURGH  7.698e+09
-10      CLEVELAND CLINIC FOUNDATION          CLEVELAND  7.011e+09
+               organization.sub_name organization.city  totrevenue
+1  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 40148558254
+2  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 37786011714
+3        KAISER FOUNDATION HOSPITALS           OAKLAND 18543043972
+4        KAISER FOUNDATION HOSPITALS           OAKLAND 17980030355
+5    PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN 10452560305
+6    PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN  9636630380
+7                     DIGNITY HEALTH     SAN FRANCISCO  9484767832
+8                     DIGNITY HEALTH     SAN FRANCISCO  9211708211
+9   THRIVENT FINANCIAL FOR LUTHERANS       MINNEAPOLIS  8507178655
+10                        UPMC GROUP        PITTSBURGH  8298512589
 ```
 
 To analyze or visualize these data, we need to combine the pages into a single dataset. We can do this with the `rbind.pages` function. Note that in this example, the actual data is contained by the `filings` field:

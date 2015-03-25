@@ -1,8 +1,14 @@
-<!--
-\usepackage[utf8]{inputenc}
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Fetching JSON data from REST APIs}
--->
+---
+title: "The curl package: a modern R interface to libcurl"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Fetching JSON data from REST APIs}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
 
 ```{r echo=FALSE}
 library(knitr)
