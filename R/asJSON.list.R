@@ -28,7 +28,9 @@ setMethod("asJSON", "list", function(x, collapse = TRUE, na = NULL, oldna = NULL
 
   # note we are NOT passing on the container argument.
   tmp <- if(is_df && auto_unbox){
-    vapply(x, function(y, ...){asJSON(y, auto_unbox = is.list(y), ...)}, character(1), na = na, indent = indent + 2, ...)
+    vapply(x, function(y, ...) {
+      asJSON(y, auto_unbox = is.list(y), ...)
+    }, character(1), na = na, indent = indent + 2, ...)
   } else {
     vapply(x, asJSON, character(1), na = na, auto_unbox = auto_unbox, indent = indent + 2, ...)
   }
