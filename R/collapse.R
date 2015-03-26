@@ -1,13 +1,14 @@
 collapse_r <- function(x, inner = TRUE, indent = 0){
   if (length(x) == 0) return("[]")
+  # no pretty output
+  if (is.na(indent)) return(paste0("[", paste0(x, collapse = ","), "]"))
   if (inner) {
-    s1 <- "["
-    s2 <- "]"
+    paste0("[", paste0(x, collapse = ", "), "]")
   } else {
     s1 <- "[\n"
     s2 <- paste0("\n", spaces(indent), "]")
+    paste0(s1, paste0(spaces(indent + 2), x, collapse = ",\n"), s2)
   }
-  paste0(s1, paste0(if (!inner) spaces(indent + 2), x, collapse = if (inner) ', ' else ',\n'), s2)
 }
 
 #' @useDynLib jsonlite C_collapse_array
