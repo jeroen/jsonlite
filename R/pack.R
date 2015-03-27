@@ -32,7 +32,7 @@ pack <- function(obj, ...) {
       double = as.vector(unclass(obj), mode = "double"),
       character = as.vector(unclass(obj), mode = "character"),
       complex = as.vector(unclass(obj), mode = "complex"),
-      list = unname(lapply(obj, pack, ...)),
+      list = unname(lapply(unclass(obj), pack, ...)),
       pairlist = unname(lapply(as.vector(obj, mode = "list"), pack, ...)),
       closure = unname(lapply(obj, pack, ...)),
       builtin = as.scalar(base64_encode(serialize(unclass(obj), NULL))),
