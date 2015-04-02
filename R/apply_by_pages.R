@@ -7,15 +7,15 @@ apply_by_pages <- function(x, FUN, pagesize, verbose, ...){
   for(i in seq_len(npages)){
     from <- pagesize * (i-1) + 1;
     to <- pagesize * i
-    if(verbose) message("Writing ", pagesize, " lines (",i ,").")
     FUN(x[from:to, ,drop = FALSE], ...)
+    if(verbose) cat("\rProcessed", i * pagesize, "rows...")
   }
 
   if(lastpage){
     from <- nr - lastpage + 1;
-    if(verbose) message("Writing ", lastpage, " lines (", npages + 1, ").")
     FUN(x[from:nr, ,drop = FALSE], ...)
   }
+  if(verbose) cat("\rComplete! Processed total of", nr, "rows.\n")
   invisible();
 }
 
