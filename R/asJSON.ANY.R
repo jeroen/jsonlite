@@ -17,6 +17,8 @@ setMethod("asJSON", "ANY", function(x, force = FALSE, ...) {
   } else if (isTRUE(force)) {
     return(asJSON(NULL))
     warning("No method asJSON S3 class: ", class(x))
+  } else if (is.function(force)) {
+    force(x, ...)
   } else {
     # If even that doesn't work, we give up.
     stop("No method asJSON S3 class: ", class(x))
