@@ -1,4 +1,4 @@
-collapse_r <- function(x, inner = TRUE, indent = 0){
+collapse_r <- function(x, inner = TRUE, indent = 0L){
   if (length(x) == 0) return("[]")
   # no pretty output
   if (is.na(indent)) return(paste0("[", paste0(x, collapse = ","), "]"))
@@ -7,7 +7,7 @@ collapse_r <- function(x, inner = TRUE, indent = 0){
   } else {
     s1 <- "[\n"
     s2 <- paste0("\n", spaces(indent), "]")
-    paste0(s1, paste0(spaces(indent + 2), x, collapse = ",\n"), s2)
+    paste0(s1, paste0(spaces(indent + 2L), x, collapse = ",\n"), s2)
   }
 }
 
@@ -19,5 +19,5 @@ collapse_c <- function(x) {
 collapse <- collapse_r
 
 spaces <- function(n, space = ' ') {
-  if (n <= 0) '' else paste0(rep(space, n), collapse = '')
+  if (n <= 0L) '' else paste0(rep(space, n), collapse = '')
 }

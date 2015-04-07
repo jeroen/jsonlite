@@ -1,4 +1,4 @@
-collapse_object_r <- function(x, y, indent = 0){
+collapse_object_r <- function(x, y, indent = 0L){
   stopifnot(length(x) == length(y))
   missings <- is.na(y)
   if (any(missings)) {
@@ -11,7 +11,7 @@ collapse_object_r <- function(x, y, indent = 0){
   }
   s1 <- "{\n"
   s2 <- paste0("\n", spaces(indent), "}")
-  paste0(s1, paste(spaces(indent + 2), sprintf("%s: %s", x, y), sep = "", collapse = ",\n"), s2)
+  paste0(s1, paste(spaces(indent + 2L), sprintf("%s: %s", x, y), sep = "", collapse = ",\n"), s2)
 }
 
 #' @useDynLib jsonlite C_collapse_object

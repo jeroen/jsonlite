@@ -1,6 +1,6 @@
 setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), collapse = TRUE,
   dataframe = c("rows", "columns", "values"), complex = "string", oldna = NULL, rownames = NULL,
-  keep_vec_names = FALSE, indent = 0, ...) {
+  keep_vec_names = FALSE, indent = NA_integer_, ...) {
 
   # Validate some args
   dataframe <- match.arg(dataframe)
@@ -69,7 +69,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   #create a matrix of json elements
   dfnames <- deparse_vector(cleannames(names(x)))
   out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, complex = complex, na = na,
-    oldna = oldna, rownames = rownames, dataframe = dataframe, indent = indent + 2,
+    oldna = oldna, rownames = rownames, dataframe = dataframe, indent = indent + 2L,
     ..., USE.NAMES = FALSE)
 
   # This would be another way of doing the missing values
@@ -86,7 +86,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
 
   #turn the matrix into json records
   tmp <- if(dataframe == "rows") {
-    apply(out, 1, collapse_object, x = dfnames, indent = indent + 2);
+    apply(out, 1, collapse_object, x = dfnames, indent = indent + 2L);
   } else {
     # for dataframe = "values"
     apply(out, 1, collapse, indent = indent);
