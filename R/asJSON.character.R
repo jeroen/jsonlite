@@ -1,5 +1,5 @@
 setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "string", "NA"),
-  auto_unbox = FALSE, keep_vec_names = FALSE, ...) {
+  auto_unbox = FALSE, keep_vec_names = FALSE, indent = NA_integer_, ...) {
 
   # shiny legacy exception
   if(isTRUE(keep_vec_names) && length(names(x))){
@@ -36,7 +36,7 @@ setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "st
 
   # this is almost always true, except for class 'scalar'
   if (isTRUE(collapse)) {
-    collapse(tmp)
+    collapse(tmp, indent = indent)
   } else {
     tmp
   }
