@@ -15,8 +15,13 @@ collapse_object_r <- function(x, y, indent = 0L){
 }
 
 #' @useDynLib jsonlite C_collapse_object
-collapse_object_c <- function(x, y) {
-  .Call(C_collapse_object, x, y)
+collapse_object_c <- function(x, y, indent = 0L) {
+  missings <- is.na(y)
+  if (any(missings)) {
+    x <- x[!missings]
+    y <- y[!missings]
+  }
+  .Call(C_collapse_object, x, y, indent)
 }
 
-collapse_object <- collapse_object_r
+collapse_object <- collapse_object_c

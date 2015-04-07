@@ -12,11 +12,11 @@ collapse_r <- function(x, inner = TRUE, indent = 0L){
 }
 
 #' @useDynLib jsonlite C_collapse_array
-collapse_c <- function(x) {
-  .Call(C_collapse_array, x)
+collapse_c <- function(x, inner = TRUE, indent = 0L) {
+  .Call(C_collapse_array, x, inner, indent)
 }
 
-collapse <- collapse_r
+collapse <- collapse_c
 
 spaces <- function(n, space = ' ') {
   if (n <= 0L) '' else paste0(rep(space, n), collapse = '')
