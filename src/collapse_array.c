@@ -54,7 +54,7 @@ SEXP C_collapse_array_indent(SEXP x, SEXP inner, SEXP indent) {
   if (len == 0) return mkString("[]");
 
   int len2; // extra length needed for "[]" and separators such as ", "
-  char *sp, *sp2; // spaces for indentation
+  char *sp = C_spaces(ind), *sp2 = C_spaces(ind + 2); // spaces for indentation
 
   if (asLogical(inner)) {
     // inner array: a comma and a space after each x[i] except the last x[i]
@@ -66,8 +66,6 @@ SEXP C_collapse_array_indent(SEXP x, SEXP inner, SEXP indent) {
     // the last x[i], 1 "\n" and ind spaces before the outer ], 1 "\n" after the
     // outer [
     len2 = (ind + 4) * len + ind;
-    sp = C_spaces(ind);
-    sp2 = C_spaces(ind + 2);
   }
   size_t nchar_total = 0;
 
@@ -120,5 +118,7 @@ SEXP C_collapse_array_indent(SEXP x, SEXP inner, SEXP indent) {
   SET_STRING_ELT(out, 0, mkCharCE(olds,  CE_UTF8));
   UNPROTECT(1);
   free(olds);
+  free(sp);
+  free(sp2);
   return out;
 }

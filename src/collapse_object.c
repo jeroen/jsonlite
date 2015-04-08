@@ -64,7 +64,6 @@ SEXP C_collapse_object_indent(SEXP x, SEXP y, SEXP indent) {
   if (len0 != length(y))
     error("x and y must same length.");
 
-  char *sp, *sp2;
   size_t nchar_total = 0;
   int len = 0; // real length (after removing NAs)
   int i1 = -1, i2 = 0;
@@ -79,11 +78,10 @@ SEXP C_collapse_object_indent(SEXP x, SEXP y, SEXP indent) {
   }
   if (len == 0) return mkString("{}");
 
+  char *sp = C_spaces(ind), *sp2 = C_spaces(ind + 2); // spaces for indentation
   // (ind + 2 + 4): ind + 2 for indent spaces; 4 for ": " and ",\n"
   // (no ",\n" for the last x[i])
   int len2 = (ind + 6) * len - 2;
-  sp = C_spaces(ind);
-  sp2 = C_spaces(ind + 2);
   len2 += 2 + ind; // two \n + spaces: "{\nkey: value\n__}"
 
   char *s = malloc(nchar_total + len2 + 3); // 3 for "{}\0"
@@ -139,5 +137,7 @@ SEXP C_collapse_object_indent(SEXP x, SEXP y, SEXP indent) {
   SET_STRING_ELT(out, 0, mkCharCE(olds,  CE_UTF8));
   UNPROTECT(1);
   free(olds);
+  free(sp);
+  free(sp2);
   return out;
 }
