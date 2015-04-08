@@ -14,14 +14,15 @@ collapse_object_r <- function(x, y, indent = 0L){
   paste0(s1, paste(spaces(indent + 2L), sprintf("%s: %s", x, y), sep = "", collapse = ",\n"), s2)
 }
 
-#' @useDynLib jsonlite C_collapse_object
+#' @useDynLib jsonlite C_collapse_object C_collapse_object_indent
 collapse_object_c <- function(x, y, indent = 0L) {
+  if (is.na(indent)) return(.Call(C_collapse_object, x, y))
   missings <- is.na(y)
   if (any(missings)) {
     x <- x[!missings]
     y <- y[!missings]
   }
-  .Call(C_collapse_object, x, y, indent)
+  .Call(C_collapse_object_indent, x, y, indent)
 }
 
 collapse_object <- collapse_object_c

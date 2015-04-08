@@ -2,6 +2,40 @@
 #include <Rinternals.h>
 #include <stdlib.h>
 
+SEXP C_collapse_array(SEXP x) {
+  if (!isString(x))
+    error("x must be a character vector.");
+
+  int len = length(x);
+  size_t nchar_total = 0;
+
+  for (int i=0; i<len; i++) {
+    nchar_total += strlen(translateCharUTF8(STRING_ELT(x, i)));
+  }
+
+  char *s = malloc(nchar_total+len+3); //if len is 0, we need at least: '[]\0'
+  char *olds = s;
+  size_t size;
+
+  for (int i=0; i<len; i++) {
+    s[0] = ',';
+    size = strlen(translateCharUTF8(STRING_ELT(x, i)));
+    memcpy(++s, translateCharUTF8(STRING_ELT(x, i)), size);
+    s += size;
+  }
+  if(olds == s) s++;
+  olds[0] = '[';
+  s[0] = ']';
+  s[1] = '\0';
+
+  //get character encoding from first element
+  SEXP out = PROTECT(allocVector(STRSXP, 1));
+  SET_STRING_ELT(out, 0, mkCharCE(olds,  CE_UTF8));
+  UNPROTECT(1);
+  free(olds);
+  return out;
+}
+
 char *C_spaces(int n) {
   char *s = malloc(n + 1);
   char *olds = s;
@@ -12,7 +46,7 @@ char *C_spaces(int n) {
   return olds;
 }
 
-SEXP C_collapse_array(SEXP x, SEXP inner, SEXP indent) {
+SEXP C_collapse_array_indent(SEXP x, SEXP inner, SEXP indent) {
   if (!isString(x))
     error("x must be a character vector.");
 
@@ -22,10 +56,8 @@ SEXP C_collapse_array(SEXP x, SEXP inner, SEXP indent) {
   int ind = asInteger(indent);
   int len2; // extra length needed for "[]" and separators such as ", "
   char *sp, *sp2; // spaces for indentation
-  if (ind == NA_INTEGER) {
-    // indentation disabled: a comma after each x[i] except the last x[i]
-    len2 = len - 1;
-  } else if (asLogical(inner)) {
+
+  if (asLogical(inner)) {
     // inner array: a comma and a space after each x[i] except the last x[i]
     len2 = 2 * (len - 1);
   } else {
@@ -52,13 +84,7 @@ SEXP C_collapse_array(SEXP x, SEXP inner, SEXP indent) {
   for (int i = 0; i < len; i++) {
     xi = translateCharUTF8(STRING_ELT(x, i));
     size = strlen(xi);
-    if (ind == NA_INTEGER) {
-      memcpy(++s, xi, size);
-      s += size;
-      if (i < len - 1) {
-        s[0] = ',';
-      }
-    } else if (asLogical(inner)) {
+    if (asLogical(inner)) {
       memcpy(++s, xi, size);
       s += size;
       if (i < len - 1) {
@@ -91,7 +117,6 @@ SEXP C_collapse_array(SEXP x, SEXP inner, SEXP indent) {
   s[0] = ']';
   s[1] = '\0';
 
-  //get character encoding from first element
   SEXP out = PROTECT(allocVector(STRSXP, 1));
   SET_STRING_ELT(out, 0, mkCharCE(olds,  CE_UTF8));
   UNPROTECT(1);
