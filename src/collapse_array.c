@@ -38,12 +38,9 @@ SEXP C_collapse_array(SEXP x) {
 
 char *C_spaces(int n) {
   char *s = malloc(n + 1);
-  char *olds = s;
-  for (int i = 0; i < n; i++) {
-    memcpy(s++, " ", 1);
-  }
-  s[0] = '\0';
-  return olds;
+  memset(s, ' ', n);
+  s[n] = '\0';
+  return s;
 }
 
 SEXP C_collapse_array_indent(SEXP x, SEXP inner, SEXP indent) {
