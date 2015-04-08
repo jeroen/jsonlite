@@ -47,13 +47,15 @@ char *C_spaces(int n) {
 }
 
 SEXP C_collapse_array_indent(SEXP x, SEXP inner, SEXP indent) {
+  int ind = asInteger(indent);
+  if (ind == NA_INTEGER) return(C_collapse_array(x));
+
   if (!isString(x))
     error("x must be a character vector.");
 
   int len = length(x);
   if (len == 0) return mkString("[]");
 
-  int ind = asInteger(indent);
   int len2; // extra length needed for "[]" and separators such as ", "
   char *sp, *sp2; // spaces for indentation
 

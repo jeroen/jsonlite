@@ -13,11 +13,7 @@ collapse_r <- function(x, inner = TRUE, indent = 0L){
 
 #' @useDynLib jsonlite C_collapse_array C_collapse_array_indent
 collapse_c <- function(x, inner = TRUE, indent = 0L) {
-  if (is.na(indent)) {
-    .Call(C_collapse_array, x)
-  } else {
-    .Call(C_collapse_array_indent, x, inner, indent)
-  }
+  .Call(C_collapse_array_indent, x, inner, indent)
 }
 
 collapse <- collapse_c

@@ -54,22 +54,31 @@ SEXP C_collapse_object(SEXP x, SEXP y) {
 }
 
 SEXP C_collapse_object_indent(SEXP x, SEXP y, SEXP indent) {
+  int ind = asInteger(indent);
+  if (ind == NA_INTEGER) return(C_collapse_object(x, y));
+
   if (!isString(x) || !isString(y))
     error("x and y must character vectors.");
 
-  int len = length(x);
-  if (len != length(y))
+  int len0 = length(x);
+  if (len0 != length(y))
     error("x and y must same length.");
-  if (len == 0) return mkString("{}");
 
   char *sp, *sp2;
-  int ind = asInteger(indent);
   size_t nchar_total = 0;
+  int len = 0; // real length (after removing NAs)
+  int i1 = -1, i2 = 0;
 
-  for (int i = 0; i < len; i++) {
+  for (int i = 0; i < len0; i++) {
+    if (STRING_ELT(y, i) == NA_STRING) continue;
+    if (i1 < 0) i1 = i;
+    i2 = i;
     nchar_total += strlen(translateCharUTF8(STRING_ELT(x, i)));
     nchar_total += strlen(translateCharUTF8(STRING_ELT(y, i)));
+    len++;
   }
+  if (len == 0) return mkString("{}");
+
   // (ind + 2 + 4): ind + 2 for indent spaces; 4 for ": " and ",\n"
   // (no ",\n" for the last x[i])
   int len2 = (ind + 6) * len - 2;
@@ -83,12 +92,14 @@ SEXP C_collapse_object_indent(SEXP x, SEXP y, SEXP indent) {
   size_t size;
 
   s++;
-  for (int i = 0; i < len; i++) {
+  for (int i = 0; i < len0; i++) {
+    if (STRING_ELT(y, i) == NA_STRING) continue;
+
     xi = translateCharUTF8(STRING_ELT(x, i));
     size = strlen(xi);
 
     // add x
-    if (i == 0) {
+    if (i == i1) {
       s[0] = '\n';
       s++;
     }
@@ -108,13 +119,13 @@ SEXP C_collapse_object_indent(SEXP x, SEXP y, SEXP indent) {
     memcpy(s, xi, size);
     s += size;
 
-    if (i < len - 1) {
+    if (i < i2) {
       s[0] = ',';
       s++;
     }
     s[0] = '\n';
     s++;
-    if (i == len - 1) {
+    if (i == i2) {
       memcpy(s, sp, ind);
       s += ind;
     }
