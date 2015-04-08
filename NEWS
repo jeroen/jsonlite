@@ -1,3 +1,7 @@
+0.9.16
+ - Add json_verbatim option to insert verbatim json
+ - Improve verbose output of streaming functions
+
 0.9.15
  - Replaced RCurl dependency with the new curl package.
  - Added push parser for more efficient parsing from connection interfaces (e.g. files or urls).
