@@ -38,8 +38,8 @@ SEXP C_collapse_object_pretty(SEXP x, SEXP y, SEXP indent) {
     nchar_total += ni + 6; //indent plus two extra spaces plus ": " and ",\n"
   }
 
-  //outer curly braces plus indent and linebreak and \0
-  nchar_total += (2*ni + 4);
+  //final indent plus curly braces and linebreak and terminator
+  nchar_total += (ni + 2 + 2);
 
   //allocate memory and create a cursor
   char *str = malloc(nchar_total);
@@ -87,10 +87,10 @@ SEXP C_collapse_array_pretty_inner(SEXP x) {
     nchar_total += strlen(translateCharUTF8(STRING_ELT(x, i)));
   }
 
-  //for ", " separators
+  // n-1 ", " separators
   nchar_total += (len-1)*2;
 
-  //outer parentheses plus indent and \0
+  //outer parentheses plus terminator
   nchar_total += 3;
 
   //allocate memory and create a cursor
@@ -108,7 +108,7 @@ SEXP C_collapse_array_pretty_inner(SEXP x) {
   }
 
   //remove trailing ", "
-  if(len){
+  if(len) {
     cursor -= 2;
   }
 
@@ -141,8 +141,8 @@ SEXP C_collapse_array_pretty_outer(SEXP x, SEXP indent) {
   //for indent plus two extra spaces plus ",\n"
   nchar_total += len * (ni + 4);
 
-  //outer parentheses plus indent and \0
-  nchar_total += (2*ni + 4);
+  //outer parentheses plus final indent and linebreak and terminator
+  nchar_total += ni + 4;
 
   //allocate memory and create a cursor
   char *str = malloc(nchar_total);
