@@ -1,5 +1,6 @@
 setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "AsIs"),
-  na = c("string", "null", "NA"), auto_unbox = FALSE, collapse = TRUE, keep_vec_names = FALSE, ...) {
+  na = c("string", "null", "NA"), auto_unbox = FALSE, collapse = TRUE,
+  keep_vec_names = FALSE, indent = NA_integer_, ...) {
 
   # shiny legacy exception
   if(isTRUE(keep_vec_names) && length(names(x))){
@@ -31,7 +32,7 @@ setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "
   }
 
   if(collapse){
-    collapse(tmp)
+    collapse(tmp, indent = indent)
   } else {
     tmp
   }

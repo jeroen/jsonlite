@@ -1,10 +1,10 @@
-collapse_r <- function(x){
-  paste0("[", paste0(x, collapse = ","), "]")
+#' @useDynLib jsonlite C_collapse_array C_collapse_array_pretty_inner C_collapse_array_pretty_outer
+collapse <- function(x, inner = TRUE, indent = 0L) {
+  if(is.na(indent)){
+    .Call(C_collapse_array, x)
+  } else if(isTRUE(inner)){
+    .Call(C_collapse_array_pretty_inner, x, indent)
+  } else {
+    .Call(C_collapse_array_pretty_outer, x, indent)
+  }
 }
-
-#' @useDynLib jsonlite C_collapse_array
-collapse_c <- function(x) {
-  .Call(C_collapse_array, x)
-}
-
-collapse <- collapse_c;

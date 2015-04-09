@@ -30,15 +30,15 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
     na <- NULL
   }
 
+  indent <- if (isTRUE(pretty)) 0L else NA_integer_
+
   # dispatch
   ans <- asJSON(x, dataframe = dataframe, Date = Date, POSIXt = POSIXt, factor = factor,
     complex = complex, raw = raw, matrix = matrix, auto_unbox = auto_unbox, digits = digits,
-    na = na, null = null, force = force, ...)
+    na = na, null = null, force = force, indent = indent, ...)
 
-  #prettify
-  if (isTRUE(pretty)) {
-    prettify(ans)
-  } else if(is.numeric(pretty)) {
+  #prettify with yajl
+  if(is.numeric(pretty)) {
     prettify(ans, pretty)
   } else {
     class(ans) <- "json"
