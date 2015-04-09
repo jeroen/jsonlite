@@ -86,7 +86,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
 
   # turn the matrix into json records
   # note: special row_collapse functions because apply is slow!
-  tmp <- if(dataframe == "rows") {
+  tmp <- if(dataframe == "rows" && (length(dfnames) == ncol(out))) {
     #apply(out, 1, collapse_object, x = dfnames, indent = indent + 2L);
     row_collapse_object(dfnames, out, indent = indent + 2L)
   } else {
