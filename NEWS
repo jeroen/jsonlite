@@ -1,4 +1,6 @@
 0.9.16
+ - Performance optimizations in asJSON.data.frame by avoiding apply()
+ - Prettifying is now done by default in R (thanks to Yihui Xie)
  - Add json_verbatim option to insert verbatim json
  - Improve verbose output of streaming functions
 
