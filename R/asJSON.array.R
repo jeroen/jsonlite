@@ -10,6 +10,11 @@ setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NUL
     na <- oldna;
   }
 
+  # 1D arrays are vectors
+  if(length(dim(x)) < 2){
+    return(asJSON(c(x), matrix = matrix, na = na, indent = indent + 2L, ...))
+  }
+
   # if collapse == FALSE, then this matrix is nested inside a data frame,
   # and therefore row major is required to match dimensions
   # dont pass auto_unbox (never unbox within matrix)
