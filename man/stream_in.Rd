@@ -125,6 +125,12 @@ subset(daily14, city$name == "Berlin")$data[[1]]
 library(dplyr)
 daily14f <- flatten(daily14)
 filter(daily14f, city.name == "Berlin")$data[[1]]
+
+# Another large dataset
+download.file("http://jsonstudio.com/wp-content/uploads/2014/02/companies.zip", "companies.zip")
+unzip("companies.zip")
+unlink("companies.zip")
+companies <- stream_in(file("companies.json"))
 }
 }
 \references{
