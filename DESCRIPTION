@@ -24,7 +24,6 @@ Description: A fast JSON parser and generator optimized for statistical data
     decoded consistently for use with dynamic data in systems and applications.
 Suggests:
     curl (>= 0.5),
-    plyr,
     testthat,
     knitr,
     rmarkdown,

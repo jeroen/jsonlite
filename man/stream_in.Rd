@@ -6,7 +6,7 @@
 \alias{stream_out}
 \title{Streaming JSON input/output}
 \usage{
-stream_in(con, handler, pagesize = 500, verbose = TRUE, ...)
+stream_in(con, handler = NULL, pagesize = 500, verbose = TRUE, ...)
 
 stream_out(x, con = stdout(), pagesize = 500, verbose = TRUE, ...)
 }
