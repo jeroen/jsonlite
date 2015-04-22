@@ -43,7 +43,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   }
 
   # Set default for row based, don't do it earlier because it will affect 'oldna' or dataframe="columns"
-  if(dataframe == "rows"){
+  if(dataframe == "rows" && length(names(x)) == ncol(x)){
     na <- match.arg(na)
   }
 
