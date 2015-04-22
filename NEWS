@@ -1,5 +1,6 @@
 0.9.17
  - Fix for 1 dimensional array objects
+ - Fix for unnamed data frame
 
 0.9.16
  - Performance optimizations in asJSON.data.frame by avoiding apply()
