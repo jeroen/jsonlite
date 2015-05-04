@@ -2,19 +2,22 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   dataframe = c("rows", "columns", "values"), complex = "string", oldna = NULL, rownames = NULL,
   keep_vec_names = FALSE, indent = NA_integer_, ...) {
 
-  # Validate some args
-  dataframe <- match.arg(dataframe)
-
   # Coerse pairlist if needed
   if (is.pairlist(x)) {
     x <- as.vector(x, mode = "list")
   }
 
+  # Validate some args
+  dataframe <- match.arg(dataframe)
+  has_names <- identical(length(names(x)), ncol(x))
+
   # Default to adding row names only if they are strings and not just stringified numbers
   if(isTRUE(rownames) || (is.null(rownames) && is.character(attr(x, "row.names")) && !all(grepl("^\\d+$", row.names(x))))){
     # we don't use row.names() because this converts numbers to strings,
     # which will break sorting
-    x[["_row"]] <- attr(x, "row.names")
+    if(has_names){
+      x[["_row"]] <- attr(x, "row.names")
+    }
   }
 
   # Unname named lists columns. These are very rare.
@@ -43,7 +46,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   }
 
   # Set default for row based, don't do it earlier because it will affect 'oldna' or dataframe="columns"
-  if(dataframe == "rows" && length(names(x)) == ncol(x)){
+  if(dataframe == "rows" && has_names){
     na <- match.arg(na)
   }
 
