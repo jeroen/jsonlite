@@ -1,6 +1,6 @@
 \documentclass[article]{jss}
 
-<<echo=FALSE>>=
+<<echo=FALSE, message=FALSE>>=
 library("jsonlite")
 library("knitr")
 opts_chunk$set(comment="", tidy=TRUE)
