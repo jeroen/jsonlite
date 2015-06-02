@@ -13,7 +13,7 @@ print.scalar <- function(x, ...){
     row.names(x) <- "[x]"
     print(x)
   } else {
-    cat("[x] ", x, "\n", sep="")
+    cat("[x] ", asJSON(x, collapse = FALSE), "\n", sep="")
   }
   invisible(original)
 }
