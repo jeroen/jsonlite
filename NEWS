@@ -2,6 +2,7 @@
  - Fix for 1 dimensional array objects
  - Fix for unnamed data frame
  - Fix for duplicate _row fields
+ - The 'unbox' function now accepts classed scalars such as dates
 
 0.9.16
  - Performance optimizations in asJSON.data.frame by avoiding apply()
