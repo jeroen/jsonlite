@@ -76,6 +76,9 @@ x <- iris[1:3,]
 toJSON(x)
 stream_out(x)
 
+# Trivial example
+mydata <- stream_in(url("http://httpbin.org/stream/100"))
+
 \dontrun{stream large dataset to file and back
 library(nycflights13)
 stream_out(flights, file(tmp <- tempfile()))
