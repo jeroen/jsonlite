@@ -6,6 +6,13 @@
 /* finalizer */
 yajl_handle push_parser;
 
+void reset_parser(){
+  if(push_parser != NULL){
+    yajl_free(push_parser);
+    push_parser = NULL;
+  }
+}
+
 SEXP R_feed_push_parser(SEXP x, SEXP reset){
 
   /* raw pointer */
@@ -14,8 +21,7 @@ SEXP R_feed_push_parser(SEXP x, SEXP reset){
 
   /* init new push parser */
   if(asLogical(reset)) {
-    if(push_parser)
-      yajl_free(push_parser);
+    reset_parser();
     push_parser = push_parser_new();
 
     /* ignore BOM as suggested by RFC */
@@ -31,6 +37,7 @@ SEXP R_feed_push_parser(SEXP x, SEXP reset){
     unsigned char* errstr = yajl_get_error(push_parser, 1, RAW(x), length(x));
     SEXP tmp = mkChar((const char*) errstr);
     yajl_free_error(push_parser, errstr);
+    reset_parser();
     error(CHAR(tmp));
   }
 
@@ -44,6 +51,7 @@ SEXP R_finalize_push_parser(SEXP bigint_as_char){
     unsigned char* errstr = yajl_get_error(push_parser, 1, NULL, 0);
     SEXP tmp = mkChar((const char*) errstr);
     yajl_free_error(push_parser, errstr);
+    reset_parser();
     error(CHAR(tmp));
   }
 
@@ -51,5 +59,6 @@ SEXP R_finalize_push_parser(SEXP bigint_as_char){
   yajl_val tree = push_parser_get(push_parser);
   SEXP out = ParseValue(tree, asLogical(bigint_as_char));
   yajl_tree_free(tree);
+  reset_parser();
   return out;
 }
