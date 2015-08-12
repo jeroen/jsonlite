@@ -1,5 +1,5 @@
 #' jsonlite: A Robust, High Performance JSON Parser and Generator for R
-#' 
+#'
 #' A fast JSON parser and generator optimized for statistical data
 #' and the web. Started out as a fork of RJSONIO, but has been completely
 #' rewritten in recent versions. The package offers flexible, robust, high
@@ -10,6 +10,7 @@
 #' contains functions to stream, validate, and prettify JSON data. The unit
 #' tests included with the package verify that all edge cases are encoded and
 #' decoded consistently for use with dynamic data in systems and applications.
-#' 
+#'
 #' @docType package
 #' @name jsonlite
+NULL
