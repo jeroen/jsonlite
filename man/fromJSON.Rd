@@ -3,6 +3,7 @@
 \name{toJSON, fromJSON}
 \alias{View}
 \alias{fromJSON}
+\alias{jsonlite}
 \alias{toJSON}
 \alias{toJSON, fromJSON}
 \title{Convert \R{} objects to/from JSON}

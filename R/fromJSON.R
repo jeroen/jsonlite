@@ -17,7 +17,7 @@
 #' @rdname fromJSON
 #' @title Convert \R{} objects to/from JSON
 #' @name toJSON, fromJSON
-#' @aliases View fromJSON toJSON
+#' @aliases View fromJSON toJSON jsonlite
 #' @export View fromJSON toJSON
 #' @param txt a JSON string, URL or file
 #' @param simplifyVector coerce JSON arrays containing only primitives into an atomic vector
