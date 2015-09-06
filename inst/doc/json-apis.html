@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-04-10" />
+<meta name="date" content="2015-09-06" />
 
 <title>Fetching JSON data from REST APIs</title>
 
@@ -62,7 +62,7 @@ img {
 
 <div id="header">
 <h1 class="title">Fetching JSON data from REST APIs</h1>
-<h4 class="date"><em>2015-04-10</em></h4>
+<h4 class="date"><em>2015-09-06</em></h4>
 </div>
 
 
@@ -78,36 +78,36 @@ gg_issues &lt;- fromJSON(&quot;https://api.github.com/repos/hadley/ggplot2/issue
 
 #latest issues
 paste(format(gg_issues$user$login), &quot;:&quot;, gg_issues$title)</code></pre>
-<pre><code> [1] &quot;gilleschapron   : Density + histogram in count : how to use variable binwidth&quot;                                
- [2] &quot;joranE          : Documentation tweaks&quot;                                                                       
- [3] &quot;jergosh         : Histograms for multiple distributions in one plot&quot;                                          
- [4] &quot;sachsmc         : stat_km and geom_km for Kaplan-Meier Survival curves&quot;                                       
- [5] &quot;richardbeare    : error bar with stacked barplot&quot;                                                             
- [6] &quot;krlmlr          : Create correct legend for continuous color even if there is only one color&quot;                 
- [7] &quot;jiho            : Improvements to scale_*_distiller&quot;                                                          
- [8] &quot;ackman678       : facet strings in facet_wrap?&quot;                                                               
- [9] &quot;bakerwm         : error with facet_grid(), but it's OK for facet_wrap().&quot;                                     
-[10] &quot;seaaan          : Fixed two typos in documentation&quot;                                                           
-[11] &quot;naught101       : Inconsistent facet labeller behaviour when using characters to facet&quot;                       
-[12] &quot;beanumber       : Lyndon Johnson's name is misspelled in \&quot;presidential\&quot;&quot;                                    
-[13] &quot;grssnbchr       : Width of error bars is calculated by the number of groups and not by the `width` argument. &quot;
-[14] &quot;richierocks     : Facetting fails with \&quot;undefined columns selected\&quot; error for non-standard variable names&quot;  
-[15] &quot;raidsteel       : stat_contour fill - 2 issues&quot;                                                               
-[16] &quot;ddiez           : ggplot2 requires X11 in OSX causes R to crash when closing it&quot;                              
-[17] &quot;PeterNSteinmetz : Order of arguments in documentation of geom_vline&quot;                                          
-[18] &quot;Tungurahua      : mapping slot is empty when aes(x,y) is declared in geom_polygon()&quot;                          
-[19] &quot;angeloklin      : OHLC and Themes&quot;                                                                            
-[20] &quot;ghaarsma        : stat_bin() does not seem to work for integer data&quot;                                          
-[21] &quot;marvel64        : x axis labels wrong using facet_grid&quot;                                                       
-[22] &quot;chappers        : Fixed typo in help file for scale-continuous.R&quot;                                             
-[23] &quot;lbergelson      : ggplot2 installation fails on R 3.0.2&quot;                                                      
-[24] &quot;Blahah          : typo in annotate docs&quot;                                                                      
-[25] &quot;trufanov-nok    : Typo in diamonds.Rd&quot;                                                                        
-[26] &quot;ajschumacher    : typo: \&quot;funciton\&quot; to \&quot;function\&quot;&quot;                                                         
-[27] &quot;elbamos         : vline not working as annotation&quot;                                                            
-[28] &quot;zachcp          : Documentation: link in coord_map is incorrect&quot;                                              
-[29] &quot;beamgau         : adds flip.legend option for boxplot&quot;                                                        
-[30] &quot;stevencb        : geom_vline requires converting to numeric when intercept is a POSIXct&quot;                      </code></pre>
+<pre><code> [1] &quot;idavydov     : annotate(\&quot;segment\&quot;) wrong position if limits are inverted&quot;                      
+ [2] &quot;ben519       : geom_polygon doesn't make NA values grey when using continuous fill&quot;              
+ [3] &quot;has2k1       : Fix multiple tiny issues in the position classes&quot;                                 
+ [4] &quot;neggert      : Problem with geom_bar position=fill and faceting&quot;                                 
+ [5] &quot;robertzk     : Fix typo in geom_linerange docs.&quot;                                                 
+ [6] &quot;lionel-      : stat_bar() gets confused with numeric discrete data?&quot;                             
+ [7] &quot;daattali     : Request: support theme axis.ticks.length.x and axis.ticks.length.y&quot;               
+ [8] &quot;sethchandler : Documentation error on %+replace% ?&quot;                                              
+ [9] &quot;daattali     : dev version 1.0.1.9003 has some breaking changes&quot;                                 
+[10] &quot;lionel-      : Labels&quot;                                                                           
+[11] &quot;nutterb      : legend for `geom_line` colour disappears when `alpha` &lt; 1.0&quot;                      
+[12] &quot;wch          : scale_name property should be removed from Scale objects&quot;                         
+[13] &quot;wch          : scale_details arguments in Coords should be renamed panel_scales or scale&quot;        
+[14] &quot;wch          : ScalesList-related functions should be moved into ggproto object&quot;                 
+[15] &quot;wch          : update_geom_defaults and update_stat_defaults should accept Geom and Stat objects&quot;
+[16] &quot;wch          : Make some ggproto objects immutable. Closes #1237&quot;                                
+[17] &quot;and3k        : Control size of the border and padding of geom_label&quot;                             
+[18] &quot;hadley       : Consistent argument order and formatting for layer functions&quot;                     
+[19] &quot;hadley       : Consistently handle missing values&quot;                                               
+[20] &quot;cmohamma     : fortify causes fatal error&quot;                                                       
+[21] &quot;lionel-      : Flawed `label_bquote()` implementation&quot;                                           
+[22] &quot;beroe        : Create alias for `colors=` in `scale_color_gradientn()`&quot;                          
+[23] &quot;and3k        : hjust broken in y facets&quot;                                                         
+[24] &quot;joranE       : Allow color bar guides for alpha scales&quot;                                          
+[25] &quot;hadley       : dir = \&quot;v\&quot; also needs to swap nrow and ncol&quot;                                     
+[26] &quot;joranE       : Add examples for removing guides&quot;                                                 
+[27] &quot;lionel-      : New approach for horizontal layers&quot;                                               
+[28] &quot;bbolker      : add horizontal linerange geom&quot;                                                    
+[29] &quot;hadley       : Write vignette about grid&quot;                                                        
+[30] &quot;hadley       : Immutable flag for ggproto objects&quot;                                               </code></pre>
 </div>
 <div id="citibike-nyc" class="section level2">
 <h2>CitiBike NYC</h2>
@@ -125,7 +125,7 @@ colnames(stations)</code></pre>
 [15] &quot;altitude&quot;              &quot;testStation&quot;          
 [17] &quot;lastCommunicationTime&quot; &quot;landMark&quot;             </code></pre>
 <pre class="r"><code>nrow(stations)</code></pre>
-<pre><code>[1] 327</code></pre>
+<pre><code>[1] 509</code></pre>
 </div>
 <div id="ergast" class="section level2">
 <h2>Ergast</h2>
@@ -152,7 +152,7 @@ colnames(drivers)</code></pre>
 <h2>ProPublica</h2>
 <p>Below an example from the <a href="http://projects.propublica.org/nonprofits/api">ProPublica Nonprofit Explorer API</a> where we retrieve the first 10 pages of tax-exempt organizations in the USA, ordered by revenue. The <code>rbind.pages</code> function is used to combine the pages into a single data frame.</p>
 <pre class="r"><code>#store all pages in a list first
-baseurl &lt;- &quot;http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&amp;sort_order=desc&quot;
+baseurl &lt;- &quot;https://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&amp;sort_order=desc&quot;
 pages &lt;- list()
 for(i in 0:10){
   mydata &lt;- fromJSON(paste0(baseurl, &quot;&amp;page=&quot;, i), flatten=TRUE)
@@ -167,17 +167,28 @@ filings &lt;- rbind.pages(pages)
 nrow(filings)</code></pre>
 <pre><code>[1] 275</code></pre>
 <pre class="r"><code>filings[1:10, c(&quot;organization.sub_name&quot;, &quot;organization.city&quot;, &quot;totrevenue&quot;)]</code></pre>
-<pre><code>               organization.sub_name organization.city  totrevenue
-1  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 40148558254
-2  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 37786011714
-3        KAISER FOUNDATION HOSPITALS           OAKLAND 18543043972
-4        KAISER FOUNDATION HOSPITALS           OAKLAND 17980030355
-5    PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN 10452560305
-6    PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN  9636630380
-7                     DIGNITY HEALTH     SAN FRANCISCO  9484767832
-8                     DIGNITY HEALTH     SAN FRANCISCO  9211708211
-9   THRIVENT FINANCIAL FOR LUTHERANS       MINNEAPOLIS  8507178655
-10                        UPMC GROUP        PITTSBURGH  8298512589</code></pre>
+<pre><code>                              organization.sub_name organization.city
+1                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
+2                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
+3                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
+4  DAVIDSON COUNTY COMMUNITY COLLEGE FOUNDATION INC         LEXINGTON
+5                       KAISER FOUNDATION HOSPITALS           OAKLAND
+6                       KAISER FOUNDATION HOSPITALS           OAKLAND
+7                       KAISER FOUNDATION HOSPITALS           OAKLAND
+8                   PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
+9                   PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
+10                  PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
+    totrevenue
+1  42346486950
+2  40148558254
+3  37786011714
+4  30821445312
+5  20013171194
+6  18543043972
+7  17980030355
+8  10619215354
+9  10452560305
+10  9636630380</code></pre>
 </div>
 <div id="new-york-times" class="section level2">
 <h2>New York Times</h2>
@@ -221,19 +232,19 @@ colnames(reviews)</code></pre>
 [13] &quot;dvd_release_date&quot; &quot;date_updated&quot;     &quot;seo_name&quot;        
 [16] &quot;link&quot;             &quot;related_urls&quot;     &quot;multimedia&quot;      </code></pre>
 <pre class="r"><code>reviews[1:5, c(&quot;display_title&quot;, &quot;byline&quot;, &quot;mpaa_rating&quot;)]</code></pre>
-<pre><code>           display_title         byline mpaa_rating
-1 Rebels of the Neon God    A. O. Scott        &lt;NA&gt;
-2       Valley of Saints Stephen Holden        &lt;NA&gt;
-3    A Most Violent Year    A. O. Scott           R
-4                  Selma    A. O. Scott       PG-13
-5         Into the Woods Stephen Holden          PG</code></pre>
+<pre><code>       display_title         byline mpaa_rating
+1    Tom at the Farm Stephen Holden          NR
+2     A Little Chaos Stephen Holden           R
+3           Big Game   Andy Webster        PG13
+4          Balls Out   Andy Webster           R
+5 Mad Max: Fury Road    A. O. Scott           R</code></pre>
 </div>
 <div id="crunchbase" class="section level2">
 <h2>CrunchBase</h2>
 <p>CrunchBase is the free database of technology companies, people, and investors that anyone can edit.</p>
 <pre class="r"><code>key &lt;- &quot;f6dv6cas5vw7arn5b9d7mdm3&quot;
 res &lt;- fromJSON(paste0(&quot;http://api.crunchbase.com/v/1/search.js?query=R&amp;api_key=&quot;, key))
-str(res$results)</code></pre>
+head(res$results)</code></pre>
 </div>
 <div id="sunlight-foundation" class="section level2">
 <h2>Sunlight Foundation</h2>
@@ -244,12 +255,12 @@ str(res$results)</code></pre>
 drone_bills &lt;- fromJSON(paste0(&quot;http://openstates.org/api/v1/bills/?q=drone&quot;, key))
 drone_bills$title &lt;- substring(drone_bills$title, 1, 40)
 print(drone_bills[1:5, c(&quot;title&quot;, &quot;state&quot;, &quot;chamber&quot;, &quot;type&quot;)])</code></pre>
-<pre><code>                                     title state chamber       type
-1            CONGRATS - HARRISBURG MID SCH    il   lower resolution
-2 Allowing the filing of a special allegat    wa   upper       bill
-3                  Surveillance by a Drone    fl   lower       bill
-4                  Surveillance by a Drone    fl   upper       bill
-5                       Drone Surveillance    fl   upper       bill</code></pre>
+<pre><code>                                     title state chamber type
+1                            WILDLIFE-TECH    il   lower bill
+2 Criminalizes the unlawful use of an unma    ny   lower bill
+3 Criminalizes the unlawful use of an unma    ny   lower bill
+4 Relating to: criminal procedure and prov    wi   lower bill
+5 Relating to: criminal procedure and prov    wi   upper bill</code></pre>
 <pre class="r"><code>#Congress mentioning &quot;constitution&quot;
 res &lt;- fromJSON(paste0(&quot;http://capitolwords.org/api/1/dates.json?phrase=immigration&quot;, key))
 wordcount &lt;- res$results
@@ -257,11 +268,11 @@ wordcount$day &lt;- as.Date(wordcount$day)
 summary(wordcount)</code></pre>
 <pre><code>     count              day               raw_count      
  Min.   :   1.00   Min.   :1996-01-02   Min.   :   1.00  
- 1st Qu.:   3.00   1st Qu.:2000-12-05   1st Qu.:   3.00  
- Median :   8.00   Median :2005-10-05   Median :   8.00  
- Mean   :  25.41   Mean   :2005-08-07   Mean   :  25.41  
- 3rd Qu.:  21.00   3rd Qu.:2010-03-06   3rd Qu.:  21.00  
- Max.   :1835.00   Max.   :2015-03-26   Max.   :1835.00  </code></pre>
+ 1st Qu.:   3.00   1st Qu.:2001-01-22   1st Qu.:   3.00  
+ Median :   8.00   Median :2005-11-16   Median :   8.00  
+ Mean   :  25.27   Mean   :2005-10-02   Mean   :  25.27  
+ 3rd Qu.:  21.00   3rd Qu.:2010-05-12   3rd Qu.:  21.00  
+ Max.   :1835.00   Max.   :2015-08-05   Max.   :1835.00  </code></pre>
 <pre class="r"><code>#Local legislators
 legislators &lt;- fromJSON(paste0(&quot;http://congress.api.sunlightfoundation.com/&quot;,
   &quot;legislators/locate?latitude=42.96&amp;longitude=-108.09&quot;, key))
@@ -282,12 +293,11 @@ consumer_secret = &quot;OIDC4MdfZJ82nbwpZfoUO4WOLTYjoRhpHRAWj6JMec&quot;;
 library(httr)
 secret &lt;- RCurl::base64(paste(consumer_key, consumer_secret, sep = &quot;:&quot;));
 req &lt;- POST(&quot;https://api.twitter.com/oauth2/token&quot;,
-  config(httpheader = c(
+  add_headers(
     &quot;Authorization&quot; = paste(&quot;Basic&quot;, secret),
     &quot;Content-Type&quot; = &quot;application/x-www-form-urlencoded;charset=UTF-8&quot;
-  )),
-  body = &quot;grant_type=client_credentials&quot;,
-  encode = &quot;multipart&quot;
+  ),
+  body = &quot;grant_type=client_credentials&quot;
 );
 
 #Extract the access token
@@ -295,20 +305,20 @@ token &lt;- paste(&quot;Bearer&quot;, content(req)$access_token)
 
 #Actual API call
 url &lt;- &quot;https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&amp;screen_name=Rbloggers&quot;
-req &lt;- GET(url, config(httpheader = c(&quot;Authorization&quot; = token)))
+req &lt;- GET(url, add_headers(Authorization = token))
 json &lt;- content(req, as = &quot;text&quot;)
 tweets &lt;- fromJSON(json)
 substring(tweets$text, 1, 100)</code></pre>
-<pre><code> [1] &quot;Classification with Categorical Variables (the fuzzy side) http://t.co/iDUcvkIYqf #rstats&quot;
- [2] &quot;Visualising a Classification in High Dimension, part 2 http://t.co/SvaT9Yqktq #rstats&quot;    
- [3] &quot;sparklines for R http://t.co/Adfh6seDJQ #rstats&quot;                                          
- [4] &quot;Plotly: Here's What You Can Do, One Year In http://t.co/2cC2AmB9CQ #rstats&quot;               
- [5] &quot;Recreating the vaccination heatmaps in R http://t.co/tIUIwTixkJ #rstats&quot;                  
- [6] &quot;Feeling the FPP love http://t.co/tuR6CykZ9G #rstats&quot;                                      
- [7] &quot;readr 0.1.0 http://t.co/83BjkHMErx #rstats&quot;                                               
- [8] &quot;What can be in an R data.frame column? http://t.co/2QSvSdDyrt #rstats&quot;                    
- [9] &quot;Where are the R users? http://t.co/OZDVWyInl3 #rstats&quot;                                    
-[10] &quot;A small neuroimage interactive plotter http://t.co/rGH24hGfJ7 #rstats&quot;                    </code></pre>
+<pre><code> [1] &quot;Analysing longitudinal data: Multilevel growth models (II) http://t.co/unUxszG7VJ #rstats&quot;           
+ [2] &quot;RcppDE 0.1.4 http://t.co/3qPhFzoOpj #rstats&quot;                                                         
+ [3] &quot;Minimalist Maps http://t.co/fpkNznuCoX #rstats&quot;                                                      
+ [4] &quot;Tutorials freely available of course I taught: including ggplot2, dplyr and shiny http://t.co/WsxX4U&quot;
+ [5] &quot;Deploying Shiny apps with shinyapps.io http://t.co/tjef1pbKLt #rstats&quot;                               
+ [6] &quot;Bootstrap Evaluation of Clusters http://t.co/EbY7ziKCz5 #rstats&quot;                                     
+ [7] &quot;Add external code to Rmarkdown http://t.co/RCJEmS8gyP #rstats&quot;                                       
+ [8] &quot;Linear models with weighted observations http://t.co/pUoHpvxAGC #rstats&quot;                             
+ [9] &quot;dplyr 0.4.3 http://t.co/ze3zc8t7qj #rstats&quot;                                                          
+[10] &quot;xkcd survey and the power to shape the internet http://t.co/vNaKhxWxE4 #rstats&quot;                      </code></pre>
 </div>
 
 

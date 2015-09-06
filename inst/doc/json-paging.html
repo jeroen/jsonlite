@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-04-10" />
+<meta name="date" content="2015-09-06" />
 
 <title>Combining pages of JSON data with jsonlite</title>
 
@@ -62,40 +62,51 @@ img {
 
 <div id="header">
 <h1 class="title">Combining pages of JSON data with jsonlite</h1>
-<h4 class="date"><em>2015-04-10</em></h4>
+<h4 class="date"><em>2015-09-06</em></h4>
 </div>
 
 
-<p>The <a href="http://cran.r-project.org/web/packages/jsonlite/index.html">jsonlite</a> package is a <code>JSON</code> parser/generator for R which is optimized for pipelines and web APIs. It is used by the OpenCPU system and many other packages to get data in and out of R using the <code>JSON</code> format.</p>
+<p>The <a href="https://cran.r-project.org/package=jsonlite">jsonlite</a> package is a <code>JSON</code> parser/generator for R which is optimized for pipelines and web APIs. It is used by the OpenCPU system and many other packages to get data in and out of R using the <code>JSON</code> format.</p>
 <div id="a-bidirectional-mapping" class="section level2">
 <h2>A bidirectional mapping</h2>
 <p>One of the main strengths of <code>jsonlite</code> is that it implements a bidirectional <a href="http://arxiv.org/abs/1403.2805">mapping</a> between JSON and data frames. Thereby it can convert nested collections of JSON records, as they often appear on the web, immediately into the appropriate R structure. For example to grab some data from ProPublica we can simply use:</p>
 <pre class="r"><code>library(jsonlite)
-mydata &lt;- fromJSON(&quot;http://projects.propublica.org/forensics/geos.json&quot;, flatten = TRUE)
+mydata &lt;- fromJSON(&quot;https://projects.propublica.org/forensics/geos.json&quot;, flatten = TRUE)
 View(mydata)</code></pre>
 <p>The <code>mydata</code> object is a data frame which can be used directly for modeling or visualization, without the need for any further complicated data manipulation.</p>
 </div>
 <div id="paging-with-jsonlite" class="section level2">
 <h2>Paging with jsonlite</h2>
 <p>A question that comes up frequently is how to combine pages of data. Most web APIs limit the amount of data that can be retrieved per request. If the client needs more data than what can fits in a single request, it needs to break down the data into multiple requests that each retrieve a fragment (page) of data, not unlike pages in a book. In practice this is often implemented using a <code>page</code> parameter in the API. Below an example from the <a href="http://projects.propublica.org/nonprofits/api">ProPublica Nonprofit Explorer API</a> where we retrieve the first 3 pages of tax-exempt organizations in the USA, ordered by revenue:</p>
-<pre class="r"><code>baseurl &lt;- &quot;http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&amp;sort_order=desc&quot;
+<pre class="r"><code>baseurl &lt;- &quot;https://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&amp;sort_order=desc&quot;
 mydata0 &lt;- fromJSON(paste0(baseurl, &quot;&amp;page=0&quot;), flatten = TRUE)
 mydata1 &lt;- fromJSON(paste0(baseurl, &quot;&amp;page=1&quot;), flatten = TRUE)
 mydata2 &lt;- fromJSON(paste0(baseurl, &quot;&amp;page=2&quot;), flatten = TRUE)
 
 #The actual data is in the filings element
 mydata0$filings[1:10, c(&quot;organization.sub_name&quot;, &quot;organization.city&quot;, &quot;totrevenue&quot;)]</code></pre>
-<pre><code>               organization.sub_name organization.city  totrevenue
-1  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 40148558254
-2  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 37786011714
-3        KAISER FOUNDATION HOSPITALS           OAKLAND 18543043972
-4        KAISER FOUNDATION HOSPITALS           OAKLAND 17980030355
-5    PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN 10452560305
-6    PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN  9636630380
-7                     DIGNITY HEALTH     SAN FRANCISCO  9484767832
-8                     DIGNITY HEALTH     SAN FRANCISCO  9211708211
-9   THRIVENT FINANCIAL FOR LUTHERANS       MINNEAPOLIS  8507178655
-10                        UPMC GROUP        PITTSBURGH  8298512589</code></pre>
+<pre><code>                              organization.sub_name organization.city
+1                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
+2                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
+3                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
+4  DAVIDSON COUNTY COMMUNITY COLLEGE FOUNDATION INC         LEXINGTON
+5                       KAISER FOUNDATION HOSPITALS           OAKLAND
+6                       KAISER FOUNDATION HOSPITALS           OAKLAND
+7                       KAISER FOUNDATION HOSPITALS           OAKLAND
+8                   PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
+9                   PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
+10                  PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
+    totrevenue
+1  42346486950
+2  40148558254
+3  37786011714
+4  30821445312
+5  20013171194
+6  18543043972
+7  17980030355
+8  10619215354
+9  10452560305
+10  9636630380</code></pre>
 <p>To analyze or visualize these data, we need to combine the pages into a single dataset. We can do this with the <code>rbind.pages</code> function. Note that in this example, the actual data is contained by the <code>filings</code> field:</p>
 <pre class="r"><code>#Rows per data frame
 nrow(mydata0$filings)</code></pre>
@@ -113,7 +124,7 @@ nrow(filings)</code></pre>
 <h2>Automatically combining many pages</h2>
 <p>We can write a simple loop that automatically downloads and combines many pages. For example to retrieve the first 20 pages with non-profits from the example above:</p>
 <pre class="r"><code>#store all pages in a list first
-baseurl &lt;- &quot;http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&amp;sort_order=desc&quot;
+baseurl &lt;- &quot;https://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&amp;sort_order=desc&quot;
 pages &lt;- list()
 for(i in 0:20){
   mydata &lt;- fromJSON(paste0(baseurl, &quot;&amp;page=&quot;, i))

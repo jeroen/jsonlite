@@ -104,7 +104,7 @@ mymatrix
 Again, we can use `toJSON` to convert the matrix or array back into the original JSON structure:
 
 ```{r}
-toJSON(mymatrix)
+toJSON(mymatrix, pretty = TRUE)
 ```
 
 The simplification works for arrays of arbitrary dimensionality, as long as the dimensions match (R does not support ragged arrays).

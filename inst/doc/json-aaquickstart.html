@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-04-10" />
+<meta name="date" content="2015-09-06" />
 
 <title></title>
 
@@ -185,8 +185,12 @@ mymatrix</code></pre>
 [2,]    5    6    7    8
 [3,]    9   10   11   12</code></pre>
 <p>Again, we can use <code>toJSON</code> to convert the matrix or array back into the original JSON structure:</p>
-<pre class="r"><code>toJSON(mymatrix)</code></pre>
-<pre><code>[[1,2,3,4],[5,6,7,8],[9,10,11,12]] </code></pre>
+<pre class="r"><code>toJSON(mymatrix, pretty = TRUE)</code></pre>
+<pre><code>[
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12]
+] </code></pre>
 <p>The simplification works for arrays of arbitrary dimensionality, as long as the dimensions match (R does not support ragged arrays).</p>
 <pre class="r"><code>json &lt;- '[
    [[1, 2], 

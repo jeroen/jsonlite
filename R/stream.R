@@ -9,7 +9,7 @@
 #' Because parsing huge JSON strings is difficult and inefficient, JSON streaming
 #' is done using \strong{lines of minified JSON records}, sometimes also called
 #' \href{http://jsonlines.org/}{jsonlines}. This is pretty standard: JSON databases such
-#' as MongoDB or \href{http://dat-data.com/}{dat} use the same format to import/export
+#' as MongoDB or \href{https://github.com/maxogden/dat}{dat} use the same format to import/export
 #' large datasets. Note that this means that the total stream combined is
 #' not valid JSON itself; only the individual lines are. Also note that because line-breaks
 #' are used as separators, prettified JSON is not permitted: the JSON lines \emph{must}

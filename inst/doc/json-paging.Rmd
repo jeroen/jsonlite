@@ -1,6 +1,6 @@
 ---
 title: "Combining pages of JSON data with jsonlite"
-date: "2015-04-10"
+date: "2015-09-06"
 output:
   html_document
 vignette: >
@@ -14,7 +14,7 @@ vignette: >
 
 
 
-The [jsonlite](http://cran.r-project.org/web/packages/jsonlite/index.html) package is a `JSON` parser/generator for R which is optimized for pipelines and web APIs. It is used by the OpenCPU system and many other packages to get data in and out of R using the `JSON` format.
+The [jsonlite](https://cran.r-project.org/package=jsonlite) package is a `JSON` parser/generator for R which is optimized for pipelines and web APIs. It is used by the OpenCPU system and many other packages to get data in and out of R using the `JSON` format.
 
 ## A bidirectional mapping
 
@@ -23,7 +23,7 @@ One of the main strengths of `jsonlite` is that it implements a bidirectional [m
 
 ```r
 library(jsonlite)
-mydata <- fromJSON("http://projects.propublica.org/forensics/geos.json", flatten = TRUE)
+mydata <- fromJSON("https://projects.propublica.org/forensics/geos.json", flatten = TRUE)
 View(mydata)
 ```
 
@@ -35,7 +35,7 @@ A question that comes up frequently is how to combine pages of data. Most web AP
 
 
 ```r
-baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
+baseurl <- "https://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
 mydata0 <- fromJSON(paste0(baseurl, "&page=0"), flatten = TRUE)
 mydata1 <- fromJSON(paste0(baseurl, "&page=1"), flatten = TRUE)
 mydata2 <- fromJSON(paste0(baseurl, "&page=2"), flatten = TRUE)
@@ -45,17 +45,28 @@ mydata0$filings[1:10, c("organization.sub_name", "organization.city", "totrevenu
 ```
 
 ```
-               organization.sub_name organization.city  totrevenue
-1  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 40148558254
-2  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 37786011714
-3        KAISER FOUNDATION HOSPITALS           OAKLAND 18543043972
-4        KAISER FOUNDATION HOSPITALS           OAKLAND 17980030355
-5    PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN 10452560305
-6    PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN  9636630380
-7                     DIGNITY HEALTH     SAN FRANCISCO  9484767832
-8                     DIGNITY HEALTH     SAN FRANCISCO  9211708211
-9   THRIVENT FINANCIAL FOR LUTHERANS       MINNEAPOLIS  8507178655
-10                        UPMC GROUP        PITTSBURGH  8298512589
+                              organization.sub_name organization.city
+1                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
+2                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
+3                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
+4  DAVIDSON COUNTY COMMUNITY COLLEGE FOUNDATION INC         LEXINGTON
+5                       KAISER FOUNDATION HOSPITALS           OAKLAND
+6                       KAISER FOUNDATION HOSPITALS           OAKLAND
+7                       KAISER FOUNDATION HOSPITALS           OAKLAND
+8                   PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
+9                   PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
+10                  PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
+    totrevenue
+1  42346486950
+2  40148558254
+3  37786011714
+4  30821445312
+5  20013171194
+6  18543043972
+7  17980030355
+8  10619215354
+9  10452560305
+10  9636630380
 ```
 
 To analyze or visualize these data, we need to combine the pages into a single dataset. We can do this with the `rbind.pages` function. Note that in this example, the actual data is contained by the `filings` field:
@@ -91,7 +102,7 @@ We can write a simple loop that automatically downloads and combines many pages.
 
 ```r
 #store all pages in a list first
-baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
+baseurl <- "https://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
 pages <- list()
 for(i in 0:20){
   mydata <- fromJSON(paste0(baseurl, "&page=", i))

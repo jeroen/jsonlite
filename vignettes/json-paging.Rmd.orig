@@ -24,7 +24,7 @@ toJSON <- function(...){
 library(jsonlite)
 ```
 
-The [jsonlite](http://cran.r-project.org/web/packages/jsonlite/index.html) package is a `JSON` parser/generator for R which is optimized for pipelines and web APIs. It is used by the OpenCPU system and many other packages to get data in and out of R using the `JSON` format.
+The [jsonlite](https://cran.r-project.org/package=jsonlite) package is a `JSON` parser/generator for R which is optimized for pipelines and web APIs. It is used by the OpenCPU system and many other packages to get data in and out of R using the `JSON` format.
 
 ## A bidirectional mapping
 
@@ -32,7 +32,7 @@ One of the main strengths of `jsonlite` is that it implements a bidirectional [m
 
 ```{r eval=FALSE}
 library(jsonlite)
-mydata <- fromJSON("http://projects.propublica.org/forensics/geos.json", flatten = TRUE)
+mydata <- fromJSON("https://projects.propublica.org/forensics/geos.json", flatten = TRUE)
 View(mydata)
 ```
 
@@ -43,7 +43,7 @@ The `mydata` object is a data frame which can be used directly for modeling or v
 A question that comes up frequently is how to combine pages of data. Most web APIs limit the amount of data that can be retrieved per request. If the client needs more data than what can fits in a single request, it needs to break down the data into multiple requests that each retrieve a fragment (page) of data, not unlike pages in a book. In practice this is often implemented using a `page` parameter in the API. Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 3 pages of tax-exempt organizations in the USA, ordered by revenue:
 
 ```{r}
-baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
+baseurl <- "https://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
 mydata0 <- fromJSON(paste0(baseurl, "&page=0"), flatten = TRUE)
 mydata1 <- fromJSON(paste0(baseurl, "&page=1"), flatten = TRUE)
 mydata2 <- fromJSON(paste0(baseurl, "&page=2"), flatten = TRUE)
@@ -73,7 +73,7 @@ We can write a simple loop that automatically downloads and combines many pages.
 
 ```{r, message=FALSE}
 #store all pages in a list first
-baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
+baseurl <- "https://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
 pages <- list()
 for(i in 0:20){
   mydata <- fromJSON(paste0(baseurl, "&page=", i))
