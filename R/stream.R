@@ -162,6 +162,7 @@ stream_in <- function(con, handler = NULL, pagesize = 500, verbose = TRUE, ...) 
   repeat {
     page <- readLines(con, n = pagesize, encoding = "UTF-8")
     if(length(page)){
+      page <- Filter(nchar, page)
       cb(lapply(page, parseJSON))
       if(verbose)
         cat("\r Found", count, "records...")

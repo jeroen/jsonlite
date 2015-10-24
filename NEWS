@@ -1,5 +1,6 @@
 0.9.18
  - Removed support for the archived int64 package. Use bit64 instead.
+ - The stream_in function now skips over blank lines
 
 0.9.17
  - Fix for 1 dimensional array objects
