@@ -34,32 +34,29 @@ When no custom handler is specified, \code{stream_in} returns a data frame of al
 When a custom handler function is specified, \code{stream_in} always returns \code{NULL}.
 }
 \description{
-The \code{stream_in} and \code{stream_out} functions implement
-line-by-line processing of JSON data over a \code{\link{connection}}, such as
-a socket, url, file or pipe. This allows for processing unlimited amounts of data
-with limited memory. JSON streaming assumes a slightly different format than
-\code{\link{fromJSON}} and \code{\link{toJSON}}, see details for more information.
+The \code{stream_in} and \code{stream_out} functions implement line-by-line processing
+of JSON data over a \code{\link{connection}}, such as a socket, url, file or pipe. JSON
+streaming requires the \href{http://ndjson.org}{ndjson} format, which slightly differs
+from \code{\link{fromJSON}} and \code{\link{toJSON}}, see details.
 }
 \details{
-Because parsing huge JSON strings is difficult and inefficient, JSON streaming
-is done using \strong{lines of minified JSON records}, sometimes also called
-\href{http://jsonlines.org/}{jsonlines}. This is pretty standard: JSON databases such
-as MongoDB or \href{https://github.com/maxogden/dat}{dat} use the same format to import/export
-large datasets. Note that this means that the total stream combined is
-not valid JSON itself; only the individual lines are. Also note that because line-breaks
-are used as separators, prettified JSON is not permitted: the JSON lines \emph{must}
-be minified. In this respect, the format is a bit different from \code{\link{fromJSON}}
-and \code{\link{toJSON}} where all lines are part of a single JSON structure with
-optional line breaks.
+Because parsing huge JSON strings is difficult and inefficient, JSON streaming is done
+using \strong{lines of minified JSON records}, a.k.a. \href{http://ndjson.org}{ndjson}.
+This is pretty standard: JSON databases such as \href{https://github.com/maxogden/dat}{dat}
+or MongoDB use the same format to import/export datasets. Note that this means that the
+total stream combined is not valid JSON itself; only the individual lines are. Also note
+that because line-breaks are used as separators, prettified JSON is not permitted: the
+JSON lines \emph{must} be minified. In this respect, the format is a bit different from
+\code{\link{fromJSON}} and \code{\link{toJSON}} where all lines are part of a single JSON
+structure with optional line breaks.
 
 The \code{handler} is a callback function which is called for each page (batch) of
 JSON data with exactly one argument (usually a data frame with \code{pagesize} rows).
 If \code{handler} is missing or \code{NULL}, a default handler is used which stores all
-intermediate pages of data in a list, and at the very end uses \code{\link{rbind.pages}}
-to bind all pages together into one single data frame that is returned by \code{stream_in}.
-When a custom \code{handler} function is specified, \code{stream_in}
-does not store any intermediate results and always returns \code{NULL}.
-It is then up to the \code{handler} to process and/or store data pages.
+intermediate pages of data, and at the very end binds all pages together into one single
+data frame that is returned by \code{stream_in}. When a custom \code{handler} function
+is specified, \code{stream_in} does not store any intermediate results and always returns
+\code{NULL}. It is then up to the \code{handler} to process or store data pages.
 A \code{handler} function that does not store intermediate results in memory (for
 example by writing output to another connection) results in a pipeline that can process an
 unlimited amount of data. See example.
