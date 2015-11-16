@@ -110,11 +110,10 @@
 #' daily14f <- flatten(daily14)
 #' filter(daily14f, city.name == "Berlin")$data[[1]]
 #'
-#' # Another large dataset
-#' download.file("http://jsonstudio.com/wp-content/uploads/2014/02/companies.zip", "companies.zip")
-#' unzip("companies.zip")
-#' unlink("companies.zip")
-#' companies <- stream_in(file("companies.json"))
+#' # Stream import large data from zip file
+#' tmp <- tempfile()
+#' download.file("http://jsonstudio.com/wp-content/uploads/2014/02/companies.zip", tmp)
+#' companies <- stream_in(unz(tmp, "companies.json"))
 #' }
 stream_in <- function(con, handler = NULL, pagesize = 500, verbose = TRUE, ...) {
 
