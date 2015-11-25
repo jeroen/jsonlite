@@ -85,7 +85,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   if (is.character(txt) && length(txt) == 1 && nchar(txt, type="bytes") < 10000) {
     if (grepl("^https?://", txt, useBytes=TRUE)) {
       loadpkg("curl")
-      h <- curl::new_handle(useragent = "R/jsonlite")
+      h <- curl::new_handle(useragent = paste("jsonlite /", R.version.string))
       curl::handle_setheaders(h, Accept = "application/json, text/*, */*")
       txt <- curl::curl(txt, handle = h)
     } else if (file.exists(txt)) {
