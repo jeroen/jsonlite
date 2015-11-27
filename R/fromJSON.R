@@ -17,8 +17,8 @@
 #' @rdname fromJSON
 #' @title Convert \R{} objects to/from JSON
 #' @name toJSON, fromJSON
-#' @aliases View fromJSON toJSON jsonlite
-#' @export View fromJSON toJSON
+#' @aliases fromJSON toJSON jsonlite
+#' @export fromJSON toJSON
 #' @param txt a JSON string, URL or file
 #' @param simplifyVector coerce JSON arrays containing only primitives into an atomic vector
 #' @param simplifyDataFrame coerce JSON arrays containing only records (JSON objects) into a data frame

@@ -1,5 +1,6 @@
 0.9.19
- - Fix for CMD check in RStudio
+ - Remove the View() workaround because it causes issues in RStudio and
+   because the bug in utils::View has been fixed in R-patched.
 
 0.9.18
  - Removed support for the archived int64 package. Use bit64 instead.
