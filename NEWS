@@ -1,3 +1,6 @@
+0.9.20
+ - Tweak for unboxed POSIXt = "mongo" queries
+
 0.9.19
  - Remove the View() workaround because it causes issues in RStudio and
    because the bug in utils::View has been fixed in R-patched.
