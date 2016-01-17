@@ -19,7 +19,7 @@ setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "st
 
   # validate NA
   if (any(missings <- which(is.na(x)))) {
-    na <- match.arg(na)
+    na <- match.arg(na, choices = c("null", "string", "NA"))
     if (na %in% c("null")) {
       tmp[missings] <- "null"
     } else if(na %in% "string") {

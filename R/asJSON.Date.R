@@ -1,7 +1,7 @@
 setMethod("asJSON", "Date", function(x, Date = c("ISO8601", "epoch"), ...) {
 
   # Validate argument
-  Date <- match.arg(Date)
+  Date <- match.arg(Date, choices = c("ISO8601", "epoch"))
 
   # select a schema
   output <- switch(Date,

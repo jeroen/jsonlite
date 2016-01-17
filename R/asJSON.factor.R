@@ -1,6 +1,6 @@
 setMethod("asJSON", "factor", function(x, factor = c("string", "integer"), keep_vec_names = FALSE, ...) {
   # validate
-  factor <- match.arg(factor)
+  factor <- match.arg(factor, choices = c("string", "integer"))
 
   # dispatch
   if (factor == "integer") {
