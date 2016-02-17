@@ -161,7 +161,7 @@ stream_in <- function(con, handler = NULL, pagesize = 500, verbose = TRUE, ...) 
       cleanpage <- Filter(nchar, page)
       cb(lapply(cleanpage, parseJSON))
       if(verbose)
-        cat("\r Found", count, "records...")
+        cat("\r Found", length(cleanpage), "records...")
     }
     if(length(page) < pagesize)
       break
