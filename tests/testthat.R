@@ -4,4 +4,4 @@
 library(testthat)
 
 #filter is to disable tests that rely on external servers
-test_package("jsonlite", filter="toJSON|fromJSON|libjson|serializeJSON")
+test_check("jsonlite", filter="toJSON|fromJSON|libjson|serializeJSON")
