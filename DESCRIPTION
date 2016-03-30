@@ -28,3 +28,4 @@ Suggests:
     knitr,
     rmarkdown,
     R.rsp
+RoxygenNote: 5.0.1
