@@ -1,16 +1,21 @@
 language: r
+sudo: false
+cache: packages
+
+addons:
+  apt:
+    packages:
+      - libcurl4-openssl-dev
+
+r_github_packages:
+  - jimhester/covr
 
 warnings_are_errors: true
-#r_check_revdep: true
-
-apt_packages:
-  - texlive
-  - pandoc-citeproc
 
 notifications:
   email:
     on_success: change
     on_failure: change
 
-r_github_packages:
- - jeroenooms/curl
+after_success:
+  - Rscript -e 'covr::codecov()'
