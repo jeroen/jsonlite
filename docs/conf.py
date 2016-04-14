@@ -1,3 +1,11 @@
+from recommonmark.parser import CommonMarkParser
+
+source_parsers = {
+    '.md': CommonMarkParser,
+}
+
+source_suffix = ['.md', '.rst']
+
 # -*- coding: utf-8 -*-
 #
 # jsonlite documentation build configuration file, created by
