@@ -2,6 +2,10 @@ language: r
 sudo: false
 cache: packages
 
+os:
+  - linux
+  - osx
+
 addons:
   apt:
     packages:
