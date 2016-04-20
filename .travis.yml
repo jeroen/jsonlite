@@ -6,11 +6,6 @@ os:
   - linux
   - osx
 
-addons:
-  apt:
-    packages:
-      - libcurl4-openssl-dev
-
 r_github_packages:
   - jimhester/covr
 
