@@ -18,13 +18,13 @@ setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NUL
   # if collapse == FALSE, then this matrix is nested inside a data frame,
   # and therefore row major is required to match dimensions
   # dont pass auto_unbox (never unbox within matrix)
-  margin <- ifelse(identical(matrix, "columnmajor") && isTRUE(collapse), length(dim(x)), 1);
 
   if(length(dim(x)) == 2 && identical(matrix, "rowmajor")){
     m <- asJSON(c(x), collapse = FALSE, matrix = matrix, na = na, ...)
     dim(m) <- dim(x)
     tmp <- row_collapse(m, indent = indent + 2L)
   } else {
+    margin <- ifelse(identical(matrix, "columnmajor") && isTRUE(collapse), length(dim(x)), 1)
     tmp <- apply(x, margin, asJSON, matrix = matrix, na = na, indent = indent + 2L, ...)
   }
 

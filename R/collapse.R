@@ -3,7 +3,7 @@ collapse <- function(x, inner = TRUE, indent = 0L) {
   if(is.na(indent)){
     .Call(C_collapse_array, x)
   } else if(isTRUE(inner)){
-    .Call(C_collapse_array_pretty_inner, x, indent)
+    .Call(C_collapse_array_pretty_inner, x)
   } else {
     .Call(C_collapse_array_pretty_outer, x, indent)
   }
