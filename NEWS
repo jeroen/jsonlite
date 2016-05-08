@@ -1,5 +1,5 @@
 0.9.20
- - Performance optimization for toJSON on matrices
+ - Performance optimization for toJSON on matrices and arrays
  - Tweak for unboxed POSIXt = "mongo" queries
 
 0.9.19
