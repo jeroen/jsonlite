@@ -21,10 +21,11 @@ setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NUL
 
   m <- asJSON(c(x), collapse = FALSE, matrix = matrix, na = na, ...)
   dim(m) <- dim(x)
-  if(length(dim(x)) == 2 && identical(matrix, "rowmajor")){
-    tmp <- row_collapse(m, indent = indent + 2L)
+  tmp <- if(length(dim(x)) == 2 && identical(matrix, "rowmajor")){
+    # Faster special case for matrices
+    row_collapse(m, indent = indent + 2L)
   } else {
-    tmp <- collapse_array(m, columnmajor = identical(matrix, "columnmajor"), indent = indent)
+    collapse_array(m, columnmajor = identical(matrix, "columnmajor"), indent = indent)
   }
 
   # collapse it
