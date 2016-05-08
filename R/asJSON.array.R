@@ -3,7 +3,7 @@ setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NUL
   indent = NA_integer_, ...) {
 
   #validate
-  matrix <- match.arg(matrix);
+  matrix <- match.arg(matrix, choices = c("rowmajor", "columnmajor"));
 
   # reset na arg when called from data frame
   if(identical(na, "NA")){

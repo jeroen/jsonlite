@@ -2,7 +2,7 @@ setMethod("asJSON", "complex", function(x, digits = 5, collapse = TRUE, complex 
   "list"), na = c("string", "null", "NA"), oldna = NULL, ...) {
 
   # validate
-  na <- match.arg(na);
+  na <- match.arg(na, choices = c("string", "null", "NA"));
   complex <- match.arg(complex)
 
   #turn into strings

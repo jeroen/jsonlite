@@ -1,7 +1,7 @@
 setMethod("asJSON", "raw", function(x, raw = c("base64", "hex", "mongo"), ...) {
 
   # validate
-  raw <- match.arg(raw)
+  raw <- match.arg(raw, choices = c("base64", "hex", "mongo"))
 
   # encode based on schema
   if (raw == "mongo") {

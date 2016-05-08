@@ -9,7 +9,7 @@ setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "
       auto_unbox = TRUE, collapse = collapse, ...))
   }
 
-  na <- match.arg(na);
+  na <- match.arg(na, choices = c("string", "null", "NA"));
   na_as_string <- switch(na,
     "string" = TRUE,
     "null" = FALSE,
