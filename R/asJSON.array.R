@@ -2,7 +2,6 @@ setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NUL
   matrix = c("rowmajor", "columnmajor"), auto_unbox = FALSE, keep_vec_names = FALSE,
   indent = NA_integer_, ...) {
 
-  #validate
   matrix <- match.arg(matrix);
 
   # reset na arg when called from data frame
@@ -16,13 +15,16 @@ setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NUL
   }
 
   # if collapse == FALSE, then this matrix is nested inside a data frame,
-  # and therefore row major is required to match dimensions
-  # dont pass auto_unbox (never unbox within matrix)
+  # and therefore row major must be forced to match dimensions
+  if(identical(matrix, "columnmajor") && collapse == FALSE){
+    return(apply(x, 1, asJSON, matrix = matrix, na = na, indent = indent + 2L, ...))
+  }
 
+  # dont pass auto_unbox (never unbox within matrix)
   m <- asJSON(c(x), collapse = FALSE, matrix = matrix, na = na, ...)
   dim(m) <- dim(x)
   tmp <- if(length(dim(x)) == 2 && identical(matrix, "rowmajor")){
-    # Faster special case for matrices
+    # Faster special case for 2D matrices
     row_collapse(m, indent = indent + 2L)
   } else {
     collapse_array(m, columnmajor = identical(matrix, "columnmajor"), indent = indent)
