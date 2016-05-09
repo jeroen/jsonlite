@@ -22,7 +22,7 @@ Description: A fast JSON parser and generator optimized for statistical data
     package verify that all edge cases are encoded and decoded consistently for
     use with dynamic data in systems and applications.
 Suggests:
-    curl (>= 0.5),
+    httr,
     plyr,
     testthat,
     knitr,

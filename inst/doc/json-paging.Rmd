@@ -1,6 +1,6 @@
 ---
 title: "Combining pages of JSON data with jsonlite"
-date: "2015-09-06"
+date: "2016-05-09"
 output:
   html_document
 vignette: >
