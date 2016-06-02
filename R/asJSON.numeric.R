@@ -1,6 +1,6 @@
 setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "AsIs"),
   na = c("string", "null", "NA"), auto_unbox = FALSE, collapse = TRUE,
-  keep_vec_names = FALSE, indent = NA_integer_, ...) {
+  keep_vec_names = FALSE, indent = NA_integer_, force_decimal = FALSE, ...) {
 
   # shiny legacy exception
   if(isTRUE(keep_vec_names) && length(names(x))){
@@ -24,7 +24,7 @@ setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "
   tmp <- if(is(x, "integer64")){
     integer64_to_char(x, na_as_string)
   } else {
-    num_to_char(x, digits, na_as_string, use_signif);
+    num_to_char(x, digits, na_as_string, use_signif, force_decimal);
   }
 
   if(isTRUE(auto_unbox) && length(tmp) == 1){
