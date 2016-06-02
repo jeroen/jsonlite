@@ -26,6 +26,7 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif) {
     }
   } else if(isReal(x)) {
     int precision = asInteger(digits);
+    int sig_digits = signif ? ceil(fmin(15, precision)) : 0;
     double * xreal = REAL(x);
     for (int i=0; i<len; i++) {
       double val = xreal[i];
@@ -52,7 +53,7 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif) {
         SET_STRING_ELT(out, i, mkChar(buf));
       } else if(signif){
         //use signifant digits rather than decimal digits
-        snprintf(buf, 32, "%.*g", (int) ceil(fmin(15, precision)), val);
+        snprintf(buf, 32, "%.*g", sig_digits, val);
         SET_STRING_ELT(out, i, mkChar(buf));
       } else if(precision > -1 && precision < 10 && fabs(val) < 2147483647 && fabs(val) > 1e-5) {
         //preferred method: fast with fixed decimal digits
