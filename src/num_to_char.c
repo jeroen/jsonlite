@@ -3,11 +3,11 @@
 #include <stdlib.h>
 #include <modp_numtoa.h>
 
-SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP force_decimal) {
+SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP always_decimal) {
   int len = length(x);
   int na_string = asLogical(na_as_string);
   int signif = asLogical(use_signif);
-  int force_dec = asLogical(force_decimal);
+  int always_dec = asLogical(always_decimal);
   char buf[32];
   SEXP out = PROTECT(allocVector(STRSXP, len));
   if(isInteger(x)){
@@ -49,7 +49,7 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP
         } else {
           SET_STRING_ELT(out, i, mkChar("null"));
         }
-      } else if(force_dec && fabs(val) < 1e15 && !fmod(val, 1)){
+      } else if(always_dec && fabs(val) < 1e15 && !fmod(val, 1)){
         snprintf(buf, 32, "%.1f", val);
         SET_STRING_ELT(out, i, mkChar(buf));
       } else if(precision == NA_INTEGER){

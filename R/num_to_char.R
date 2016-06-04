@@ -1,10 +1,10 @@
 #' @useDynLib jsonlite R_num_to_char
-num_to_char <- function(x, digits = NA, na_as_string = NA, use_signif = FALSE, force_decimal = FALSE){
+num_to_char <- function(x, digits = NA, na_as_string = NA, use_signif = FALSE, always_decimal = FALSE){
   if(is.na(digits)) digits <- NA_integer_;
   stopifnot(is.numeric(x))
   stopifnot(is.numeric(digits))
   stopifnot(is.logical(na_as_string))
-  .Call(R_num_to_char, x, digits, na_as_string, use_signif, force_decimal)
+  .Call(R_num_to_char, x, digits, na_as_string, use_signif, always_decimal)
 }
 
 #' @useDynLib jsonlite R_integer64_to_char

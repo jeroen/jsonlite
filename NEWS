@@ -1,5 +1,5 @@
 0.9.21
- - Add 'force_decimal' argument in toJSON for real number notation in whole number doubles.
+ - Add 'always_decimal' argument in toJSON for real number notation in whole number doubles.
 
 0.9.20
  - Performance optimization for toJSON on matrices and arrays

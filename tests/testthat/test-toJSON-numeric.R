@@ -26,11 +26,11 @@ test_that("Encoding Numbers in Data Frame", {
 test_that("Force decimal works", {
   # Force decimal for doubles
   expect_equal(toJSON(100), '[100]')
-  expect_equal(toJSON(100, force_decimal = TRUE), '[100.0]')
+  expect_equal(toJSON(100, always_decimal = TRUE), '[100.0]')
 
   # But not for integers
   expect_equal(toJSON(100L), '[100]')
-  expect_equal(toJSON(100L, force_decimal = TRUE), '[100]')
+  expect_equal(toJSON(100L, always_decimal = TRUE), '[100]')
 
   # Test range
   x <- 10^c(-15 : 20)
@@ -39,7 +39,7 @@ test_that("Force decimal works", {
   expect_equal(as.list(x1), fromJSON(toJSON(x1), simplifyVector = FALSE))
   expect_equal(as.list(x2), fromJSON(toJSON(x2, digits = 9), simplifyVector = FALSE))
 
-  # force_decimal makes sure that doubles stay real
-  y2 <- fromJSON(toJSON(x1, digits = 9, force_decimal=TRUE), simplifyVector = FALSE)
+  # always_decimal makes sure that doubles stay real
+  y2 <- fromJSON(toJSON(x1, digits = 9, always_decimal = TRUE), simplifyVector = FALSE)
   expect_identical(as.list(x1), y2)
 })
