@@ -1,4 +1,4 @@
-setMethod("asJSON", "Date", function(x, Date = c("ISO8601", "epoch"), ...) {
+setMethod("asJSON", "Date", function(x, Date = c("ISO8601", "epoch"), always_decimal = FALSE, ...) {
 
   # Validate argument
   Date <- match.arg(Date)
@@ -11,5 +11,5 @@ setMethod("asJSON", "Date", function(x, Date = c("ISO8601", "epoch"), ...) {
   )
 
   # Dispatch to character encoding
-  asJSON(output, ...)
+  asJSON(output, always_decimal = FALSE, ...)
 })

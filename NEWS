@@ -1,3 +1,6 @@
+0.9.22
+ - Fix for side effects of 'always_decimal' on Date and POSIXt integer encoding
+
 0.9.21
  - Add 'always_decimal' argument in toJSON for real number notation in whole number doubles.
 
