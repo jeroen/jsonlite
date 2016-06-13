@@ -517,10 +517,15 @@ void yajl_tree_free (yajl_val v)
  * Stuff below added by Jeroen to support push parsing over connection interface.
  */
 
+unsigned char mem_callbacks[sizeof(yajl_callbacks)];
+unsigned char mem_ctx[sizeof(context_t)];
+
 yajl_handle push_parser_new () {
 
   /* init callback handlers */
-  yajl_callbacks *callbacks = malloc(sizeof(yajl_callbacks));
+  yajl_callbacks *callbacks = (yajl_callbacks*) mem_callbacks;
+  memset(callbacks, 0, sizeof(yajl_callbacks));
+
   callbacks->yajl_null = handle_null;
   callbacks->yajl_boolean = handle_boolean;
   callbacks->yajl_number = handle_number;
@@ -534,11 +539,8 @@ yajl_handle push_parser_new () {
   callbacks->yajl_end_array = handle_end_array;
 
   /* init context */
-  context_t *ctx = malloc(sizeof(context_t));
-  ctx->root = NULL;
-  ctx->stack = NULL;
-  ctx->errbuf = malloc(1024);
-  ctx->errbuf_size = 1024;
+  context_t *ctx = (context_t*) mem_ctx;
+  memset(ctx, 0, sizeof(context_t));
 
   /* init handle */
   yajl_handle handle = yajl_alloc(callbacks, NULL, ctx);
