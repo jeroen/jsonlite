@@ -1,19 +1,16 @@
-PKG_CPPFLAGS = -Iyajl -Iyajl/api -I.
+PKG_CPPFLAGS = -Iyajl/api -I.
+PKG_LIBS = -L. -lyajl
 
-SOURCES = yajl/yajl.c yajl/yajl_alloc.c yajl/yajl_buf.c yajl/yajl_encode.c \
-          yajl/yajl_gen.c yajl/yajl_lex.c yajl/yajl_parser.c yajl/yajl_tree.c \
-          yajl/yajl_version.c base64.c collapse_array.c collapse_object.c \
-          escape_chars.c is_recordlist.c is_scalarlist.c null_to_na.c parse.c \
-          prettify.c validate.c modp_numtoa.c num_to_char.c integer64_to_na.c \
-          push_parser.c collapse_pretty.c row_collapse.c
+LIBYAJL = yajl/yajl.o yajl/yajl_alloc.o yajl/yajl_buf.o yajl/yajl_encode.o \
+	yajl/yajl_gen.o yajl/yajl_lex.o yajl/yajl_parser.o yajl/yajl_tree.o \
+	yajl/yajl_version.o
 
-# For development only (GNU/GCC specific not allowed on CRAN):
-# SOURCES = $(wildcard yajl/*.c *.c)
-# PKG_CFLAGS= -Wall -pedantic
+all: clean
 
-OBJECTS = $(SOURCES:.c=.o)
+$(SHLIB): libyajl.a
 
-all: clean $(OBJECTS)
+libyajl.a: $(LIBYAJL)
+	$(AR) rcs libyajl.a $(LIBYAJL)
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(LIBYAJL) $(SHLIB) $(OBJECTS)
