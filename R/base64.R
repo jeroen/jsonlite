@@ -1,19 +1,19 @@
-# These functions have been taken from the base64 package by Francois Romain. It
-# was easier to copy then to import.  They will not be exported
+#' @useDynLib jsonlite R_base64_decode
 base64_decode <- function(input) {
-  stopifnot(is.character(input))
-  inputtf <- tempfile()
-  writeLines(input, inputtf)
-  output <- tempfile()
-  invisible(.Call("base64_decode_", inputtf, output))
-  readBin(output, "raw", file.info(output)$size)
+  if(is.character(input)){
+    input <- charToRaw(paste(input, collapse = "\n"))
+  }
+  stopifnot(is.raw(input))
+  .Call(R_base64_decode, input)
 }
 
-base64_encode <- function(input, linesize = 1e+09) {
+
+#' @useDynLib jsonlite R_base64_encode
+base64_encode <- function(input) {
+  if(is.character(input)){
+    input <- charToRaw(paste(input, collapse = "\n"))
+  }
   stopifnot(is.raw(input))
-  inputtf <- tempfile()
-  writeBin(input, inputtf)
-  output <- tempfile()
-  invisible(.Call("base64_encode_", inputtf, output, as.integer(linesize)))
-  return(readLines(output))
+  buf <- .Call(R_base64_encode, input)
+  rawToChar(buf)
 }
