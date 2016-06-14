@@ -1,7 +1,7 @@
 #include <Rinternals.h>
 #include <yajl_tree.h>
 #include <yajl_parse.h>
-#include <push_parser.h>
+#include "push_parser.h"
 
 /* finalizer */
 yajl_handle push_parser;

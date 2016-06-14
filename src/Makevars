@@ -1,4 +1,4 @@
-PKG_CPPFLAGS = -Iyajl/api -I.
+PKG_CPPFLAGS = -Iyajl/api
 PKG_LIBS = -L. -lyajl
 
 LIBYAJL = yajl/yajl.o yajl/yajl_alloc.o yajl/yajl_buf.o yajl/yajl_encode.o \

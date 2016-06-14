@@ -1,7 +1,7 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 #include <stdlib.h>
-#include <modp_numtoa.h>
+#include "modp_numtoa.h"
 
 SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP always_decimal) {
   int len = length(x);
