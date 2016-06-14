@@ -2,8 +2,7 @@ PKG_CPPFLAGS = -Iyajl/api -I.
 PKG_LIBS = -L. -lyajl
 
 LIBYAJL = yajl/yajl.o yajl/yajl_alloc.o yajl/yajl_buf.o yajl/yajl_encode.o \
-	yajl/yajl_gen.o yajl/yajl_lex.o yajl/yajl_parser.o yajl/yajl_tree.o \
-	yajl/yajl_version.o
+	yajl/yajl_gen.o yajl/yajl_lex.o yajl/yajl_parser.o yajl/yajl_tree.o
 
 #all: clean
 
