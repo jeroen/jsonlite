@@ -14,7 +14,8 @@ base64_encode(input)
 \item{input}{string or raw vector to be encoded/decoded}
 }
 \description{
-Simple in-memory base64 encoder and decoder. Interchangable with
-implementations from \code{base64enc} or \code{openssl} packages.
+Simple in-memory base64 encoder and decoder. Used internally for converting
+raw vectors to text. Interchangable with encoder from \code{base64enc} or
+\code{openssl} package.
 }
 
