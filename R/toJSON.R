@@ -18,11 +18,6 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
   # force
   x <- force(x)
 
-  # edge case because 'null' in itself is not valid json
-  if(is.null(x)){
-    null <- "list"
-  }
-
   #this is just to check, we keep method-specific defaults
   if(!missing(na)){
     na <- match.arg(na)
