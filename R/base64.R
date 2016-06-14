@@ -1,3 +1,12 @@
+#' Encode/decode base64
+#'
+#' Simple in-memory base64 encoder and decoder. Interchangable with
+#' implementations from \code{base64enc} or \code{openssl} packages.
+#'
+#' @param input string or raw vector to be encoded/decoded
+#' @export
+#' @rdname base64
+#' @name base64
 #' @useDynLib jsonlite R_base64_decode
 base64_decode <- function(input) {
   if(is.character(input)){
@@ -7,7 +16,8 @@ base64_decode <- function(input) {
   .Call(R_base64_decode, input)
 }
 
-
+#' @export
+#' @rdname base64
 #' @useDynLib jsonlite R_base64_encode
 base64_encode <- function(input) {
   if(is.character(input)){
