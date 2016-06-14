@@ -25,6 +25,5 @@ base64_encode <- function(input) {
     input <- charToRaw(paste(input, collapse = "\n"))
   }
   stopifnot(is.raw(input))
-  buf <- .Call(R_base64_encode, input)
-  rawToChar(buf)
+  .Call(R_base64_encode, input)
 }

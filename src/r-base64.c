@@ -11,9 +11,9 @@ SEXP R_base64_encode(SEXP buf){
   unsigned char * out = base64_encode(RAW(buf), len, &outlen);
   if(out == NULL)
     Rf_error("Error in base64 encode");
-  SEXP res = allocVector(RAWSXP, outlen);
-  memcpy(RAW(res), out, outlen);
-  free(out);
+  SEXP res = PROTECT(allocVector(STRSXP, 1));
+  SET_STRING_ELT(res, 0, mkCharLen((char*) out, outlen));
+  UNPROTECT(1);
   return res;
 }
 
