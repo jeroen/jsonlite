@@ -1,15 +1,15 @@
 PKG_CPPFLAGS = -Iyajl/api
-PKG_LIBS = -L. -lyajl
+PKG_LIBS = -L. -lstatyajl
 
 LIBYAJL = yajl/yajl.o yajl/yajl_alloc.o yajl/yajl_buf.o yajl/yajl_encode.o \
 	yajl/yajl_gen.o yajl/yajl_lex.o yajl/yajl_parser.o yajl/yajl_tree.o
 
 #all: clean
 
-$(SHLIB): libyajl.a
+$(SHLIB): libstatyajl.a
 
-libyajl.a: $(LIBYAJL)
-	$(AR) rcs libyajl.a $(LIBYAJL)
+libstatyajl.a: $(LIBYAJL)
+	$(AR) rcs libstatyajl.a $(LIBYAJL)
 
 clean:
-	rm -f $(LIBYAJL) $(SHLIB) $(OBJECTS) libyajl.a
+	rm -f $(LIBYAJL) $(SHLIB) $(OBJECTS) libstatyajl.a
