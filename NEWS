@@ -1,7 +1,8 @@
 1.0
  - Export base64 encoder/decoder
- - Fix compiler warning on Windows (don't redefine isnan)
- - Makevars changed to libstatyajl.a to prevent conflict with system libyajl
+ - Fix compiler warning on Windows: don't redefine isnan() and isinf()
+ - Changed targed in Makevars to libstatyajl.a to prevent conflict with system libyajl
+ - Bump to 1.0 because this package is basically done
 
 0.9.22
  - Fix for side effects of 'always_decimal' on Date and POSIXt integer encoding
