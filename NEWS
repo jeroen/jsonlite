@@ -1,3 +1,7 @@
+1.0
+ - Export base64 encoder/decoder
+ - Makevars changed to libstatyajl.a to prevent conflict with system libyajl.
+
 0.9.22
  - Fix for side effects of 'always_decimal' on Date and POSIXt integer encoding
  - Fixed a small memory leak in the push parser (fromJSON.connection)
