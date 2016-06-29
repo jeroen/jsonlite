@@ -2,8 +2,8 @@
 
 S3method(print,json)
 S3method(print,scalar)
-export(base64_decode)
-export(base64_encode)
+export(base64_dec)
+export(base64_enc)
 export(flatten)
 export(fromJSON)
 export(minify)

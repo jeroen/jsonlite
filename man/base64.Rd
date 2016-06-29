@@ -2,13 +2,13 @@
 % Please edit documentation in R/base64.R
 \name{base64}
 \alias{base64}
-\alias{base64_decode}
-\alias{base64_encode}
+\alias{base64_dec}
+\alias{base64_enc}
 \title{Encode/decode base64}
 \usage{
-base64_decode(input)
+base64_dec(input)
 
-base64_encode(input)
+base64_enc(input)
 }
 \arguments{
 \item{input}{string or raw vector to be encoded/decoded}
@@ -17,5 +17,10 @@ base64_encode(input)
 Simple in-memory base64 encoder and decoder. Used internally for converting
 raw vectors to text. Interchangable with encoder from \code{base64enc} or
 \code{openssl} package.
+}
+\examples{
+str <- base64_enc(serialize(iris, NULL))
+out <- unserialize(base64_dec(str))
+stopifnot(identical(out, iris))
 }
 

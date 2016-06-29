@@ -1,5 +1,5 @@
 1.0
- - Export base64 encoder/decoder
+ - Rename and export base64 encoder/decoder
  - Fix compiler warning on Windows: don't redefine isnan() and isinf()
  - Changed targed in Makevars to libstatyajl.a to prevent conflict with system libyajl
  - Bump to 1.0 because this package is basically done
