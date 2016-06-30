@@ -26,7 +26,7 @@ notifications:
     on_failure: change
 
 before_install:
-  - sudo tlmgr install preprint
+  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo tlmgr install preprint; fi
 
 after_success:
   - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
