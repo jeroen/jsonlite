@@ -49,29 +49,27 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP
         } else {
           SET_STRING_ELT(out, i, mkChar("null"));
         }
-      } else if(always_dec && fabs(val) < 1e15 && !fmod(val, 1)){
-        snprintf(buf, 32, "%.1f", val);
-        SET_STRING_ELT(out, i, mkChar(buf));
-      } else if(precision == NA_INTEGER){
-        snprintf(buf, 32, "%.15g", val);
-        SET_STRING_ELT(out, i, mkChar(buf));
-      } else if(signif){
-        //use signifant digits rather than decimal digits
-        snprintf(buf, 32, "%.*g", sig_digits, val);
-        SET_STRING_ELT(out, i, mkChar(buf));
-      } else if(precision > -1 && precision < 10 && fabs(val) < 2147483647 && fabs(val) > 1e-5) {
-        //preferred method: fast with fixed decimal digits
-        //does not support large numbers or scientific notation
-        modp_dtoa2(val, buf, precision);
-        SET_STRING_ELT(out, i, mkChar(buf));
-        //Rprintf("Using modp_dtoa2\n");
       } else {
-        //fall back on sprintf (includes scientific notation)
-        //limit total precision to 15 significant digits to avoid noise
-        //funky formula is mostly to convert decimal digits into significant digits
-        snprintf(buf, 32, "%.*g", (int) ceil(fmin(15, fmax(1, log10(val)) + precision)), val);
+        if(precision == NA_INTEGER){
+          snprintf(buf, 32, "%.15g", val);
+        } else if(signif){
+          //use signifant digits rather than decimal digits
+          snprintf(buf, 32, "%.*g", sig_digits, val);
+        } else if(precision > -1 && precision < 10 && fabs(val) < 2147483647 && fabs(val) > 1e-5) {
+          //preferred method: fast with fixed decimal digits
+          //does not support large numbers or scientific notation
+          modp_dtoa2(val, buf, precision);
+        } else {
+          //fall back on sprintf (includes scientific notation)
+          //limit total precision to 15 significant digits to avoid noise
+          //funky formula is mostly to convert decimal digits into significant digits
+          snprintf(buf, 32, "%.*g", (int) ceil(fmin(15, fmax(1, log10(val)) + precision)), val);
+        }
+        //if always_decimal = TRUE, then append .0 to whole numbers
+        if(always_dec && strspn(buf, "0123456789-") == strlen(buf)){
+          strcat(buf, ".0");
+        }
         SET_STRING_ELT(out, i, mkChar(buf));
-        //Rprintf("Using sprintf with precision %d digits\n",(int) ceil(fmin(15, fmax(1, log10(val)) + precision)));
       }
     }
   } else {

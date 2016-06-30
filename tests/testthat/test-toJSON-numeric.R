@@ -27,6 +27,7 @@ test_that("Force decimal works", {
   # Force decimal for doubles
   expect_equal(toJSON(100), '[100]')
   expect_equal(toJSON(100, always_decimal = TRUE), '[100.0]')
+  expect_equal(toJSON(12.000000000001, always_decimal = TRUE), '[12.0]')
 
   # But not for integers
   expect_equal(toJSON(100L), '[100]')
