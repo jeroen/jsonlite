@@ -53,7 +53,7 @@ toJSON(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor",
 \item{auto_unbox}{automatically \code{\link{unbox}} all atomic vectors of length 1. It is usually safer to avoid this and instead use the \code{\link{unbox}} function to unbox individual elements.
 An exception is that objects of class \code{AsIs} (i.e. wrapped in \code{I()}) are not automatically unboxed. This is a way to mark single values as length-1 arrays.}
 
-\item{digits}{max number of decimal digits to print for numeric values. Use \code{I()} to specify significant digits.}
+\item{digits}{max number of decimal digits to print for numeric values. Use \code{I()} to specify significant digits. Use \code{NA} for max precision.}
 
 \item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}}
 
