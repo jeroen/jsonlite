@@ -26,7 +26,7 @@ notifications:
     on_failure: change
 
 before_install:
-  - tlmgr install preprint
+  - sudo tlmgr install preprint
 
 after_success:
   - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
