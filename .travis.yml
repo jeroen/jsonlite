@@ -11,9 +11,7 @@ matrix:
       env: R_CODECOV=true
     - os: osx
       osx_image: xcode7.2
-      brew_packages: yajl # not needed; test for conflicts
-      latex: false
-      r_check_args: '--as-cran --no-manual'
+      brew_packages: yajl # only to test for conflicts
     - os: osx
       osx_image: beta-xcode6.1
 
@@ -26,6 +24,9 @@ notifications:
   email:
     on_success: change
     on_failure: change
+
+before_install:
+  - tlmgr install preprint
 
 after_success:
   - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
