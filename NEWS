@@ -1,3 +1,6 @@
+1.1
+ - stream_in now passes ... arguments to fromJSON as documented
+
 1.0
  - Fix always_decimal for non-whole numbres which get rounded to whole numbers
  - Rename and export base64 encoder/decoder
