@@ -136,7 +136,7 @@ stream_in <- function(con, handler = NULL, pagesize = 500, verbose = TRUE, ...) 
     if(verbose)
       message("using a custom handler function.")
     function(x){
-      handler(post_process(x))
+      handler(post_process(x, ...))
       count <<- count + length(x)
     }
   }
@@ -171,14 +171,14 @@ stream_in <- function(con, handler = NULL, pagesize = 500, verbose = TRUE, ...) 
   if(is.null(handler)){
     if(verbose) cat("\r Imported", count, "records. Simplifying into dataframe...\n")
     out <- as.list(out, sorted = FALSE)
-    post_process(unlist(out[order(as.numeric(names(out)))], FALSE, FALSE))
+    post_process(unlist(out[order(as.numeric(names(out)))], FALSE, FALSE), ...)
   } else {
     invisible()
   }
 }
 
-post_process <- function(x){
-  as.data.frame(simplify(x))
+post_process <- function(x, ...){
+  as.data.frame(simplify(x, ...))
 }
 
 #' @rdname stream_in
