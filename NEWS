@@ -1,6 +1,6 @@
 1.1
  - stream_in now passes ... arguments to fromJSON as documented
- - Suppress -Wformat warning in -pedantic Windows
+ - Force ANSI_STDIO on Windows to fix -pedantic compiler warning
  - Close connection even if opening fails. Fixes #145
 
 1.0

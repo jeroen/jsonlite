@@ -52,11 +52,7 @@ SEXP ParseValue(yajl_val node, int bigint){
     /* 2^53 is highest int stored as double without loss */
     if(bigint && (val > 9007199254740992 || val < -9007199254740992)){
       char buf[32];
-      #ifdef _WIN32
-      snprintf(buf, 32, "%I64d", val);
-      #else
       snprintf(buf, 32, "%lld", val);
-      #endif
       return mkString(buf);
     /* see .Machine$integer.max in R */
     } else if(val > 2147483647 || val < -2147483647){

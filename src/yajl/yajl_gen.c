@@ -210,12 +210,7 @@ yajl_gen_integer(yajl_gen g, long long int number)
 {
     char i[32];
     ENSURE_VALID_STATE; ENSURE_NOT_KEY; INSERT_SEP; INSERT_WHITESPACE;
-#ifdef _WIN32
-    #pragma GCC diagnostic ignored "-Wformat"
-    sprintf(i, "%I64d", number);
-#else
     sprintf(i, "%lld", number);
-#endif
     g->print(g->ctx, i, (unsigned int)strlen(i));
     APPENDED_ATOM;
     FINAL_NEWLINE;

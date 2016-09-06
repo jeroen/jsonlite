@@ -19,7 +19,7 @@ SEXP R_integer64_to_char(SEXP x, SEXP na_as_string){
       }
     } else {
       #ifdef _WIN32
-        snprintf(buf, 32, "%I64d", xint[i]);
+        snprintf(buf, 32, "%lld", xint[i]);
       #else
         //snprintf(buf, 32, "%lld", xint[i]);
         //modp is faster (but does not work on windows)

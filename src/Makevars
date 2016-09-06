@@ -1,4 +1,5 @@
 PKG_CPPFLAGS = -Iyajl/api
+PKG_CFLAGS = -D__USE_MINGW_ANSI_STDIO=1
 PKG_LIBS = -L. -lstatyajl
 
 LIBYAJL = yajl/yajl.o yajl/yajl_alloc.o yajl/yajl_buf.o yajl/yajl_encode.o \
