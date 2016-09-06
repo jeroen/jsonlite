@@ -2,8 +2,8 @@
 parse_con <- function(con, n , bigint_as_char){
   stopifnot(is(con, "connection"))
   if(!isOpen(con)){
+    on.exit(close(con)) # also destroy con if 'open' fails
     open(con, "rb")
-    on.exit(close(con))
   }
   feed_push_parser(readBin(con, raw(), n), reset = TRUE)
   while(length(buf <- readBin(con, raw(), n))) {
