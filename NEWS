@@ -1,5 +1,6 @@
 1.1
  - stream_in now passes ... arguments to fromJSON as documented
+ - Suppress -Wformat warning in -pedantic Windows
 
 1.0
  - Fix always_decimal for non-whole numbres which get rounded to whole numbers
