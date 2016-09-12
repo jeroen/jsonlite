@@ -2,6 +2,7 @@
  - stream_in now passes ... arguments to fromJSON as documented
  - Force ANSI_STDIO on Windows to fix -pedantic compiler warning
  - Close connection even if opening fails. Fixes #145
+ - validate() now includes an 'offset' attribute indicating at which byte the error occured
 
 1.0
  - Fix always_decimal for non-whole numbres which get rounded to whole numbers

@@ -33,6 +33,7 @@ SEXP R_validate(SEXP x) {
         unsigned char* str = yajl_get_error(hand, 1, (const unsigned char*) json, rd);
         SEXP errstr = mkString((const char *) str);
         yajl_free_error(hand, str);
+        setAttrib(output, install("offset"), ScalarInteger(yajl_get_bytes_consumed(hand)));
         setAttrib(output, install("err"), errstr);
     }
 
