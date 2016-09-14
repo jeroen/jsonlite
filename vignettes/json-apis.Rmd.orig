@@ -93,22 +93,22 @@ The New York Times has several APIs as part of the NYT developer network. These 
 
 ```{r}
 #search for articles
-article_key <- "&api-key=c2fede7bd9aea57c898f538e5ec0a1ee:6:68700045"
+article_key <- "&api-key=b75da00e12d54774a2d362adddcc9bef"
 url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json?q=obamacare+socialism"
 req <- fromJSON(paste0(url, article_key))
 articles <- req$response$docs
 colnames(articles)
 
 #search for best sellers
-bestseller_key <- "&api-key=5e260a86a6301f55546c83a47d139b0d:3:68700045"
+books_key <- "&api-key=76363c9e70bc401bac1e6ad88b13bd1d"
 url <- "http://api.nytimes.com/svc/books/v2/lists/overview.json?published_date=2013-01-01"
-req <- fromJSON(paste0(url, bestseller_key))
+req <- fromJSON(paste0(url, books_key))
 bestsellers <- req$results$list
 category1 <- bestsellers[[1, "books"]]
 subset(category1, select = c("author", "title", "publisher"))
 
 #movie reviews
-movie_key <- "&api-key=5a3daaeee6bbc6b9df16284bc575e5ba:0:68700045"
+movie_key <- "&api-key=b75da00e12d54774a2d362adddcc9bef"
 url <- "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json?order=by-date"
 req <- fromJSON(paste0(url, movie_key))
 reviews <- req$results
@@ -161,21 +161,22 @@ consumer_key = "EZRy5JzOH2QQmVAe9B4j2w";
 consumer_secret = "OIDC4MdfZJ82nbwpZfoUO4WOLTYjoRhpHRAWj6JMec";
 
 #Use basic auth
-secret <- openssl::base64_encode(paste(consumer_key, consumer_secret, sep = ":"));
+secret <- jsonlite::base64_enc(paste(consumer_key, consumer_secret, sep = ":"))
 req <- httr::POST("https://api.twitter.com/oauth2/token",
   httr::add_headers(
-    "Authorization" = paste("Basic", secret),
+    "Authorization" = paste("Basic", gsub("\n", "", secret)),
     "Content-Type" = "application/x-www-form-urlencoded;charset=UTF-8"
   ),
   body = "grant_type=client_credentials"
 );
 
 #Extract the access token
-token <- paste("Bearer", content(req)$access_token)
+httr::stop_for_status(req, "authenticate with twitter")
+token <- paste("Bearer", httr::content(req)$access_token)
 
 #Actual API call
 url <- "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=Rbloggers"
-req <- httr::GET(url, add_headers(Authorization = token))
+req <- httr::GET(url, httr::add_headers(Authorization = token))
 json <- httr::content(req, as = "text")
 tweets <- fromJSON(json)
 substring(tweets$text, 1, 100)
