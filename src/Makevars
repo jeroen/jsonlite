@@ -1,6 +1,8 @@
 PKG_CPPFLAGS = -Iyajl/api
-PKG_CFLAGS = -D__USE_MINGW_ANSI_STDIO
 PKG_LIBS = -L. -lstatyajl
+
+# Hack to add a windows-only flag
+PKG_CFLAGS = $(subst 64,-D__USE_MINGW_ANSI_STDIO,$(subst 32,64,$(WIN)))
 
 LIBYAJL = yajl/yajl.o yajl/yajl_alloc.o yajl/yajl_buf.o yajl/yajl_encode.o \
 	yajl/yajl_gen.o yajl/yajl_lex.o yajl/yajl_parser.o yajl/yajl_tree.o
