@@ -169,7 +169,7 @@ stream_in <- function(con, handler = NULL, pagesize = 500, verbose = TRUE, ...) 
 
   # Either return a big data frame, or nothing.
   if(is.null(handler)){
-    if(verbose) cat("\r Imported", count, "records. Simplifying into dataframe...\n")
+    if(verbose) cat("\r Imported", count, "records. Simplifying...\n")
     out <- as.list(out, sorted = FALSE)
     post_process(unlist(out[order(as.numeric(names(out)))], FALSE, FALSE), ...)
   } else {
@@ -177,8 +177,17 @@ stream_in <- function(con, handler = NULL, pagesize = 500, verbose = TRUE, ...) 
   }
 }
 
-post_process <- function(x, ...){
-  as.data.frame(simplify(x, ...))
+post_process <- function(x, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
+                         simplifyMatrix = simplifyVector, flatten = FALSE){
+  out <- simplify(x, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
+    simplifyMatrix = simplifyMatrix, flatten = flatten)
+
+  # We assume ndjson with objects
+  if(isTRUE(simplifyDataFrame)){
+    return(as.data.frame(out))
+  } else {
+    out
+  }
 }
 
 #' @rdname stream_in
