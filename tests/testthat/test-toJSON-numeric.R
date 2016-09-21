@@ -43,4 +43,11 @@ test_that("Force decimal works", {
   # always_decimal makes sure that doubles stay real
   y2 <- fromJSON(toJSON(x1, digits = 9, always_decimal = TRUE), simplifyVector = FALSE)
   expect_identical(as.list(x1), y2)
+
+  # as per #148, ensure rounding of 0.999x works correctly
+  expect_equal(toJSON(0.995, digits = 2), "[1.00]")
+  expect_equal(toJSON(0.9995, digits = 3), "[1.000]")
+  expect_equal(toJSON(0.99995, digits = 4), "[1.0000]")
+  expect_equal(toJSON(1.99995, digits = 4), "[1.9999]")
+  expect_equal(toJSON(-1.99995, digits = 4), "[-1.9999]")
 })

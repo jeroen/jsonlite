@@ -179,6 +179,7 @@ void modp_dtoa(double value, char* str, int prec)
 //   The differnce is noted below
 void modp_dtoa2(double value, char* str, int prec)
 {
+
     /* Hacky test for NaN
      * under -fast-math this won't work, but then you also won't
      * have correct nan values anyways.  The alternative is
@@ -229,6 +230,15 @@ void modp_dtoa2(double value, char* str, int prec)
         /* if halfway, round up if odd, OR
            if last digit is 0.  That last part is strange */
         ++frac;
+    }
+
+    /* solves issue #148
+     * in the case where diff == 0.5 and x < 1
+     * e.g. 0.99995 with prec 4
+     */
+    if (frac == poww10[prec]) {
+      sprintf(str, "%.*f", prec, neg ? -(double) ++whole : (double) ++whole);
+      return;
     }
 
     /* for very large numbers switch back to native sprintf for exponentials.
