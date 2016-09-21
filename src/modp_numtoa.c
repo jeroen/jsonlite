@@ -237,7 +237,7 @@ void modp_dtoa2(double value, char* str, int prec)
      * e.g. 0.99995 with prec 4
      */
     if (frac == poww10[prec]) {
-      sprintf(str, "%.*f", prec, (double) ++whole);
+      sprintf(str, "%.*f", prec, neg ? -(double) ++whole : (double) ++whole);
       return;
     }
 

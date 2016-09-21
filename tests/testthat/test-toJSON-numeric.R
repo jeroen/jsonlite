@@ -49,4 +49,5 @@ test_that("Force decimal works", {
   expect_equal(toJSON(0.9995, digits = 3), "[1.000]")
   expect_equal(toJSON(0.99995, digits = 4), "[1.0000]")
   expect_equal(toJSON(1.99995, digits = 4), "[1.9999]")
+  expect_equal(toJSON(-1.99995, digits = 4), "[-1.9999]")
 })
