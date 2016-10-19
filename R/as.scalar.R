@@ -17,3 +17,17 @@ as.scalar <- function(obj) {
   class(obj) <- c("scalar", class(obj))
   return(obj)
 }
+
+check_scalar <- function(obj) {
+  if(length(dim(obj)) > 1){
+    if(!identical(nrow(obj), 1L)){
+      stop("Scalar cannot be an array or dataframe with ", nrow(obj), " rows.", call.=FALSE)
+    }
+  } else if(!identical(length(obj), 1L)) {
+    stop("Scalar cannot be an object of length ", length(obj), call.=FALSE)
+  } else if(is.namedlist(obj)){
+    stop("Scalar cannot be a named list.", call.=FALSE)
+  }
+
+  obj
+}

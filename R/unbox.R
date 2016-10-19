@@ -50,3 +50,18 @@ unbox <- function(x){
     stop("Tried to unbox a vector of length ", length(x))
   }
 }
+
+#' @export
+`[<-.scalar` <- function(x, ..., value) {
+  check_scalar(NextMethod("[<-"))
+}
+
+#' @export
+`[[<-.scalar` <- function(x, i, value) {
+  check_scalar(NextMethod("[[<-"))
+}
+
+#' @export
+`$<-.scalar` <- function(x, i, value) {
+  check_scalar(NextMethod("$<-"))
+}
