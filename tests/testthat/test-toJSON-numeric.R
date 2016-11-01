@@ -9,6 +9,8 @@ test_that("Encoding Numbers", {
   expect_that(toJSON(pi, digits=10), equals("[3.1415926536]"));
   expect_that(toJSON(c(pi, NA), na="string", digits=5), equals("[3.14159,\"NA\"]"));
   expect_that(toJSON(c(pi, NA), na="null", digits=5), equals("[3.14159,null]"));
+  expect_that(toJSON(c(pi, NA), na="null", digits=5), equals("[3.14159,null]"));
+  expect_that(toJSON(c(1478002353.51369, -521997646.486311) * 1000, digits = 0), equals("[1478002353514,-521997646486]"));
 });
 
 test_that("Encoding Numbers in Data Frame", {
