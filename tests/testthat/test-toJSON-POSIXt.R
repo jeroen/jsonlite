@@ -72,7 +72,7 @@ test_that("POSIXt NA values", {
 });
 
 test_that("Negative dates", {
-  x <- objects[[1]]
+  x <- objects[[2]]
   y <- x - c(1e9, 2e9, 3e9)
   expect_that(toJSON(y, POSIXt = "mongo"), equals("[{\"$date\":371501224000},{\"$date\":-628498776000},{\"$date\":-1628498776000}]"));
   expect_that(fromJSON(toJSON(y, POSIXt = "mongo")), equals(y))
