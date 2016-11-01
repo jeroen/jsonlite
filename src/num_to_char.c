@@ -63,7 +63,8 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP
           //fall back on sprintf (includes scientific notation)
           //limit total precision to 15 significant digits to avoid noise
           //funky formula is mostly to convert decimal digits into significant digits
-          snprintf(buf, 32, "%.*g", (int) ceil(fmin(15, fmax(1, log10(val)) + precision)), val);
+          int decimals = ceil(fmin(15, fmax(1, log10(fabs(val))) + precision));
+          snprintf(buf, 32, "%.*g", decimals, val);
         }
         //if always_decimal = TRUE, then append .0 to whole numbers
         if(always_dec && strspn(buf, "0123456789-") == strlen(buf)){
