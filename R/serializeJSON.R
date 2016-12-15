@@ -9,7 +9,6 @@
 #' @rdname serializeJSON
 #' @title serialize R objects to JSON
 #' @name serializeJSON
-#' @aliases serializeJSON unserializeJSON
 #' @export serializeJSON unserializeJSON
 #' @param x an \R{} object to be serialized
 #' @param digits max number of digits (after the dot) to print for numeric values

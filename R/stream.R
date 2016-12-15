@@ -44,7 +44,6 @@
 #' @param ... arguments for \code{\link{fromJSON}} and \code{\link{toJSON}} that
 #' control JSON formatting/parsing where applicable. Use with caution.
 #' @name stream_in, stream_out
-#' @aliases stream_in stream_out
 #' @export stream_in stream_out
 #' @rdname stream_in
 #' @references MongoDB export format: \url{http://docs.mongodb.org/manual/reference/program/mongoexport/#cmdoption--query}

@@ -4,7 +4,7 @@
 \alias{rbind.pages}
 \title{Combine pages into a single data frame}
 \usage{
-rbind.pages(pages)
+\method{rbind}{pages}(pages)
 }
 \arguments{
 \item{pages}{a list of data frames, each representing a \emph{page} of data}
