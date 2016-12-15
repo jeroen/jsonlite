@@ -29,7 +29,9 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
   #})
 
   # Convert row lists to column lists. This is the heavy lifting
-  columnlist <- lapply(columns, function(x) lapply(recordlist, "[[", x))
+  # columnlist <- lapply(columns, function(x) lapply(recordlist, "[[", x))
+  # Now slighlty optimized
+  columnlist <- transpose_list(recordlist, columns)
 
   # simplify vectors and nested data frames
   columnlist <- lapply(columnlist, simplify, simplifyVector = TRUE, simplifyDataFrame = TRUE,
