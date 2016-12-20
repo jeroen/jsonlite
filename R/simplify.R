@@ -27,7 +27,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
 
   # fix for mongo style dates turning into scalars *after* simplifying
   # only happens when simplifyDataframe=FALSE
-  if(isTRUE(simplifyVector) && is.scalarlist(out) && all(vapply(out, is, logical(1), "POSIXt"))){
+  if(isTRUE(simplifyVector) && is.scalarlist(out) && all(vapply(out, inherits, logical(1), "POSIXt"))){
     return(structure(list_to_vec(out), class=c("POSIXct", "POSIXt")))
   }
 

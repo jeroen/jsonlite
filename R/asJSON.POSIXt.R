@@ -8,7 +8,7 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
 
   # Encode based on a schema
   if (POSIXt == "mongo") {
-    if (is(x, "POSIXlt")) {
+    if (inherits(x, "POSIXlt")) {
       x <- as.POSIXct(x)
     }
     df <- data.frame("$date" = floor(unclass(x) * 1000), check.names = FALSE)

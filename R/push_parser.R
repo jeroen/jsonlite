@@ -1,6 +1,6 @@
 # Default to 100kb chunks.
 parse_con <- function(con, n , bigint_as_char){
-  stopifnot(is(con, "connection"))
+  stopifnot(inherits(con, "connection"))
   if(!isOpen(con)){
     on.exit(close(con)) # also destroy con if 'open' fails
     open(con, "rb")

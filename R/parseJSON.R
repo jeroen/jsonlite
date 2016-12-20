@@ -1,5 +1,5 @@
 parseJSON <- function(txt, bigint_as_char = FALSE) {
-  if(is(txt, "connection")){
+  if(inherits(txt, "connection")){
     parse_con(txt, 1024^2, bigint_as_char)
   } else {
     parse_string(txt, bigint_as_char)
