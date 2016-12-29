@@ -1,4 +1,5 @@
 1.2
+ - Add 'read_json' and 'write_json' convenience wrappers
  - Update modp_numtoa from upstream (fixes a rounding issue in #148)
  - Ensure asJSON.POSIXt does not use sci notation for negative values (#155, John Greeley)
  - Tweak num_to_char to properly print large negative numbers
