@@ -4,24 +4,38 @@
 
 |setting  |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.3.1 (2016-06-21) |
+|version  |R version 3.3.2 (2016-10-31) |
 |system   |x86_64, darwin13.4.0         |
 |ui       |X11                          |
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |Europe/Amsterdam             |
-|date     |2016-06-30                   |
+|date     |2016-12-29                   |
 
 ## Packages
 
 |package  |*  |version |date       |source           |
 |:--------|:--|:-------|:----------|:----------------|
-|jsonlite |   |1.0     |2016-06-30 |local (NA/NA@NA) |
+|jsonlite |   |1.2     |2016-12-29 |local (NA/NA@NA) |
 
 # Check results
-13 packages with problems
+16 packages with problems
 
-## ChemoSpec (4.3.17)
+## biomartr (0.2.1)
+Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>  
+Bug reports: https://github.com/HajkD/biomartr/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking package dependencies ... ERROR
+Packages required but not available: ‘biomaRt’ ‘Biostrings’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+```
+
+## ChemoSpec (4.4.1)
 Maintainer: Bryan A. Hanson <hanson@depauw.edu>  
 Bug reports: https://github.com/bryanhanson/ChemoSpec/issues
 
@@ -34,17 +48,19 @@ The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: clupaSpectra
-> ### Title: Conduct Hierarchical Cluster-Based Peak Alignment on a Spectra
-> ###   Object
+> ### Title: Hierarchical Cluster-Based Peak Alignment on a Spectra Object
 > ### Aliases: clupaSpectra
 > ### Keywords: utilities
 > 
 > ### ** Examples
 > 
+> 
 > data(alignMUD)
+> 
 > plotSpectra(alignMUD, which = 1:20, lab.pos = 4.5, offset = 0.1,
-+ 	yrange = c(0, 1900), amp = 500, xlim = c(1.5, 1.8),
-+ 	main = "Misaligned NMR Spectra (alignMUD)")
++   yrange = c(0, 1900), amp = 500, xlim = c(1.5, 1.8),
++   main = "Misaligned NMR Spectra (alignMUD)")
+> 
 > aMUD <- clupaSpectra(alignMUD)
 Error in clupaSpectra(alignMUD) : 
   You need to install package speaq to use this function
@@ -54,9 +70,9 @@ checking Rd cross-references ... NOTE
 Packages unavailable to check Rd xrefs: ‘chemometrics’, ‘mvoutlier’
 ```
 
-## curl (0.9.7)
-Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
-Bug reports: https://github.com/jeroenooms/curl/issues
+## covr (2.2.1)
+Maintainer: Jim Hester <james.f.hester@gmail.com>  
+Bug reports: https://github.com/jimhester/covr/issues
 
 1 error  | 0 warnings | 0 notes
 
@@ -64,18 +80,18 @@ Bug reports: https://github.com/jeroenooms/curl/issues
 checking tests ... ERROR
 Running the tests in ‘tests/testthat.R’ failed.
 Last 13 lines of output:
+  1. Error: it works with coverage objects (@test-cobertura.R#6) -----------------
+  argument "con" is missing, with no default
+  1: to_cobertura(cov, filename = tmp) at testthat/test-cobertura.R:6
+  2: xml2::write_xml(d, file = filename)
+  3: write_xml.xml_document(d, file = filename)
+  4: path_to_connection(con, check = "dir")
   
   testthat results ================================================================
-  OK: 70 SKIPPED: 0 FAILED: 4
-  1. Failure: Delete a cookie (@test-cookies.R#26) 
-  2. Failure: Delete a cookie (@test-cookies.R#28) 
-  3. Failure: Redirect (@test-handle.R#13) 
-  4. Error: Compression (@test-handle.R#28) 
+  OK: 231 SKIPPED: 3 FAILED: 1
+  1. Error: it works with coverage objects (@test-cobertura.R#6) 
   
   Error: testthat unit tests failed
-  In addition: Warning messages:
-  1: closing unused connection 4 (http://httpbin.org/gzip) 
-  2: closing unused connection 3 (http://httpbin.org/deflate) 
   Execution halted
 ```
 
@@ -119,6 +135,31 @@ No Java runtime present, try --request to install.
 No Java runtime present, requesting install.
 ```
 
+## europepmc (0.1.0)
+Maintainer: Najko Jahn <najko.jahn@gmail.com>  
+Bug reports: http://github.com/ropensci/europepmc/issues
+
+0 errors | 1 warning  | 0 notes
+
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+264 records found. Retrieving batch 1
+339 records found. Retrieving batch 1
+6929 records found. Retrieving batch 1
+131 records found. Retrieving batch 1
+125031 records found. Retrieving batch 1
+108942 records found. Retrieving batch 1
+197 records found. Returning 25
+18 records found. Returning 18
+Quitting from lines 176-177 (rebi-vignettes.Rmd) 
+Error: processing vignette 'rebi-vignettes.Rmd' failed with diagnostics:
+Internal Server Error (HTTP 500).
+Execution halted
+
+```
+
 ## fitbitScraper (0.1.7)
 Maintainer: Cory Nissen <corynissen@gmail.com>
 
@@ -135,89 +176,7 @@ Execution halted
 
 ```
 
-## futile.logger (1.4.1)
-Maintainer: Brian Lee Yung Rowe <r@zatonovo.com>
-
-1 error  | 0 warnings | 1 note 
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  > library(testthat)
-  > test_check("futile.logger")
-  Loading required package: futile.logger
-  1. Failure: lower levels are not logged (@test_debug.R#19) ---------------------
-  flog.trace("testlog") produced no output
-  
-  
-  testthat results ================================================================
-  OK: 68 SKIPPED: 0 FAILED: 1
-  1. Failure: lower levels are not logged (@test_debug.R#19) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-
-checking R code for possible problems ... NOTE
-.log_level: no visible global function definition for ‘capture.output’
-flog.namespace: no visible global function definition for
-  ‘capture.output’
-flog.namespace: no visible global function definition for ‘str’
-Undefined global functions or variables:
-  capture.output str
-Consider adding
-  importFrom("utils", "capture.output", "str")
-to your NAMESPACE file.
-```
-
-## ggvis (0.4.2)
-Maintainer: Winston Chang <winston@rstudio.com>
-
-1 error  | 0 warnings | 1 note 
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  [8] 7 - 2 == 5
-  [9] 7 - 2 == 5
-  ...
-  
-  
-  testthat results ================================================================
-  OK: 444 SKIPPED: 0 FAILED: 1
-  1. Failure: Automatic width (@test-compute-bin.r#143) 
-  
-  Error: testthat unit tests failed
-  In addition: Warning message:
-  In bind_rows_(x, .id) : Unequal factor levels: coercing to character
-  Execution halted
-
-checking R code for possible problems ... NOTE
-adjust_breaks: no visible global function definition for ‘median’
-bin_params.POSIXct: no visible global function definition for ‘is’
-bin_vector.POSIXct: no visible global function definition for ‘is’
-combine_data_props: no visible global function definition for
-  ‘setNames’
-combine_data_props : <anonymous>: no visible global function definition
-  for ‘setNames’
-compute_boxplot.data.frame: no visible global function definition for
-  ‘quantile’
-... 24 lines ...
-  ‘packageVersion’
-Undefined global functions or variables:
-  complete.cases formula is median na.omit packageVersion predict qt
-  quantile runif setNames terms
-Consider adding
-  importFrom("methods", "is")
-  importFrom("stats", "complete.cases", "formula", "median", "na.omit",
-             "predict", "qt", "quantile", "runif", "setNames", "terms")
-  importFrom("utils", "packageVersion")
-to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
-contains 'methods').
-```
-
-## h2o (3.8.2.6)
+## h2o (3.10.0.8)
 Maintainer: Tom Kraljevic <tomk@0xdata.com>
 
 1 error  | 0 warnings | 1 note 
@@ -247,58 +206,21 @@ Execution halted
 ** found \donttest examples: check also with --run-donttest
 
 checking installed package size ... NOTE
-  installed size is 57.1Mb
+  installed size is 63.6Mb
   sub-directories of 1Mb or more:
-    java  56.1Mb
+    java  62.4Mb
 ```
 
-## httr (1.2.0)
-Maintainer: Hadley Wickham <hadley@rstudio.com>
+## melviewr (0.0.1)
+Maintainer: Andrew Poppe <Poppe076@gmail.com>  
+Bug reports: https://github.com/AndrewPoppe/melviewr/issues
 
 1 error  | 0 warnings | 0 notes
 
 ```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  Loading required package: httr
-  1. Error: headers returned as expected (@test-response.r#41) -------------------
-  attempt to set an attribute on NULL
-  1: expect_equal(round_trip(a = "a + b")$a, "a + b") at testthat/test-response.r:41
-  2: compare(object, expected, ...)
-  3: round_trip(a = "a + b")
-  
-  testthat results ================================================================
-  OK: 113 SKIPPED: 2 FAILED: 1
-  1. Error: headers returned as expected (@test-response.r#41) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
-
-## hypothesisr (0.1.0)
-Maintainer: Matthew Lincoln <matthew.d.lincoln@gmail.com>  
-Bug reports: https://github.com/mdlincoln/hypothesisr/issues
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  > 
-  > test_check("hypothesisr")
-  1. Failure: hs_search returns a list of the expected format. (@test_search.R#21) 
-  names(hs_ulysses) not equivalent to c(...).
-  Lengths differ: 18 vs 28
-  
-  
-  testthat results ================================================================
-  OK: 12 SKIPPED: 1 FAILED: 1
-  1. Failure: hs_search returns a list of the expected format. (@test_search.R#21) 
-  
-  Error: testthat unit tests failed
-  Execution halted
+checking whether package ‘melviewr’ can be installed ... ERROR
+Installation failed.
+See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/melviewr.Rcheck/00install.out’ for details.
 ```
 
 ## ndtv (0.10.0)
@@ -321,7 +243,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/zt/j4qtgrgx0tj99l6s3lp7833w0000gn/T//RtmpQvcNKM/matrix81575842244.txt /var/folders/zt/j4qtgrgx0tj99l6s3lp7833w0000gn/T//RtmpQvcNKM/coords81535e5daa2.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpfUdXns/matrix140c2346c973e.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpfUdXns/coords140c2453d8255.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -332,14 +254,14 @@ or type citation("tergm").
 
 installing MDSJ to directory /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/
 trying URL 'http://algo.uni-konstanz.de/software/mdsj/mdsj.jar'
-Content type 'application/x-java-archive' length 18203 bytes (17 KB)
+Content type 'application/java-archive' length 18203 bytes (17 KB)
 ==================================================
 ... 8 lines ...
  USE RESTRICTIONS: Creative Commons License 'by-nc-sa' 3.0.
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/zt/j4qtgrgx0tj99l6s3lp7833w0000gn/T//RtmpdfPjhz/matrix95233437565.txt /var/folders/zt/j4qtgrgx0tj99l6s3lp7833w0000gn/T//RtmpdfPjhz/coords95211d0542e.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpy0ISzd/matrix14131578040da.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpy0ISzd/coords141312521d517.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
@@ -348,70 +270,153 @@ Error in layout.fun(slice, dist.mat = dist.mat, default.dist = default.dist,  :
 Execution halted
 ```
 
-## trelliscope (0.9.4)
-Maintainer: Ryan Hafen <rhafen@gmail.com>  
-Bug reports: https://github.com/tesseradata/trelliscope/issues
+## protolite (1.5)
+Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
+Bug reports: https://github.com/jeroenooms/protolite/issues
 
-1 error  | 0 warnings | 1 note 
+0 errors | 1 warning  | 0 notes
+
+```
+checking whether package ‘protolite’ can be installed ... WARNING
+Found the following significant warnings:
+  Warning: protoc version libprotoc 3.0.0 might not match libproto version 3.0.2.
+See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/protolite.Rcheck/00install.out’ for details.
+```
+
+## quanteda (0.9.8.5)
+Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>  
+Bug reports: https://github.com/kbenoit/quanteda/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  11: downloadRemote(i, ignoreMissing = ignoreMissing)
+  12: httr::stop_for_status(r)
+  
+  testthat results ================================================================
+  OK: 236 SKIPPED: 1 FAILED: 5
+  1. Failure: test plot.kwic facet order parameter (@testPlots.R#70) 
+  2. Failure: test plot.kwic keeps order of keywords passed (@testPlots.R#81) 
+  3. Error: test remote text file (@testTextfile.R#146) 
+  4. Error: test remote csv file (@testTextfile.R#159) 
+  5. Error: test remote zip file (@testTextfile.R#169) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
+
+## rio (0.4.16)
+Maintainer: Thomas J. Leeper <thosjleeper@gmail.com>  
+Bug reports: https://github.com/leeper/rio/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+Running the tests in ‘tests/test-all.R’ failed.
+Last 13 lines of output:
+  2: compare(object, expected, check.attributes = FALSE)
+  3: import(export(mtcars, "mtcars.xml"))
+  4: grepl("^http.*://", file)
+  5: export(mtcars, "mtcars.xml")
+  6: .export(file = file, x = x, ...)
+  7: .export.rio_xml(file = file, x = x, ...)
+  8: write_xml(xml, file = file, ...)
+  9: write_xml.xml_document(xml, file = file, ...)
+  10: path_to_connection(con, check = "dir")
+  
+  DONE ===========================================================================
+  Error: Test failures
+  Execution halted
+```
+
+## SensusR (2.0.0)
+Maintainer: Matthew S. Gerber <gerber.matthew@gmail.com>
+
+1 error  | 0 warnings | 0 notes
 
 ```
 checking examples ... ERROR
-Running examples in ‘trelliscope-Ex.R’ failed
+Running examples in ‘SensusR-Ex.R’ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: cogScagnostics
-> ### Title: Compute Scagnostics
-> ### Aliases: cogScagnostics
+> ### Name: plot.LocationDatum
+> ### Title: Plot location data.
+> ### Aliases: plot.LocationDatum
 > 
 > ### ** Examples
-> 
-> cogScagnostics(iris$Sepal.Length, iris$Sepal.Width)
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-Warning: running command '/usr/libexec/java_home' had status 1
-No Java runtime present, requesting install.
-
-checking dependencies in R code ... NOTE
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-No Java runtime present, requesting install.
+... 188 lines ...
+[1] "57% done merging data for WlanDatum (4 of 7)."
+[1] "71% done merging data for WlanDatum (5 of 7)."
+[1] "85% done merging data for WlanDatum (6 of 7)."
+[1] "100% done merging data for WlanDatum (7 of 7)."
+[1] "Creating data frame for WlanDatum."
+> plot(data$LocationDatum)
+Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=38.0676352725243,-78.9510441850485&zoom=10&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
+Information from URL : http://maps.googleapis.com/maps/api/geocode/json?address=38.0676352725243,-78.9510441850485&sensor=false
+Error: GeomRasterAnn was built with an incompatible version of ggproto.
+Please reinstall the package that provides this extension.
+Execution halted
 ```
 
-## webchem (0.1.0.0)
-Maintainer: Eduard Szöcs <eduardszoecs@gmail.com>  
-Bug reports: https://github.com/ropensci/webchem/issues
+## stplanr (0.1.7-2)
+Maintainer: Robin Lovelace <rob00x@gmail.com>  
+Bug reports: https://github.com/ropensci/stplanr/issues
 
-1 error  | 0 warnings | 1 note 
+0 errors | 1 warning  | 0 notes
 
 ```
-checking examples ... ERROR
-Running examples in ‘webchem-Ex.R’ failed
-The error most likely occurred in:
-
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: is.smiles
-> ### Title: Check if input is a SMILES string
-> ### Aliases: is.smiles
-> 
-> ### ** Examples
-> 
-> is.smiles('Clc(c(Cl)c(Cl)c1C(=O)O)c(Cl)c1Cl')
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-Warning: running command '/usr/libexec/java_home' had status 1
-No Java runtime present, requesting install.
-** found \donttest examples: check also with --run-donttest
-
-checking dependencies in R code ... NOTE
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
 Unable to find any JVMs matching version "(null)".
 No Java runtime present, try --request to install.
 No Java runtime present, requesting install.
+
 ```
 
-## x.ent (1.1.2)
+## trackeR (0.0.4)
+Maintainer: Hannah Frick <h.frick@ucl.ac.uk>  
+Bug reports: https://github.com/hfrick/trackeR/issues
+
+0 errors | 1 warning  | 0 notes
+
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+Loading required package: zoo
+
+Attaching package: 'zoo'
+
+The following objects are masked from 'package:base':
+
+    as.Date, as.Date.numeric
+
+Loading required package: ggplot2
+
+Attaching package: 'trackeR'
+
+The following object is masked from 'package:base':
+
+    append
+
+Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=57.157231,-2.104296&zoom=13&size=640x640&scale=2&maptype=terrain&sensor=false
+Quitting from lines 90-91 (TourDetrackeR.Rmd) 
+Error: processing vignette 'TourDetrackeR.Rmd' failed with diagnostics:
+GeomRasterAnn was built with an incompatible version of ggproto.
+Please reinstall the package that provides this extension.
+Execution halted
+
+```
+
+## x.ent (1.1.6)
 Maintainer: Tien T. Phan <phantien84@gmail.com>  
-Bug reports: https://github.com/tienpt/x.ent/issues
+Bug reports: https://github.com/win-stub/x.ent/issues
 
 1 error  | 0 warnings | 0 notes
 
