@@ -19,7 +19,7 @@
 |jsonlite |   |1.2     |2016-12-29 |local (NA/NA@NA) |
 
 # Check results
-16 packages with problems
+14 packages with problems
 
 ## biomartr (0.2.1)
 Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>  
@@ -68,31 +68,6 @@ Execution halted
 
 checking Rd cross-references ... NOTE
 Packages unavailable to check Rd xrefs: ‘chemometrics’, ‘mvoutlier’
-```
-
-## covr (2.2.1)
-Maintainer: Jim Hester <james.f.hester@gmail.com>  
-Bug reports: https://github.com/jimhester/covr/issues
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  1. Error: it works with coverage objects (@test-cobertura.R#6) -----------------
-  argument "con" is missing, with no default
-  1: to_cobertura(cov, filename = tmp) at testthat/test-cobertura.R:6
-  2: xml2::write_xml(d, file = filename)
-  3: write_xml.xml_document(d, file = filename)
-  4: path_to_connection(con, check = "dir")
-  
-  testthat results ================================================================
-  OK: 231 SKIPPED: 3 FAILED: 1
-  1. Error: it works with coverage objects (@test-cobertura.R#6) 
-  
-  Error: testthat unit tests failed
-  Execution halted
 ```
 
 ## dismo (1.1-1)
@@ -243,7 +218,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpfUdXns/matrix140c2346c973e.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpfUdXns/coords140c2453d8255.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpbJn9lO/matrixba34621fcd2b.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpbJn9lO/coordsba3415d6f461.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -261,7 +236,7 @@ Content type 'application/java-archive' length 18203 bytes (17 KB)
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpy0ISzd/matrix14131578040da.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpy0ISzd/coords141312521d517.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpSAUCOw/matrixbad76354b316.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpSAUCOw/coordsbad74db99c4c.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
@@ -305,31 +280,6 @@ Last 13 lines of output:
   5. Error: test remote zip file (@testTextfile.R#169) 
   
   Error: testthat unit tests failed
-  Execution halted
-```
-
-## rio (0.4.16)
-Maintainer: Thomas J. Leeper <thosjleeper@gmail.com>  
-Bug reports: https://github.com/leeper/rio/issues
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/test-all.R’ failed.
-Last 13 lines of output:
-  2: compare(object, expected, check.attributes = FALSE)
-  3: import(export(mtcars, "mtcars.xml"))
-  4: grepl("^http.*://", file)
-  5: export(mtcars, "mtcars.xml")
-  6: .export(file = file, x = x, ...)
-  7: .export.rio_xml(file = file, x = x, ...)
-  8: write_xml(xml, file = file, ...)
-  9: write_xml.xml_document(xml, file = file, ...)
-  10: path_to_connection(con, check = "dir")
-  
-  DONE ===========================================================================
-  Error: Test failures
   Execution halted
 ```
 
