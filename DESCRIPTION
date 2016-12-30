@@ -1,12 +1,12 @@
 Package: jsonlite
-Version: 1.1.9000
+Version: 1.2
 Title: A Robust, High Performance JSON Parser and Generator for R
 License: MIT + file LICENSE
 NeedsCompilation: yes
 Depends:
     methods
 Author: Jeroen Ooms, Duncan Temple Lang, Lloyd Hilaiel
-URL: http://arxiv.org/abs/1403.2805,
+URL: https://arxiv.org/abs/1403.2805,
     https://www.opencpu.org/posts/jsonlite-a-smarter-json-encoder
 BugReports: http://github.com/jeroenooms/jsonlite/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
@@ -29,4 +29,4 @@ Suggests:
     knitr,
     rmarkdown,
     R.rsp
-RoxygenNote: 5.0.1
+RoxygenNote: 5.0.1.9000

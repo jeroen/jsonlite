@@ -1,5 +1,5 @@
 #' These functions are used to convert between JSON data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
-#' functions use a class based mapping, which follows conventions outlined in this paper:  \url{http://arxiv.org/abs/1403.2805} (also available as vignette).
+#' functions use a class based mapping, which follows conventions outlined in this paper:  \url{https://arxiv.org/abs/1403.2805} (also available as vignette).
 #'
 #' The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions
 #' in packages \code{rjson} and \code{RJSONIO}. Our implementation uses an alternative, somewhat more consistent mapping
@@ -40,7 +40,7 @@
 #' @param force unclass/skip objects of classes with no defined JSON mapping
 #' @param pretty adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}
 #' @param ... arguments passed on to class specific \code{print} methods
-#' @references Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{http://arxiv.org/abs/1403.2805}
+#' @references Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{https://arxiv.org/abs/1403.2805}
 #' @examples # Stringify some data
 #' jsoncars <- toJSON(mtcars, pretty=TRUE)
 #' cat(jsoncars)

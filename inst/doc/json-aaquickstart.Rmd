@@ -30,7 +30,7 @@ library(jsonlite)
 all.equal(mtcars, fromJSON(toJSON(mtcars)))
 ```
 
-This vignette introduces basic concepts to get started with jsonlite. For a more detailed outline and motivation of the mapping, see: [arXiv:1403.2805](http://arxiv.org/abs/1403.2805).
+This vignette introduces basic concepts to get started with jsonlite. For a more detailed outline and motivation of the mapping, see: [arXiv:1403.2805](https://arxiv.org/abs/1403.2805).
 
 ## Simplification
 
@@ -123,4 +123,4 @@ myarray[1, , ]
 myarray[ , ,1]
 ```
 
-This is all there is to it! For a more detailed outline and motivation of the mapping, see: [arXiv:1403.2805](http://arxiv.org/abs/1403.2805).
+This is all there is to it! For a more detailed outline and motivation of the mapping, see: [arXiv:1403.2805](https://arxiv.org/abs/1403.2805).

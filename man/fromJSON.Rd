@@ -62,7 +62,7 @@ An exception is that objects of class \code{AsIs} (i.e. wrapped in \code{I()}) a
 }
 \description{
 These functions are used to convert between JSON data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
-functions use a class based mapping, which follows conventions outlined in this paper:  \url{http://arxiv.org/abs/1403.2805} (also available as vignette).
+functions use a class based mapping, which follows conventions outlined in this paper:  \url{https://arxiv.org/abs/1403.2805} (also available as vignette).
 }
 \details{
 The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions
@@ -113,6 +113,6 @@ identical(data3, flatten(data2))
 }
 }
 \references{
-Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{http://arxiv.org/abs/1403.2805}
+Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{https://arxiv.org/abs/1403.2805}
 }
 

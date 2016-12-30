@@ -125,7 +125,7 @@ $(document).ready(function () {
 <pre class="r"><code>library(jsonlite)
 all.equal(mtcars, fromJSON(toJSON(mtcars)))</code></pre>
 <pre><code>[1] TRUE</code></pre>
-<p>This vignette introduces basic concepts to get started with jsonlite. For a more detailed outline and motivation of the mapping, see: <a href="http://arxiv.org/abs/1403.2805">arXiv:1403.2805</a>.</p>
+<p>This vignette introduces basic concepts to get started with jsonlite. For a more detailed outline and motivation of the mapping, see: <a href="https://arxiv.org/abs/1403.2805">arXiv:1403.2805</a>.</p>
 <div id="simplification" class="section level2">
 <h2>Simplification</h2>
 <p>Simplification is the process where JSON arrays automatically get converted from a list into a more specific R class. The <code>fromJSON</code> function has 3 arguments which control the simplification process: <code>simplifyVector</code>, <code>simplifyDataFrame</code> and <code>simplifyMatrix</code>. Each one is enabled by default.</p>
@@ -194,7 +194,7 @@ NULL
 <p>When <code>simplifyDataFrame</code> is enabled, JSON arrays containing <strong>objects</strong> (key-value pairs) simplify into a data frame:</p>
 <pre class="r"><code>json &lt;-
 '[
-  {&quot;Name&quot; : &quot;Mario&quot;, &quot;Age&quot; : 32, &quot;Occupation&quot; : &quot;Plumber&quot;}, 
+  {&quot;Name&quot; : &quot;Mario&quot;, &quot;Age&quot; : 32, &quot;Occupation&quot; : &quot;Plumber&quot;},
   {&quot;Name&quot; : &quot;Peach&quot;, &quot;Age&quot; : 21, &quot;Occupation&quot; : &quot;Princess&quot;},
   {},
   {&quot;Name&quot; : &quot;Bowser&quot;, &quot;Occupation&quot; : &quot;Koopa&quot;}
@@ -256,9 +256,9 @@ mymatrix</code></pre>
 ] </code></pre>
 <p>The simplification works for arrays of arbitrary dimensionality, as long as the dimensions match (R does not support ragged arrays).</p>
 <pre class="r"><code>json &lt;- '[
-   [[1, 2], 
+   [[1, 2],
     [3, 4]],
-   [[5, 6], 
+   [[5, 6],
     [7, 8]],
    [[9, 10],
     [11, 12]]
@@ -273,7 +273,7 @@ myarray[1, , ]</code></pre>
 [1,]    1    3
 [2,]    5    7
 [3,]    9   11</code></pre>
-<p>This is all there is to it! For a more detailed outline and motivation of the mapping, see: <a href="http://arxiv.org/abs/1403.2805">arXiv:1403.2805</a>.</p>
+<p>This is all there is to it! For a more detailed outline and motivation of the mapping, see: <a href="https://arxiv.org/abs/1403.2805">arXiv:1403.2805</a>.</p>
 </div>
 </div>
 </div>
