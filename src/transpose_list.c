@@ -1,6 +1,5 @@
-#include <Rdefines.h>
 #include <Rinternals.h>
-#include <stdlib.h>
+#include <string.h>
 
 SEXP C_transpose_list(SEXP x, SEXP names) {
   size_t ncol = Rf_length(names);
