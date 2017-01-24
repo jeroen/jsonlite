@@ -11,7 +11,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
   if (isTRUE(simplifyDataFrame) && is.recordlist(x)) {
     mydf <- simplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix)
     if(isTRUE(simplifyDate) && is.data.frame(mydf) && is.datelist(mydf)){
-      return(structure(mydf[["$date"]]/1000, class=c("POSIXct", "POSIXt")))
+      return(parse_date(mydf[["$date"]]))
     }
     return(mydf)
   }
@@ -85,7 +85,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
 
   # convert date object
   if( isTRUE(simplifyDate) && is.datelist(out) ){
-    return(structure(out[["$date"]]/1000, class=c("POSIXct", "POSIXt")))
+    return(parse_date(out[["$date"]]))
   }
 
   # return object
@@ -114,8 +114,20 @@ is.arraylist <- function(x) {
 is.datelist <- function(x){
   isTRUE(is.list(x)
      && identical(names(x), "$date")
-     && is.numeric(x[["$date"]])
+     && (is.numeric(x[["$date"]]) || is.character(x[["$date"]]))
   );
+}
+
+parse_date <- function(x){
+  if(is.numeric(x)){
+    return(structure(x/1000, class=c("POSIXct", "POSIXt")))
+  } else if(is.character(x)) {
+    #tz is not vectorized, so assume all() are the same
+    is_utc <- ifelse(all(grepl("Z$", x)), "UTC", "")
+    return(as.POSIXct(strptime(x, format = '%Y-%m-%dT%H:%M:%OS', tz = is_utc)))
+  } else {
+    return(x)
+  }
 }
 
 all.identical <- function(x){
