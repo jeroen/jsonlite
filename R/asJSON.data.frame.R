@@ -1,6 +1,6 @@
 setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), collapse = TRUE,
   dataframe = c("rows", "columns", "values"), complex = "string", oldna = NULL, rownames = NULL,
-  keep_vec_names = FALSE, indent = NA_integer_, ...) {
+  keep_vec_names = FALSE, escape_solidus = FALSE, indent = NA_integer_, ...) {
 
   # Coerse pairlist if needed
   if (is.pairlist(x)) {
@@ -35,7 +35,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   # Column based is same as list. Do not pass collapse arg because it is a named list.
   if (dataframe == "columns") {
     return(asJSON(as.list(x), is_df = TRUE, na = na, dataframe = dataframe,
-      complex = complex, rownames = rownames, indent = indent, ...))
+      complex = complex, rownames = rownames, indent = indent, escape_solidus = escape_solidus, ...))
   }
 
   # Determine "oldna". This is needed when the data frame contains a list column
@@ -70,10 +70,10 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   }
 
   #create a matrix of json elements
-  dfnames <- deparse_vector(cleannames(names(x)))
+  dfnames <- deparse_vector(cleannames(names(x)), escape_solidus)
   out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, complex = complex, na = na,
     oldna = oldna, rownames = rownames, dataframe = dataframe, indent = indent + 2L,
-    ..., USE.NAMES = FALSE)
+    escape_solidus = escape_solidus, ..., USE.NAMES = FALSE)
 
   # This would be another way of doing the missing values
   # This does not require the individual classes to support na="NA"

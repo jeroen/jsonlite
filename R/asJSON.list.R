@@ -1,5 +1,5 @@
 setMethod("asJSON", "list", function(x, collapse = TRUE, na = NULL, oldna = NULL,
-  is_df = FALSE, auto_unbox = FALSE, indent = NA_integer_, ...) {
+  is_df = FALSE, auto_unbox = FALSE, escape_solidus = FALSE, indent = NA_integer_, ...) {
 
   # reset na arg when called from data frame
   if(identical(na, "NA")){
@@ -30,9 +30,9 @@ setMethod("asJSON", "list", function(x, collapse = TRUE, na = NULL, oldna = NULL
   tmp <- if(is_df && auto_unbox){
     vapply(x, function(y, ...) {
       asJSON(y, auto_unbox = is.list(y), ...)
-    }, character(1), na = na, indent = indent + 2L, ...)
+    }, character(1), na = na, escape_solidus = escape_solidus, indent = indent + 2L, ...)
   } else {
-    vapply(x, asJSON, character(1), na = na, auto_unbox = auto_unbox, indent = indent + 2L, ...)
+    vapply(x, asJSON, character(1), na = na, auto_unbox = auto_unbox, escape_solidus = escape_solidus, indent = indent + 2L, ...)
   }
 
   if (!is.null(names(x))) {
@@ -41,7 +41,7 @@ setMethod("asJSON", "list", function(x, collapse = TRUE, na = NULL, oldna = NULL
       warning("collapse=FALSE called for named list.")
     }
     #in case of named list:
-    objnames <- deparse_vector(cleannames(names(x)))
+    objnames <- deparse_vector(cleannames(names(x)), escape_solidus)
     collapse_object(objnames, tmp, indent)
   } else {
     #in case of unnamed list:

@@ -8,7 +8,7 @@ https://gist.github.com/wch/e3ec5b20eb712f1b22b2
 http://stackoverflow.com/questions/25609174/fast-escaping-deparsing-of-character-vectors-in-r/25613834#25613834
 */
 
-SEXP C_escape_chars_one(SEXP x) {
+SEXP C_escape_chars_one(SEXP x, int escape_solidus) {
   if (TYPEOF(x) != CHARSXP)
     error("x must be a CHARSXP");
 
@@ -29,6 +29,9 @@ SEXP C_escape_chars_one(SEXP x) {
       case '\b':
       case '\f':
         matches++;
+        break;
+      case '/':
+        matches += escape_solidus;
     }
     old_p++;
   } while(oldc != '\0');
@@ -85,6 +88,13 @@ SEXP C_escape_chars_one(SEXP x) {
         new_p++;
         *new_p = '\0';
         break;
+      case '/':
+        if(escape_solidus){
+          *new_p = '\\';
+          new_p++;
+          *new_p = '/';
+          break;
+        }
       default:
         *new_p = oldc;
     }
@@ -98,7 +108,7 @@ SEXP C_escape_chars_one(SEXP x) {
   return val;
 }
 
-SEXP C_escape_chars(SEXP x) {
+SEXP C_escape_chars(SEXP x, SEXP escape_solidus) {
   if (!isString(x))
     error("x must be a character vector.");
   if (x == R_NilValue || length(x) == 0)
@@ -108,7 +118,7 @@ SEXP C_escape_chars(SEXP x) {
   SEXP out = PROTECT(allocVector(STRSXP, len));
 
   for (int i=0; i<len; i++) {
-    SET_STRING_ELT(out, i, C_escape_chars_one(STRING_ELT(x, i)));
+    SET_STRING_ELT(out, i, C_escape_chars_one(STRING_ELT(x, i), asLogical(escape_solidus)));
   }
   UNPROTECT(1);
   return out;
