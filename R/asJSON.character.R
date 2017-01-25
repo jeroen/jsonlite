@@ -1,21 +1,14 @@
 setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "string", "NA"),
-  auto_unbox = FALSE, keep_vec_names = FALSE, indent = NA_integer_, ...) {
+  auto_unbox = FALSE, keep_vec_names = FALSE, escape_solidus = FALSE, indent = NA_integer_, ...) {
 
   # shiny legacy exception
   if(isTRUE(keep_vec_names) && length(names(x))){
     warn_keep_vec_names()
-    return(asJSON(as.list(x), na = na, auto_unbox = TRUE, collapse = collapse, ...))
+    return(asJSON(as.list(x), na = na, auto_unbox = TRUE, collapse = collapse, escape_solidus = escape_solidus, ...))
   }
 
   # vectorized escaping
-  tmp <- deparse_vector(x)
-
-  # this was used with deparse_vector_old
-  #if(identical(Encoding(x), "UTF-8")){
-  #  if(!grepl("UTF", Sys.getlocale("LC_CTYPE"), ignore.case=TRUE)){
-  #    tmp <- utf8conv(tmp);
-  #  }
-  #}
+  tmp <- deparse_vector(x, escape_solidus)
 
   # validate NA
   if (any(missings <- which(is.na(x)))) {
