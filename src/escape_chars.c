@@ -1,4 +1,3 @@
-#include <Rdefines.h>
 #include <Rinternals.h>
 #include <stdlib.h>
 
@@ -9,18 +8,14 @@ http://stackoverflow.com/questions/25609174/fast-escaping-deparsing-of-character
 */
 
 SEXP C_escape_chars_one(SEXP x) {
-  if (TYPEOF(x) != CHARSXP)
-    error("x must be a CHARSXP");
 
-  const char* old = CHAR(x);
-  char* old_p = (char*)old;
+  // Make a cursor pointer
+  const char * cur = CHAR(x);
 
-  // Count up the number of matches
+  // Count the number of matches
   int matches = 0;
-  char oldc;
   do {
-    oldc = *old_p;
-    switch(oldc) {
+    switch(*cur) {
       case '\\':
       case '"':
       case '\n':
@@ -31,77 +26,76 @@ SEXP C_escape_chars_one(SEXP x) {
       case '/':
         matches++;
     }
-    old_p++;
-  } while(oldc != '\0');
+    cur++;
+  } while(*cur); //breaks on '\0'
 
-  // Copy old string to new string, replacing where necessary.
-  old_p = (char*)old;
+  // Calculate output length, 2 for double quotes
+  size_t outlen = Rf_length(x) + matches + 2;
+  char * newstr = malloc(outlen);
+
+  // Reset cursor to beginning
+  cur = CHAR(x);
+
   // Allocate string memory; add 2 for start and end quotes.
-  char* newstr = (char*)malloc(strlen(old) + matches + 3);
-  char* new_p = newstr;
-  *new_p = '"';
-  new_p++;
+  char * outcur = newstr;
+  *outcur++ = '"';
 
   do {
-    oldc = *old_p;
-    switch(oldc) {
+    switch(*cur) {
       case '\\':
-        *new_p = '\\';
-        new_p++;
-        *new_p = '\\';
+        *outcur++ = '\\';
+        *outcur = '\\';
         break;
       case '"':
-        *new_p = '\\';
-        new_p++;
-        *new_p = '"';
+        *outcur++ = '\\';
+        *outcur = '"';
         break;
       case '\n':
-        *new_p = '\\';
-        new_p++;
-        *new_p = 'n';
+        *outcur++ = '\\';
+        *outcur = 'n';
         break;
       case '\r':
-        *new_p = '\\';
-        new_p++;
-        *new_p = 'r';
+        *outcur++ = '\\';
+        *outcur = 'r';
         break;
       case '\t':
-        *new_p = '\\';
-        new_p++;
-        *new_p = 't';
+        *outcur++ = '\\';
+        *outcur = 't';
         break;
       case '\b':
-        *new_p = '\\';
-        new_p++;
-        *new_p = 'b';
+        *outcur++ = '\\';
+        *outcur = 'b';
         break;
       case '\f':
-        *new_p = '\\';
-        new_p++;
-        *new_p = 'f';
+        *outcur++ = '\\';
+        *outcur = 'f';
         break;
       case '/':
-        *new_p = '\\';
-        new_p++;
-        *new_p = '/';
+        *outcur++ = '\\';
+        *outcur = '/';
         break;
+
+      //this should never happen: edge case of embedded null in string
       case '\0':
-        // End with a quote char
-        *new_p = '"';
-        new_p++;
-        *new_p = '\0';
+        *outcur++ = '"';
+        *outcur = '\0';
         break;
+
+      //simply copy char from input
       default:
-        *new_p = oldc;
+        *outcur = *cur;
     }
 
-    old_p++;
-    new_p++;
-  } while(oldc != '\0');
+    //increment input and output cursors to next character
+    cur++;
+    outcur++;
+  } while(*cur);
 
-  SEXP val = mkCharCE(newstr, getCharCE(x));
+  //Close quote and create R string
+  *outcur = '"';
+  SEXP out = mkCharLenCE(newstr, outlen, CE_UTF8);
   free(newstr);
-  return val;
+  return out;
 }
 
 SEXP C_escape_chars(SEXP x) {
