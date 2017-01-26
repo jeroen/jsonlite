@@ -1,3 +1,6 @@
+1.3
+ - The solidus (forward slash) is now escaped by default for safe html embedding (#163)
+
 1.2
  - Add 'read_json' and 'write_json' convenience wrappers
  - Update modp_numtoa from upstream (fixes a rounding issue in #148)

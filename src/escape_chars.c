@@ -28,6 +28,7 @@ SEXP C_escape_chars_one(SEXP x) {
       case '\t':
       case '\b':
       case '\f':
+      case '/':
         matches++;
     }
     old_p++;
@@ -78,6 +79,11 @@ SEXP C_escape_chars_one(SEXP x) {
         *new_p = '\\';
         new_p++;
         *new_p = 'f';
+        break;
+      case '/':
+        *new_p = '\\';
+        new_p++;
+        *new_p = '/';
         break;
       case '\0':
         // End with a quote char
