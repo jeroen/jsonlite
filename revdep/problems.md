@@ -6,20 +6,20 @@
 |:--------|:----------------------------|
 |version  |R version 3.3.2 (2016-10-31) |
 |system   |x86_64, darwin13.4.0         |
-|ui       |X11                          |
+|ui       |RStudio (1.0.136)            |
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
-|tz       |Europe/Amsterdam             |
-|date     |2016-12-29                   |
+|tz       |America/Los_Angeles          |
+|date     |2017-01-27                   |
 
 ## Packages
 
-|package  |*  |version |date       |source           |
-|:--------|:--|:-------|:----------|:----------------|
-|jsonlite |   |1.2     |2016-12-29 |local (NA/NA@NA) |
+|package  |*  |version  |date       |source           |
+|:--------|:--|:--------|:----------|:----------------|
+|jsonlite |   |1.2.9000 |2017-01-27 |local (NA/NA@NA) |
 
 # Check results
-14 packages with problems
+18 packages with problems
 
 ## biomartr (0.2.1)
 Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>  
@@ -70,10 +70,35 @@ checking Rd cross-references ... NOTE
 Packages unavailable to check Rd xrefs: ‘chemometrics’, ‘mvoutlier’
 ```
 
-## dismo (1.1-1)
+## crunch (1.14.4)
+Maintainer: Neal Richardson <neal@crunch.io>  
+Bug reports: https://github.com/Crunch-io/rcrunch/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  1. Failure: Basic box with metadata and filters (@test-crunchbox.R#71) 
+  2. Failure: Select variables in box (@test-crunchbox.R#79) 
+  3. Failure: Hidden variables are automatically 'selected' out (@test-crunchbox.R#91) 
+  4. Failure: Select filters in box (@test-crunchbox.R#101) 
+  5. Failure: Select filters in box (@test-crunchbox.R#107) 
+  6. Failure: is.archived setter (@test-dataset-catalog.R#62) 
+  7. Failure: is.archived setter (@test-dataset-catalog.R#65) 
+  8. Failure: is.published setter (@test-dataset-catalog.R#70) 
+  9. Failure: is.published setter (@test-dataset-catalog.R#73) 
+  1. ...
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
+
+## dismo (1.1-4)
 Maintainer: Robert J. Hijmans <r.hijmans@gmail.com>
 
-1 error  | 1 warning  | 1 note 
+1 error  | 0 warnings | 1 note 
 
 ```
 checking examples ... ERROR
@@ -99,40 +124,10 @@ No Java runtime present, try --request to install.
 Warning: running command '/usr/libexec/java_home' had status 1
 No Java runtime present, requesting install.
 
-checking sizes of PDF files under ‘inst/doc’ ... WARNING
-  ‘gs+qpdf’ made some significant size reductions:
-     compacted ‘sdm.pdf’ from 1182Kb to 882Kb
-  consider running tools::compactPDF(gs_quality = "ebook") on these files
-
 checking dependencies in R code ... NOTE
 Unable to find any JVMs matching version "(null)".
 No Java runtime present, try --request to install.
 No Java runtime present, requesting install.
-```
-
-## europepmc (0.1.0)
-Maintainer: Najko Jahn <najko.jahn@gmail.com>  
-Bug reports: http://github.com/ropensci/europepmc/issues
-
-0 errors | 1 warning  | 0 notes
-
-```
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-264 records found. Retrieving batch 1
-339 records found. Retrieving batch 1
-6929 records found. Retrieving batch 1
-131 records found. Retrieving batch 1
-125031 records found. Retrieving batch 1
-108942 records found. Retrieving batch 1
-197 records found. Returning 25
-18 records found. Returning 18
-Quitting from lines 176-177 (rebi-vignettes.Rmd) 
-Error: processing vignette 'rebi-vignettes.Rmd' failed with diagnostics:
-Internal Server Error (HTTP 500).
-Execution halted
-
 ```
 
 ## fitbitScraper (0.1.7)
@@ -151,8 +146,9 @@ Execution halted
 
 ```
 
-## h2o (3.10.0.8)
-Maintainer: Tom Kraljevic <tomk@0xdata.com>
+## h2o (3.10.2.2)
+Maintainer: Tom Kraljevic <tomk@0xdata.com>  
+Bug reports: http://jira.h2o.ai
 
 1 error  | 0 warnings | 1 note 
 
@@ -181,9 +177,33 @@ Execution halted
 ** found \donttest examples: check also with --run-donttest
 
 checking installed package size ... NOTE
-  installed size is 63.6Mb
+  installed size is 66.0Mb
   sub-directories of 1Mb or more:
-    java  62.4Mb
+    java  64.8Mb
+```
+
+## httr (1.2.1)
+Maintainer: Hadley Wickham <hadley@rstudio.com>
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  y[1]: "eyJpc3MiOiI3NjEzMjY3OTgwNjktcjVtbGpsbG4xcmQ0bHJiaGc3NWVmZ2lncDM2bTc4ajVAZ
+  y[1]: GV2ZWxvcGVyLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzY29wZSI6Imh0dHBzOi8vd3d3Lmdvb2d
+  y[1]: sZWFwaXMuY29tL2F1dGgvcHJlZGljdGlvbiIsImF1ZCI6Imh0dHBzOi8vYWNjb3VudHMuZ29vZ
+  y[1]: 2xlLmNvbS9vL29hdXRoMi90b2tlbiIsImV4cCI6MTMyODU1NDM4NSwiaWF0IjoxMzI4NTUwNzg
+  y[1]: 1fQ"
+  
+  
+  testthat results ================================================================
+  OK: 113 SKIPPED: 2 FAILED: 1
+  1. Failure: reference claimset yields expected base64 (@test-oauth-server-side.R#20) 
+  
+  Error: testthat unit tests failed
+  Execution halted
 ```
 
 ## melviewr (0.0.1)
@@ -218,7 +238,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpbJn9lO/matrixba34621fcd2b.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpbJn9lO/coordsba3415d6f461.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpOGjKwW/matrixbf524dcdef42.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpOGjKwW/coordsbf52b16fdf6.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -236,12 +256,40 @@ Content type 'application/java-archive' length 18203 bytes (17 KB)
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpSAUCOw/matrixbad76354b316.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpSAUCOw/coordsbad74db99c4c.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpiuRbKs/matrixc05124c9d043.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpiuRbKs/coordsc0513d87f193.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
 Error in layout.fun(slice, dist.mat = dist.mat, default.dist = default.dist,  : 
   Unable to parse coordinates returned MDSJ java code
+Execution halted
+```
+
+## nomadlist (0.1.0)
+Maintainer: Ger Inberg <info@inbergict.nl>
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking examples ... ERROR
+Running examples in ‘nomadlist-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nomadlist
+> ### Title: Interface to the Nomad List API
+> ### Aliases: nomadlist
+> 
+> ### ** Examples
+> 
+> nomadCities <- getnomadcities()
+> if (nomadCities$ok == TRUE) {
++   nomadCities <- nomadCities$result
++   citiesCountries <- nomadCities[, c("info.city.name", "info.country.name")]
++   citiesCountries
++ }
+Error in nomadCities[, c("info.city.name", "info.country.name")] : 
+  incorrect number of dimensions
 Execution halted
 ```
 
@@ -258,9 +306,9 @@ Found the following significant warnings:
 See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/protolite.Rcheck/00install.out’ for details.
 ```
 
-## quanteda (0.9.8.5)
-Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>  
-Bug reports: https://github.com/kbenoit/quanteda/issues
+## RPresto (1.2.1)
+Maintainer: Onur Ismail Filiz <onur@fb.com>  
+Bug reports: https://github.com/prestodb/RPresto/issues
 
 1 error  | 0 warnings | 0 notes
 
@@ -268,16 +316,16 @@ Bug reports: https://github.com/kbenoit/quanteda/issues
 checking tests ... ERROR
 Running the tests in ‘tests/testthat.R’ failed.
 Last 13 lines of output:
-  11: downloadRemote(i, ignoreMissing = ignoreMissing)
-  12: httr::stop_for_status(r)
+         status_code = 0, data = data.frame.with.all.classes())[["response"]]) at testthat/test-get.state.R:18
+  2: jsonlite::fromJSON(text.content, simplifyVector = FALSE)
   
   testthat results ================================================================
-  OK: 236 SKIPPED: 1 FAILED: 5
-  1. Failure: test plot.kwic facet order parameter (@testPlots.R#70) 
-  2. Failure: test plot.kwic keeps order of keywords passed (@testPlots.R#81) 
-  3. Error: test remote text file (@testTextfile.R#146) 
-  4. Error: test remote csv file (@testTextfile.R#159) 
-  5. Error: test remote zip file (@testTextfile.R#169) 
+  OK: 208 SKIPPED: 25 FAILED: 5
+  1. Error: dbFetch rbind works correctly (@test-dbFetch.R#214) 
+  2. Error: dbFetch rbind works with zero row chunks (@test-dbFetch.R#263) 
+  3. Failure: dbGetQuery works with mock (@test-dbGetQuery.R#45) 
+  4. Error: extract.data works (@test-extract.data.R#45) 
+  5. Error: get.state works (@test-get.state.R#18) 
   
   Error: testthat unit tests failed
   Execution halted
@@ -313,7 +361,7 @@ Please reinstall the package that provides this extension.
 Execution halted
 ```
 
-## stplanr (0.1.7-2)
+## stplanr (0.1.7-3)
 Maintainer: Robin Lovelace <rob00x@gmail.com>  
 Bug reports: https://github.com/ropensci/stplanr/issues
 
@@ -329,7 +377,7 @@ No Java runtime present, requesting install.
 
 ```
 
-## trackeR (0.0.4)
+## trackeR (0.0.5)
 Maintainer: Hannah Frick <h.frick@ucl.ac.uk>  
 Bug reports: https://github.com/hfrick/trackeR/issues
 
@@ -355,13 +403,62 @@ The following object is masked from 'package:base':
 
     append
 
-Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=57.157231,-2.104296&zoom=13&size=640x640&scale=2&maptype=terrain&sensor=false
+Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=57.157231,-2.104296&zoom=13&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
 Quitting from lines 90-91 (TourDetrackeR.Rmd) 
 Error: processing vignette 'TourDetrackeR.Rmd' failed with diagnostics:
 GeomRasterAnn was built with an incompatible version of ggproto.
 Please reinstall the package that provides this extension.
 Execution halted
 
+```
+
+## ubeR (0.1.3)
+Maintainer: Andrew Collier <andrew@exegetic.biz>  
+Bug reports: https://github.com/DataWookie/ubeR/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  > library(ubeR)
+  > 
+  > test_check("ubeR")
+  1. Failure: raise error on fail to geocode (@test_utils.R#4) -------------------
+  geocode("The Old Biscuit Mill") did not throw an error.
+  
+  
+  testthat results ================================================================
+  OK: 8 SKIPPED: 0 FAILED: 1
+  1. Failure: raise error on fail to geocode (@test_utils.R#4) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
+
+## vegalite (0.6.1)
+Maintainer: Bob Rudis <bob@rudis.net>  
+Bug reports: https://github.com/hrbrmstr/vegalite/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking examples ... ERROR
+Running examples in ‘vegalite-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: from_spec
+> ### Title: Take a JSON Vega-Lite Spec and render as an htmlwidget
+> ### Aliases: from_spec
+> 
+> ### ** Examples
+> 
+> from_spec("http://rud.is/dl/embedded.json")
+Error in file(con, "r") : cannot open the connection
+Calls: from_spec -> readLines -> file
+Execution halted
 ```
 
 ## x.ent (1.1.6)
