@@ -62,6 +62,12 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
       rn <- as.integer(rn);
     }
 
+    # Replace missing values with numbers
+    rn_na <- is.na(rn)
+    if(sum(rn_na) > 0){
+      rn[rn_na] <- paste0("NA_", seq_len(sum(rn_na)))
+    }
+
     # data frames MUST have row names
     if(any(duplicated(rn))){
       warning('Duplicate names in "_row" field. Data frames must have unique row names.', call. = FALSE)
