@@ -206,7 +206,7 @@ stream_out <- function(x, con = stdout(), pagesize = 500, verbose = TRUE, ...) {
     })
   }
 
-  apply_by_pages(x, stream_out_page, pagesize = pagesize, con = con, verbose = verbose, ...);
+  invisible(apply_by_pages(x, stream_out_page, pagesize = pagesize, con = con, verbose = verbose, ...));
 }
 
 stream_out_page <- function(page, con, ...){
