@@ -11,6 +11,7 @@ SEXP C_escape_chars_one(SEXP x) {
 
   // Make a cursor pointer
   const char * cur = CHAR(x);
+  const char * end = CHAR(x) + Rf_length(x);
 
   // Count the number of matches
   int matches = 0;
@@ -27,7 +28,7 @@ SEXP C_escape_chars_one(SEXP x) {
         matches++;
     }
     cur++;
-  } while(*cur); //breaks on '\0'
+  } while (cur < end);
 
   // Calculate output length, 2 for double quotes
   size_t outlen = Rf_length(x) + matches + 2;
@@ -89,7 +90,7 @@ SEXP C_escape_chars_one(SEXP x) {
     //increment input and output cursors to next character
     cur++;
     outcur++;
-  } while(*cur);
+  } while(cur < end);
 
   //Close quote and create R string
   *outcur = '"';
