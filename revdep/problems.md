@@ -9,19 +9,30 @@
 |ui       |RStudio (1.0.136)            |
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
-|tz       |America/Los_Angeles          |
-|date     |2017-01-27                   |
+|tz       |Europe/Amsterdam             |
+|date     |2017-02-21                   |
 
 ## Packages
 
-|package  |*  |version  |date       |source           |
-|:--------|:--|:--------|:----------|:----------------|
-|jsonlite |   |1.2.9000 |2017-01-27 |local (NA/NA@NA) |
+|package  |*  |version |date       |source           |
+|:--------|:--|:-------|:----------|:----------------|
+|jsonlite |   |1.3     |2017-02-21 |local (NA/NA@NA) |
 
 # Check results
-18 packages with problems
+21 packages with problems
 
-## biomartr (0.2.1)
+## AWR.KMS (0.1)
+Maintainer: Gergely Daroczi <gergely.daroczi@card.com>
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking whether package ‘AWR.KMS’ can be installed ... ERROR
+Installation failed.
+See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/AWR.KMS.Rcheck/00install.out’ for details.
+```
+
+## biomartr (0.3.0)
 Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>  
 Bug reports: https://github.com/HajkD/biomartr/issues
 
@@ -35,7 +46,7 @@ See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
 manual.
 ```
 
-## ChemoSpec (4.4.1)
+## ChemoSpec (4.4.17)
 Maintainer: Bryan A. Hanson <hanson@depauw.edu>  
 Bug reports: https://github.com/bryanhanson/ChemoSpec/issues
 
@@ -95,6 +106,56 @@ Last 13 lines of output:
   Execution halted
 ```
 
+## d3r (0.6.1)
+Maintainer: Kent Russell <kent.russell@timelyportfolio.com>  
+Bug reports: https://github.com/timelyportfolio/d3r/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  Component "links": Component 3: Component 3: target is character, current is numeric
+  Component "links": Component 4: Component 3: Modes: character, numeric
+  Component "links": Component 4: Component 3: target is character, current is numeric
+  Component "links": Component 5: Component 3: Modes: character, numeric
+  Component "links": Component 5: Component 3: target is character, current is numeric
+  
+  
+  testthat results ================================================================
+  OK: 9 SKIPPED: 2 FAILED: 1
+  1. Failure: d3_igraph works (@test_igraph.R#36) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
+
+## dataone (2.0.1)
+Maintainer: Matthew B. Jones <jones@nceas.ucsb.edu>  
+Bug reports: https://github.com/DataONEorg/rdataone/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  > test_check("dataone")
+  Loading required package: dataone
+  1. Failure: CNode object index query works with query list param (@test.D1Node.R#37) 
+  result[[1]]$abstract does not match "chlorophyll".
+  Actual value: "Two YSI water quality sondes and loggers were installed onto a navigation light pole in Kentucky Lake KY, one at a depth of one meter below the lake surface, the other at one meter above the lake bottom in February 2005.  Water Temperature, pH, dissolved oxygen, conductivity, oxidation reduction potential, and turbidity data are collected from each sonde every 15 minutes.  Chlorophyll a data are collected from the one meter depth.  Lake elevations are estimated from depth data collected from the sonde anchored near the lake bottom."
+  
+  
+  testthat results ================================================================
+  OK: 197 SKIPPED: 31 FAILED: 1
+  1. Failure: CNode object index query works with query list param (@test.D1Node.R#37) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
+
 ## dismo (1.1-4)
 Maintainer: Robert J. Hijmans <r.hijmans@gmail.com>
 
@@ -146,7 +207,7 @@ Execution halted
 
 ```
 
-## h2o (3.10.2.2)
+## h2o (3.10.3.3)
 Maintainer: Tom Kraljevic <tomk@0xdata.com>  
 Bug reports: http://jira.h2o.ai
 
@@ -177,9 +238,9 @@ Execution halted
 ** found \donttest examples: check also with --run-donttest
 
 checking installed package size ... NOTE
-  installed size is 66.0Mb
+  installed size is 62.4Mb
   sub-directories of 1Mb or more:
-    java  64.8Mb
+    java  61.2Mb
 ```
 
 ## httr (1.2.1)
@@ -238,7 +299,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpOGjKwW/matrixbf524dcdef42.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpOGjKwW/coordsbf52b16fdf6.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmp4hYjrv/matrixd048243fdcae.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmp4hYjrv/coordsd0485cb13619.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -256,40 +317,12 @@ Content type 'application/java-archive' length 18203 bytes (17 KB)
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpiuRbKs/matrixc05124c9d043.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpiuRbKs/coordsc0513d87f193.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmprqF7fO/matrixd0db13751545.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmprqF7fO/coordsd0db6bc76efd.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
 Error in layout.fun(slice, dist.mat = dist.mat, default.dist = default.dist,  : 
   Unable to parse coordinates returned MDSJ java code
-Execution halted
-```
-
-## nomadlist (0.1.0)
-Maintainer: Ger Inberg <info@inbergict.nl>
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking examples ... ERROR
-Running examples in ‘nomadlist-Ex.R’ failed
-The error most likely occurred in:
-
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: nomadlist
-> ### Title: Interface to the Nomad List API
-> ### Aliases: nomadlist
-> 
-> ### ** Examples
-> 
-> nomadCities <- getnomadcities()
-> if (nomadCities$ok == TRUE) {
-+   nomadCities <- nomadCities$result
-+   citiesCountries <- nomadCities[, c("info.city.name", "info.country.name")]
-+   citiesCountries
-+ }
-Error in nomadCities[, c("info.city.name", "info.country.name")] : 
-  incorrect number of dimensions
 Execution halted
 ```
 
@@ -304,6 +337,31 @@ checking whether package ‘protolite’ can be installed ... WARNING
 Found the following significant warnings:
   Warning: protoc version libprotoc 3.0.0 might not match libproto version 3.0.2.
 See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/protolite.Rcheck/00install.out’ for details.
+```
+
+## refimpact (0.1.0)
+Maintainer: Perry Stephenson <perry.stephenson+cran@gmail.com>  
+Bug reports: https://github.com/perrystephenson/refimpact/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  6: fromJSON_string(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
+         simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
+  7: parseJSON(txt, bigint_as_char)
+  8: parse_con(txt, 1024^2, bigint_as_char)
+  9: open(con, "rb")
+  10: open.connection(con, "rb")
+  
+  testthat results ================================================================
+  OK: 28 SKIPPED: 0 FAILED: 1
+  1. Error: get_institutions() returns a tibble (@test_institutions.R#6) 
+  
+  Error: testthat unit tests failed
+  Execution halted
 ```
 
 ## RPresto (1.2.1)
@@ -412,29 +470,16 @@ Execution halted
 
 ```
 
-## ubeR (0.1.3)
-Maintainer: Andrew Collier <andrew@exegetic.biz>  
-Bug reports: https://github.com/DataWookie/ubeR/issues
+## V8 (1.2)
+Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
+Bug reports: https://github.com/jeroenooms/v8/issues
 
 1 error  | 0 warnings | 0 notes
 
 ```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  > library(ubeR)
-  > 
-  > test_check("ubeR")
-  1. Failure: raise error on fail to geocode (@test_utils.R#4) -------------------
-  geocode("The Old Biscuit Mill") did not throw an error.
-  
-  
-  testthat results ================================================================
-  OK: 8 SKIPPED: 0 FAILED: 1
-  1. Failure: raise error on fail to geocode (@test_utils.R#4) 
-  
-  Error: testthat unit tests failed
-  Execution halted
+checking whether package ‘V8’ can be installed ... ERROR
+Installation failed.
+See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/V8.Rcheck/00install.out’ for details.
 ```
 
 ## vegalite (0.6.1)
