@@ -15,7 +15,7 @@ SEXP C_escape_chars_one(SEXP x) {
 
   // Count the number of matches
   int matches = 0;
-  do {
+  while (cur < end) {
     switch(*cur) {
       case '\\':
       case '"':
@@ -28,7 +28,7 @@ SEXP C_escape_chars_one(SEXP x) {
         matches++;
     }
     cur++;
-  } while (cur < end);
+  }
 
   // Calculate output length, 2 for double quotes
   size_t outlen = Rf_length(x) + matches + 2;
@@ -41,7 +41,7 @@ SEXP C_escape_chars_one(SEXP x) {
   char * outcur = newstr;
   *outcur++ = '"';
 
-  do {
+  while(cur < end) {
     switch(*cur) {
       case '\\':
         *outcur++ = '\\';
@@ -76,12 +76,6 @@ SEXP C_escape_chars_one(SEXP x) {
         *outcur = '/';
         break;
 
-      //this should never happen: edge case of embedded null in string
-      case '\0':
-        *outcur++ = '"';
-        *outcur = '\0';
-        break;
-
       //simply copy char from input
       default:
         *outcur = *cur;
@@ -90,7 +84,7 @@ SEXP C_escape_chars_one(SEXP x) {
     //increment input and output cursors to next character
     cur++;
     outcur++;
-  } while(cur < end);
+  }
 
   //Close quote and create R string
   *outcur = '"';
