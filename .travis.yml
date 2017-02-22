@@ -4,8 +4,11 @@ cache: packages
 matrix:
   include:
     - os: linux
-      dist: precise
-      sudo: false
+      r: oldrel
+    - os: linux
+      r: release
+    - os: linux
+      r: devel
     - os: linux
       dist: trusty
       env: R_CODECOV=true
