@@ -10,13 +10,13 @@
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |Europe/Amsterdam             |
-|date     |2017-02-21                   |
+|date     |2017-02-22                   |
 
 ## Packages
 
 |package  |*  |version |date       |source           |
 |:--------|:--|:-------|:----------|:----------------|
-|jsonlite |   |1.3     |2017-02-21 |local (NA/NA@NA) |
+|jsonlite |   |1.3     |2017-02-22 |local (NA/NA@NA) |
 
 # Check results
 320 packages
@@ -184,15 +184,7 @@ Bug reports: https://github.com/ropensci/binomen/issues
 Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>  
 Bug reports: https://github.com/HajkD/biomartr/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking package dependencies ... ERROR
-Packages required but not available: ‘biomaRt’ ‘Biostrings’
-
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
-```
+0 errors | 0 warnings | 0 notes
 
 ## BIOMASS (1.1)
 Maintainer: Maxime REJOU-MECHAIN <maxime.rejou@gmail.com>
@@ -265,36 +257,7 @@ Bug reports: https://github.com/hrbrmstr/censys/issues
 Maintainer: Bryan A. Hanson <hanson@depauw.edu>  
 Bug reports: https://github.com/bryanhanson/ChemoSpec/issues
 
-1 error  | 0 warnings | 1 note 
-
-```
-checking examples ... ERROR
-Running examples in ‘ChemoSpec-Ex.R’ failed
-The error most likely occurred in:
-
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: clupaSpectra
-> ### Title: Hierarchical Cluster-Based Peak Alignment on a Spectra Object
-> ### Aliases: clupaSpectra
-> ### Keywords: utilities
-> 
-> ### ** Examples
-> 
-> 
-> data(alignMUD)
-> 
-> plotSpectra(alignMUD, which = 1:20, lab.pos = 4.5, offset = 0.1,
-+   yrange = c(0, 1900), amp = 500, xlim = c(1.5, 1.8),
-+   main = "Misaligned NMR Spectra (alignMUD)")
-> 
-> aMUD <- clupaSpectra(alignMUD)
-Error in clupaSpectra(alignMUD) : 
-  You need to install package speaq to use this function
-Execution halted
-
-checking Rd cross-references ... NOTE
-Packages unavailable to check Rd xrefs: ‘chemometrics’, ‘mvoutlier’
-```
+0 errors | 0 warnings | 0 notes
 
 ## ckanr (0.1.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
@@ -353,26 +316,7 @@ Bug reports: https://github.com/ropensci/crul/issues
 Maintainer: Neal Richardson <neal@crunch.io>  
 Bug reports: https://github.com/Crunch-io/rcrunch/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  1. Failure: Basic box with metadata and filters (@test-crunchbox.R#71) 
-  2. Failure: Select variables in box (@test-crunchbox.R#79) 
-  3. Failure: Hidden variables are automatically 'selected' out (@test-crunchbox.R#91) 
-  4. Failure: Select filters in box (@test-crunchbox.R#101) 
-  5. Failure: Select filters in box (@test-crunchbox.R#107) 
-  6. Failure: is.archived setter (@test-dataset-catalog.R#62) 
-  7. Failure: is.archived setter (@test-dataset-catalog.R#65) 
-  8. Failure: is.published setter (@test-dataset-catalog.R#70) 
-  9. Failure: is.published setter (@test-dataset-catalog.R#73) 
-  1. ...
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## curl (2.3)
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
@@ -483,12 +427,7 @@ Maintainer: Niall McGearailt <niall@dukeanalytics.com>
 Maintainer: Hadley Wickham <hadley@rstudio.com>  
 Bug reports: https://github.com/hadley/devtools/issues
 
-0 errors | 0 warnings | 1 note 
-
-```
-checking package dependencies ... NOTE
-Package suggested but not available for checking: ‘BiocInstaller’
-```
+0 errors | 0 warnings | 0 notes
 
 ## diezeit (0.1-0)
 Maintainer: Christian Graul <christian.graul@gmail.com>
@@ -857,7 +796,7 @@ Bug reports: https://github.com/paulhendricks/gym-R/issues
 
 0 errors | 0 warnings | 0 notes
 
-## h2o (3.10.3.3)
+## h2o (3.10.3.6)
 Maintainer: Tom Kraljevic <tomk@0xdata.com>  
 Bug reports: http://jira.h2o.ai
 
@@ -903,7 +842,18 @@ Bug reports: https://github.com/EvanOdell/hansard/issues
 Maintainer: John Harrison <johndharrison0@gmail.com>  
 Bug reports: https://github.com/johndharrison/HARtools/issues
 
-0 errors | 0 warnings | 0 notes
+0 errors | 1 warning  | 0 notes
+
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+Quitting from lines 104-108 (Basic_use.Rmd) 
+Error: processing vignette 'Basic_use.Rmd' failed with diagnostics:
+embedded nul in string: '"(function(){\\nif(!google.nocsixjs&&google.timers&&google.timers.load.t)google.timers.load.t.xjses=(new Date).getTime();\\n})();\\n(function(){\\ngoogle.isOpera=false;google.isIE=false;google.isSafari=false;\\ngoogle.xhr=function(){var a=null;try{a=new XMLHttpRequest}catch(d){}return a};\\ngoogle.getComputedStyle=function(a,d,c){var b=c?\\"\\":0;var e=document.defaultView&&document.defaultView.getComputedStyle(a,\\"\\");b=e.getPropertyValue(d);b=c?b:parseInt(b,10);return b};google.getHeight=function(a){return google.getComputedStyle(a,\\"height\\")};google.getWidth=function(a){return google.getComputedStyle(a,\\"width\\")};google.getPageOffsetTop=function(a){return a.offsetTop+(a.offsetParent?google.getPageOffsetTop(a.offsetParent):0)};\\ngoogle.getPageOffsetLeft=function(a){return a.offsetLeft+(a.offsetParent?google.getPageOffsetLeft(a.offsetParent):0)};google.getPageOffsetStart=function(a){
+Execution halted
+
+```
 
 ## HIBPwned (0.1.3)
 Maintainer: Steph Locke <stephanie.g.locke@gmail.com>  
@@ -952,26 +902,7 @@ Bug reports: https://github.com/nealrichardson/httptest/issues
 ## httr (1.2.1)
 Maintainer: Hadley Wickham <hadley@rstudio.com>
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  y[1]: "eyJpc3MiOiI3NjEzMjY3OTgwNjktcjVtbGpsbG4xcmQ0bHJiaGc3NWVmZ2lncDM2bTc4ajVAZ
-  y[1]: GV2ZWxvcGVyLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzY29wZSI6Imh0dHBzOi8vd3d3Lmdvb2d
-  y[1]: sZWFwaXMuY29tL2F1dGgvcHJlZGljdGlvbiIsImF1ZCI6Imh0dHBzOi8vYWNjb3VudHMuZ29vZ
-  y[1]: 2xlLmNvbS9vL29hdXRoMi90b2tlbiIsImV4cCI6MTMyODU1NDM4NSwiaWF0IjoxMzI4NTUwNzg
-  y[1]: 1fQ"
-  
-  
-  testthat results ================================================================
-  OK: 113 SKIPPED: 2 FAILED: 1
-  1. Failure: reference claimset yields expected base64 (@test-oauth-server-side.R#20) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## hypothesisr (0.1.1)
 Maintainer: Matthew Lincoln <matthew.d.lincoln@gmail.com>  
@@ -1010,12 +941,7 @@ Bug reports: https://github.com/pablobarbera/instaR/issues
 Maintainer: David J. H. Shih <djh.shih@gmail.com>  
 Bug reports: https://bitbucket.org/djhshih/io/issues
 
-0 errors | 0 warnings | 1 note 
-
-```
-checking package dependencies ... NOTE
-Package suggested but not available for checking: ‘rhdf5’
-```
+0 errors | 0 warnings | 0 notes
 
 ## jose (0.1)
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
@@ -1212,7 +1138,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmp4hYjrv/matrixd048243fdcae.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmp4hYjrv/coordsd0485cb13619.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmp2XnCpx/matrixf22549b12083.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmp2XnCpx/coordsf225bcd9e41.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -1230,7 +1156,7 @@ Content type 'application/java-archive' length 18203 bytes (17 KB)
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmprqF7fO/matrixd0db13751545.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmprqF7fO/coordsd0db6bc76efd.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpln9nCX/matrixf2a218af69ca.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpln9nCX/coordsf2a2244a596f.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
@@ -1523,26 +1449,7 @@ Maintainer: Mukul Chaware <mukul.chaware13@gmail.com>
 Maintainer: Perry Stephenson <perry.stephenson+cran@gmail.com>  
 Bug reports: https://github.com/perrystephenson/refimpact/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  6: fromJSON_string(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
-         simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
-  7: parseJSON(txt, bigint_as_char)
-  8: parse_con(txt, 1024^2, bigint_as_char)
-  9: open(con, "rb")
-  10: open.connection(con, "rb")
-  
-  testthat results ================================================================
-  OK: 28 SKIPPED: 0 FAILED: 1
-  1. Error: get_institutions() returns a tibble (@test_institutions.R#6) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## rentrez (1.0.4)
 Maintainer: David Winter <david.winter@gmail.com>  
@@ -1757,7 +1664,7 @@ checking installed package size ... NOTE
     rmd   5.9Mb
 ```
 
-## RMixpanel (0.6-1)
+## RMixpanel (0.6-2)
 Maintainer: Meinhard Ploner <meinhard.ploner@gmail.com>
 
 0 errors | 0 warnings | 0 notes
@@ -2319,13 +2226,7 @@ Bug reports: https://github.com/dmpe/urlshorteneR/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
 Bug reports: https://github.com/jeroenooms/v8/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking whether package ‘V8’ can be installed ... ERROR
-Installation failed.
-See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/V8.Rcheck/00install.out’ for details.
-```
+0 errors | 0 warnings | 0 notes
 
 ## vegalite (0.6.1)
 Maintainer: Bob Rudis <bob@rudis.net>  
@@ -2433,9 +2334,51 @@ Bug reports: https://github.com/Ironholds/WikidataR/issues
 Maintainer: Peter Meissner <retep.meissner@gmail.com>  
 Bug reports: https://github.com/petermeissner/wikipediatrend/issues
 
-0 errors | 0 warnings | 1 note 
+1 error  | 1 warning  | 1 note 
 
 ```
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  
+  
+  Error in curl::curl_fetch_memory(url, handle = handle) : 
+    Timeout was reached
+  Error in curl::curl_fetch_memory(url, handle = handle) : 
+    Timeout was reached
+  testthat results ================================================================
+  OK: 66 SKIPPED: 0 FAILED: 2
+  1. Failure: normal usage (@test_caching_gathering.R#27) 
+  2. Failure: setting cache file (@test_caching_gathering.R#39) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+Error in curl::curl_fetch_memory(url, handle = handle) : 
+  Timeout was reached
+http://stats.grok.se/json/en/201510/Main_page
+
+data from server was: Error in curl::curl_fetch_memory(url, handle = handle) : 
+  Timeout was reached
+
+
+Error in curl::curl_fetch_memory(url, handle = handle) : 
+  Timeout was reached
+http://stats.grok.se/json/en/201511/Main_page
+
+data from server was: Error in curl::curl_fetch_memory(url, handle = handle) : 
+  Timeout was reached
+
+
+Quitting from lines 108-112 (using-wikipediatrend.Rmd) 
+Error: processing vignette 'using-wikipediatrend.Rmd' failed with diagnostics:
+need finite 'xlim' values
+Execution halted
+
+
 checking package dependencies ... NOTE
 Packages suggested but not available for checking:
   ‘AnomalyDetection’ ‘BreakoutDetection’
@@ -2451,7 +2394,24 @@ Bug reports: https://github.com/Ironholds/WikipediR/issues
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/worrms/issues
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 0 notes
+
+```
+checking examples ... ERROR
+Running examples in ‘worrms-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: wm_children
+> ### Title: Get children for an AphiaID
+> ### Aliases: wm_children
+> 
+> ### ** Examples
+> 
+> wm_children(id = 105706)
+Error: Bad Gateway (HTTP 502).
+Execution halted
+```
 
 ## WufooR (0.6.1)
 Maintainer: John Malc <cincenko@outlook.com>  
