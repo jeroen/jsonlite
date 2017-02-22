@@ -93,7 +93,7 @@ SEXP C_escape_chars_one(SEXP x) {
 
   //Close quote and create R string
   *outcur = '"';
-  SEXP out = mkCharLenCE(newstr, outlen, CE_UTF8);
+  SEXP out = mkCharLenCE(newstr, outlen, getCharCE(x));
   free(newstr);
   return out;
 }

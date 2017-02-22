@@ -25,5 +25,10 @@ test_that("escape solidus", {
   expect_equal(toJSON('<script>evil()</script>'), '["<script>evil()<\\/script>"]')
   expect_equal(toJSON('/', auto_unbox = TRUE), '"/"')
   expect_equal(toJSON('</', auto_unbox = TRUE), '"<\\/"')
+
+  # Mixed encoding
+  x <- c('\xFD\xDD\xD6\xF0\n', '\u1F602\n')
+  Encoding(x) <- c("latin1", "UTF-8")
+  expect_equal(toJSON(x), '["\u00FD\u00DD\u00D6\u00F0\\n","\u1F602\\n"]')
 })
 
