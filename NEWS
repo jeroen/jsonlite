@@ -1,5 +1,6 @@
 1.3
  - The solidus '/' is now escaped when preceded by '<' for safe html embedding (#163)
+ - Code for reading from connections is ported to C.
  - Code for escaping strings has been rewritten
  - toJSON gains internal argument no_dots for needed by mongolite
  - Better support for parsing extjson date strings

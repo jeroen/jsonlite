@@ -25,4 +25,3 @@ cat(myjson)
 prettify(myjson)
 minify(myjson)
 }
-

@@ -21,4 +21,3 @@ validate(myjson) #TRUE
 truncated <- substring(myjson, 1, 100)
 validate(truncated) #FALSE
 }
-

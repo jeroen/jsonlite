@@ -42,4 +42,3 @@ nrow(filings)
 colnames(filings)
 }
 }
-

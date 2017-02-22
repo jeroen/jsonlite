@@ -23,4 +23,3 @@ str <- base64_enc(serialize(iris, NULL))
 out <- unserialize(base64_dec(str))
 stopifnot(identical(out, iris))
 }
-

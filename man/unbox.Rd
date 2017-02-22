@@ -45,4 +45,3 @@ toJSON(list(rec=unbox(x)))
 \references{
 \url{http://en.wikipedia.org/wiki/Singleton_(mathematics)}
 }
-

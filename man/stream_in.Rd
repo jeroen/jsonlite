@@ -137,4 +137,3 @@ MongoDB export format: \url{http://docs.mongodb.org/manual/reference/program/mon
 
 Documentation for the JSON Lines text file format: \url{http://jsonlines.org/}
 }
-

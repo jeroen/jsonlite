@@ -32,4 +32,3 @@ read_json(tmp)
 # A data frame
 read_json(tmp, simplifyVector = TRUE)
 }
-

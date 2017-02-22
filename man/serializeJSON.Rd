@@ -50,4 +50,3 @@ myobject <- list(
 );
 identical(unserializeJSON(serializeJSON(myobject)), myobject);
 }
-
