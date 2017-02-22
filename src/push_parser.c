@@ -10,13 +10,20 @@
 #error "Missing or unsupported connection API in R"
 #endif
 
-#if defined(R_VERSION) && R_VERSION < R_Version(3, 3, 0)
-Rconnection R_GetConnection(SEXP sConn);
+Rconnection get_connection(SEXP con) {
+#if defined(R_VERSION) && R_VERSION >= R_Version(3, 3, 0)
+  return R_GetConnection(con);
+# else
+  extern Rconnection getConnection(int) ;
+  if (!Rf_inherits(con, "connection"))
+    Rf_error("invalid connection");
+  return getConnection(Rf_asInteger(con));
 #endif
+}
 
 #define bufsize 1024
 SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
-  Rconnection con = R_GetConnection(sConn);
+  Rconnection con = get_connection(sConn);
   char errbuf[bufsize];
   unsigned char buf[bufsize];
   unsigned char * errstr;
