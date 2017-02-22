@@ -3,13 +3,13 @@
 #include <stdlib.h>
 
 /* a function to insert n spaces */
-void append_whitespace(char** cur, size_t n){
+static void append_whitespace(char** cur, size_t n){
   memset(*cur, ' ', n);
   *cur += n;
 }
 
 /* add and increment */
-void append_text(char **cur, const char* val, int n){
+static void append_text(char **cur, const char* val, int n){
   if(n < 0)
     n = strlen(val);
   memcpy(*cur, val, n);

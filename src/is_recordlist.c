@@ -4,25 +4,25 @@
 #include <stdbool.h>
 
 // .Call("C_is_namedlist", PACKAGE = "jsonlite", 123)
-bool is_namedlist(SEXP x) {
+static bool is_namedlist(SEXP x) {
   if(TYPEOF(x) == VECSXP && getAttrib(x, R_NamesSymbol) != R_NilValue){
     return true;
   }
   return false;
 }
 
-bool is_unnamedlist(SEXP x) {
+static bool is_unnamedlist(SEXP x) {
   if(TYPEOF(x) == VECSXP && getAttrib(x, R_NamesSymbol) == R_NilValue){
     return true;
   }
   return false;
 }
 
-bool is_namedlist_or_null(SEXP x){
+static bool is_namedlist_or_null(SEXP x){
   return (is_namedlist(x) || (x == R_NilValue));
 }
 
-bool is_recordlist(SEXP x){
+static bool is_recordlist(SEXP x){
   bool at_least_one_object = false;
   if(!is_unnamedlist(x)){
     return false;

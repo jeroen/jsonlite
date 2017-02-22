@@ -9,8 +9,8 @@
 #include <Rinternals.h>
 #include <yajl_tree.h>
 
-SEXP ParseObject(yajl_val node, int bigint);
-SEXP ParseArray(yajl_val node, int bigint);
+static SEXP ParseObject(yajl_val node, int bigint);
+static SEXP ParseArray(yajl_val node, int bigint);
 SEXP ParseValue(yajl_val node, int bigint);
 
 SEXP R_parse(SEXP x, SEXP bigint_as_char) {
@@ -84,7 +84,7 @@ SEXP ParseValue(yajl_val node, int bigint){
   error("Invalid YAJL node type.");
 }
 
-SEXP ParseObject(yajl_val node, int bigint){
+static SEXP ParseObject(yajl_val node, int bigint){
   int len = YAJL_GET_OBJECT(node)->len;
   SEXP keys = PROTECT(allocVector(STRSXP, len));
   SEXP vec = PROTECT(allocVector(VECSXP, len));
@@ -97,7 +97,7 @@ SEXP ParseObject(yajl_val node, int bigint){
   return vec;
 }
 
-SEXP ParseArray(yajl_val node, int bigint){
+static SEXP ParseArray(yajl_val node, int bigint){
   int len = YAJL_GET_ARRAY(node)->len;
   SEXP vec = PROTECT(allocVector(VECSXP, len));
   for (int i = 0; i < len; ++i) {
