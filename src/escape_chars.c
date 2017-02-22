@@ -24,8 +24,10 @@ SEXP C_escape_chars_one(SEXP x) {
       case '\t':
       case '\b':
       case '\f':
-      case '/':
         matches++;
+      case '/':
+        if(cur > CHAR(x) && cur[-1] == '<')
+          matches++;
     }
     cur++;
   }
@@ -72,9 +74,12 @@ SEXP C_escape_chars_one(SEXP x) {
         *outcur = 'f';
         break;
       case '/':
-        *outcur++ = '\\';
-        *outcur = '/';
-        break;
+        if(cur > CHAR(x) && cur[-1] == '<'){
+          matches++;
+          *outcur++ = '\\';
+          *outcur = '/';
+          break;
+        }
 
       //simply copy char from input
       default:

@@ -20,10 +20,10 @@ test_that("escaping and parsing of special characters", {
 
 });
 
-test_that("filter invalid escape characters", {
+test_that("escape solidus", {
+  expect_equal(toJSON("foo/bar/baz"), '["foo/bar/baz"]')
+  expect_equal(toJSON('<script>evil()</script>'), '["<script>evil()<\\/script>"]')
+  expect_equal(toJSON('/', auto_unbox = TRUE), '"/"')
+  expect_equal(toJSON('</', auto_unbox = TRUE), '"<\\/"')
+})
 
-  #The \v and \a characters are not supported by JSON. This is a common bug
-  #expect_that(validate(toJSON("foo\v\bar\abaz")), is_true());
-  #Update: yajl doesn't support \v and \a characters at all. Dropping this test.
-
-});
