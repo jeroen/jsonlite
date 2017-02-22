@@ -6,7 +6,7 @@
 |:--------|:----------------------------|
 |version  |R version 3.3.2 (2016-10-31) |
 |system   |x86_64, darwin13.4.0         |
-|ui       |RStudio (1.0.136)            |
+|ui       |X11                          |
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |Europe/Amsterdam             |
@@ -1138,7 +1138,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmp2XnCpx/matrixf22549b12083.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmp2XnCpx/coordsf225bcd9e41.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpRvlrt6/matrix1002c731c80.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpRvlrt6/coords1002c55417bb.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -1156,7 +1156,7 @@ Content type 'application/java-archive' length 18203 bytes (17 KB)
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpln9nCX/matrixf2a218af69ca.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpln9nCX/coordsf2a2244a596f.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpNcAdR7/matrix100f0206817a6.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpNcAdR7/coords100f011e8a3e9.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
@@ -1283,7 +1283,45 @@ Bug reports: https://github.com/ropensci/pleiades/issues
 Maintainer: Carson Sievert <cpsievert1@gmail.com>  
 Bug reports: https://github.com/ropensci/plotly/issues
 
-0 errors | 0 warnings | 0 notes
+2 errors | 0 warnings | 0 notes
+
+```
+checking examples ... ERROR
+Running examples in ‘plotly-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: style
+> ### Title: Modify trace(s)
+> ### Aliases: style
+> 
+> ### ** Examples
+> 
+> 
+> p <- qplot(data = mtcars, wt, mpg, geom = c("point", "smooth"))
+> # keep the hover info for points, but remove it for the line/ribbon
+> style(p, hoverinfo = "none", traces = c(2, 3))
+Error in f(..., self = self) : unused argument (<environment>)
+Calls: style ... ggplotly -> ggplotly.ggplot -> gg2list -> <Anonymous> -> f
+Execution halted
+
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  unused argument (<environment>)
+  1: expect_traces(blank.minor, 1, "blank-minor") at testthat/test-cookbook-axes.R:177
+  2: save_outputs(gg, paste0("cookbook-axes-", name)) at testthat/test-cookbook-axes.R:5
+  3: plotly_build(gg)
+  4: plotly_build.gg(gg)
+  5: ggplotly(p)
+  6: ggplotly.ggplot(p)
+  7: gg2list(p, width = width, height = height, tooltip = tooltip, layerData = layerData, 
+         originalData = originalData, source = source, ...)
+  8: layout$setup(layer_data, plot$data, plot$plot_env, plot$coordinates)
+  9: f(..., self = self)
+  
+  [1] "Running test: cookbook-axes-blank-x"
+```
 
 ## plumber (0.3.1)
 Maintainer: Jeff Allen <cran@trestletech.com>
@@ -1730,7 +1768,18 @@ Bug reports: https://developer.rosette.com/support-ticket
 Maintainer: Francois Michonneau <francois.michonneau@gmail.com>  
 Bug reports: https://github.com/ropensci/rotl/issues
 
-0 errors | 0 warnings | 0 notes
+0 errors | 1 warning  | 0 notes
+
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+Quitting from lines 175-177 (data_mashups.Rmd) 
+Error: processing vignette 'data_mashups.Rmd' failed with diagnostics:
+subscript out of bounds
+Execution halted
+
+```
 
 ## rplos (0.6.4)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
@@ -1742,26 +1791,7 @@ Bug reports: https://github.com/ropensci/rplos/issues
 Maintainer: Onur Ismail Filiz <onur@fb.com>  
 Bug reports: https://github.com/prestodb/RPresto/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-         status_code = 0, data = data.frame.with.all.classes())[["response"]]) at testthat/test-get.state.R:18
-  2: jsonlite::fromJSON(text.content, simplifyVector = FALSE)
-  
-  testthat results ================================================================
-  OK: 208 SKIPPED: 25 FAILED: 5
-  1. Error: dbFetch rbind works correctly (@test-dbFetch.R#214) 
-  2. Error: dbFetch rbind works with zero row chunks (@test-dbFetch.R#263) 
-  3. Failure: dbGetQuery works with mock (@test-dbGetQuery.R#45) 
-  4. Error: extract.data works (@test-extract.data.R#45) 
-  5. Error: get.state works (@test-get.state.R#18) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## RPublica (0.1.3)
 Maintainer: Thomas J. Leeper <thosjleeper@gmail.com>  
@@ -1937,10 +1967,10 @@ The error most likely occurred in:
 [1] "100% done merging data for WlanDatum (7 of 7)."
 [1] "Creating data frame for WlanDatum."
 > plot(data$LocationDatum)
-Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=38.0676352725243,-78.9510441850485&zoom=10&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
-Information from URL : http://maps.googleapis.com/maps/api/geocode/json?address=38.0676352725243,-78.9510441850485&sensor=false
-Error: GeomRasterAnn was built with an incompatible version of ggproto.
-Please reinstall the package that provides this extension.
+Source : https://maps.googleapis.com/maps/api/staticmap?center=38.0676352725243,-78.9510441850485&zoom=10&size=640x640&scale=2&maptype=terrain&language=en-EN
+Source : https://maps.googleapis.com/maps/api/geocode/json?address=38.0676352725243%2C-78.9510441850485
+Error in get("f", environment(CoordMap$train)) : object 'f' not found
+Calls: plot ... do.call -> <Anonymous> -> ggmap -> coord_map2 -> get
 Execution halted
 ```
 
@@ -1960,9 +1990,26 @@ Bug reports: https://github.com/CenterForAssessment/SGP/issues
 Maintainer: Winston Chang <winston@rstudio.com>  
 Bug reports: https://github.com/rstudio/shiny/issues
 
-0 errors | 0 warnings | 1 note 
+1 error  | 0 warnings | 1 note 
 
 ```
+checking tests ... ERROR
+Running the tests in ‘tests/test-all.R’ failed.
+Last 13 lines of output:
+  OK: 465 SKIPPED: 0 FAILED: 9
+  1. Error: ggplot coordmap (@test-plot-coordmap.R#34) 
+  2. Failure: ggplot coordmap with facet_wrap (@test-plot-coordmap.R#94) 
+  3. Error: ggplot coordmap with facet_wrap (@test-plot-coordmap.R#95) 
+  4. Failure: ggplot coordmap with facet_grid (@test-plot-coordmap.R#143) 
+  5. Error: ggplot coordmap with facet_grid (@test-plot-coordmap.R#144) 
+  6. Failure: ggplot coordmap with 2D facet_grid (@test-plot-coordmap.R#228) 
+  7. Error: ggplot coordmap with 2D facet_grid (@test-plot-coordmap.R#229) 
+  8. Error: ggplot coordmap with various data types (@test-plot-coordmap.R#278) 
+  9. Error: ggplot coordmap with various scales and coords (@test-plot-coordmap.R#321) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+
 checking installed package size ... NOTE
   installed size is  7.4Mb
   sub-directories of 1Mb or more:
@@ -2176,11 +2223,10 @@ The following object is masked from 'package:base':
 
     append
 
-Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=57.157231,-2.104296&zoom=13&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
+Source : https://maps.googleapis.com/maps/api/staticmap?center=57.157231,-2.104296&zoom=13&size=640x640&scale=2&maptype=terrain&language=en-EN
 Quitting from lines 90-91 (TourDetrackeR.Rmd) 
 Error: processing vignette 'TourDetrackeR.Rmd' failed with diagnostics:
-GeomRasterAnn was built with an incompatible version of ggproto.
-Please reinstall the package that provides this extension.
+object 'f' not found
 Execution halted
 
 ```
@@ -2394,24 +2440,7 @@ Bug reports: https://github.com/Ironholds/WikipediR/issues
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/worrms/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking examples ... ERROR
-Running examples in ‘worrms-Ex.R’ failed
-The error most likely occurred in:
-
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: wm_children
-> ### Title: Get children for an AphiaID
-> ### Aliases: wm_children
-> 
-> ### ** Examples
-> 
-> wm_children(id = 105706)
-Error: Bad Gateway (HTTP 502).
-Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## WufooR (0.6.1)
 Maintainer: John Malc <cincenko@outlook.com>  
