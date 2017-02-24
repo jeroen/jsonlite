@@ -39,4 +39,6 @@ test_that("escape solidus", {
 test_that("BOM is being ignored", {
   expect_warning(fromJSON('\uFEFF[123]'), "mark")
   expect_warning(fromJSON(rawConnection(charToRaw('\uFEFF[123]'))), "mark")
+  expect_equal(fromJSON('\uFEFF[123]'), 123)
+  expect_equal(fromJSON(rawConnection(charToRaw('\uFEFF[123]'))), 123)
 })
