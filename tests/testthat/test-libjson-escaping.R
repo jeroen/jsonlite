@@ -30,5 +30,9 @@ test_that("escape solidus", {
   x <- c('\xFD\xDD\xD6\xF0\n', '\u1F602\n')
   Encoding(x) <- c("latin1", "UTF-8")
   expect_equal(toJSON(x), '["\u00FD\u00DD\u00D6\u00F0\\n","\u1F602\\n"]')
+
+  # Escape solidus by minify
+  expect_equal(unclass(minify('["/"]')), '["/"]')
+  expect_equal(unclass(minify('["</"]')), '["<\\/"]')
 })
 

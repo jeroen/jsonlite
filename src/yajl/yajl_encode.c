@@ -52,7 +52,7 @@ yajl_string_encode(const yajl_print_t print,
              * specifically, this production from the grammar:
              *   unescaped = %x20-21 / %x23-5B / %x5D-10FFFF
              */
-            case '/': if (escape_solidus) escaped = "\\/"; break;
+            case '/': if (escape_solidus && end > 0 && str[end-1] == '<') escaped = "\\/"; break;
             case '"': escaped = "\\\""; break;
             case '\f': escaped = "\\f"; break;
             case '\b': escaped = "\\b"; break;

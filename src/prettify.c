@@ -93,9 +93,9 @@ SEXP R_reformat(SEXP x, SEXP pretty, SEXP indent_string) {
     /* init generator */
     g = yajl_gen_alloc(NULL);
     yajl_gen_config(g, yajl_gen_beautify, asInteger(pretty));
-    yajl_gen_config(g, yajl_gen_escape_solidus, asInteger(pretty));
     yajl_gen_config(g, yajl_gen_indent_string, translateCharUTF8(asChar(indent_string)));
     yajl_gen_config(g, yajl_gen_validate_utf8, 0);
+    yajl_gen_config(g, yajl_gen_escape_solidus, 1); //modified to only escape for "</"
 
     /* init parser */
     hand = yajl_alloc(&callbacks, NULL, (void *) g);
