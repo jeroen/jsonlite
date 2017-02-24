@@ -25,9 +25,11 @@ SEXP C_escape_chars_one(SEXP x) {
       case '\b':
       case '\f':
         matches++;
+        break;
       case '/':
         if(cur > CHAR(x) && cur[-1] == '<')
           matches++;
+        break;
     }
     cur++;
   }
