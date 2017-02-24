@@ -36,3 +36,7 @@ test_that("escape solidus", {
   expect_equal(unclass(minify('["</"]')), '["<\\/"]')
 })
 
+test_that("BOM is being ignored", {
+  expect_warning(fromJSON('\uFEFF[123]'), "mark")
+  expect_warning(fromJSON(rawConnection(charToRaw('\uFEFF[123]'))), "mark")
+})

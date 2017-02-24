@@ -24,20 +24,29 @@ Rconnection get_connection(SEXP con) {
 #define bufsize 1024
 SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
   Rconnection con = get_connection(sConn);
+  int first = 1;
   char errbuf[bufsize];
   unsigned char buf[bufsize];
+  unsigned char * ptr = buf;
   unsigned char * errstr;
   yajl_handle push_parser = push_parser_new();
-  int len;
   while(1){
     R_CheckUserInterrupt();
-    len = R_ReadConnection(con, buf, bufsize);
+    int len = R_ReadConnection(con, ptr, bufsize);
     if(len <= 0)
       break;
 
+    //strip off BOM
+    if(first && len > 3 && ptr[0] == 239 && ptr[1] == 187 && ptr[2] == 191){
+      warningcall(R_NilValue, "JSON string contains (illegal) UTF8 byte-order-mark!");
+      ptr += 3;
+      len -= 3;
+    }
+    first = 0;
+
     /* parse and check for errors */
-    if (yajl_parse(push_parser, buf, len) != yajl_status_ok){
-      errstr = yajl_get_error(push_parser, 1, buf, len);
+    if (yajl_parse(push_parser, ptr, len) != yajl_status_ok){
+      errstr = yajl_get_error(push_parser, 1, ptr, len);
       goto JSON_FAIL;
     }
   }
