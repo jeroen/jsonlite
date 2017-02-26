@@ -10,58 +10,16 @@
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |Europe/Amsterdam             |
-|date     |2017-02-24                   |
+|date     |2017-02-26                   |
 
 ## Packages
 
 |package  |*  |version |date       |source           |
 |:--------|:--|:-------|:----------|:----------------|
-|jsonlite |   |1.3     |2017-02-24 |local (NA/NA@NA) |
+|jsonlite |   |1.3     |2017-02-26 |local (NA/NA@NA) |
 
 # Check results
-17 packages with problems
-
-## ALA4R (1.5.6)
-Maintainer: Ben Raymond <ben_ala@untan.gl>
-
-1 error  | 1 warning  | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  2: expect(is.null(object), sprintf("%s is not null.", lab), info = info)
-  3: as.expectation(exp, ..., srcref = srcref)
-  4: check_assertions(temp)
-  5: rename_variables(ass$description, type = "assertions")
-  6: ala_fields("assertions", as_is = TRUE)
-  7: cached_get(this_url, type = "json")
-  8: check_status_code(h$value()[["status"]], extra_info = diag_message, on_redirect = on_redirect, 
-         on_client_error = on_client_error, on_server_error = on_server_error)
-  9: stop("HTTP status code ", xstatus, " received.\n", diag_msg)
-  
-  DONE ===========================================================================
-  Error: Test failures
-  Execution halted
-
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-Loading required package: maps
-
-Attaching package: 'maps'
-
-The following object is masked from 'package:plyr':
-
-    ozone
-
-Quitting from lines 261-263 (ALA4R.Rmd) 
-Error: processing vignette 'ALA4R.Rmd' failed with diagnostics:
-HTTP status code 504 received.
-  Either there was an error with the request, or the servers may be down (try again later). If this problem persists please notify the ALA4R maintainers by lodging an issue at https://github.com/AtlasOfLivingAustralia/ALA4R/issues/ or emailing support@ala.org.au
-Execution halted
-
-```
+18 packages with problems
 
 ## AWR.KMS (0.1)
 Maintainer: Gergely Daroczi <gergely.daroczi@card.com>
@@ -109,16 +67,16 @@ Bug reports: https://github.com/DataONEorg/rdataone/issues
 checking tests ... ERROR
 Running the tests in ‘tests/testthat.R’ failed.
 Last 13 lines of output:
-  > test_check("dataone")
-  Loading required package: dataone
-  1. Failure: CNode object index query works with query list param (@test.D1Node.R#37) 
-  result[[1]]$abstract does not match "chlorophyll".
-  Actual value: "Two YSI water quality sondes and loggers were installed onto a navigation light pole in Kentucky Lake KY, one at a depth of one meter below the lake surface, the other at one meter above the lake bottom in February 2005.  Water Temperature, pH, dissolved oxygen, conductivity, oxidation reduction potential, and turbidity data are collected from each sonde every 15 minutes.  Chlorophyll a data are collected from the one meter depth.  Lake elevations are estimated from depth data collected from the sonde anchored near the lake bottom."
-  
-  
-  testthat results ================================================================
-  OK: 197 SKIPPED: 31 FAILED: 1
-  1. Failure: CNode object index query works with query list param (@test.D1Node.R#37) 
+  1.  Failure: D1Client d1SolrQuery works (@test.D1Client.R#334) 
+  2.  Error: D1Client d1SolrQuery works (@test.D1Client.R#335) 
+  3.  Failure: D1Client d1IdentifierSearch works (@test.D1Client.R#365) 
+  4.  Failure: D1Client d1IdentifierSearch works (@test.D1Client.R#366) 
+  5.  Failure: CNode object index query works with query list param (@test.D1Node.R#25) 
+  6.  Error: CNode object index query works with query list param (@test.D1Node.R#26) 
+  7.  Failure: listQueryEngines, getQueryEngineDescription works for CNode, MNode (@test.D1Node.R#107) 
+  8.  Error: listQueryEngines, getQueryEngineDescription works for CNode, MNode (@test.D1Node.R#108) 
+  9.  Failure: CNode object index query works with query string param (@test.D1Node.R#138) 
+  10. Error: CNode object index query works with query string param (@test.D1Node.R#139) 
   
   Error: testthat unit tests failed
   Execution halted
@@ -157,6 +115,35 @@ checking dependencies in R code ... NOTE
 Unable to find any JVMs matching version "(null)".
 No Java runtime present, try --request to install.
 No Java runtime present, requesting install.
+```
+
+## eurostat (2.2.43)
+Maintainer: Leo Lahti <louhos@googlegroups.com>  
+Bug reports: https://github.com/ropengov/eurostat/issues
+
+0 errors | 1 warning  | 0 notes
+
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+Loading required package: xml2
+trying URL 'http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=data%2Ftsdtr210.tsv.gz'
+Content type 'application/octet-stream;charset=UTF-8' length 4136 bytes
+==================================================
+downloaded 4136 bytes
+
+Table tsdtr210 cached at /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpZbMS1f/eurostat/tsdtr210_num_code_TF.rds
+trying URL 'http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=data%2Ftgs00026.tsv.gz'
+Content type 'application/octet-stream;charset=UTF-8' length 5933 bytes
+==================================================
+downloaded 5933 bytes
+
+Quitting from lines 252-268 (eurostat_tutorial.Rmd) 
+Error: processing vignette 'eurostat_tutorial.Rmd' failed with diagnostics:
+cannot open the connection
+Execution halted
+
 ```
 
 ## fitbitScraper (0.1.7)
@@ -243,7 +230,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpOV4yhG/matrix119d038426de7.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpOV4yhG/coords119d0113d758c.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpZyS8oj/matrixa3cb128a3653.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpZyS8oj/coordsa3cb2ff48ca7.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -261,7 +248,7 @@ Content type 'application/java-archive' length 18203 bytes (17 KB)
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpxQpQfR/matrix11ab37a509472.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpxQpQfR/coords11ab34042071a.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpwlENE9/matrixa47141608a4f.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpwlENE9/coordsa47129186a11.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
@@ -292,6 +279,56 @@ Maintainer: Pedro Cardoso <pedro.cardoso@helsinki.fi>
 checking whether package ‘red’ can be installed ... ERROR
 Installation failed.
 See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/red.Rcheck/00install.out’ for details.
+```
+
+## refimpact (0.1.0)
+Maintainer: Perry Stephenson <perry.stephenson+cran@gmail.com>  
+Bug reports: https://github.com/perrystephenson/refimpact/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  9: open(con, "rb")
+  10: open.connection(con, "rb")
+  
+  testthat results ================================================================
+  OK: 21 SKIPPED: 0 FAILED: 5
+  1. Error: get_institutions() returns a tibble (@test_institutions.R#6) 
+  2. Error: Function returns sensible data frames for sensible queries (@test_search_case_studies.R#6) 
+  3. Error: get_tag_types() returns a tibble (@test_tag_types.R#6) 
+  4. Error: get_tag_value() returns a tibble (@test_tag_values.R#6) 
+  5. Error: get_units_of_assessment() returns a tibble (@test_units_of_assessment.R#6) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
+
+## rgeospatialquality (0.3.2)
+Maintainer: Javier Otegui <javier.otegui@gmail.com>  
+Bug reports: https://github.com/ropenscilabs/rgeospatialquality/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  1. Failure: add_flags works properly guessing names for rvertnet dataset (@test_multiple_records.R#38) 
+  2. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#51) 
+  3. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#52) 
+  4. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#53) 
+  5. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#54) 
+  6. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#55) 
+  7. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#56) 
+  8. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#57) 
+  9. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#58) 
+  1. ...
+  
+  Error: testthat unit tests failed
+  Execution halted
 ```
 
 ## SensusR (2.0.0)
@@ -397,60 +434,6 @@ The error most likely occurred in:
 Error in file(con, "r") : cannot open the connection
 Calls: from_spec -> readLines -> file
 Execution halted
-```
-
-## wikipediatrend (1.1.10)
-Maintainer: Peter Meissner <retep.meissner@gmail.com>  
-Bug reports: https://github.com/petermeissner/wikipediatrend/issues
-
-1 error  | 1 warning  | 1 note 
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  
-  
-  Error in curl::curl_fetch_memory(url, handle = handle) : 
-    Timeout was reached
-  Error in curl::curl_fetch_memory(url, handle = handle) : 
-    Timeout was reached
-  testthat results ================================================================
-  OK: 66 SKIPPED: 0 FAILED: 2
-  1. Failure: normal usage (@test_caching_gathering.R#27) 
-  2. Failure: setting cache file (@test_caching_gathering.R#39) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-Error in curl::curl_fetch_memory(url, handle = handle) : 
-  Timeout was reached
-http://stats.grok.se/json/en/201510/Main_page
-
-data from server was: Error in curl::curl_fetch_memory(url, handle = handle) : 
-  Timeout was reached
-
-
-Error in curl::curl_fetch_memory(url, handle = handle) : 
-  Timeout was reached
-http://stats.grok.se/json/en/201511/Main_page
-
-data from server was: Error in curl::curl_fetch_memory(url, handle = handle) : 
-  Timeout was reached
-
-
-Quitting from lines 108-112 (using-wikipediatrend.Rmd) 
-Error: processing vignette 'using-wikipediatrend.Rmd' failed with diagnostics:
-need finite 'xlim' values
-Execution halted
-
-
-checking package dependencies ... NOTE
-Packages suggested but not available for checking:
-  ‘AnomalyDetection’ ‘BreakoutDetection’
 ```
 
 ## x.ent (1.1.6)
