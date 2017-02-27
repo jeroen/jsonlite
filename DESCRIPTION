@@ -9,7 +9,7 @@ Author: Jeroen Ooms, Duncan Temple Lang, Lloyd Hilaiel
 URL: https://arxiv.org/abs/1403.2805,
     https://www.opencpu.org/posts/jsonlite-a-smarter-json-encoder
 BugReports: http://github.com/jeroenooms/jsonlite/issues
-Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
 VignetteBuilder: knitr, R.rsp
 Description: A fast JSON parser and generator optimized for statistical data
     and the web. Started out as a fork of 'RJSONIO', but has been completely
