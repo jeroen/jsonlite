@@ -8,7 +8,8 @@
 \usage{
 stream_in(con, handler = NULL, pagesize = 500, verbose = TRUE, ...)
 
-stream_out(x, con = stdout(), pagesize = 500, verbose = TRUE, ...)
+stream_out(x, con = stdout(), pagesize = 500, verbose = TRUE,
+  prefix = "", ...)
 }
 \arguments{
 \item{con}{a \code{\link{connection}} object. If the connection is not open,
@@ -27,6 +28,8 @@ returned by \code{stream_in}. See details.}
 control JSON formatting/parsing where applicable. Use with caution.}
 
 \item{x}{object to be streamed out. Currently only data frames are supported.}
+
+\item{prefix}{string to write before each line (use \code{"\u001e"} to write rfc7464 text sequences)}
 }
 \value{
 The \code{stream_out} function always returns \code{NULL}.

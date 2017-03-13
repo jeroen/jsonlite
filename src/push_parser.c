@@ -42,6 +42,13 @@ SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
       ptr += 3;
       len -= 3;
     }
+
+    //strip off rfc7464 record separator
+    if(first && len > 1 && ptr[0] == 30){
+      ptr += 1;
+      len -= 1;
+    }
+
     first = 0;
 
     /* parse and check for errors */

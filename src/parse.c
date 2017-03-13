@@ -24,6 +24,11 @@ SEXP R_parse(SEXP x, SEXP bigint_as_char) {
       json = json + 3;
     }
 
+    /* ignore rfc7464 record separator */
+    if(json[0] == '\x1E'){
+      json = json + 1;
+    }
+
     /* parse json */
     char errbuf[1024];
     yajl_val node = yajl_tree_parse(json, errbuf, sizeof(errbuf));
