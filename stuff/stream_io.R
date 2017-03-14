@@ -3,7 +3,7 @@ library(jsonlite)
 # Full JSON stream IO: stream from URL to file.
 # Calculate delays for flights over 1000 miles in batches of 5k
 library(dplyr)
-con_in <- gzcon(url("http://jeroenooms.github.io/data/nycflights13.mjson.gz"))
+con_in <- gzcon(url("http://jeroen.github.io/data/nycflights13.mjson.gz"))
 con_out <- file(tmp <- tempfile(), open = "w")
 stream_in(con_in, handler = function(df){
   df <- dplyr::filter(df, distance > 1000)
