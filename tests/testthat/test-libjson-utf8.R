@@ -14,7 +14,8 @@ test_that("test that non ascii characters are ok", {
     "北京填鴨们",
     "ผัดไทย",
     "寿司",
-    c("寿司", "Zürich", "foo")
+    c("寿司", "Zürich", "foo", "bla\001\002\003bla"),
+    rawToChar(as.raw(1:40))
   );
 
   lapply(objects, function(x){

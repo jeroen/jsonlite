@@ -30,6 +30,9 @@ SEXP C_escape_chars_one(SEXP x) {
         if(cur > CHAR(x) && cur[-1] == '<')
           matches++;
         break;
+      default:
+        if (*cur >= 0x00 && *cur <= 0x1f)
+          matches += 5; //needs explicit \u00xx escaping
     }
     cur++;
   }
@@ -77,14 +80,18 @@ SEXP C_escape_chars_one(SEXP x) {
         break;
       case '/':
         if(cur > CHAR(x) && cur[-1] == '<'){
-          matches++;
           *outcur++ = '\\';
           *outcur = '/';
           break;
-        }
-
-      //simply copy char from input
+        } //FALL THROUGH!
       default:
+        //control characters need explicit \u00xx escaping
+        if (*cur >= 0x00 && *cur <= 0x1f){
+          sprintf(outcur, "\\u%04x", *cur);
+          outcur += 5; //extra length
+          break;
+        }
+        //simply copy char from input
         *outcur = *cur;
     }
 
