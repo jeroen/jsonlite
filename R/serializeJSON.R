@@ -36,7 +36,9 @@ serializeJSON <- function(x, digits = 8, pretty = FALSE) {
   # just to verify that obj exists
   is(x)
   # we pass arguments both to asJSON as well as packaging object.
-  asJSON(pack(x), digits = digits, indent = if (isTRUE(pretty)) 0L else NA_integer_)
+  ans <- asJSON(pack(x), digits = digits, indent = if (isTRUE(pretty)) 0L else NA_integer_)
+  class(ans) <- "json"
+  return(ans)
 }
 
 #' @param txt a JSON string which was created using \code{serializeJSON}

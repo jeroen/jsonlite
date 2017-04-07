@@ -2,6 +2,7 @@
  - Properly escape control characters \x01 through \x1f in toJSON()
  - Support parsing JSON prefixed with a rfc7464 ASCII Record Separator (0x1E)
  - (un)serializeJSON and do not set 'attributes' and 'value' for NULL anymore
+ - serializeJSON() sets class="json" on output value, consistent with toJSON()
 
 1.3
  - The solidus '/' is now escaped when preceded by '<' for safe html embedding (#163)
