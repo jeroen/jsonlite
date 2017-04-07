@@ -4,22 +4,33 @@
 
 |setting  |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.3.2 (2016-10-31) |
+|version  |R version 3.3.3 (2017-03-06) |
 |system   |x86_64, darwin13.4.0         |
 |ui       |X11                          |
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |Europe/Amsterdam             |
-|date     |2017-02-26                   |
+|date     |2017-04-07                   |
 
 ## Packages
 
 |package  |*  |version |date       |source           |
 |:--------|:--|:-------|:----------|:----------------|
-|jsonlite |   |1.3     |2017-02-26 |local (NA/NA@NA) |
+|jsonlite |   |1.4     |2017-04-07 |local (NA/NA@NA) |
 
 # Check results
-18 packages with problems
+20 packages with problems
+
+## AWR.Kinesis (1.7.3)
+Maintainer: Gergely Daroczi <gergely.daroczi@card.com>
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking whether package ‘AWR.Kinesis’ can be installed ... ERROR
+Installation failed.
+See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/AWR.Kinesis.Rcheck/00install.out’ for details.
+```
 
 ## AWR.KMS (0.1)
 Maintainer: Gergely Daroczi <gergely.daroczi@card.com>
@@ -32,7 +43,35 @@ Installation failed.
 See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/AWR.KMS.Rcheck/00install.out’ for details.
 ```
 
-## d3r (0.6.1)
+## curl (2.4)
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
+Bug reports: https://github.com/jeroen/curl/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+  Running ‘testthat.R’ [3s/53s]
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  2. Error: Invalid domain raises an error (@test-certificates.R#6) --------------
+  URL using bad/illegal format or missing URL
+  1: expect_is(curl_fetch_memory(fake_url, handle = new_handle(ssl_verifyhost = FALSE))$status, 
+         "integer") at testthat/test-certificates.R:6
+  2: klass(object)
+  3: paste(class(x), collapse = "/")
+  4: curl_fetch_memory(fake_url, handle = new_handle(ssl_verifyhost = FALSE))
+  
+  testthat results ================================================================
+  OK: 144 SKIPPED: 0 FAILED: 2
+  1. Failure: Invalid domain raises an error (@test-certificates.R#5) 
+  2. Error: Invalid domain raises an error (@test-certificates.R#6) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
+
+## d3r (0.6.2)
 Maintainer: Kent Russell <kent.russell@timelyportfolio.com>  
 Bug reports: https://github.com/timelyportfolio/d3r/issues
 
@@ -40,43 +79,21 @@ Bug reports: https://github.com/timelyportfolio/d3r/issues
 
 ```
 checking tests ... ERROR
+  Running ‘testthat.R’
 Running the tests in ‘tests/testthat.R’ failed.
 Last 13 lines of output:
-  Component "links": Component 3: Component 3: target is character, current is numeric
-  Component "links": Component 4: Component 3: Modes: character, numeric
-  Component "links": Component 4: Component 3: target is character, current is numeric
-  Component "links": Component 5: Component 3: Modes: character, numeric
-  Component "links": Component 5: Component 3: target is character, current is numeric
+  > library(d3r)
+  > 
+  > test_check("d3r")
+  1. Failure: d3_igraph works (@test_igraph.R#36) --------------------------------
+  d3_igraph(bull_node_attr, json = FALSE) not equal to list(...).
+  Component "links": Component "weight": Modes: character, numeric
+  Component "links": Component "weight": target is character, current is numeric
   
   
   testthat results ================================================================
-  OK: 9 SKIPPED: 2 FAILED: 1
+  OK: 9 SKIPPED: 3 FAILED: 1
   1. Failure: d3_igraph works (@test_igraph.R#36) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
-
-## dataone (2.0.1)
-Maintainer: Matthew B. Jones <jones@nceas.ucsb.edu>  
-Bug reports: https://github.com/DataONEorg/rdataone/issues
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  1.  Failure: D1Client d1SolrQuery works (@test.D1Client.R#334) 
-  2.  Error: D1Client d1SolrQuery works (@test.D1Client.R#335) 
-  3.  Failure: D1Client d1IdentifierSearch works (@test.D1Client.R#365) 
-  4.  Failure: D1Client d1IdentifierSearch works (@test.D1Client.R#366) 
-  5.  Failure: CNode object index query works with query list param (@test.D1Node.R#25) 
-  6.  Error: CNode object index query works with query list param (@test.D1Node.R#26) 
-  7.  Failure: listQueryEngines, getQueryEngineDescription works for CNode, MNode (@test.D1Node.R#107) 
-  8.  Error: listQueryEngines, getQueryEngineDescription works for CNode, MNode (@test.D1Node.R#108) 
-  9.  Failure: CNode object index query works with query string param (@test.D1Node.R#138) 
-  10. Error: CNode object index query works with query string param (@test.D1Node.R#139) 
   
   Error: testthat unit tests failed
   Execution halted
@@ -85,7 +102,7 @@ Last 13 lines of output:
 ## dismo (1.1-4)
 Maintainer: Robert J. Hijmans <r.hijmans@gmail.com>
 
-1 error  | 0 warnings | 1 note 
+1 error  | 1 warning  | 1 note 
 
 ```
 checking examples ... ERROR
@@ -111,39 +128,33 @@ No Java runtime present, try --request to install.
 Warning: running command '/usr/libexec/java_home' had status 1
 No Java runtime present, requesting install.
 
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+1-DSDam
+2-SegLowFlow
+3-SegTSeas
+4-USAvgT
+5-DSMaxSlope
+fitting final gbm model with a fixed number of 1350 trees for Angaus
+gbm.interactions - version 2.9
+... 8 lines ...
+Loading required package: lattice
+Loading required package: splines
+Loading required package: parallel
+Error : .onAttach failed in attachNamespace() for 'gbm', details:
+  call: formatDL(nm, txt, indent = max(nchar(nm, "w")) + 3)
+  error: incorrect values of 'indent' and 'width'
+
+Error: processing vignette 'brt.Rnw' failed with diagnostics:
+ chunk 12 (label = dismo-10) 
+Error : package or namespace load failed for ‘gbm’
+Execution halted
+
 checking dependencies in R code ... NOTE
 Unable to find any JVMs matching version "(null)".
 No Java runtime present, try --request to install.
 No Java runtime present, requesting install.
-```
-
-## eurostat (2.2.43)
-Maintainer: Leo Lahti <louhos@googlegroups.com>  
-Bug reports: https://github.com/ropengov/eurostat/issues
-
-0 errors | 1 warning  | 0 notes
-
-```
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-Loading required package: xml2
-trying URL 'http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=data%2Ftsdtr210.tsv.gz'
-Content type 'application/octet-stream;charset=UTF-8' length 4136 bytes
-==================================================
-downloaded 4136 bytes
-
-Table tsdtr210 cached at /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpZbMS1f/eurostat/tsdtr210_num_code_TF.rds
-trying URL 'http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=data%2Ftgs00026.tsv.gz'
-Content type 'application/octet-stream;charset=UTF-8' length 5933 bytes
-==================================================
-downloaded 5933 bytes
-
-Quitting from lines 252-268 (eurostat_tutorial.Rmd) 
-Error: processing vignette 'eurostat_tutorial.Rmd' failed with diagnostics:
-cannot open the connection
-Execution halted
-
 ```
 
 ## fitbitScraper (0.1.7)
@@ -198,6 +209,23 @@ checking installed package size ... NOTE
     java  61.2Mb
 ```
 
+## HARtools (0.0.5)
+Maintainer: John Harrison <johndharrison0@gmail.com>  
+Bug reports: https://github.com/johndharrison/HARtools/issues
+
+0 errors | 1 warning  | 0 notes
+
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+Quitting from lines 67-70 (Basic_use.Rmd) 
+Error: processing vignette 'Basic_use.Rmd' failed with diagnostics:
+HTTP error 403.
+Execution halted
+
+```
+
 ## melviewr (0.0.1)
 Maintainer: Andrew Poppe <Poppe076@gmail.com>  
 Bug reports: https://github.com/AndrewPoppe/melviewr/issues
@@ -217,8 +245,17 @@ Maintainer: Skye Bender-deMoll <skyebend@uw.edu>
 
 ```
 checking tests ... ERROR
+  Running ‘compute.animation_tests.R’
+  Running ‘d3_animation_tests.R’
+  Running ‘effects_tests.R’
+  Running ‘filmstrip_tests.R’
+  Running ‘layout_tests.R’
+  Running ‘networkAnimationTest.R’
+  Running ‘proximity.timeline_test.R’
 Running the tests in ‘tests/proximity.timeline_test.R’ failed.
 Last 13 lines of output:
+  
+  > if(!is.null(has.mdsj)){
   + proximity.timeline(cls33_10_16_96,onsets=seq(0,45,5),termini=seq(2.5,47.5,5),mode='MDSJ')
   + }
   collapsing slice networks ...
@@ -230,7 +267,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpZyS8oj/matrixa3cb128a3653.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpZyS8oj/coordsa3cb2ff48ca7.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpw4Oimo/matrixbdc60ec65ff.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpw4Oimo/coordsbdc401c7a0f.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -248,26 +285,13 @@ Content type 'application/java-archive' length 18203 bytes (17 KB)
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpwlENE9/matrixa47141608a4f.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpwlENE9/coordsa47129186a11.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpKYS7SE/matrixc5eb6fb58b.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpKYS7SE/coordsc5e52f7be8a.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
 Error in layout.fun(slice, dist.mat = dist.mat, default.dist = default.dist,  : 
   Unable to parse coordinates returned MDSJ java code
 Execution halted
-```
-
-## protolite (1.5)
-Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
-Bug reports: https://github.com/jeroenooms/protolite/issues
-
-0 errors | 1 warning  | 0 notes
-
-```
-checking whether package ‘protolite’ can be installed ... WARNING
-Found the following significant warnings:
-  Warning: protoc version libprotoc 3.0.0 might not match libproto version 3.0.2.
-See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/protolite.Rcheck/00install.out’ for details.
 ```
 
 ## red (1.0.0)
@@ -281,50 +305,143 @@ Installation failed.
 See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/red.Rcheck/00install.out’ for details.
 ```
 
-## refimpact (0.1.0)
-Maintainer: Perry Stephenson <perry.stephenson+cran@gmail.com>  
-Bug reports: https://github.com/perrystephenson/refimpact/issues
+## rgbif (0.9.7)
+Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
+Bug reports: https://github.com/ropensci/rgbif/issues
+
+0 errors | 3 warnings | 1 note 
+
+```
+checking whether the namespace can be loaded with stated dependencies ... WARNING
+Error in library.dynam(lib, package, package.lib) : 
+  shared object ‘curl.so’ not found
+Calls: <Anonymous> ... namespaceImportFrom -> asNamespace -> loadNamespace -> library.dynam
+Execution halted
+
+A namespace must be able to be loaded with just the base namespace
+loaded: otherwise if the namespace gets loaded by a saved object, the
+session will be unable to start.
+
+Probably some imports need to be declared in the NAMESPACE file.
+
+checking whether the namespace can be unloaded cleanly ... WARNING
+Error in library.dynam(lib, package, package.lib) : 
+  shared object ‘curl.so’ not found
+Calls: suppressMessages ... namespaceImportFrom -> asNamespace -> loadNamespace -> library.dynam
+In addition: Warning message:
+S3 methods ‘print.curl_handle’, ‘print.curl_multi’, ‘print.form_data’, ‘print.form_file’ were declared in NAMESPACE but not found 
+Execution halted
+
+checking S3 generic/method consistency ... WARNING
+Error: package or namespace load failed for ‘rgbif’
+Call sequence:
+2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
+       call. = FALSE, domain = NA)
+1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+Execution halted
+See section ‘Generic functions and methods’ in the ‘Writing R
+Extensions’ manual.
+
+checking dependencies in R code ... NOTE
+Error: package or namespace load failed for ‘rgbif’
+Call sequence:
+2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
+       call. = FALSE, domain = NA)
+1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+Execution halted
+```
+
+## rgho (1.0.1)
+Maintainer: Antoine Filipovic-Pierucci <pierucci@gmail.com>  
+Bug reports: https://github.com/pierucci/rgho/issues
+
+0 errors | 2 warnings | 3 notes
+
+```
+checking S3 generic/method consistency ... WARNING
+Error: package or namespace load failed for ‘rgho’
+Call sequence:
+2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
+       call. = FALSE, domain = NA)
+1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+Execution halted
+See section ‘Generic functions and methods’ in the ‘Writing R
+Extensions’ manual.
+
+checking replacement functions ... WARNING
+Error: package or namespace load failed for ‘rgho’
+Call sequence:
+2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
+       call. = FALSE, domain = NA)
+1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+Execution halted
+The argument of a replacement function which corresponds to the right
+hand side must be named ‘value’.
+
+checking dependencies in R code ... NOTE
+Error: package or namespace load failed for ‘rgho’
+Call sequence:
+2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
+       call. = FALSE, domain = NA)
+1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+Execution halted
+
+checking foreign function calls ... NOTE
+Error: package or namespace load failed for ‘rgho’
+Call sequence:
+2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
+       call. = FALSE, domain = NA)
+1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+Execution halted
+See chapter ‘System and foreign language interfaces’ in the ‘Writing R
+Extensions’ manual.
+
+checking R code for possible problems ... NOTE
+Error in library.dynam(lib, package, package.lib) : 
+  shared object ‘curl.so’ not found
+Calls: <Anonymous>
+Execution halted
+```
+
+## rotl (3.0.3)
+Maintainer: Francois Michonneau <francois.michonneau@gmail.com>  
+Bug reports: https://github.com/ropensci/rotl/issues
+
+0 errors | 1 warning  | 0 notes
+
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+Quitting from lines 47-57 (meta-analysis.Rmd) 
+Error: processing vignette 'meta-analysis.Rmd' failed with diagnostics:
+Couldn't connect to server
+Execution halted
+
+```
+
+## RSocrata (1.7.1-24)
+Maintainer: "Tom Schenk Jr." <developers@cityofchicago.org>  
+Bug reports: https://github.com/Chicago/RSocrata/issues
 
 1 error  | 0 warnings | 0 notes
 
 ```
 checking tests ... ERROR
+  Running ‘testthat.R’
 Running the tests in ‘tests/testthat.R’ failed.
 Last 13 lines of output:
-  9: open(con, "rb")
-  10: open.connection(con, "rb")
-  
   testthat results ================================================================
-  OK: 21 SKIPPED: 0 FAILED: 5
-  1. Error: get_institutions() returns a tibble (@test_institutions.R#6) 
-  2. Error: Function returns sensible data frames for sensible queries (@test_search_case_studies.R#6) 
-  3. Error: get_tag_types() returns a tibble (@test_tag_types.R#6) 
-  4. Error: get_tag_value() returns a tibble (@test_tag_values.R#6) 
-  5. Error: get_units_of_assessment() returns a tibble (@test_units_of_assessment.R#6) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
-
-## rgeospatialquality (0.3.2)
-Maintainer: Javier Otegui <javier.otegui@gmail.com>  
-Bug reports: https://github.com/ropenscilabs/rgeospatialquality/issues
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  1. Failure: add_flags works properly guessing names for rvertnet dataset (@test_multiple_records.R#38) 
-  2. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#51) 
-  3. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#52) 
-  4. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#53) 
-  5. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#54) 
-  6. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#55) 
-  7. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#56) 
-  8. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#57) 
-  9. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#58) 
+  OK: 35 SKIPPED: 0 FAILED: 38
+  1. Error: read Socrata CSV is compatible with posixify (@test-all.R#15) 
+  2. Error: read Socrata JSON is compatible with posixify (issue 85) (@test-all.R#22) 
+  3. Error: Calendar Date Short (@test-all.R#53) 
+  4. Error: Date is not entirely NA if the first record is bad (issue 68) (@test-all.R#71) 
+  5. Error: read Socrata CSV as default (@test-all.R#100) 
+  6. Error: read Socrata CSV as character (@test-all.R#111) 
+  7. Error: read Socrata CSV as factor (@test-all.R#122) 
+  8. Error: read Socrata JSON as default (@test-all.R#134) 
+  9. Error: read Socrata JSON as character (@test-all.R#145) 
   1. ...
   
   Error: testthat unit tests failed
@@ -377,6 +494,34 @@ No Java runtime present, requesting install.
 
 ```
 
+## taxize (0.8.4)
+Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
+Bug reports: https://github.com/ropensci/taxize/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+  Running ‘test-all.R’ [2s/187s]
+Running the tests in ‘tests/test-all.R’ failed.
+Last 13 lines of output:
+  
+  
+  3. Failure: taxon with no data returned from classification() works (@test-tax_name.R#54) 
+  `warnings` does not match "no hierarchy data found in ITIS".
+  Actual value: "Unknown or uninitialised column: 'itisTerms'."
+  
+  
+  testthat results ================================================================
+  OK: 25 SKIPPED: 151 FAILED: 3
+  1. Failure: taxon with no data returned from classification() works (@test-tax_name.R#42) 
+  2. Failure: taxon with no data returned from classification() works (@test-tax_name.R#48) 
+  3. Failure: taxon with no data returned from classification() works (@test-tax_name.R#54) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
+
 ## trackeR (0.0.5)
 Maintainer: Hannah Frick <h.frick@ucl.ac.uk>  
 Bug reports: https://github.com/hfrick/trackeR/issues
@@ -410,30 +555,6 @@ GeomRasterAnn was built with an incompatible version of ggproto.
 Please reinstall the package that provides this extension.
 Execution halted
 
-```
-
-## vegalite (0.6.1)
-Maintainer: Bob Rudis <bob@rudis.net>  
-Bug reports: https://github.com/hrbrmstr/vegalite/issues
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking examples ... ERROR
-Running examples in ‘vegalite-Ex.R’ failed
-The error most likely occurred in:
-
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: from_spec
-> ### Title: Take a JSON Vega-Lite Spec and render as an htmlwidget
-> ### Aliases: from_spec
-> 
-> ### ** Examples
-> 
-> from_spec("http://rud.is/dl/embedded.json")
-Error in file(con, "r") : cannot open the connection
-Calls: from_spec -> readLines -> file
-Execution halted
 ```
 
 ## x.ent (1.1.6)
