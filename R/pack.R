@@ -70,7 +70,7 @@ unpack <- function(obj) {
       environment = new.env(parent=emptyenv()),
       namespace = getNamespace(obj$value$name),
       externalptr = NULL,
-      S4 = new(getClass(obj$value$class, where = getNamespace(obj$value$package))),
+      S4 = new(getClassDef(obj$value$class, package = obj$value$package)),
       raw = base64_dec(obj$value),
       logical = as.logical(list_to_vec(obj$value)),
       integer = as.integer(list_to_vec(obj$value)),

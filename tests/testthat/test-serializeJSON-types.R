@@ -37,16 +37,3 @@ test_that("Serializing Data Objects", {
   expect_that(unserializeJSON(serializeJSON(objects)), equals(objects))
 });
 
-
-test_that("Simple S4 serialization", {
-  setClass("myClass", slots = list(name = "character"))
-  obj <- new("myClass", name = "myName")
-  out <- jsonlite::unserializeJSON(jsonlite::serializeJSON(obj))
-  expect_identical(obj, out)
-})
-
-test_that("Advanced S4 serialization", {
-  data(meuse, package = 'sp')
-  out <- jsonlite::unserializeJSON(jsonlite::serializeJSON(meuse))
-  expect_equal(out, meuse)
-})
