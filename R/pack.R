@@ -50,9 +50,13 @@ unpack <- function(obj) {
 
   encoding.mode <- obj$type
 
+  # functions are special
+  if (encoding.mode == "NULL") {
+    return(NULL)
+  }
+
   newdata <- c(
     list(.Data = switch(encoding.mode,
-      `NULL` = NULL,
       environment = new.env(parent=emptyenv()),
       namespace = getNamespace(obj$value$name),
       externalptr = NULL,
