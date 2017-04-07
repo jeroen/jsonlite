@@ -33,8 +33,8 @@ pack <- function(obj, ...) {
       environment = NULL,
       externalptr = NULL,
       namespace = lapply(as.list(getNamespaceInfo(obj, "spec")), as.scalar),
-      S4 = list(class = as.scalar(as.character(attr(obj, "class"))),
-                package = as.scalar(attr(attr(obj, "class"), "package"))),
+      S4 = list(class = as.scalar(class(obj)),
+                package = as.scalar(attr(class(obj), "package"))),
       raw = as.scalar(base64_enc(unclass(obj))),
       logical = as.vector(unclass(obj), mode = "logical"),
       integer = as.vector(unclass(obj), mode = "integer"),
@@ -131,6 +131,6 @@ load_s4_class <- function(name, package){
   cls <- tryCatch({
     getClassDef(name, package = package)
   }, error = function(e){
-    stop(sprintf("Failed to load S4 class '%s' from '%s' (%s)", name, package, e$message), call. = FALSE)
+    stop(sprintf("Failed to load S4 class definition '%s' from '%s' (%s)", name, package, e$message), call. = FALSE)
   })
 }

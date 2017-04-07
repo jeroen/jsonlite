@@ -5,6 +5,7 @@ test_that("Simple S4 serialization", {
   obj <- new("myClass", name = "myName")
   out <- jsonlite::unserializeJSON(jsonlite::serializeJSON(obj))
   expect_identical(obj, out)
+  removeClass("myClass")
 })
 
 test_that("Serialize optional S4 fields", {
@@ -23,6 +24,7 @@ test_that("Serialize optional S4 fields", {
   expect_identical(t1, unserializeJSON(serializeJSON(t1)))
   expect_identical(t2, unserializeJSON(serializeJSON(t2)))
   expect_identical(t3, unserializeJSON(serializeJSON(t3)))
+  removeClass("Trajectories")
 })
 
 
@@ -34,4 +36,9 @@ test_that("Advanced S4 serialization", {
   expect_is(out, "SpatialPointsDataFrame")
   expect_true(isS4(out))
   expect_identical(out, meuse)
+})
+
+test_that("Class loading errors", {
+  expect_error(unserializeJSON('{"type":"S4","attributes":{},"value":{"class":"nonExitingClass","package":".GlobalEnv"}}'), "defined")
+  expect_error(unserializeJSON('{"type":"S4","attributes":{},"value":{"class":"nonExitingClass","package":"nopackage"}}'), "nopackage")
 })
