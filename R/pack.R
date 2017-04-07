@@ -20,15 +20,21 @@ pack <- function(obj, ...) {
     encoding.mode <- "namespace"
   }
 
+  # Strip off 'class' from S4 attributes
+  attrib <- attributes(obj)
+  if(isS4(obj))
+    attrib$class = NULL
+
   # encode recursively
   list(
     type = as.scalar(encoding.mode),
-    attributes = givename(lapply(attributes(obj), pack, ...)),
+    attributes = givename(lapply(attrib, pack, ...)),
     value = switch(encoding.mode,
       environment = NULL,
       externalptr = NULL,
       namespace = lapply(as.list(getNamespaceInfo(obj, "spec")), as.scalar),
-      S4 = list(class = as.scalar(as.character(attr(obj, "class"))), package = as.scalar(attr(attr(obj, "class"), "package"))),
+      S4 = list(class = as.scalar(as.character(attr(obj, "class"))),
+                package = as.scalar(attr(attr(obj, "class"), "package"))),
       raw = as.scalar(base64_enc(unclass(obj))),
       logical = as.vector(unclass(obj), mode = "logical"),
       integer = as.vector(unclass(obj), mode = "integer"),
@@ -64,7 +70,7 @@ unpack <- function(obj) {
       environment = new.env(parent=emptyenv()),
       namespace = getNamespace(obj$value$name),
       externalptr = NULL,
-      S4 = getClass(obj$value$class, where = getNamespace(obj$value$package)),
+      S4 = new(getClass(obj$value$class, where = getNamespace(obj$value$package))),
       raw = base64_dec(obj$value),
       logical = as.logical(list_to_vec(obj$value)),
       integer = as.integer(list_to_vec(obj$value)),
