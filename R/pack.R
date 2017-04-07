@@ -68,6 +68,8 @@ unpack <- function(obj) {
   if(identical(encoding.mode, "S4")){
     obj_class <- load_s4_class(obj$value$class, package = obj$value$package)
     obj_data <- lapply(obj$attributes, unpack)
+    if(!length(obj_class))
+      obj_class <- obj$value$class
     return(do.call(new, c(Class = obj_class, obj_data)))
   }
 
