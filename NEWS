@@ -4,6 +4,7 @@
  - (un)serializeJSON and do not set 'attributes' and 'value' for NULL anymore
  - serializeJSON() sets class="json" on output value, consistent with toJSON()
  - Rewrite (un)serializeJSON() for S4 classes and added some unit tests
+ - Fix for simplyfing datelists, needed for mongolite
 
 1.3
  - The solidus '/' is now escaped when preceded by '<' for safe html embedding (#163)
