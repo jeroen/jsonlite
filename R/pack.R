@@ -5,6 +5,11 @@ pack <- function(obj, ...) {
   # encode by storage mode
   encoding.mode <- typeof(obj)
 
+  # null may not have attributes
+  if (encoding.mode == "NULL") {
+    return(list(type = as.scalar(encoding.mode)))
+  }
+
   # needed because formals become attributes, etc
   if (encoding.mode == "closure") {
     obj <- as.list(obj)
@@ -20,7 +25,6 @@ pack <- function(obj, ...) {
     type = as.scalar(encoding.mode),
     attributes = givename(lapply(attributes(obj), pack, ...)),
     value = switch(encoding.mode,
-      `NULL` = obj,
       environment = NULL,
       externalptr = NULL,
       namespace = lapply(as.list(getNamespaceInfo(obj, "spec")), as.scalar),
