@@ -22,8 +22,10 @@ pack <- function(obj, ...) {
 
   # Strip off 'class' from S4 attributes
   attrib <- attributes(obj)
-  if(isS4(obj))
+  if(isS4(obj)){
     attrib <- attrib[slotNames(obj)]
+    names(attrib) <- slotNames(obj)
+  }
 
   # encode recursively
   list(
