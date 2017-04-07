@@ -65,12 +65,17 @@ unpack <- function(obj) {
     return(NULL)
   }
 
+  if(identical(encoding.mode, "S4")){
+    obj_class <- load_s4_class(obj$value$class, package = obj$value$package)
+    obj_data <- lapply(obj$attributes, unpack)
+    return(do.call(new, c(Class = obj_class, obj_data)))
+  }
+
   newdata <- c(
     list(.Data = switch(encoding.mode,
       environment = new.env(parent=emptyenv()),
       namespace = getNamespace(obj$value$name),
       externalptr = NULL,
-      S4 = new(getClassDef(obj$value$class, package = obj$value$package)),
       raw = base64_dec(obj$value),
       logical = as.logical(list_to_vec(obj$value)),
       integer = as.integer(list_to_vec(obj$value)),
@@ -118,4 +123,12 @@ unpack <- function(obj) {
 
   # return
   return(output)
+}
+
+load_s4_class <- function(name, package){
+  cls <- tryCatch({
+    getClassDef(name, package = package)
+  }, error = function(e){
+    stop(sprintf("Failed to load S4 class '%s' from '%s' (%s)", name, package, e$message), call. = FALSE)
+  })
 }
