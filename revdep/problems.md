@@ -10,16 +10,16 @@
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |Europe/Amsterdam             |
-|date     |2017-04-07                   |
+|date     |2017-04-08                   |
 
 ## Packages
 
 |package  |*  |version |date       |source           |
 |:--------|:--|:-------|:----------|:----------------|
-|jsonlite |   |1.4     |2017-04-07 |local (NA/NA@NA) |
+|jsonlite |   |1.4     |2017-04-08 |local (NA/NA@NA) |
 
 # Check results
-20 packages with problems
+16 packages with problems
 
 ## AWR.Kinesis (1.7.3)
 Maintainer: Gergely Daroczi <gergely.daroczi@card.com>
@@ -51,7 +51,7 @@ Bug reports: https://github.com/jeroen/curl/issues
 
 ```
 checking tests ... ERROR
-  Running ‘testthat.R’ [3s/53s]
+  Running ‘testthat.R’ [3s/54s]
 Running the tests in ‘tests/testthat.R’ failed.
 Last 13 lines of output:
   2. Error: Invalid domain raises an error (@test-certificates.R#6) --------------
@@ -267,7 +267,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpw4Oimo/matrixbdc60ec65ff.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpw4Oimo/coordsbdc401c7a0f.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpo4y4Xh/matrixa05858b86e5b.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpo4y4Xh/coordsa058345545de.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -285,7 +285,7 @@ Content type 'application/java-archive' length 18203 bytes (17 KB)
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpKYS7SE/matrixc5eb6fb58b.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpKYS7SE/coordsc5e52f7be8a.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpAKA7SN/matrixa0d019d8b0cd.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpAKA7SN/coordsa0d0613f6ffc.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
@@ -303,149 +303,6 @@ Maintainer: Pedro Cardoso <pedro.cardoso@helsinki.fi>
 checking whether package ‘red’ can be installed ... ERROR
 Installation failed.
 See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/red.Rcheck/00install.out’ for details.
-```
-
-## rgbif (0.9.7)
-Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
-Bug reports: https://github.com/ropensci/rgbif/issues
-
-0 errors | 3 warnings | 1 note 
-
-```
-checking whether the namespace can be loaded with stated dependencies ... WARNING
-Error in library.dynam(lib, package, package.lib) : 
-  shared object ‘curl.so’ not found
-Calls: <Anonymous> ... namespaceImportFrom -> asNamespace -> loadNamespace -> library.dynam
-Execution halted
-
-A namespace must be able to be loaded with just the base namespace
-loaded: otherwise if the namespace gets loaded by a saved object, the
-session will be unable to start.
-
-Probably some imports need to be declared in the NAMESPACE file.
-
-checking whether the namespace can be unloaded cleanly ... WARNING
-Error in library.dynam(lib, package, package.lib) : 
-  shared object ‘curl.so’ not found
-Calls: suppressMessages ... namespaceImportFrom -> asNamespace -> loadNamespace -> library.dynam
-In addition: Warning message:
-S3 methods ‘print.curl_handle’, ‘print.curl_multi’, ‘print.form_data’, ‘print.form_file’ were declared in NAMESPACE but not found 
-Execution halted
-
-checking S3 generic/method consistency ... WARNING
-Error: package or namespace load failed for ‘rgbif’
-Call sequence:
-2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
-       call. = FALSE, domain = NA)
-1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-Execution halted
-See section ‘Generic functions and methods’ in the ‘Writing R
-Extensions’ manual.
-
-checking dependencies in R code ... NOTE
-Error: package or namespace load failed for ‘rgbif’
-Call sequence:
-2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
-       call. = FALSE, domain = NA)
-1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-Execution halted
-```
-
-## rgho (1.0.1)
-Maintainer: Antoine Filipovic-Pierucci <pierucci@gmail.com>  
-Bug reports: https://github.com/pierucci/rgho/issues
-
-0 errors | 2 warnings | 3 notes
-
-```
-checking S3 generic/method consistency ... WARNING
-Error: package or namespace load failed for ‘rgho’
-Call sequence:
-2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
-       call. = FALSE, domain = NA)
-1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-Execution halted
-See section ‘Generic functions and methods’ in the ‘Writing R
-Extensions’ manual.
-
-checking replacement functions ... WARNING
-Error: package or namespace load failed for ‘rgho’
-Call sequence:
-2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
-       call. = FALSE, domain = NA)
-1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-Execution halted
-The argument of a replacement function which corresponds to the right
-hand side must be named ‘value’.
-
-checking dependencies in R code ... NOTE
-Error: package or namespace load failed for ‘rgho’
-Call sequence:
-2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
-       call. = FALSE, domain = NA)
-1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-Execution halted
-
-checking foreign function calls ... NOTE
-Error: package or namespace load failed for ‘rgho’
-Call sequence:
-2: stop(gettextf("package or namespace load failed for %s", sQuote(package)), 
-       call. = FALSE, domain = NA)
-1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-Execution halted
-See chapter ‘System and foreign language interfaces’ in the ‘Writing R
-Extensions’ manual.
-
-checking R code for possible problems ... NOTE
-Error in library.dynam(lib, package, package.lib) : 
-  shared object ‘curl.so’ not found
-Calls: <Anonymous>
-Execution halted
-```
-
-## rotl (3.0.3)
-Maintainer: Francois Michonneau <francois.michonneau@gmail.com>  
-Bug reports: https://github.com/ropensci/rotl/issues
-
-0 errors | 1 warning  | 0 notes
-
-```
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-Quitting from lines 47-57 (meta-analysis.Rmd) 
-Error: processing vignette 'meta-analysis.Rmd' failed with diagnostics:
-Couldn't connect to server
-Execution halted
-
-```
-
-## RSocrata (1.7.1-24)
-Maintainer: "Tom Schenk Jr." <developers@cityofchicago.org>  
-Bug reports: https://github.com/Chicago/RSocrata/issues
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-  Running ‘testthat.R’
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  testthat results ================================================================
-  OK: 35 SKIPPED: 0 FAILED: 38
-  1. Error: read Socrata CSV is compatible with posixify (@test-all.R#15) 
-  2. Error: read Socrata JSON is compatible with posixify (issue 85) (@test-all.R#22) 
-  3. Error: Calendar Date Short (@test-all.R#53) 
-  4. Error: Date is not entirely NA if the first record is bad (issue 68) (@test-all.R#71) 
-  5. Error: read Socrata CSV as default (@test-all.R#100) 
-  6. Error: read Socrata CSV as character (@test-all.R#111) 
-  7. Error: read Socrata CSV as factor (@test-all.R#122) 
-  8. Error: read Socrata JSON as default (@test-all.R#134) 
-  9. Error: read Socrata JSON as character (@test-all.R#145) 
-  1. ...
-  
-  Error: testthat unit tests failed
-  Execution halted
 ```
 
 ## SensusR (2.0.0)

@@ -4,53 +4,32 @@
 
 |setting  |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.3.2 (2016-10-31) |
+|version  |R version 3.3.3 (2017-03-06) |
 |system   |x86_64, darwin13.4.0         |
 |ui       |X11                          |
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |Europe/Amsterdam             |
-|date     |2017-02-26                   |
+|date     |2017-04-08                   |
 
 ## Packages
 
 |package  |*  |version |date       |source           |
 |:--------|:--|:-------|:----------|:----------------|
-|jsonlite |   |1.3     |2017-02-26 |local (NA/NA@NA) |
+|jsonlite |   |1.4     |2017-04-08 |local (NA/NA@NA) |
 
 # Check results
-322 packages
+339 packages
 
 ## ALA4R (1.5.6)
 Maintainer: Ben Raymond <ben_ala@untan.gl>
 
 0 errors | 0 warnings | 0 notes
 
-## alm (0.4.0)
-Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
-Bug reports: http://www.github.com/ropensci/alm/issues
+## alterryx (0.2.0)
+Maintainer: Michael Treadwell <michael.treadwell@interworks.com>
 
-0 errors | 0 warnings | 2 notes
-
-```
-checking R code for possible problems ... NOTE
-alm_events : parse_events: no visible global function definition for
-  ‘setNames’
-alm_ids : getalm: no visible global function definition for ‘is’
-alm_plot: no visible global function definition for ‘na.omit’
-Undefined global functions or variables:
-  is na.omit setNames
-Consider adding
-  importFrom("methods", "is")
-  importFrom("stats", "na.omit", "setNames")
-to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
-contains 'methods').
-
-checking files in ‘vignettes’ ... NOTE
-The following directory looks like a leftover from 'knitr':
-  ‘figure’
-Please remove from your package.
-```
+0 errors | 0 warnings | 0 notes
 
 ## analogsea (0.5.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
@@ -75,6 +54,17 @@ Maintainer: Ando Emerencia <ando.emerencia@gmail.com>
 Bug reports: https://github.com/roqua/autovarcore/issues
 
 0 errors | 0 warnings | 0 notes
+
+## AWR.Kinesis (1.7.3)
+Maintainer: Gergely Daroczi <gergely.daroczi@card.com>
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking whether package ‘AWR.Kinesis’ can be installed ... ERROR
+Installation failed.
+See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/AWR.Kinesis.Rcheck/00install.out’ for details.
+```
 
 ## AWR.KMS (0.1)
 Maintainer: Gergely Daroczi <gergely.daroczi@card.com>
@@ -180,7 +170,7 @@ Bug reports: https://github.com/ropensci/binomen/issues
 
 0 errors | 0 warnings | 0 notes
 
-## biomartr (0.3.0)
+## biomartr (0.4.0)
 Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>  
 Bug reports: https://github.com/HajkD/biomartr/issues
 
@@ -283,8 +273,15 @@ Bug reports: https://github.com/leeper/colourlovers/issues
 
 0 errors | 0 warnings | 0 notes
 
-## configr (0.1.0)
-Maintainer: Jianfeng Li <lee_jianfeng@sjtu.edu.cn>
+## comtradr (0.0.1)
+Maintainer: Chris Muir <chrismuirRVA@gmail.com>  
+Bug reports: https://github.com/ChrisMuir/comtradr/issues
+
+0 errors | 0 warnings | 0 notes
+
+## configr (0.2.1)
+Maintainer: Jianfeng Li <lee_jianfeng@sjtu.edu.cn>  
+Bug reports: https://github.com/Miachol/configr/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -312,35 +309,52 @@ Bug reports: https://github.com/rstudio/crosstalk/issues
 
 0 errors | 0 warnings | 0 notes
 
-## crul (0.3.0)
+## crul (0.3.4)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/crul/issues
 
 0 errors | 0 warnings | 0 notes
 
-## crunch (1.15.0)
+## crunch (1.15.2)
 Maintainer: Neal Richardson <neal@crunch.io>  
 Bug reports: https://github.com/Crunch-io/rcrunch/issues
 
 0 errors | 0 warnings | 0 notes
 
-## curl (2.3)
-Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
-Bug reports: https://github.com/jeroenooms/curl/issues
+## curl (2.4)
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
+Bug reports: https://github.com/jeroen/curl/issues
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 0 notes
 
-## curlconverter (0.7.0)
-Maintainer: Bob Rudis <bob@rudis.net>
-
-0 errors | 0 warnings | 0 notes
+```
+checking tests ... ERROR
+  Running ‘testthat.R’ [3s/54s]
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  2. Error: Invalid domain raises an error (@test-certificates.R#6) --------------
+  URL using bad/illegal format or missing URL
+  1: expect_is(curl_fetch_memory(fake_url, handle = new_handle(ssl_verifyhost = FALSE))$status, 
+         "integer") at testthat/test-certificates.R:6
+  2: klass(object)
+  3: paste(class(x), collapse = "/")
+  4: curl_fetch_memory(fake_url, handle = new_handle(ssl_verifyhost = FALSE))
+  
+  testthat results ================================================================
+  OK: 144 SKIPPED: 0 FAILED: 2
+  1. Failure: Invalid domain raises an error (@test-certificates.R#5) 
+  2. Error: Invalid domain raises an error (@test-certificates.R#6) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
 
 ## CytobankAPI (1.0.0)
 Maintainer: Preston Ng <preston@cytobank.org>
 
 0 errors | 0 warnings | 0 notes
 
-## d3r (0.6.1)
+## d3r (0.6.2)
 Maintainer: Kent Russell <kent.russell@timelyportfolio.com>  
 Bug reports: https://github.com/timelyportfolio/d3r/issues
 
@@ -348,17 +362,20 @@ Bug reports: https://github.com/timelyportfolio/d3r/issues
 
 ```
 checking tests ... ERROR
+  Running ‘testthat.R’
 Running the tests in ‘tests/testthat.R’ failed.
 Last 13 lines of output:
-  Component "links": Component 3: Component 3: target is character, current is numeric
-  Component "links": Component 4: Component 3: Modes: character, numeric
-  Component "links": Component 4: Component 3: target is character, current is numeric
-  Component "links": Component 5: Component 3: Modes: character, numeric
-  Component "links": Component 5: Component 3: target is character, current is numeric
+  > library(d3r)
+  > 
+  > test_check("d3r")
+  1. Failure: d3_igraph works (@test_igraph.R#36) --------------------------------
+  d3_igraph(bull_node_attr, json = FALSE) not equal to list(...).
+  Component "links": Component "weight": Modes: character, numeric
+  Component "links": Component "weight": target is character, current is numeric
   
   
   testthat results ================================================================
-  OK: 9 SKIPPED: 2 FAILED: 1
+  OK: 9 SKIPPED: 3 FAILED: 1
   1. Failure: d3_igraph works (@test_igraph.R#36) 
   
   Error: testthat unit tests failed
@@ -392,32 +409,18 @@ Bug reports: https://github.com/boxuancui/DataExplorer/issues
 Maintainer: Imanuel Costigan <i.costigan@me.com>  
 Bug reports: https://github.com/imanuelcostigan/dataonderivatives/issues
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note 
+
+```
+checking dependencies in R code ... NOTE
+Missing or unexported object: ‘readr::col_numeric’
+```
 
 ## dataone (2.0.1)
 Maintainer: Matthew B. Jones <jones@nceas.ucsb.edu>  
 Bug reports: https://github.com/DataONEorg/rdataone/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  1.  Failure: D1Client d1SolrQuery works (@test.D1Client.R#334) 
-  2.  Error: D1Client d1SolrQuery works (@test.D1Client.R#335) 
-  3.  Failure: D1Client d1IdentifierSearch works (@test.D1Client.R#365) 
-  4.  Failure: D1Client d1IdentifierSearch works (@test.D1Client.R#366) 
-  5.  Failure: CNode object index query works with query list param (@test.D1Node.R#25) 
-  6.  Error: CNode object index query works with query list param (@test.D1Node.R#26) 
-  7.  Failure: listQueryEngines, getQueryEngineDescription works for CNode, MNode (@test.D1Node.R#107) 
-  8.  Error: listQueryEngines, getQueryEngineDescription works for CNode, MNode (@test.D1Node.R#108) 
-  9.  Failure: CNode object index query works with query string param (@test.D1Node.R#138) 
-  10. Error: CNode object index query works with query string param (@test.D1Node.R#139) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## datarobot (2.4.0)
 Maintainer: David Chudzicki <api-maintainer@datarobot.com>
@@ -455,7 +458,7 @@ Bug reports: https://github.com/sckott/discgolf/issues
 ## dismo (1.1-4)
 Maintainer: Robert J. Hijmans <r.hijmans@gmail.com>
 
-1 error  | 0 warnings | 1 note 
+1 error  | 1 warning  | 1 note 
 
 ```
 checking examples ... ERROR
@@ -480,6 +483,29 @@ Unable to find any JVMs matching version "(null)".
 No Java runtime present, try --request to install.
 Warning: running command '/usr/libexec/java_home' had status 1
 No Java runtime present, requesting install.
+
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+1-DSDam
+2-SegLowFlow
+3-SegTSeas
+4-USAvgT
+5-DSMaxSlope
+fitting final gbm model with a fixed number of 1350 trees for Angaus
+gbm.interactions - version 2.9
+... 8 lines ...
+Loading required package: lattice
+Loading required package: splines
+Loading required package: parallel
+Error : .onAttach failed in attachNamespace() for 'gbm', details:
+  call: formatDL(nm, txt, indent = max(nchar(nm, "w")) + 3)
+  error: incorrect values of 'indent' and 'width'
+
+Error: processing vignette 'brt.Rnw' failed with diagnostics:
+ chunk 12 (label = dismo-10) 
+Error : package or namespace load failed for ‘gbm’
+Execution halted
 
 checking dependencies in R code ... NOTE
 Unable to find any JVMs matching version "(null)".
@@ -510,6 +536,12 @@ Bug reports: https://github.com/rstudio/DT/issues
 
 0 errors | 0 warnings | 0 notes
 
+## duckduckr (1.0.0)
+Maintainer: Schumacher Dirk <mail@dirk-schumacher.net>  
+Bug reports: https://github.com/dirkschumacher/duckduckr/issues
+
+0 errors | 0 warnings | 0 notes
+
 ## ECharts2Shiny (0.2.8)
 Maintainer: Xiaodong Deng <xd_deng@hotmail.com>  
 Bug reports: https://github.com/XD-DENG/ECharts2Shiny/issues
@@ -519,6 +551,11 @@ Bug reports: https://github.com/XD-DENG/ECharts2Shiny/issues
 ## ecoengine (1.10.0)
 Maintainer: Karthik Ram <karthik.ram@gmail.com>  
 Bug reports: https://github.com/ropensci/ecoengine/issues
+
+0 errors | 0 warnings | 0 notes
+
+## EcoGenetics (1.2.1)
+Maintainer: Leandro Roser <learoser@gmail.com>
 
 0 errors | 0 warnings | 0 notes
 
@@ -541,13 +578,13 @@ Bug reports: https://github.com/alexioannides/elasticsearchr/issues
 
 0 errors | 0 warnings | 0 notes
 
-## elevatr (0.1.1)
+## elevatr (0.1.3)
 Maintainer: Jeffrey Hollister <hollister.jeff@epa.gov>  
 Bug reports: https://github.com/usepa/elevatr/issues
 
 0 errors | 0 warnings | 0 notes
 
-## emuR (0.2.1)
+## emuR (0.2.2)
 Maintainer: Raphael Winkelmann <raphael@phonetik.uni-muenchen.de>  
 Bug reports: https://github.com/IPS-LMU/emuR/issues
 
@@ -571,40 +608,17 @@ Bug reports: https://github.com/ropensci/etseed/issues
 
 0 errors | 0 warnings | 0 notes
 
-## europepmc (0.1.3)
+## europepmc (0.1.4)
 Maintainer: Najko Jahn <najko.jahn@gmail.com>  
 Bug reports: http://github.com/ropensci/europepmc/issues
 
 0 errors | 0 warnings | 0 notes
 
-## eurostat (2.2.43)
-Maintainer: Leo Lahti <louhos@googlegroups.com>  
+## eurostat (3.1.1)
+Maintainer: Leo Lahti <leo.lahti@iki.fi>  
 Bug reports: https://github.com/ropengov/eurostat/issues
 
-0 errors | 1 warning  | 0 notes
-
-```
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-Loading required package: xml2
-trying URL 'http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=data%2Ftsdtr210.tsv.gz'
-Content type 'application/octet-stream;charset=UTF-8' length 4136 bytes
-==================================================
-downloaded 4136 bytes
-
-Table tsdtr210 cached at /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpZbMS1f/eurostat/tsdtr210_num_code_TF.rds
-trying URL 'http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=data%2Ftgs00026.tsv.gz'
-Content type 'application/octet-stream;charset=UTF-8' length 5933 bytes
-==================================================
-downloaded 5933 bytes
-
-Quitting from lines 252-268 (eurostat_tutorial.Rmd) 
-Error: processing vignette 'eurostat_tutorial.Rmd' failed with diagnostics:
-cannot open the connection
-Execution halted
-
-```
+0 errors | 0 warnings | 0 notes
 
 ## exCon (0.2.1)
 Maintainer: Bryan A. Hanson <hanson@depauw.edu>  
@@ -650,7 +664,7 @@ Maintainer: Niraj Juneja <njuneja@gmail.com>
 
 0 errors | 0 warnings | 0 notes
 
-## flexdashboard (0.4)
+## flexdashboard (0.5)
 Maintainer: JJ Allaire <jj@rstudio.com>  
 Bug reports: https://github.com/rstudio/flexdashboard/issues
 
@@ -676,6 +690,11 @@ Bug reports: https://github.com/ropensci/fulltext/issues
 
 ## futile.logger (1.4.3)
 Maintainer: Brian Lee Yung Rowe <r@zatonovo.com>
+
+0 errors | 0 warnings | 0 notes
+
+## GADMTools (2.0-1)
+Maintainer: Jean Pierre Decorps <jp.decorps@epiconcept.fr>
 
 0 errors | 0 warnings | 0 notes
 
@@ -707,7 +726,7 @@ Bug reports: https://github.com/ropenscilabs/geoaxe/issues
 
 0 errors | 0 warnings | 0 notes
 
-## geojson (0.1.0)
+## geojson (0.1.2)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/geojson/issues
 
@@ -736,7 +755,7 @@ Maintainer: Andrew Sommerlot <andrewrs@vt.edu>
 
 0 errors | 0 warnings | 0 notes
 
-## gfer (0.1.3)
+## gfer (0.1.6)
 Maintainer: Yuanchao Xu <xuyuanchao37@gmail.com>  
 Bug reports: https://github.com/Yuanchao-Xu/gfer/issues
 
@@ -771,13 +790,13 @@ Bug reports: https://github.com/jimhester/gmailr/issues
 
 0 errors | 0 warnings | 0 notes
 
-## googleAnalyticsR (0.3.0)
+## googleAnalyticsR (0.4.0)
 Maintainer: Mark Edmondson <m@sunholo.com>  
 Bug reports: https://github.com/MarkEdmondson1234/googleAnalyticsR/issues
 
 0 errors | 0 warnings | 0 notes
 
-## googleAuthR (0.4.0)
+## googleAuthR (0.5.1)
 Maintainer: Mark Edmondson <m@sunholo.com>  
 Bug reports: https://github.com/MarkEdmondson1234/googleAuthR/issues
 
@@ -861,7 +880,7 @@ checking installed package size ... NOTE
     java  61.2Mb
 ```
 
-## hansard (0.3.4)
+## hansard (0.4.0)
 Maintainer: Evan Odell <evanodell91@gmail.com>  
 Bug reports: https://github.com/EvanOdell/hansard/issues
 
@@ -871,7 +890,18 @@ Bug reports: https://github.com/EvanOdell/hansard/issues
 Maintainer: John Harrison <johndharrison0@gmail.com>  
 Bug reports: https://github.com/johndharrison/HARtools/issues
 
-0 errors | 0 warnings | 0 notes
+0 errors | 1 warning  | 0 notes
+
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+Quitting from lines 67-70 (Basic_use.Rmd) 
+Error: processing vignette 'Basic_use.Rmd' failed with diagnostics:
+HTTP error 403.
+Execution halted
+
+```
 
 ## HIBPwned (0.1.3)
 Maintainer: Steph Locke <stephanie.g.locke@gmail.com>  
@@ -911,7 +941,7 @@ Bug reports: https://github.com/sckott/httping/issues
 
 0 errors | 0 warnings | 0 notes
 
-## httptest (1.1.0)
+## httptest (1.2.0)
 Maintainer: Neal Richardson <neal.p.richardson@gmail.com>  
 Bug reports: https://github.com/nealrichardson/httptest/issues
 
@@ -938,7 +968,7 @@ Maintainer: Ming-Jer Lee <mingjerli@gmail.com>
 
 0 errors | 0 warnings | 0 notes
 
-## imfr (0.1.3)
+## imfr (0.1.4)
 Maintainer: Christopher Gandrud <christopher.gandrud@gmail.com>  
 Bug reports: https://github.com/christophergandrud/imfr/issues
 
@@ -965,7 +995,17 @@ Bug reports: https://bitbucket.org/djhshih/io/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
 Bug reports: https://github.com/jeroenooms/jose/issues
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note 
+
+```
+checking dependencies in R code ... NOTE
+Unexported objects imported by ':::' calls:
+  ‘openssl:::derive_pubkey’ ‘openssl:::ecdsa_key_build’
+  ‘openssl:::ecdsa_pubkey_build’ ‘openssl:::pubkey_type’
+  ‘openssl:::read_input’ ‘openssl:::rsa_key_build’
+  ‘openssl:::rsa_pubkey_build’
+  See the note in ?`:::` about the use of this operator.
+```
 
 ## jqr (0.2.4)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
@@ -1016,7 +1056,7 @@ Bug reports: http://www.github.com/ropensci/lawn/issues
 
 0 errors | 0 warnings | 0 notes
 
-## leafletCN (0.2)
+## leafletCN (0.2.1)
 Maintainer: Dawei Lang <chiffonlang@icloud.com>
 
 0 errors | 0 warnings | 1 note 
@@ -1101,9 +1141,9 @@ Bug reports: https://github.com/EvanOdell/mnis/issues
 
 0 errors | 0 warnings | 0 notes
 
-## mongolite (0.9.1)
-Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
-Bug reports: https://github.com/jeroenooms/mongolite/issues
+## mongolite (1.1)
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
+Bug reports: https://github.com/jeroen/mongolite/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -1131,6 +1171,12 @@ Bug reports: http://www.github.com/philferriere/mscsweblm4r/issues
 
 0 errors | 0 warnings | 0 notes
 
+## mudata (0.1)
+Maintainer: Dewey Dunnington <dewey@fishandwhistle.net>  
+Bug reports: https://github.com/paleolimbot/mudata/issues
+
+0 errors | 0 warnings | 0 notes
+
 ## nasadata (0.9.0)
 Maintainer: Eduardo Flores <eduardo@enelmargen.org>
 
@@ -1143,8 +1189,17 @@ Maintainer: Skye Bender-deMoll <skyebend@uw.edu>
 
 ```
 checking tests ... ERROR
+  Running ‘compute.animation_tests.R’
+  Running ‘d3_animation_tests.R’
+  Running ‘effects_tests.R’
+  Running ‘filmstrip_tests.R’
+  Running ‘layout_tests.R’
+  Running ‘networkAnimationTest.R’
+  Running ‘proximity.timeline_test.R’
 Running the tests in ‘tests/proximity.timeline_test.R’ failed.
 Last 13 lines of output:
+  
+  > if(!is.null(has.mdsj)){
   + proximity.timeline(cls33_10_16_96,onsets=seq(0,45,5),termini=seq(2.5,47.5,5),mode='MDSJ')
   + }
   collapsing slice networks ...
@@ -1156,7 +1211,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpZyS8oj/matrixa3cb128a3653.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpZyS8oj/coordsa3cb2ff48ca7.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpo4y4Xh/matrixa05858b86e5b.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpo4y4Xh/coordsa058345545de.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -1174,7 +1229,7 @@ Content type 'application/java-archive' length 18203 bytes (17 KB)
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpwlENE9/matrixa47141608a4f.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpwlENE9/coordsa47129186a11.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpAKA7SN/matrixa0d019d8b0cd.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpAKA7SN/coordsa0d0613f6ffc.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
@@ -1189,7 +1244,12 @@ Bug reports: https://github.com/ropensci/neotoma/issues
 
 0 errors | 0 warnings | 0 notes
 
-## networkD3 (0.3)
+## net.security (0.1.0)
+Maintainer: Humbert Costas <humbert.costas@gmail.com>
+
+0 errors | 0 warnings | 0 notes
+
+## networkD3 (0.4)
 Maintainer: Christopher Gandrud <christopher.gandrud@gmail.com>  
 Bug reports: https://github.com/christophergandrud/networkD3/issues
 
@@ -1223,7 +1283,7 @@ checking package dependencies ... NOTE
 Package suggested but not available for checking: ‘RAppArmor’
 ```
 
-## OpenML (1.2)
+## OpenML (1.3)
 Maintainer: Giuseppe Casalicchio <giuseppe.casalicchio@stat.uni-muenchen.de>  
 Bug reports: https://github.com/openml/openml-r/issues
 
@@ -1246,8 +1306,8 @@ Bug reports: https://github.com/ropensci/originr/issues
 
 0 errors | 0 warnings | 0 notes
 
-## osrm (3.0.0)
-Maintainer: Timothée Giraud <timothee.giraud@ums-riate.fr>  
+## osrm (3.0.1)
+Maintainer: Timothée Giraud <timothee.giraud@cnrs.fr>  
 Bug reports: https://github.com/rCarto/osrm/issues
 
 0 errors | 0 warnings | 0 notes
@@ -1269,7 +1329,7 @@ Maintainer: Florian Schwendinger <FlorianSchwendinger@gmx.at>
 
 0 errors | 0 warnings | 0 notes
 
-## pangaear (0.2.4)
+## pangaear (0.3.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/pangaear/issues
 
@@ -1280,8 +1340,14 @@ Maintainer: Abiel Reinhart <abielr@gmail.com>
 
 0 errors | 0 warnings | 0 notes
 
-## pinnacle.API (1.92)
+## pinnacle.API (2.0.4)
 Maintainer: Marco Blume <marco.blume@pinnaclesports.com>
+
+0 errors | 0 warnings | 0 notes
+
+## pivottabler (0.1.0)
+Maintainer: Christopher Bailiss <cbailiss@gmail.com>  
+Bug reports: https://github.com/cbailiss/pivottabler/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -1326,18 +1392,11 @@ Bug reports: https://github.com/SESYNC-ci/postGIStools/issues
 
 0 errors | 0 warnings | 0 notes
 
-## protolite (1.5)
-Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
-Bug reports: https://github.com/jeroenooms/protolite/issues
+## protolite (1.6)
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
+Bug reports: https://github.com/jeroen/protolite/issues
 
-0 errors | 1 warning  | 0 notes
-
-```
-checking whether package ‘protolite’ can be installed ... WARNING
-Found the following significant warnings:
-  Warning: protoc version libprotoc 3.0.0 might not match libproto version 3.0.2.
-See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/protolite.Rcheck/00install.out’ for details.
-```
+0 errors | 0 warnings | 0 notes
 
 ## qiitr (0.1.0)
 Maintainer: Hiroaki Yutani <yutani.ini@gmail.com>  
@@ -1395,6 +1454,12 @@ Bug reports: https://github.com/karthik/randNames/issues
 ## rapiclient (0.1.2)
 Maintainer: Darko Bergant <darko.bergant@gmail.com>  
 Bug reports: https://github.com/bergant/rapiclient/issues
+
+0 errors | 0 warnings | 0 notes
+
+## rbcb (0.1.0)
+Maintainer: Wilson Freitas <wilson.freitas@gmail.com>  
+Bug reports: https://github.com/wilsonfreitas/rbcb/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -1478,26 +1543,7 @@ See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/red.Rcheck/00install.out�
 Maintainer: Perry Stephenson <perry.stephenson+cran@gmail.com>  
 Bug reports: https://github.com/perrystephenson/refimpact/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  9: open(con, "rb")
-  10: open.connection(con, "rb")
-  
-  testthat results ================================================================
-  OK: 21 SKIPPED: 0 FAILED: 5
-  1. Error: get_institutions() returns a tibble (@test_institutions.R#6) 
-  2. Error: Function returns sensible data frames for sensible queries (@test_search_case_studies.R#6) 
-  3. Error: get_tag_types() returns a tibble (@test_tag_types.R#6) 
-  4. Error: get_tag_value() returns a tibble (@test_tag_values.R#6) 
-  5. Error: get_units_of_assessment() returns a tibble (@test_units_of_assessment.R#6) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## rentrez (1.0.4)
 Maintainer: David Winter <david.winter@gmail.com>  
@@ -1562,38 +1608,13 @@ Bug reports: https://github.com/ropensci/rgbif/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rgeospatialquality (0.3.2)
-Maintainer: Javier Otegui <javier.otegui@gmail.com>  
-Bug reports: https://github.com/ropenscilabs/rgeospatialquality/issues
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  1. Failure: add_flags works properly guessing names for rvertnet dataset (@test_multiple_records.R#38) 
-  2. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#51) 
-  3. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#52) 
-  4. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#53) 
-  5. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#54) 
-  6. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#55) 
-  7. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#56) 
-  8. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#57) 
-  9. Failure: add_flags works properly with a 1-row data.frame (@test_multiple_records.R#58) 
-  1. ...
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
-
 ## rgho (1.0.1)
 Maintainer: Antoine Filipovic-Pierucci <pierucci@gmail.com>  
 Bug reports: https://github.com/pierucci/rgho/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rgl (0.97.0)
+## rgl (0.98.1)
 Maintainer: Duncan Murdoch <murdoch@stats.uwo.ca>  
 Bug reports: https://r-forge.r-project.org/projects/rgl/
 
@@ -1601,14 +1622,19 @@ Bug reports: https://r-forge.r-project.org/projects/rgl/
 
 ```
 checking installed package size ... NOTE
-  installed size is  5.9Mb
+  installed size is  6.5Mb
   sub-directories of 1Mb or more:
-    doc     2.0Mb
+    doc     2.6Mb
     fonts   1.5Mb
 
 checking Rd cross-references ... NOTE
 Packages unavailable to check Rd xrefs: ‘heplots’, ‘tkrgl’
 ```
+
+## rGoodData (0.1.0)
+Maintainer: Bulat Yapparov <byapparov@gmail.com>
+
+0 errors | 0 warnings | 0 notes
 
 ## RGoogleAnalyticsPremium (0.1.1)
 Maintainer: Jalpa Joshi Dave <jalpa@tatvic.com>
@@ -1664,24 +1690,16 @@ Bug reports: http://github.com/ropenscilabs/riem/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rinat (0.1.4)
+## rif (0.1.0)
+Maintainer: Scott Chamberlain <myrmecocystus+r@gmail.com>  
+Bug reports: https://github.com/ropensci/rif/issues
+
+0 errors | 0 warnings | 0 notes
+
+## rinat (0.1.5)
 Maintainer: Edmund Hart <edmund.m.hart@gmail.com>
 
-0 errors | 0 warnings | 1 note 
-
-```
-checking R code for possible problems ... NOTE
-get_inat_obs: no visible global function definition for ‘read.csv’
-get_inat_obs_project: no visible global function definition for
-  ‘read.csv’
-get_inat_obs_user: no visible global function definition for ‘read.csv’
-inat_handle: no visible binding for global variable ‘data’
-Undefined global functions or variables:
-  data read.csv
-Consider adding
-  importFrom("utils", "data", "read.csv")
-to your NAMESPACE file.
-```
+0 errors | 0 warnings | 0 notes
 
 ## rintrojs (0.1.2)
 Maintainer: Carl Ganz <carlganz@gmail.com>  
@@ -1719,7 +1737,7 @@ Bug reports: https://github.com/renkun-ken/rlist/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rmarkdown (1.3)
+## rmarkdown (1.4)
 Maintainer: JJ Allaire <jj@rstudio.com>
 
 0 errors | 0 warnings | 1 note 
@@ -1750,6 +1768,12 @@ Bug reports: https://github.com/ropensci/rnoaa/issues
 
 ## rnpn (0.1.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
+
+0 errors | 0 warnings | 0 notes
+
+## roadoi (0.1)
+Maintainer: Najko Jahn <najko.jahn@gmail.com>  
+Bug reports: https://github.com/njahn82/roadoi/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -1793,7 +1817,7 @@ Bug reports: https://developer.rosette.com/support-ticket
 
 0 errors | 0 warnings | 0 notes
 
-## rotl (3.0.1)
+## rotl (3.0.3)
 Maintainer: Francois Michonneau <francois.michonneau@gmail.com>  
 Bug reports: https://github.com/ropensci/rotl/issues
 
@@ -1840,7 +1864,7 @@ Bug reports: http://github.com/btskinner/rscorecard/issues
 
 0 errors | 0 warnings | 0 notes
 
-## RSiteCatalyst (1.4.10)
+## RSiteCatalyst (1.4.12)
 Maintainer: Randy Zwitch <rzwitch+rsitecatalyst@gmail.com>  
 Bug reports: https://github.com/randyzwitch/RSiteCatalyst
 
@@ -2004,17 +2028,22 @@ Bug reports: https://github.com/CenterForAssessment/SGP/issues
 
 0 errors | 0 warnings | 0 notes
 
-## shiny (1.0.0)
+## shiny (1.0.1)
 Maintainer: Winston Chang <winston@rstudio.com>  
 Bug reports: https://github.com/rstudio/shiny/issues
 
-0 errors | 0 warnings | 1 note 
+0 errors | 0 warnings | 2 notes
 
 ```
 checking installed package size ... NOTE
   installed size is  7.4Mb
   sub-directories of 1Mb or more:
-    www   6.3Mb
+    www   6.2Mb
+
+checking dependencies in R code ... NOTE
+Missing or unexported objects:
+  ‘ggplot2::summarise_coord’ ‘ggplot2::summarise_layers’
+  ‘ggplot2::summarise_layout’
 ```
 
 ## shinybootstrap2 (0.2.1)
@@ -2022,9 +2051,31 @@ Maintainer: Winston Chang <winston@rstudio.com>
 
 0 errors | 0 warnings | 0 notes
 
+## shinyHeatmaply (0.1.0)
+Maintainer: Jonathan Sidi <yonicd@gmail.com>  
+Bug reports: https://github.com/yonicd/shinyHeatmaply/issues
+
+0 errors | 0 warnings | 0 notes
+
+## shinyjqui (0.1.0)
+Maintainer: Yang Tang <tang_yang@outlook.com>  
+Bug reports: https://github.com/yang-tang/shinyjqui/issues
+
+0 errors | 0 warnings | 0 notes
+
 ## shinyjs (0.9)
 Maintainer: Dean Attali <daattali@gmail.com>  
 Bug reports: https://github.com/daattali/shinyjs/issues
+
+0 errors | 0 warnings | 0 notes
+
+## shinyWidgets (0.2.0)
+Maintainer: Victor Perrier <victor.perrier@dreamrs.fr>
+
+0 errors | 0 warnings | 0 notes
+
+## SigOptR (0.0.1)
+Maintainer: Alexandra Johnson <alexandra@sigopt.com>
 
 0 errors | 0 warnings | 0 notes
 
@@ -2046,7 +2097,7 @@ checking installed package size ... NOTE
     data   8.1Mb
 ```
 
-## SnakeCharmR (1.0.4)
+## SnakeCharmR (1.0.6)
 Maintainer: Alexandre Sieira <alexandre.sieira@gmail.com>  
 Bug reports: https://github.com/asieira/SnakeCharmR/issues
 
@@ -2080,7 +2131,7 @@ Maintainer: David Caplan <dcaplan@solvebio.com>
 
 0 errors | 0 warnings | 0 notes
 
-## sparklyr (0.5.2)
+## sparklyr (0.5.3)
 Maintainer: Javier Luraschi <javier@rstudio.com>  
 Bug reports: https://github.com/rstudio/sparklyr/issues
 
@@ -2089,6 +2140,12 @@ Bug reports: https://github.com/rstudio/sparklyr/issues
 ## spocc (0.6.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/spocc/issues
+
+0 errors | 0 warnings | 0 notes
+
+## statsgrokse (0.1.4)
+Maintainer: Peter Meissner <retep.meissner@gmail.com>  
+Bug reports: https://github.com/petermeissner/statsgrokse/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -2118,7 +2175,7 @@ No Java runtime present, requesting install.
 
 ```
 
-## sunburstR (0.6.3)
+## sunburstR (0.6.4)
 Maintainer: Kent Russell <kent.russell@timelyportfolio.com>  
 Bug reports: https://github.com/timelyportfolio/sunburstR/issues
 
@@ -2134,7 +2191,29 @@ Bug reports: https://github.com/yixuan/sysfonts/issues
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/taxize/issues
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+  Running ‘test-all.R’ [2s/187s]
+Running the tests in ‘tests/test-all.R’ failed.
+Last 13 lines of output:
+  
+  
+  3. Failure: taxon with no data returned from classification() works (@test-tax_name.R#54) 
+  `warnings` does not match "no hierarchy data found in ITIS".
+  Actual value: "Unknown or uninitialised column: 'itisTerms'."
+  
+  
+  testthat results ================================================================
+  OK: 25 SKIPPED: 151 FAILED: 3
+  1. Failure: taxon with no data returned from classification() works (@test-tax_name.R#42) 
+  2. Failure: taxon with no data returned from classification() works (@test-tax_name.R#48) 
+  3. Failure: taxon with no data returned from classification() works (@test-tax_name.R#54) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
 
 ## telegram (0.6.0)
 Maintainer: Luca Braglia <lbraglia@gmail.com>  
@@ -2258,6 +2337,11 @@ Bug reports: https://github.com/jchrom/trelloR/issues
 
 0 errors | 0 warnings | 0 notes
 
+## twilio (0.1.0)
+Maintainer: Sean Kross <sean@seankross.com>
+
+0 errors | 0 warnings | 0 notes
+
 ## ubeR (0.1.4)
 Maintainer: Andrew Collier <andrew@exegetic.biz>  
 Bug reports: https://github.com/DataWookie/ubeR/issues
@@ -2270,9 +2354,9 @@ Bug reports: https://github.com/dmpe/urlshorteneR/issues
 
 0 errors | 0 warnings | 0 notes
 
-## V8 (1.2)
-Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
-Bug reports: https://github.com/jeroenooms/v8/issues
+## V8 (1.4)
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
+Bug reports: https://github.com/jeroen/v8/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -2280,25 +2364,7 @@ Bug reports: https://github.com/jeroenooms/v8/issues
 Maintainer: Bob Rudis <bob@rudis.net>  
 Bug reports: https://github.com/hrbrmstr/vegalite/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking examples ... ERROR
-Running examples in ‘vegalite-Ex.R’ failed
-The error most likely occurred in:
-
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: from_spec
-> ### Title: Take a JSON Vega-Lite Spec and render as an htmlwidget
-> ### Aliases: from_spec
-> 
-> ### ** Examples
-> 
-> from_spec("http://rud.is/dl/embedded.json")
-Error in file(con, "r") : cannot open the connection
-Calls: from_spec -> readLines -> file
-Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## vegdata (0.9)
 Maintainer: Florian Jansen <jansen@uni-greifswald.de>
@@ -2330,7 +2396,7 @@ Maintainer: Jesse Piburn <piburnjo@ornl.gov>
 
 0 errors | 0 warnings | 0 notes
 
-## webchem (0.1.1.1)
+## webchem (0.2)
 Maintainer: Eduard Szöcs <eduardszoecs@gmail.com>  
 Bug reports: https://github.com/ropensci/webchem/issues
 
@@ -2396,6 +2462,12 @@ Bug reports: https://github.com/Ironholds/WikipediR/issues
 
 0 errors | 0 warnings | 0 notes
 
+## wikitaxa (0.1.0)
+Maintainer: Scott Chamberlain <myrmecocystus+r@gmail.com>  
+Bug reports: https://github.com/ropensci/wikitaxa/issues
+
+0 errors | 0 warnings | 0 notes
+
 ## worrms (0.1.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/worrms/issues
@@ -2436,13 +2508,13 @@ Bug reports: https://github.com/RomanTsegelskyi/yummlyr/issues
 
 0 errors | 0 warnings | 0 notes
 
-## Zelig (5.0-15)
+## Zelig (5.0-17)
 Maintainer: Christopher Gandrud <zelig.zee@gmail.com>  
 Bug reports: https://github.com/IQSS/Zelig/issues
 
 0 errors | 0 warnings | 0 notes
 
-## ZeligChoice (0.9-3)
+## ZeligChoice (0.9-4)
 Maintainer: Christopher Gandrud <zelig.zee@gmail.com>  
 Bug reports: https://github.com/IQSS/Zelig/issues
 
