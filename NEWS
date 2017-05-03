@@ -1,3 +1,6 @@
+1.5
+ - Workaround for #180. fromJSON() first checks for literal json, then filename
+
 1.4
  - Properly escape control characters \x01 through \x1f in toJSON()
  - Support parsing JSON prefixed with a rfc7464 ASCII Record Separator (0x1E)
