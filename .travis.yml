@@ -14,10 +14,8 @@ matrix:
       env: R_CODECOV=true
       r_check_args: '--use-valgrind'
     - os: osx
-      osx_image: xcode8
+      osx_image: xcode8.3
       brew_packages: yajl # only to test for conflicts
-    - os: osx
-      osx_image: beta-xcode6.1
 
 addons:
   apt:
