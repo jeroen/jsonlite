@@ -2,6 +2,7 @@
 
 S3method(print,json)
 S3method(print,scalar)
+S3method(rbind,pages)
 export(base64_dec)
 export(base64_enc)
 export(flatten)

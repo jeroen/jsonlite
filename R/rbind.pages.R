@@ -87,6 +87,7 @@ rbind_pages <- function(pages){
   outdf
 }
 
+#' @export
 rbind.pages <- function(...){
   .Deprecated('rbind_pages')
   rbind_pages(...)
