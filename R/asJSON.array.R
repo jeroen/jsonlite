@@ -1,4 +1,4 @@
-setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NULL,
+asjson_array_fun <- function(x, collapse = TRUE, na = NULL, oldna = NULL,
   matrix = c("rowmajor", "columnmajor"), auto_unbox = FALSE, keep_vec_names = FALSE,
   indent = NA_integer_, ...) {
 
@@ -36,7 +36,9 @@ setMethod("asJSON", "array", function(x, collapse = TRUE, na = NULL, oldna = NUL
   } else {
     tmp
   }
-})
+}
 
 # Some objects have class Matrix but not class Array
-setMethod("asJSON", "matrix", getMethod("asJSON", "array"))
+setMethod("asJSON", "array", asjson_array_fun)
+setMethod("asJSON", "matrix", asjson_array_fun)
+

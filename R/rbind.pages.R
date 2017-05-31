@@ -1,23 +1,23 @@
 #' Combine pages into a single data frame
 #'
-#' The \code{rbind.pages} function is used to combine a list of data frames into a single
+#' The \code{rbind_pages} function is used to combine a list of data frames into a single
 #' data frame. This is often needed when working with a JSON API that limits the amount
 #' of data per request. If we need more data than what fits in a single request, we need to
 #' perform multiple requests that each retrieve a fragment of data, not unlike pages in a
 #' book. In practice this is often implemented using a \code{page} parameter in the API. The
 #' \code{rbind.pages} function can be used to combine these pages back into a single dataset.
 #'
-#' The \code{\link{rbind.pages}} function generalizes \code{\link[base:rbind]{base::rbind}} and
+#' The \code{\link{rbind_pages}} function generalizes \code{\link[base:rbind]{base::rbind}} and
 #' \code{\link[plyr:rbind.fill]{plyr::rbind.fill}} with added support for nested data frames. Not each column
 #' has to be present in each of the individual data frames; missing columns will be filled
 #' up in \code{NA} values.
 #'
-#' @export rbind.pages
+#' @export
 #' @param pages a list of data frames, each representing a \emph{page} of data
 #' @examples # Basic example
 #' x <- data.frame(foo = rnorm(3), bar = c(TRUE, FALSE, TRUE))
 #' y <- data.frame(foo = rnorm(2), col = c("blue", "red"))
-#' rbind.pages(list(x, y))
+#' rbind_pages(list(x, y))
 #'
 #' \dontrun{
 #' baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json"
@@ -31,7 +31,7 @@
 #' nrow(filings)
 #' colnames(filings)
 #' }
-rbind.pages <- function(pages){
+rbind_pages <- function(pages){
   #Load plyr
   loadpkg("plyr")
 
@@ -84,4 +84,15 @@ rbind.pages <- function(pages){
 
   #out
   outdf
+}
+
+#' Deprecated
+#'
+#' This function has been renamed to \link{rbind_pages} due to changes in R.
+#'
+#' @export rbind.pages
+#' @param ... see \link{rbind_pages}
+rbind.pages <- function(...){
+  .Deprecated('rbind_pages')
+  rbind_pages(...)
 }

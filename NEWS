@@ -1,5 +1,6 @@
 1.5
  - Workaround for #180. fromJSON() first checks for literal json, then filename
+ - Rename rbind.pages to rbind_pages to fix warning in R-devel (requested by CRAN)
 
 1.4
  - Properly escape control characters \x01 through \x1f in toJSON()

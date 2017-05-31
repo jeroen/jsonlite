@@ -1,4 +1,4 @@
-setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "AsIs"),
+asjson_numeric_fun <- function(x, digits = 5, use_signif = is(digits, "AsIs"),
   na = c("string", "null", "NA"), auto_unbox = FALSE, collapse = TRUE,
   keep_vec_names = FALSE, indent = NA_integer_, always_decimal = FALSE, ...) {
 
@@ -36,8 +36,9 @@ setMethod("asJSON", "numeric", function(x, digits = 5, use_signif = is(digits, "
   } else {
     tmp
   }
-})
+}
 
 # This is for the bit64 package
 setOldClass("integer64")
-setMethod("asJSON", "integer64", getMethod("asJSON", "numeric"));
+setMethod("asJSON", "numeric", asjson_numeric_fun)
+setMethod("asJSON", "integer64", asjson_numeric_fun)
