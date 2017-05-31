@@ -80,11 +80,11 @@ The \jsonlite package is used by \texttt{OpenCPU} to convert between \JSON data 
   \hline
      \textbf{Command in R} & \textbf{Example URL on OpenCPU} \\
   \hline
-     \texttt{toJSON(Boston, digits=4)} & \url{https://demo.ocpu.io/MASS/data/Boston/json?digits=4} \\
+     \texttt{toJSON(Boston, digits=4)} & \url{https://cran.ocpu.io/MASS/data/Boston/json?digits=4} \\
   \hline
-     \texttt{toJSON(Boston, dataframe="col")} & \url{https://demo.ocpu.io/MASS/data/Boston/json?dataframe=col} \\
+     \texttt{toJSON(Boston, dataframe="col")} & \url{https://cran.ocpu.io/MASS/data/Boston/json?dataframe=col} \\
   \hline
-     \texttt{toJSON(Boston, pretty=FALSE)} & \url{https://demo.ocpu.io/MASS/data/Boston/json?pretty=false} \\
+     \texttt{toJSON(Boston, pretty=FALSE)} & \url{https://cran.ocpu.io/MASS/data/Boston/json?pretty=false} \\
   \hline
 \end{tabular}
 \newline
@@ -92,20 +92,20 @@ The \jsonlite package is used by \texttt{OpenCPU} to convert between \JSON data 
 To calculate the variance of some the numbers \texttt{1:9} in the command line using using \texttt{curl}:
 
 \begin{Verbatim}[frame=single]
-curl https://demo.ocpu.io/stats/R/var/json -d "x=[1,2,3,4,5,6,7,8,9]"
+curl https://cran.ocpu.io/stats/R/var/json -d "x=[1,2,3,4,5,6,7,8,9]"
 \end{Verbatim}
 
 Or equivalently post the entire body in \JSON format:
 
 \begin{Verbatim}[frame=single]
-curl https://demo.ocpu.io/stats/R/var/json -H "Content-Type: application/json" \
+curl https://cran.ocpu.io/stats/R/var/json -H "Content-Type: application/json" \
 -d "{\"x\":[1,2,3,4,5,6,7,8,9]}"
 \end{Verbatim}
 
 Below an example where we call the \texttt{melt} function from the \texttt{reshape2} package using some example rows from the \texttt{airquality} data. Here both input and output consist of a data frame.
 
 \begin{Verbatim}[frame=single]
-curl https://demo.ocpu.io/reshape2/R/melt/json -d 'id=["Month", "Day"]&data=[
+curl https://cran.ocpu.io/reshape2/R/melt/json -d 'id=["Month", "Day"]&data=[
   { "Ozone" : 41, "Solar.R" : 190, "Wind" : 7.4, "Temp" : 67, "Month" : 5, "Day" : 1 },
   { "Ozone" : 36, "Solar.R" : 118, "Wind" : 8, "Temp" : 72, "Month" : 5, "Day" : 2 } ]'
 \end{Verbatim}
@@ -113,7 +113,7 @@ curl https://demo.ocpu.io/reshape2/R/melt/json -d 'id=["Month", "Day"]&data=[
 Or equivalently:
 
 \begin{Verbatim}[frame=single]
-curl https://demo.ocpu.io/reshape2/R/melt/json -H "Content-Type: application/json" \
+curl https://cran.ocpu.io/reshape2/R/melt/json -H "Content-Type: application/json" \
   -d '{"id" : ["Month", "Day"], "data" : [
     { "Ozone" : 41, "Solar.R" : 190, "Wind" : 7.4, "Temp" : 67, "Month" : 5, "Day" : 1 },
     { "Ozone" : 36, "Solar.R" : 118, "Wind" : 8, "Temp" : 72, "Month" : 5, "Day" : 2 }

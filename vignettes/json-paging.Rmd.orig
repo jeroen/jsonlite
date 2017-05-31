@@ -52,14 +52,14 @@ mydata2 <- fromJSON(paste0(baseurl, "&page=2"), flatten = TRUE)
 mydata0$filings[1:10, c("organization.sub_name", "organization.city", "totrevenue")]
 ```
 
-To analyze or visualize these data, we need to combine the pages into a single dataset. We can do this with the `rbind.pages` function. Note that in this example, the actual data is contained by the `filings` field:
+To analyze or visualize these data, we need to combine the pages into a single dataset. We can do this with the `rbind_pages` function. Note that in this example, the actual data is contained by the `filings` field:
 
 ```{r}
 #Rows per data frame
 nrow(mydata0$filings)
 
 #Combine data frames
-filings <- rbind.pages(
+filings <- rbind_pages(
   list(mydata0$filings, mydata1$filings, mydata2$filings)
 )
 
@@ -82,7 +82,7 @@ for(i in 0:20){
 }
 
 #combine all into one
-filings <- rbind.pages(pages)
+filings <- rbind_pages(pages)
 
 #check output
 nrow(filings)

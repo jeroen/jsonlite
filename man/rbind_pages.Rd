@@ -15,7 +15,7 @@ data frame. This is often needed when working with a JSON API that limits the am
 of data per request. If we need more data than what fits in a single request, we need to
 perform multiple requests that each retrieve a fragment of data, not unlike pages in a
 book. In practice this is often implemented using a \code{page} parameter in the API. The
-\code{rbind.pages} function can be used to combine these pages back into a single dataset.
+\code{rbind_pages} function can be used to combine these pages back into a single dataset.
 }
 \details{
 The \code{\link{rbind_pages}} function generalizes \code{\link[base:rbind]{base::rbind}} and
@@ -37,7 +37,7 @@ for(i in 0:20){
   message("Retrieving page ", i)
   pages[[i+1]] <- mydata$filings
 }
-filings <- rbind.pages(pages)
+filings <- rbind_pages(pages)
 nrow(filings)
 colnames(filings)
 }

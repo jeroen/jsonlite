@@ -65,7 +65,7 @@ drivers[1:10, c("givenName", "familyName", "code", "nationality")]
 
 ## ProPublica
 
-Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 10 pages of tax-exempt organizations in the USA, ordered by revenue. The `rbind.pages` function is used to combine the pages into a single data frame.
+Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 10 pages of tax-exempt organizations in the USA, ordered by revenue. The `rbind_pages` function is used to combine the pages into a single data frame.
 
 
 ```{r, message=FALSE}
@@ -79,7 +79,7 @@ for(i in 0:10){
 }
 
 #combine all into one
-filings <- rbind.pages(pages)
+filings <- rbind_pages(pages)
 
 #check output
 nrow(filings)
@@ -117,16 +117,6 @@ reviews[1:5, c("display_title", "byline", "mpaa_rating")]
 
 ```
 
-## CrunchBase
-
-CrunchBase is the free database of technology companies, people, and investors that anyone can edit.
-
-```{r eval=FALSE}
-key <- "f6dv6cas5vw7arn5b9d7mdm3"
-res <- fromJSON(paste0("http://api.crunchbase.com/v/1/search.js?query=R&api_key=", key))
-head(res$results)
-```
-
 ## Sunlight Foundation
 
 The Sunlight Foundation is a non-profit that helps to make government transparent and accountable through data, tools, policy and journalism. Register a free key at [here](http://sunlightfoundation.com/api/accounts/register/). An example key is provided.
@@ -138,12 +128,6 @@ key <- "&apikey=39c83d5a4acc42be993ee637e2e4ba3d"
 drone_bills <- fromJSON(paste0("http://openstates.org/api/v1/bills/?q=drone", key))
 drone_bills$title <- substring(drone_bills$title, 1, 40)
 print(drone_bills[1:5, c("title", "state", "chamber", "type")])
-
-#Congress mentioning "constitution"
-res <- fromJSON(paste0("http://capitolwords.org/api/1/dates.json?phrase=immigration", key))
-wordcount <- res$results
-wordcount$day <- as.Date(wordcount$day)
-summary(wordcount)
 
 #Local legislators
 legislators <- fromJSON(paste0("http://congress.api.sunlightfoundation.com/",

@@ -6,3 +6,4 @@ knit("vignettes/json-paging.Rmd.orig", "vignettes/json-paging.Rmd")
 
 library(devtools)
 build_vignettes()
+

@@ -1,6 +1,6 @@
 ---
 title: "Fetching JSON data from REST APIs"
-date: "2016-05-09"
+date: "2017-05-31"
 output:
   html_document
 vignette: >
@@ -34,36 +34,36 @@ paste(format(gg_issues$user$login), ":", gg_issues$title)
 ```
 
 ```
- [1] "tdsmith           : stat_binhex weight aesthetic is undocumented"                              
- [2] "huelf             : geom_contour throws error when ggplot aes uses shape"                      
- [3] "davidkretch       : Fix typo in Extending ggplot2 vignette"                                    
- [4] "janschulz         : data used in geom_text with geom specific aes is longer than it should be?"
- [5] "janschulz         : Add top margin to default plot.caption"                                    
- [6] "wch               : Preserve class when adding uneval objects"                                 
- [7] "coolbutuseless    : corrected theme inhertiance for legend.key.size"                           
- [8] "has2k1            : Fix geom_dotplot y limit calculations"                                     
- [9] "shreyasgm         : Typo in error message while saving large plots"                            
-[10] "DarwinAwardWinner : Ordering of multiple legends is seemingly random"                          
-[11] "noamross          : geom_dotplot extends past axis"                                            
-[12] "aosmith16         : geom_dotplot negates free y scale from facet_wrap"                         
-[13] "lfaller           : How to customize x-axis labels for a stacked bar plot graph?"              
-[14] "kfeng123          : How can I axis.ticks while using theme_minimal()?"                         
-[15] "richardbeare      : Design query - connectograms"                                              
-[16] "gcpoole           : Plotting SpatialLinesDataFrame connects all of the individual lines"       
-[17] "zeehio            : [Feature Request] different scales by facet"                               
-[18] "salauer           : geom_smooth parameters no longer available in qplot"                       
-[19] "luczkovichj       : Contour labels using direct.label"                                         
-[20] "coolbutuseless    : geom_hex/stat_hex binwidth argument no longer working"                     
-[21] "HughParsonage     : annotate() won't expand when position aesthetics are length 1"             
-[22] "whao89            : geom_hex no longer recognizes ..density.. in 2.1.0"                        
-[23] "paul4forest       : X axis doesn't appear below facet_wrap plot with uneven number of facets"  
-[24] "DarioS            : Allow a Vector of Numbers for label_wrap_gen's Width Parameter"            
-[25] "coolbutuseless    : stat_bin_2d creates an (almost) unkillable legend."                        
-[26] "dutri001          : Online documentation: HTML table not properly generated from Latex doc "   
-[27] "krlmlr            : Conditional examples are not rendered"                                     
-[28] "juliangehring     : Facets break grouping of data points"                                      
-[29] "holgerbrandl      : segfault on macos when using ggsave in parallelized loop "                 
-[30] "JestonBlu         : Added new economic theme"                                                  
+ [1] "jsta            : fix broken stowers link"                                                               
+ [2] "krlmlr          : Log transform on geom_bar() silently omits layer"                                      
+ [3] "yutannihilation : Fix a broken link in README"                                                           
+ [4] "raubreywhite    : Fix theme_gray's legend/panels for large base_size"                                    
+ [5] "batuff          : Add minor ticks to axes"                                                               
+ [6] "mcol            : overlapping boxes with geom_boxplot(varwidth=TRUE)"                                    
+ [7] "karawoo         : Fix density calculations for groups with one or two elements"                          
+ [8] "Thieffen        : fix typo"                                                                              
+ [9] "Thieffen        : fix typo"                                                                              
+[10] "thjwong         : `axis.line` works, but not `axis.line.x` and `axis.line.y`"                            
+[11] "schloerke       : scale_discrete not listening to 'breaks' arg"                                          
+[12] "hadley          : Consider use of vwline"                                                                
+[13] "JTapper         : geom_polygon accessing data$y"                                                         
+[14] "Ax3man          : Added linejoin parameter to geom_segment."                                             
+[15] "LSanselme       : geom_density with groups of 1 or 2 elements"                                           
+[16] "philstraforelli : (feature request) Changing facet_wrap strip colour based on variable in data frame"    
+[17] "eliocamp        : geom_tile() + coord_map() is extremely slow."                                          
+[18] "eliocamp        : facet_wrap() doesn't play well with expressions in facets. "                           
+[19] "dantonnoriega   : Request: Quick visual example for each geom at http://ggplot2.tidyverse.org/reference/"
+[20] "randomgambit    : it would be nice to have date_breaks('0.2 sec')"                                       
+[21] "adrfantini      : Labels can overlap in coord_sf()"                                                      
+[22] "adrfantini      : borders() is incompatible with coord_sf() with projected coordinates"                  
+[23] "adrfantini      : coord_proj() is superior to coord_map() and could be included in the default ggplot"   
+[24] "adrfantini      : Coordinates labels and gridlines are wrong in coord_map()"                             
+[25] "jonocarroll     : Minor typo: monotonous -> monotonic"                                                   
+[26] "FabianRoger     : label.size in geom_label is ignored when printing to pdf"                              
+[27] "andrewdolman    : Add note recommending annotate"                                                        
+[28] "Henrik-P        : scale_identity doesn't play well with guide = \"legend\""                              
+[29] "cpsievert       : stat_sf(geom = \"text\")"                                                              
+[30] "hadley          : Automatically fill in x for univariate boxplot"                                        
 ```
 
 ## CitiBike NYC
@@ -94,7 +94,7 @@ nrow(stations)
 ```
 
 ```
-[1] 508
+[1] 666
 ```
 
 ## Ergast
@@ -134,7 +134,7 @@ drivers[1:10, c("givenName", "familyName", "code", "nationality")]
 
 ## ProPublica
 
-Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 10 pages of tax-exempt organizations in the USA, ordered by revenue. The `rbind.pages` function is used to combine the pages into a single data frame.
+Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 10 pages of tax-exempt organizations in the USA, ordered by revenue. The `rbind_pages` function is used to combine the pages into a single data frame.
 
 
 
@@ -149,7 +149,7 @@ for(i in 0:10){
 }
 
 #combine all into one
-filings <- rbind.pages(pages)
+filings <- rbind_pages(pages)
 
 #check output
 nrow(filings)
@@ -164,28 +164,17 @@ filings[1:10, c("organization.sub_name", "organization.city", "totrevenue")]
 ```
 
 ```
-                              organization.sub_name organization.city
-1                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
-2                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
-3                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
-4  DAVIDSON COUNTY COMMUNITY COLLEGE FOUNDATION INC         LEXINGTON
-5                       KAISER FOUNDATION HOSPITALS           OAKLAND
-6                       KAISER FOUNDATION HOSPITALS           OAKLAND
-7                       KAISER FOUNDATION HOSPITALS           OAKLAND
-8                   PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
-9                   PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
-10                  PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
-    totrevenue
-1  42346486950
-2  40148558254
-3  37786011714
-4  30821445312
-5  20013171194
-6  18543043972
-7  17980030355
-8  10619215354
-9  10452560305
-10  9636630380
+               organization.sub_name organization.city  totrevenue
+1  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 40148558254
+2  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 37786011714
+3        KAISER FOUNDATION HOSPITALS           OAKLAND 20796549014
+4        KAISER FOUNDATION HOSPITALS           OAKLAND 17980030355
+5    PARTNERS HEALTHCARE SYSTEM INC         SOMERVILLE 10619215354
+6                              UPMC         PITTSBURGH 10098163008
+7    UAW RETIREE MEDICAL BENEFITS TR           DETROIT  9890722789
+8   THRIVENT FINANCIAL FOR LUTHERANS       MINNEAPOLIS  9475129863
+9   THRIVENT FINANCIAL FOR LUTHERANS       MINNEAPOLIS  9021585970
+10                    DIGNITY HEALTH     SAN FRANCISCO  8718896265
 ```
 
 
@@ -196,7 +185,7 @@ The New York Times has several APIs as part of the NYT developer network. These 
 
 ```r
 #search for articles
-article_key <- "&api-key=c2fede7bd9aea57c898f538e5ec0a1ee:6:68700045"
+article_key <- "&api-key=b75da00e12d54774a2d362adddcc9bef"
 url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json?q=obamacare+socialism"
 req <- fromJSON(paste0(url, article_key))
 articles <- req$response$docs
@@ -215,9 +204,9 @@ colnames(articles)
 
 ```r
 #search for best sellers
-bestseller_key <- "&api-key=5e260a86a6301f55546c83a47d139b0d:3:68700045"
+books_key <- "&api-key=76363c9e70bc401bac1e6ad88b13bd1d"
 url <- "http://api.nytimes.com/svc/books/v2/lists/overview.json?published_date=2013-01-01"
-req <- fromJSON(paste0(url, bestseller_key))
+req <- fromJSON(paste0(url, books_key))
 bestsellers <- req$results$list
 category1 <- bestsellers[[1, "books"]]
 subset(category1, select = c("author", "title", "publisher"))
@@ -234,7 +223,7 @@ subset(category1, select = c("author", "title", "publisher"))
 
 ```r
 #movie reviews
-movie_key <- "&api-key=5a3daaeee6bbc6b9df16284bc575e5ba:0:68700045"
+movie_key <- "&api-key=b75da00e12d54774a2d362adddcc9bef"
 url <- "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json?order=by-date"
 req <- fromJSON(paste0(url, movie_key))
 reviews <- req$results
@@ -253,23 +242,12 @@ reviews[1:5, c("display_title", "byline", "mpaa_rating")]
 ```
 
 ```
-           display_title          byline mpaa_rating
-1                Dheepan     A. O. SCOTT           R
-2  Mothers and Daughters NEIL GENZLINGER       PG-13
-3 Phantom of the Theater  DANIEL M. GOLD            
-4    Beautiful Something  STEPHEN HOLDEN   Not Rated
-5           Elstree 1976 NEIL GENZLINGER            
-```
-
-## CrunchBase
-
-CrunchBase is the free database of technology companies, people, and investors that anyone can edit.
-
-
-```r
-key <- "f6dv6cas5vw7arn5b9d7mdm3"
-res <- fromJSON(paste0("http://api.crunchbase.com/v/1/search.js?query=R&api_key=", key))
-head(res$results)
+                    display_title            byline mpaa_rating
+1                 Hermia & Helena       GLENN KENNY            
+2             The Women's Balcony NICOLE HERRINGTON            
+3               Long Strange Trip    DANIEL M. GOLD           R
+4 Joshua: Teenager vs. Superpower    KEN JAWOROWSKI            
+5                 Berlin Syndrome       GLENN KENNY           R
 ```
 
 ## Sunlight Foundation
@@ -287,36 +265,12 @@ print(drone_bills[1:5, c("title", "state", "chamber", "type")])
 ```
 
 ```
-                                     title state chamber
-1    An act relating to privacy protection    vt   upper
-2             Crimes: emergency personnel.    ca   lower
-3                    DRONE TASK FORCE APPT    il   lower
-4 Omnibus K-12 and higher education policy    mn   lower
-5 Relates to prohibiting civilian drone us    ny   upper
-                                   type
-1                                  bill
-2 bill, fiscal committee, local program
-3                                  bill
-4                                  bill
-5                                  bill
-```
-
-```r
-#Congress mentioning "constitution"
-res <- fromJSON(paste0("http://capitolwords.org/api/1/dates.json?phrase=immigration", key))
-wordcount <- res$results
-wordcount$day <- as.Date(wordcount$day)
-summary(wordcount)
-```
-
-```
-     count              day               raw_count      
- Min.   :   1.00   Min.   :1996-01-02   Min.   :   1.00  
- 1st Qu.:   3.00   1st Qu.:2001-03-26   1st Qu.:   3.00  
- Median :   8.00   Median :2006-03-21   Median :   8.00  
- Mean   :  24.91   Mean   :2006-01-30   Mean   :  24.91  
- 3rd Qu.:  21.00   3rd Qu.:2010-12-08   3rd Qu.:  21.00  
- Max.   :1835.00   Max.   :2016-04-27   Max.   :1835.00  
+                                     title state chamber type
+1               AIRPORT AUTHORITIES-DRONES    il   upper bill
+2 Study Drone Use By Public Safety Agencie    co   lower bill
+3 AIRCRAFT/AVIATION:  Provides for the exc    la   upper bill
+4           relative to the use of drones.    nh   lower bill
+5 Use or Operation of a Drone by Certain O    fl   lower bill
 ```
 
 ```r
@@ -328,7 +282,7 @@ subset(legislators$results, select=c("last_name", "chamber", "term_start", "twit
 
 ```
   last_name chamber term_start      twitter_id
-1    Lummis   house 2015-01-06   CynthiaLummis
+1    Cheney   house 2017-01-03    RepLizCheney
 2      Enzi  senate 2015-01-06     SenatorEnzi
 3  Barrasso  senate 2013-01-03 SenJohnBarrasso
 ```
@@ -344,35 +298,36 @@ consumer_key = "EZRy5JzOH2QQmVAe9B4j2w";
 consumer_secret = "OIDC4MdfZJ82nbwpZfoUO4WOLTYjoRhpHRAWj6JMec";
 
 #Use basic auth
-secret <- openssl::base64_encode(paste(consumer_key, consumer_secret, sep = ":"));
+secret <- jsonlite::base64_enc(paste(consumer_key, consumer_secret, sep = ":"))
 req <- httr::POST("https://api.twitter.com/oauth2/token",
   httr::add_headers(
-    "Authorization" = paste("Basic", secret),
+    "Authorization" = paste("Basic", gsub("\n", "", secret)),
     "Content-Type" = "application/x-www-form-urlencoded;charset=UTF-8"
   ),
   body = "grant_type=client_credentials"
 );
 
 #Extract the access token
-token <- paste("Bearer", content(req)$access_token)
+httr::stop_for_status(req, "authenticate with twitter")
+token <- paste("Bearer", httr::content(req)$access_token)
 
 #Actual API call
 url <- "https://api.twitter.com/1.1/statuses/user_timeline.json?count=10&screen_name=Rbloggers"
-req <- httr::GET(url, add_headers(Authorization = token))
+req <- httr::GET(url, httr::add_headers(Authorization = token))
 json <- httr::content(req, as = "text")
 tweets <- fromJSON(json)
 substring(tweets$text, 1, 100)
 ```
 
 ```
- [1] "Rblpapi 0.3.4 https://t.co/NoGluTGSld #rstats #DataScience"                                        
- [2] "Introducing DohaR – A new R User Group in Doha, Qatar https://t.co/MWSKgMap9I #rstats #DataScience"
- [3] "FSA v0.8.7 Released https://t.co/2nnGMGINA7 #rstats #DataScience"                                  
- [4] "Too Much Parallelism is as Bad https://t.co/t0RffUvLYs #rstats #DataScience"                       
- [5] "Coming up: principal components analysis https://t.co/f9dUnhuC9n #rstats #DataScience"             
- [6] "Shiny Apps Gallery using Plotly in R https://t.co/cEFvgy1VPY #rstats #DataScience"                 
- [7] "Who is going down? Bundesliga Betting Odds – updated https://t.co/uvpcmOmcaf #rstats #DataScience" 
- [8] "BH 1.60.0-2 https://t.co/kZHVjPzG65 #rstats #DataScience"                                          
- [9] "Red herring bites https://t.co/IJQwBQkImx #rstats #DataScience"                                    
-[10] "R Tools for Visual Studio 3.0 now available https://t.co/JWKthTwEnC #rstats #DataScience"          
+ [1] "simmer 3.6.2 https://t.co/rRxgY2Ypfa #rstats #DataScience"                                           
+ [2] "Getting data for every Census tract in the US with purrr and tidycensus https://t.co/B3NYJS8sLO #rst"
+ [3] "Gender Roles with Text Mining and N-grams https://t.co/Rwj0IaTiAR #rstats #DataScience"              
+ [4] "Data Science Podcasts https://t.co/SaAuO82a7M #rstats #DataScience"                                  
+ [5] "Reflections on ROpenSci Unconference 2017 https://t.co/87kMldvrsd #rstats #DataScience"              
+ [6] "Summarizing big data in R https://t.co/GMaZZ9sWiL #rstats #DataScience"                              
+ [7] "Mining CRAN DESCRIPTION Files https://t.co/gWEIAYaBZF #rstats #DataScience"                          
+ [8] "New package polypoly (helper functions for orthogonal polynomials) https://t.co/MzzzcIySym #rstats #"
+ [9] "Hospital Infection Scores – R Shiny App https://t.co/Rf8wKNBPU6 #rstats #DataScience"                
+[10] "New R job: Software Engineer in Test for RStudio https://t.co/X1bWkKlzYv #rstats #DataScience #jobs" 
 ```

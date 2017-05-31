@@ -1,6 +1,6 @@
 ---
 title: "Combining pages of JSON data with jsonlite"
-date: "2016-05-09"
+date: "2017-05-31"
 output:
   html_document
 vignette: >
@@ -18,7 +18,7 @@ The [jsonlite](https://cran.r-project.org/package=jsonlite) package is a `JSON` 
 
 ## A bidirectional mapping
 
-One of the main strengths of `jsonlite` is that it implements a bidirectional [mapping](https://arxiv.org/abs/1403.2805) between JSON and data frames. Thereby it can convert nested collections of JSON records, as they often appear on the web, immediately into the appropriate R structure. For example to grab some data from ProPublica we can simply use:
+One of the main strengths of `jsonlite` is that it implements a bidirectional [mapping](http://arxiv.org/abs/1403.2805) between JSON and data frames. Thereby it can convert nested collections of JSON records, as they often appear on the web, immediately into the appropriate R structure. For example to grab some data from ProPublica we can simply use:
 
 
 ```r
@@ -45,31 +45,20 @@ mydata0$filings[1:10, c("organization.sub_name", "organization.city", "totrevenu
 ```
 
 ```
-                              organization.sub_name organization.city
-1                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
-2                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
-3                 KAISER FOUNDATION HEALTH PLAN INC           OAKLAND
-4  DAVIDSON COUNTY COMMUNITY COLLEGE FOUNDATION INC         LEXINGTON
-5                       KAISER FOUNDATION HOSPITALS           OAKLAND
-6                       KAISER FOUNDATION HOSPITALS           OAKLAND
-7                       KAISER FOUNDATION HOSPITALS           OAKLAND
-8                   PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
-9                   PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
-10                  PARTNERS HEALTHCARE SYSTEM INC        CHARLESTOWN
-    totrevenue
-1  42346486950
-2  40148558254
-3  37786011714
-4  30821445312
-5  20013171194
-6  18543043972
-7  17980030355
-8  10619215354
-9  10452560305
-10  9636630380
+               organization.sub_name organization.city  totrevenue
+1  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 40148558254
+2  KAISER FOUNDATION HEALTH PLAN INC           OAKLAND 37786011714
+3        KAISER FOUNDATION HOSPITALS           OAKLAND 20796549014
+4        KAISER FOUNDATION HOSPITALS           OAKLAND 17980030355
+5    PARTNERS HEALTHCARE SYSTEM INC         SOMERVILLE 10619215354
+6                              UPMC         PITTSBURGH 10098163008
+7    UAW RETIREE MEDICAL BENEFITS TR           DETROIT  9890722789
+8   THRIVENT FINANCIAL FOR LUTHERANS       MINNEAPOLIS  9475129863
+9   THRIVENT FINANCIAL FOR LUTHERANS       MINNEAPOLIS  9021585970
+10                    DIGNITY HEALTH     SAN FRANCISCO  8718896265
 ```
 
-To analyze or visualize these data, we need to combine the pages into a single dataset. We can do this with the `rbind.pages` function. Note that in this example, the actual data is contained by the `filings` field:
+To analyze or visualize these data, we need to combine the pages into a single dataset. We can do this with the `rbind_pages` function. Note that in this example, the actual data is contained by the `filings` field:
 
 
 ```r
@@ -83,7 +72,7 @@ nrow(mydata0$filings)
 
 ```r
 #Combine data frames
-filings <- rbind.pages(
+filings <- rbind_pages(
   list(mydata0$filings, mydata1$filings, mydata2$filings)
 )
 
@@ -111,7 +100,7 @@ for(i in 0:20){
 }
 
 #combine all into one
-filings <- rbind.pages(pages)
+filings <- rbind_pages(pages)
 
 #check output
 nrow(filings)

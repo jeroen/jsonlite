@@ -5,7 +5,7 @@
 #' of data per request. If we need more data than what fits in a single request, we need to
 #' perform multiple requests that each retrieve a fragment of data, not unlike pages in a
 #' book. In practice this is often implemented using a \code{page} parameter in the API. The
-#' \code{rbind.pages} function can be used to combine these pages back into a single dataset.
+#' \code{rbind_pages} function can be used to combine these pages back into a single dataset.
 #'
 #' The \code{\link{rbind_pages}} function generalizes \code{\link[base:rbind]{base::rbind}} and
 #' \code{\link[plyr:rbind.fill]{plyr::rbind.fill}} with added support for nested data frames. Not each column
@@ -27,7 +27,7 @@
 #'   message("Retrieving page ", i)
 #'   pages[[i+1]] <- mydata$filings
 #' }
-#' filings <- rbind.pages(pages)
+#' filings <- rbind_pages(pages)
 #' nrow(filings)
 #' colnames(filings)
 #' }
@@ -58,7 +58,7 @@ rbind_pages <- function(pages){
 
   # Extract the nested data frames
   subpages <- lapply(dfnames, function(colname){
-    rbind.pages(lapply(pages, function(df) {
+    rbind_pages(lapply(pages, function(df) {
       if(!is.null(df[[colname]]))
         df[[colname]]
       else
