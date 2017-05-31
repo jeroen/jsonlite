@@ -4,22 +4,45 @@
 
 |setting  |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.3.3 (2017-03-06) |
-|system   |x86_64, darwin13.4.0         |
+|version  |R version 3.4.0 (2017-04-21) |
+|system   |x86_64, darwin15.6.0         |
 |ui       |X11                          |
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |Europe/Amsterdam             |
-|date     |2017-04-08                   |
+|date     |2017-05-31                   |
 
 ## Packages
 
-|package  |*  |version |date       |source           |
-|:--------|:--|:-------|:----------|:----------------|
-|jsonlite |   |1.4     |2017-04-08 |local (NA/NA@NA) |
+|package  |*  |version |date       |source                     |
+|:--------|:--|:-------|:----------|:--------------------------|
+|jsonlite |   |1.5     |2017-05-31 |local (jeroen/jsonlite@NA) |
 
 # Check results
-16 packages with problems
+
+19 packages with problems
+
+|package       |version  | errors| warnings| notes|
+|:-------------|:--------|------:|--------:|-----:|
+|AWR.Kinesis   |1.7.3    |      1|        0|     0|
+|AWR.KMS       |0.1      |      1|        0|     0|
+|biomartr      |0.5.1    |      1|        0|     0|
+|BoSSA         |2.1      |      0|        1|     1|
+|ChemoSpec     |4.4.17   |      1|        0|     2|
+|d3r           |0.6.5    |      1|        0|     0|
+|devtools      |1.13.1   |      1|        0|     1|
+|EventStudy    |0.30     |      0|        1|     0|
+|fitbitScraper |0.1.8    |      0|        1|     0|
+|h2o           |3.10.4.6 |      1|        0|     1|
+|lawn          |0.3.0    |      1|        0|     0|
+|melviewr      |0.0.1    |      1|        0|     0|
+|ndtv          |0.10.0   |      1|        1|     0|
+|postGIStools  |0.2.1    |      1|        0|     0|
+|protolite     |1.6      |      1|        0|     1|
+|ropenaq       |0.2.0    |      1|        0|     0|
+|RSocrata      |1.7.2-12 |      1|        0|     0|
+|stplanr       |0.1.7-3  |      0|        1|     1|
+|V8            |1.5      |      1|        0|     0|
 
 ## AWR.Kinesis (1.7.3)
 Maintainer: Gergely Daroczi <gergely.daroczi@card.com>
@@ -43,35 +66,77 @@ Installation failed.
 See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/AWR.KMS.Rcheck/00install.out’ for details.
 ```
 
-## curl (2.4)
-Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
-Bug reports: https://github.com/jeroen/curl/issues
+## biomartr (0.5.1)
+Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>  
+Bug reports: https://github.com/HajkD/biomartr/issues
 
 1 error  | 0 warnings | 0 notes
 
 ```
-checking tests ... ERROR
-  Running ‘testthat.R’ [3s/54s]
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  2. Error: Invalid domain raises an error (@test-certificates.R#6) --------------
-  URL using bad/illegal format or missing URL
-  1: expect_is(curl_fetch_memory(fake_url, handle = new_handle(ssl_verifyhost = FALSE))$status, 
-         "integer") at testthat/test-certificates.R:6
-  2: klass(object)
-  3: paste(class(x), collapse = "/")
-  4: curl_fetch_memory(fake_url, handle = new_handle(ssl_verifyhost = FALSE))
-  
-  testthat results ================================================================
-  OK: 144 SKIPPED: 0 FAILED: 2
-  1. Failure: Invalid domain raises an error (@test-certificates.R#5) 
-  2. Error: Invalid domain raises an error (@test-certificates.R#6) 
-  
-  Error: testthat unit tests failed
-  Execution halted
+checking package dependencies ... ERROR
+Packages required but not available: ‘biomaRt’ ‘Biostrings’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 ```
 
-## d3r (0.6.2)
+## BoSSA (2.1)
+Maintainer: pierre lefeuvre <pierre.lefeuvre@cirad.fr>
+
+0 errors | 1 warning  | 1 note 
+
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+Error: processing vignette 'bossa-analysis.Rmd' failed with diagnostics:
+there is no package called ‘BiocStyle’
+Execution halted
+
+
+checking package dependencies ... NOTE
+Packages suggested but not available for checking: ‘BiocStyle’ ‘phyloseq’
+```
+
+## ChemoSpec (4.4.17)
+Maintainer: Bryan A. Hanson <hanson@depauw.edu>  
+Bug reports: https://github.com/bryanhanson/ChemoSpec/issues
+
+1 error  | 0 warnings | 2 notes
+
+```
+checking examples ... ERROR
+Running examples in ‘ChemoSpec-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clupaSpectra
+> ### Title: Hierarchical Cluster-Based Peak Alignment on a Spectra Object
+> ### Aliases: clupaSpectra
+> ### Keywords: utilities
+> 
+> ### ** Examples
+> 
+> 
+> data(alignMUD)
+> 
+> plotSpectra(alignMUD, which = 1:20, lab.pos = 4.5, offset = 0.1,
++   yrange = c(0, 1900), amp = 500, xlim = c(1.5, 1.8),
++   main = "Misaligned NMR Spectra (alignMUD)")
+> 
+> aMUD <- clupaSpectra(alignMUD)
+Error in clupaSpectra(alignMUD) : 
+  You need to install package speaq to use this function
+Execution halted
+
+checking package dependencies ... NOTE
+Package suggested but not available for checking: ‘speaq’
+
+checking Rd cross-references ... NOTE
+Packages unavailable to check Rd xrefs: ‘chemometrics’, ‘mvoutlier’
+```
+
+## d3r (0.6.5)
 Maintainer: Kent Russell <kent.russell@timelyportfolio.com>  
 Bug reports: https://github.com/timelyportfolio/d3r/issues
 
@@ -92,72 +157,62 @@ Last 13 lines of output:
   
   
   testthat results ================================================================
-  OK: 9 SKIPPED: 3 FAILED: 1
+  OK: 9 SKIPPED: 4 FAILED: 1
   1. Failure: d3_igraph works (@test_igraph.R#36) 
   
   Error: testthat unit tests failed
   Execution halted
 ```
 
-## dismo (1.1-4)
-Maintainer: Robert J. Hijmans <r.hijmans@gmail.com>
+## devtools (1.13.1)
+Maintainer: Hadley Wickham <hadley@rstudio.com>  
+Bug reports: https://github.com/hadley/devtools/issues
 
-1 error  | 1 warning  | 1 note 
+1 error  | 0 warnings | 1 note 
 
 ```
-checking examples ... ERROR
-Running examples in ‘dismo-Ex.R’ failed
-The error most likely occurred in:
+checking tests ... ERROR
+  Running ‘has-devel.R’
+  Running ‘test-that.R’ [46s/54s]
+Running the tests in ‘tests/test-that.R’ failed.
+Last 13 lines of output:
+  "rcpp_hello_world" not available for .Call() for package "testDllRcpp"
+  1: expect_true(is.list(rcpp_hello_world())) at testthat/test-dll.r:113
+  2: expect(identical(as.vector(object), TRUE), sprintf("%s isn't true.", lab), info = info)
+  3: as.expectation(exp, ..., srcref = srcref)
+  4: identical(as.vector(object), TRUE)
+  5: as.vector(object)
+  6: rcpp_hello_world()
+  
+  
+  testthat results ================================================================
+  OK: 391 SKIPPED: 9 FAILED: 1
+  1. Error: load_all() can compile and load DLLs linked to Rcpp (@test-dll.r#113) 
+  
+  Error: testthat unit tests failed
+  Execution halted
 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: maxent
-> ### Title: Maxent
-> ### Aliases: maxent maxent,missing,missing-method maxent,Raster,ANY-method
-> ###   maxent,SpatialGridDataFrame,ANY-method
-> ###   maxent,data.frame,vector-method MaxEnt-class MaxEntReplicates-class
-... 72 lines ...
-+ e3
-+ threshold(e3)
-+ 
-+ plot(e3, 'ROC')
-+ 
-+ }
-Loading required package: rJava
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-Warning: running command '/usr/libexec/java_home' had status 1
-No Java runtime present, requesting install.
+checking package dependencies ... NOTE
+Package suggested but not available for checking: ‘BiocInstaller’
+```
 
+## EventStudy (0.30)
+Maintainer: Dr. Simon Mueller <simon.mueller@muon-stat.com>  
+Bug reports: https://github.com/EventStudyTools/api-wrapper.r/issues
+
+0 errors | 1 warning  | 0 notes
+
+```
 checking re-building of vignette outputs ... WARNING
 Error in re-building vignettes:
   ...
-1-DSDam
-2-SegLowFlow
-3-SegTSeas
-4-USAvgT
-5-DSMaxSlope
-fitting final gbm model with a fixed number of 1350 trees for Angaus
-gbm.interactions - version 2.9
-... 8 lines ...
-Loading required package: lattice
-Loading required package: splines
-Loading required package: parallel
-Error : .onAttach failed in attachNamespace() for 'gbm', details:
-  call: formatDL(nm, txt, indent = max(nchar(nm, "w")) + 3)
-  error: incorrect values of 'indent' and 'width'
-
-Error: processing vignette 'brt.Rnw' failed with diagnostics:
- chunk 12 (label = dismo-10) 
-Error : package or namespace load failed for ‘gbm’
+Error: processing vignette 'addin_eventstudy.Rmd' failed with diagnostics:
+there is no package called ‘prettydoc’
 Execution halted
 
-checking dependencies in R code ... NOTE
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-No Java runtime present, requesting install.
 ```
 
-## fitbitScraper (0.1.7)
+## fitbitScraper (0.1.8)
 Maintainer: Cory Nissen <corynissen@gmail.com>
 
 0 errors | 1 warning  | 0 notes
@@ -166,14 +221,14 @@ Maintainer: Cory Nissen <corynissen@gmail.com>
 checking re-building of vignette outputs ... WARNING
 Error in re-building vignettes:
   ...
-Quitting from lines 29-40 (fitbitScraper-examples.Rmd) 
+Quitting from lines 22-24 (fitbitScraper-examples.Rmd) 
 Error: processing vignette 'fitbitScraper-examples.Rmd' failed with diagnostics:
-Value for option cookie (10022) must be length-1 string
+login failed
 Execution halted
 
 ```
 
-## h2o (3.10.3.6)
+## h2o (3.10.4.6)
 Maintainer: Tom Kraljevic <tomk@0xdata.com>  
 Bug reports: http://jira.h2o.ai
 
@@ -190,7 +245,7 @@ The error most likely occurred in:
 > ### Aliases: aaa
 > 
 > ### ** Examples
-... 16 lines ...
+... 20 lines ...
 [1] TRUE
 [1] -1
 [1] "Failed to connect to localhost port 54321: Connection refused"
@@ -204,26 +259,37 @@ Execution halted
 ** found \donttest examples: check also with --run-donttest
 
 checking installed package size ... NOTE
-  installed size is 62.4Mb
+  installed size is 64.1Mb
   sub-directories of 1Mb or more:
-    java  61.2Mb
+    java  62.9Mb
 ```
 
-## HARtools (0.0.5)
-Maintainer: John Harrison <johndharrison0@gmail.com>  
-Bug reports: https://github.com/johndharrison/HARtools/issues
+## lawn (0.3.0)
+Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
+Bug reports: http://www.github.com/ropensci/lawn/issues
 
-0 errors | 1 warning  | 0 notes
+1 error  | 0 warnings | 0 notes
 
 ```
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-Quitting from lines 67-70 (Basic_use.Rmd) 
-Error: processing vignette 'Basic_use.Rmd' failed with diagnostics:
-HTTP error 403.
-Execution halted
-
+checking tests ... ERROR
+  Running ‘test-all.R’
+Running the tests in ‘tests/test-all.R’ failed.
+Last 13 lines of output:
+  Actual value: "c++ exception (unknown reason)"
+  
+  
+  2. Failure: lawn_centroid fails correctly (@test-centroid.R#50) ----------------
+  error$message does not match "Unexpected number".
+  Actual value: "c++ exception (unknown reason)"
+  
+  
+  testthat results ================================================================
+  OK: 805 SKIPPED: 0 FAILED: 2
+  1. Failure: lawn_centroid fails correctly (@test-centroid.R#47) 
+  2. Failure: lawn_centroid fails correctly (@test-centroid.R#50) 
+  
+  Error: testthat unit tests failed
+  Execution halted
 ```
 
 ## melviewr (0.0.1)
@@ -233,9 +299,11 @@ Bug reports: https://github.com/AndrewPoppe/melviewr/issues
 1 error  | 0 warnings | 0 notes
 
 ```
-checking whether package ‘melviewr’ can be installed ... ERROR
-Installation failed.
-See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/melviewr.Rcheck/00install.out’ for details.
+checking package dependencies ... ERROR
+Packages required but not available: ‘gWidgetsRGtk2’ ‘RGtk2’ ‘cairoDevice’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 ```
 
 ## ndtv (0.10.0)
@@ -267,7 +335,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpo4y4Xh/matrixa05858b86e5b.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpo4y4Xh/coordsa058345545de.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/m5/mf16p5417vqbykm9jckq5_5w0000gn/T//RtmpExxLbL/matrix13a54589f1f74.txt /var/folders/m5/mf16p5417vqbykm9jckq5_5w0000gn/T//RtmpExxLbL/coords13a5436ca2620.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -285,7 +353,7 @@ Content type 'application/java-archive' length 18203 bytes (17 KB)
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpAKA7SN/matrixa0d019d8b0cd.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpAKA7SN/coordsa0d0613f6ffc.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/m5/mf16p5417vqbykm9jckq5_5w0000gn/T//Rtmp6yDyBO/matrix13b1530d751e9.txt /var/folders/m5/mf16p5417vqbykm9jckq5_5w0000gn/T//Rtmp6yDyBO/coords13b15842b10c.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
@@ -294,52 +362,96 @@ Error in layout.fun(slice, dist.mat = dist.mat, default.dist = default.dist,  :
 Execution halted
 ```
 
-## red (1.0.0)
-Maintainer: Pedro Cardoso <pedro.cardoso@helsinki.fi>
+## postGIStools (0.2.1)
+Maintainer: Philippe Marchand <pmarchand@sesync.org>  
+Bug reports: https://github.com/SESYNC-ci/postGIStools/issues
 
 1 error  | 0 warnings | 0 notes
 
 ```
-checking whether package ‘red’ can be installed ... ERROR
+checking package dependencies ... ERROR
+Package required but not available: ‘RPostgreSQL’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+```
+
+## protolite (1.6)
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
+Bug reports: https://github.com/jeroen/protolite/issues
+
+1 error  | 0 warnings | 1 note 
+
+```
+checking whether package ‘protolite’ can be installed ... ERROR
 Installation failed.
-See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/red.Rcheck/00install.out’ for details.
+See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/protolite.Rcheck/00install.out’ for details.
+
+checking package dependencies ... NOTE
+Package suggested but not available for checking: ‘RProtoBuf’
 ```
 
-## SensusR (2.0.0)
-Maintainer: Matthew S. Gerber <gerber.matthew@gmail.com>
+## ropenaq (0.2.0)
+Maintainer: Maëlle Salmon <maelle.salmon@yahoo.se>  
+Bug reports: http://github.com/ropensci/ropenaq/issues
 
 1 error  | 0 warnings | 0 notes
 
 ```
-checking examples ... ERROR
-Running examples in ‘SensusR-Ex.R’ failed
-The error most likely occurred in:
+checking tests ... ERROR
+  Running ‘testthat.R’ [2s/248s]
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  2: getResults(urlAQ, argsList)
+  3: getResults_bypage(urlAQ, argsList)
+  4: treat_res(res)
+  5: jsonlite::fromJSON(contentPage)
+  6: fromJSON_string(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
+         simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
+  7: parseJSON(txt, bigint_as_char)
+  8: parse_string(txt, bigint_as_char)
+  
+  testthat results ================================================================
+  OK: 6 SKIPPED: 16 FAILED: 1
+  1. Error: Queries work with spaces and accents (@test-buildQueries.R#56) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: plot.LocationDatum
-> ### Title: Plot location data.
-> ### Aliases: plot.LocationDatum
-> 
-> ### ** Examples
-... 188 lines ...
-[1] "57% done merging data for WlanDatum (4 of 7)."
-[1] "71% done merging data for WlanDatum (5 of 7)."
-[1] "85% done merging data for WlanDatum (6 of 7)."
-[1] "100% done merging data for WlanDatum (7 of 7)."
-[1] "Creating data frame for WlanDatum."
-> plot(data$LocationDatum)
-Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=38.0676352725243,-78.9510441850485&zoom=10&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
-Information from URL : http://maps.googleapis.com/maps/api/geocode/json?address=38.0676352725243,-78.9510441850485&sensor=false
-Error: GeomRasterAnn was built with an incompatible version of ggproto.
-Please reinstall the package that provides this extension.
-Execution halted
+## RSocrata (1.7.2-12)
+Maintainer: "Tom Schenk Jr." <developers@cityofchicago.org>  
+Bug reports: https://github.com/Chicago/RSocrata/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+  Running ‘testthat.R’ [9s/76s]
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  2017-05-31 14:31:44.149 getResponse: Error in httr GET: 403  https://soda.demo.socrata.com/resource/a9g2-feh2.csv?$order=:id
+  2017-05-31 14:31:45.059 getResponse: Error in httr GET: 403  https://soda.demo.socrata.com/resource/a9g2-feh2.json?$order=:id
+  1. Failure: converts money fields to numeric (@test-all.R#471) -----------------
+  "numeric" not equal to class(df$Employee.Annual.Salary).
+  1/1 mismatches
+  x[1]: "numeric"
+  y[1]: "NULL"
+  
+  
+  testthat results ================================================================
+  OK: 156 SKIPPED: 0 FAILED: 1
+  1. Failure: converts money fields to numeric (@test-all.R#471) 
+  
+  Error: testthat unit tests failed
+  Execution halted
 ```
 
 ## stplanr (0.1.7-3)
 Maintainer: Robin Lovelace <rob00x@gmail.com>  
 Bug reports: https://github.com/ropensci/stplanr/issues
 
-0 errors | 1 warning  | 0 notes
+0 errors | 1 warning  | 1 note 
 
 ```
 checking re-building of vignette outputs ... WARNING
@@ -347,82 +459,31 @@ Error in re-building vignettes:
   ...
 Unable to find any JVMs matching version "(null)".
 No Java runtime present, try --request to install.
-No Java runtime present, requesting install.
-
-```
-
-## taxize (0.8.4)
-Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
-Bug reports: https://github.com/ropensci/taxize/issues
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-  Running ‘test-all.R’ [2s/187s]
-Running the tests in ‘tests/test-all.R’ failed.
-Last 13 lines of output:
-  
-  
-  3. Failure: taxon with no data returned from classification() works (@test-tax_name.R#54) 
-  `warnings` does not match "no hierarchy data found in ITIS".
-  Actual value: "Unknown or uninitialised column: 'itisTerms'."
-  
-  
-  testthat results ================================================================
-  OK: 25 SKIPPED: 151 FAILED: 3
-  1. Failure: taxon with no data returned from classification() works (@test-tax_name.R#42) 
-  2. Failure: taxon with no data returned from classification() works (@test-tax_name.R#48) 
-  3. Failure: taxon with no data returned from classification() works (@test-tax_name.R#54) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
-
-## trackeR (0.0.5)
-Maintainer: Hannah Frick <h.frick@ucl.ac.uk>  
-Bug reports: https://github.com/hfrick/trackeR/issues
-
-0 errors | 1 warning  | 0 notes
-
-```
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-Loading required package: zoo
-
-Attaching package: 'zoo'
-
-The following objects are masked from 'package:base':
-
-    as.Date, as.Date.numeric
-
-Loading required package: ggplot2
-
-Attaching package: 'trackeR'
-
-The following object is masked from 'package:base':
-
-    append
-
-Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=57.157231,-2.104296&zoom=13&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
-Quitting from lines 90-91 (TourDetrackeR.Rmd) 
-Error: processing vignette 'TourDetrackeR.Rmd' failed with diagnostics:
-GeomRasterAnn was built with an incompatible version of ggproto.
-Please reinstall the package that provides this extension.
+Quitting from lines 108-113 (introducing-stplanr.Rmd) 
+Error: processing vignette 'introducing-stplanr.Rmd' failed with diagnostics:
+OpenStreetMap package needed for this function to work. Please install it.
 Execution halted
 
+
+checking compiled code ... NOTE
+File ‘stplanr/libs/stplanr.so’:
+  Found no calls to: ‘R_registerRoutines’, ‘R_useDynamicSymbols’
+
+It is good practice to register native routines and to disable symbol
+search.
+
+See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
 ```
 
-## x.ent (1.1.6)
-Maintainer: Tien T. Phan <phantien84@gmail.com>  
-Bug reports: https://github.com/win-stub/x.ent/issues
+## V8 (1.5)
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
+Bug reports: https://github.com/jeroen/v8/issues
 
 1 error  | 0 warnings | 0 notes
 
 ```
-checking whether package ‘x.ent’ can be installed ... ERROR
+checking whether package ‘V8’ can be installed ... ERROR
 Installation failed.
-See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/x.ent.Rcheck/00install.out’ for details.
+See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/V8.Rcheck/00install.out’ for details.
 ```
 

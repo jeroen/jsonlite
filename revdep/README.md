@@ -4,22 +4,380 @@
 
 |setting  |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.3.3 (2017-03-06) |
-|system   |x86_64, darwin13.4.0         |
+|version  |R version 3.4.0 (2017-04-21) |
+|system   |x86_64, darwin15.6.0         |
 |ui       |X11                          |
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |Europe/Amsterdam             |
-|date     |2017-04-08                   |
+|date     |2017-05-31                   |
 
 ## Packages
 
-|package  |*  |version |date       |source           |
-|:--------|:--|:-------|:----------|:----------------|
-|jsonlite |   |1.4     |2017-04-08 |local (NA/NA@NA) |
+|package  |*  |version |date       |source                     |
+|:--------|:--|:-------|:----------|:--------------------------|
+|jsonlite |   |1.5     |2017-05-31 |local (jeroen/jsonlite@NA) |
 
 # Check results
-339 packages
+
+354 packages
+
+|package                 |version  | errors| warnings| notes|
+|:-----------------------|:--------|------:|--------:|-----:|
+|ALA4R                   |1.5.6    |      0|        0|     0|
+|alterryx                |0.2.0    |      0|        0|     0|
+|analogsea               |0.5.0    |      0|        0|     0|
+|archivist.github        |0.2.2    |      0|        0|     0|
+|AutoDeskR               |0.1.2    |      0|        0|     0|
+|autovarCore             |1.0-0    |      0|        0|     1|
+|AWR.Kinesis             |1.7.3    |      1|        0|     0|
+|AWR.KMS                 |0.1      |      1|        0|     0|
+|aws.ec2metadata         |0.1.1    |      0|        0|     0|
+|aws.polly               |0.1.2    |      0|        0|     0|
+|aws.ses                 |0.1.4    |      0|        0|     0|
+|aws.sns                 |0.1.5    |      0|        0|     0|
+|aws.sqs                 |0.1.8    |      0|        0|     0|
+|AzureML                 |0.2.13   |      0|        0|     0|
+|backblazer              |0.1.0    |      0|        0|     0|
+|bea.R                   |1.0.1    |      0|        0|     0|
+|BEQI2                   |2.0-0    |      0|        0|     1|
+|bigQueryR               |0.3.1    |      0|        0|     0|
+|bigrquery               |0.3.0    |      0|        0|     0|
+|binman                  |0.1.0    |      0|        0|     0|
+|binomen                 |0.1.2    |      0|        0|     0|
+|biomartr                |0.5.1    |      1|        0|     0|
+|BIOMASS                 |1.1      |      0|        0|     1|
+|blscrapeR               |2.1.4    |      0|        0|     0|
+|bold                    |0.4.0    |      0|        0|     1|
+|BoSSA                   |2.1      |      0|        1|     1|
+|broman                  |0.65-4   |      0|        0|     0|
+|cablecuttr              |0.1.1    |      0|        0|     0|
+|captr                   |0.3.0    |      0|        0|     0|
+|cbsodataR               |0.2.1    |      0|        0|     0|
+|ccafs                   |0.1.0    |      0|        0|     0|
+|cdcfluview              |0.5.1    |      0|        0|     0|
+|censys                  |0.1.0    |      0|        0|     0|
+|ChemoSpec               |4.4.17   |      1|        0|     2|
+|ckanr                   |0.1.0    |      0|        0|     0|
+|clarifai                |0.4.2    |      0|        0|     0|
+|colourlovers            |0.2.2    |      0|        0|     0|
+|configr                 |0.2.3    |      0|        0|     0|
+|covr                    |2.2.2    |      0|        0|     1|
+|cowsay                  |0.5.0    |      0|        0|     0|
+|cranlogs                |2.1.0    |      0|        0|     0|
+|crminer                 |0.1.2    |      0|        0|     0|
+|crosstalk               |1.0.0    |      0|        0|     0|
+|crul                    |0.3.6    |      0|        0|     0|
+|crunch                  |1.16.0   |      0|        0|     0|
+|curl                    |2.6      |      0|        0|     0|
+|CytobankAPI             |1.0.1    |      0|        0|     0|
+|d3r                     |0.6.5    |      1|        0|     0|
+|daff                    |0.3.0    |      0|        0|     0|
+|dagitty                 |0.2-2    |      0|        0|     0|
+|data.tree               |0.7.0    |      0|        0|     0|
+|DataExplorer            |0.4.0    |      0|        0|     0|
+|dataone                 |2.0.1    |      0|        0|     0|
+|dataRetrieval           |2.7.2    |      0|        0|     0|
+|datarobot               |2.6.0    |      0|        0|     0|
+|ddeploy                 |1.0.4    |      0|        0|     0|
+|devtools                |1.13.1   |      1|        0|     1|
+|diezeit                 |0.1-0    |      0|        0|     0|
+|diffrprojectswidget     |0.1.5    |      0|        0|     0|
+|discgolf                |0.1.0    |      0|        0|     0|
+|dismo                   |1.1-4    |      0|        0|     2|
+|distcomp                |1.0-1    |      0|        0|     0|
+|dlstats                 |0.0.9    |      0|        0|     0|
+|docuSignr               |0.0.1    |      0|        0|     0|
+|dpmr                    |0.1.9    |      0|        0|     0|
+|DT                      |0.2      |      0|        0|     0|
+|duckduckr               |1.0.0    |      0|        0|     0|
+|ECharts2Shiny           |0.2.11   |      0|        0|     0|
+|ecoengine               |1.10.0   |      0|        0|     0|
+|EcoGenetics             |1.2.1    |      0|        0|     0|
+|edpclient               |0.1.0    |      0|        0|     0|
+|elastic                 |0.7.8    |      0|        0|     1|
+|elasticsearchr          |0.2.0    |      0|        0|     0|
+|elevatr                 |0.1.3    |      0|        0|     0|
+|emuR                    |0.2.2    |      0|        0|     0|
+|enigma                  |0.3.0    |      0|        0|     0|
+|epidata                 |0.1.0    |      0|        0|     0|
+|etseed                  |0.1.0    |      0|        0|     0|
+|europepmc               |0.1.4    |      0|        0|     0|
+|eurostat                |3.1.1    |      0|        0|     0|
+|EventStudy              |0.30     |      0|        1|     0|
+|exCon                   |0.2.1    |      0|        0|     0|
+|fbRads                  |0.2      |      0|        0|     0|
+|federalregister         |0.2.0    |      0|        0|     0|
+|finch                   |0.1.0    |      0|        0|     0|
+|fitbitScraper           |0.1.8    |      0|        1|     0|
+|flexdashboard           |0.5      |      0|        0|     0|
+|flora                   |0.2.8    |      0|        0|     0|
+|franc                   |1.1.1    |      0|        0|     0|
+|fulltext                |0.1.8    |      0|        0|     0|
+|futile.logger           |1.4.3    |      0|        0|     0|
+|GADMTools               |2.1-1    |      0|        0|     0|
+|GAR                     |1.1      |      0|        0|     0|
+|gdns                    |0.2.0    |      0|        0|     0|
+|gender                  |0.5.1    |      0|        0|     1|
+|geoaxe                  |0.1.0    |      0|        0|     0|
+|geojson                 |0.1.2    |      0|        0|     0|
+|geojsonio               |0.3.2    |      0|        0|     0|
+|geojsonlint             |0.2.0    |      0|        0|     0|
+|geoparser               |0.1.1    |      0|        0|     0|
+|getMet                  |0.3.2    |      0|        0|     0|
+|gfer                    |0.1.6    |      0|        0|     0|
+|ggvis                   |0.4.3    |      0|        0|     0|
+|gistr                   |0.4.0    |      0|        0|     0|
+|gitgadget               |0.2.1    |      0|        0|     0|
+|githubinstall           |0.2.1    |      0|        0|     0|
+|gmailr                  |0.7.1    |      0|        0|     0|
+|googleAnalyticsR        |0.4.0    |      0|        0|     0|
+|googleAuthR             |0.5.1    |      0|        0|     0|
+|googleCloudStorageR     |0.3.0    |      0|        0|     0|
+|googleComputeEngineR    |0.1.0    |      0|        0|     0|
+|googlesheets            |0.2.2    |      0|        0|     0|
+|googleVis               |0.6.2    |      0|        0|     0|
+|googleway               |2.0.0    |      0|        0|     0|
+|graphql                 |1.2      |      0|        0|     1|
+|gridSVG                 |1.5-1    |      0|        0|     0|
+|gym                     |0.1.0    |      0|        0|     0|
+|h2o                     |3.10.4.6 |      1|        0|     1|
+|hansard                 |0.4.0    |      0|        0|     0|
+|HARtools                |0.0.5    |      0|        0|     0|
+|HIBPwned                |0.1.6    |      0|        0|     0|
+|highcharter             |0.5.0    |      0|        0|     1|
+|htmlwidgets             |0.8      |      0|        0|     0|
+|httpcache               |1.0.0    |      0|        0|     0|
+|httping                 |0.1.0    |      0|        0|     0|
+|httptest                |1.3.0    |      0|        0|     0|
+|httr                    |1.2.1    |      0|        0|     0|
+|hypothesisr             |0.1.1    |      0|        0|     0|
+|idbr                    |0.2      |      0|        0|     0|
+|IMFData                 |0.2.0    |      0|        0|     0|
+|imfr                    |0.1.4    |      0|        0|     0|
+|inegiR                  |1.2.0    |      0|        0|     0|
+|instaR                  |0.2.4    |      0|        0|     0|
+|io                      |0.2.4    |      0|        0|     1|
+|issueReporter           |0.1.0    |      0|        0|     0|
+|jose                    |0.1      |      0|        0|     0|
+|jqr                     |0.2.4    |      0|        0|     1|
+|jSonarR                 |1.1.1    |      0|        0|     1|
+|jsonld                  |1.2      |      0|        0|     0|
+|jug                     |0.1.7    |      0|        0|     0|
+|junr                    |0.1.1    |      0|        0|     0|
+|kgschart                |1.2.3    |      0|        0|     0|
+|kntnr                   |0.4.0    |      0|        0|     0|
+|lawn                    |0.3.0    |      1|        0|     0|
+|leafletCN               |0.2.1    |      0|        0|     1|
+|leafletR                |0.4-0    |      0|        0|     0|
+|learnr                  |0.8      |      0|        0|     0|
+|LendingClub             |1.0.2    |      0|        0|     0|
+|lintr                   |1.0.0    |      0|        0|     0|
+|listviewer              |1.4.0    |      0|        0|     1|
+|livechatR               |0.1.0    |      0|        0|     0|
+|machina                 |0.1.6    |      0|        0|     0|
+|manifestoR              |1.2.4    |      0|        0|     0|
+|mapr                    |0.3.4    |      0|        0|     0|
+|MBTAr                   |1.0.1    |      0|        0|     0|
+|melviewr                |0.0.1    |      1|        0|     0|
+|metricsgraphics         |0.9.0    |      0|        0|     0|
+|mnis                    |0.2.3    |      0|        0|     0|
+|mongolite               |1.2      |      0|        0|     0|
+|monkeylearn             |0.1.3    |      0|        0|     0|
+|mregions                |0.1.4    |      0|        0|     0|
+|mscstexta4r             |0.1.2    |      0|        0|     0|
+|mscsweblm4r             |0.1.2    |      0|        0|     0|
+|mudata                  |0.1      |      0|        0|     0|
+|nasadata                |0.9.0    |      0|        0|     0|
+|ndtv                    |0.10.0   |      1|        1|     0|
+|neotoma                 |1.6.2    |      0|        0|     0|
+|net.security            |0.1.0    |      0|        0|     0|
+|networkD3               |0.4      |      0|        0|     0|
+|oec                     |2.2      |      0|        0|     0|
+|openadds                |0.2.0    |      0|        0|     0|
+|opencage                |0.1.2    |      0|        0|     0|
+|opencpu                 |2.0.1    |      0|        0|     0|
+|OpenML                  |1.3      |      0|        0|     1|
+|openssl                 |0.9.6    |      0|        0|     1|
+|originr                 |0.2.0    |      0|        0|     0|
+|osmdata                 |0.0.1    |      0|        0|     0|
+|osrm                    |3.0.1    |      0|        0|     0|
+|owmr                    |0.7.2    |      0|        0|     0|
+|pageviews               |0.3.0    |      0|        0|     0|
+|pandocfilters           |0.1-1    |      0|        0|     0|
+|pangaear                |0.3.0    |      0|        0|     0|
+|parlitools              |0.0.2    |      0|        0|     0|
+|pdfetch                 |0.2.1    |      0|        0|     0|
+|pinnacle.API            |2.0.4    |      0|        0|     0|
+|pivottabler             |0.2.0    |      0|        0|     0|
+|placement               |0.1.1    |      0|        0|     0|
+|pleiades                |0.1.0    |      0|        0|     0|
+|plotly                  |4.7.0    |      0|        0|     0|
+|plumber                 |0.3.2    |      0|        0|     0|
+|polidata                |0.1.0    |      0|        0|     0|
+|pollstR                 |2.0.0    |      0|        0|     0|
+|postGIStools            |0.2.1    |      1|        0|     0|
+|protolite               |1.6      |      1|        0|     1|
+|qiitr                   |0.1.0    |      0|        0|     0|
+|qtlcharts               |0.7-8    |      0|        0|     0|
+|qualtRics               |1.0      |      0|        0|     0|
+|Quandl                  |2.8.0    |      0|        0|     0|
+|quantmod                |0.4-9    |      0|        0|     1|
+|radiant.data            |0.8.1    |      0|        0|     0|
+|rAltmetric              |0.7.0    |      0|        0|     0|
+|randNames               |0.2.3    |      0|        0|     0|
+|rapiclient              |0.1.2    |      0|        0|     0|
+|rbcb                    |0.1.1    |      0|        0|     0|
+|rbhl                    |0.8.0    |      0|        0|     0|
+|rbison                  |0.5.4    |      0|        0|     0|
+|rbokeh                  |0.5.0    |      0|        0|     0|
+|rcorpora                |1.2.0    |      0|        0|     0|
+|rcrossref               |0.7.0    |      0|        0|     0|
+|RDataCanvas             |0.1      |      0|        0|     0|
+|RDota2                  |0.1.6    |      0|        0|     0|
+|rdpla                   |0.1.0    |      0|        0|     0|
+|rdrop2                  |0.7.0    |      0|        0|     0|
+|readtext                |0.50     |      0|        0|     0|
+|rebird                  |0.4.0    |      0|        0|     0|
+|rechonest               |1.2      |      0|        0|     0|
+|red                     |1.0.1    |      0|        0|     0|
+|refimpact               |0.1.0    |      0|        0|     0|
+|rentrez                 |1.0.4    |      0|        0|     0|
+|repijson                |0.1.0    |      0|        0|     0|
+|request                 |0.1.0    |      0|        0|     0|
+|rerddap                 |0.4.2    |      0|        0|     0|
+|reutils                 |0.2.3    |      0|        0|     0|
+|Rexperigen              |0.2.1    |      0|        0|     0|
+|RFc                     |0.1-2    |      0|        0|     0|
+|rfml                    |0.1.0    |      0|        0|     0|
+|RGA                     |0.4.2    |      0|        0|     0|
+|Rga4gh                  |0.1.1    |      0|        0|     0|
+|rgbif                   |0.9.8    |      0|        0|     0|
+|rgho                    |1.0.1    |      0|        0|     0|
+|rgl                     |0.98.1   |      0|        0|     2|
+|rGoodData               |0.1.0    |      0|        0|     0|
+|RGoogleAnalyticsPremium |0.1.1    |      0|        0|     0|
+|RGoogleFit              |0.3.1    |      0|        0|     0|
+|rhandsontable           |0.3.4    |      0|        0|     1|
+|rHealthDataGov          |1.0.1    |      0|        0|     1|
+|ridigbio                |0.3.5    |      0|        0|     0|
+|riem                    |0.1.1    |      0|        0|     0|
+|rif                     |0.2.0    |      0|        0|     0|
+|rinat                   |0.1.5    |      0|        0|     0|
+|rintrojs                |0.1.2    |      0|        0|     0|
+|rio                     |0.5.0    |      0|        0|     0|
+|ritis                   |0.5.4    |      0|        0|     0|
+|rjsonapi                |0.1.0    |      0|        0|     0|
+|rjstat                  |0.3.0    |      0|        0|     0|
+|rlist                   |0.4.6.1  |      0|        0|     0|
+|rmarkdown               |1.5      |      0|        0|     1|
+|RMixpanel               |0.6-2    |      0|        0|     0|
+|RNeo4j                  |1.6.4    |      0|        0|     0|
+|rnoaa                   |0.7.0    |      0|        0|     0|
+|rnpn                    |0.1.0    |      0|        0|     0|
+|roadoi                  |0.2      |      0|        0|     0|
+|rodham                  |0.0.3    |      0|        0|     0|
+|ropenaq                 |0.2.0    |      1|        0|     0|
+|ROpenDota               |0.1.1    |      0|        0|     0|
+|ROpenFIGI               |0.2.8    |      0|        0|     0|
+|ROpenWeatherMap         |1.1      |      0|        0|     0|
+|ROptimizely             |0.2.0    |      0|        0|     0|
+|rorcid                  |0.3.0    |      0|        0|     0|
+|rosetteApi              |1.5.0    |      0|        0|     0|
+|rotl                    |3.0.3    |      0|        0|     0|
+|rplos                   |0.6.4    |      0|        0|     0|
+|RPresto                 |1.2.1    |      0|        0|     0|
+|RPublica                |0.1.3    |      0|        0|     0|
+|RPushbullet             |0.3.1    |      0|        0|     0|
+|rredlist                |0.3.0    |      0|        0|     0|
+|RSauceLabs              |0.1.6    |      0|        0|     0|
+|rscorecard              |0.3.5    |      0|        0|     0|
+|RSiteCatalyst           |1.4.12   |      0|        0|     0|
+|rsnps                   |0.2.0    |      0|        0|     0|
+|RSocrata                |1.7.2-12 |      1|        0|     0|
+|rstatscn                |1.1.1    |      0|        0|     0|
+|RStripe                 |0.1      |      0|        0|     0|
+|rsunlight               |0.4.2    |      0|        0|     0|
+|rtimes                  |0.4.0    |      0|        0|     0|
+|rtweet                  |0.4.0    |      0|        0|     0|
+|rtypeform               |0.3.0    |      0|        0|     0|
+|rvertnet                |0.5.0    |      0|        0|     0|
+|rWBclimate              |0.1.3    |      0|        0|     1|
+|RWildbook               |0.9.2    |      0|        0|     0|
+|RYandexTranslate        |1.0      |      0|        0|     0|
+|RZabbix                 |0.1.0    |      0|        0|     0|
+|SACCR                   |2.1      |      0|        0|     0|
+|sbtools                 |1.1.6    |      0|        0|     0|
+|seeclickfixr            |1.1.0    |      0|        0|     0|
+|seleniumPipes           |0.3.7    |      0|        0|     0|
+|SensusR                 |2.0.0    |      0|        0|     0|
+|servr                   |0.6      |      0|        0|     0|
+|SGP                     |1.7-0.0  |      0|        0|     0|
+|shiny                   |1.0.3    |      0|        0|     1|
+|shinybootstrap2         |0.2.1    |      0|        0|     0|
+|shinyHeatmaply          |0.1.0    |      0|        0|     0|
+|shinyjqui               |0.1.0    |      0|        0|     0|
+|shinyjs                 |0.9      |      0|        0|     0|
+|shinyWidgets            |0.2.0    |      0|        0|     0|
+|SigOptR                 |0.0.1    |      0|        0|     0|
+|slackr                  |1.4.2    |      0|        0|     0|
+|SmarterPoland           |1.7      |      0|        0|     1|
+|SnakeCharmR             |1.0.6    |      0|        0|     0|
+|SocialMediaMineR        |0.4      |      0|        0|     0|
+|sofa                    |0.2.0    |      0|        0|     0|
+|soilDB                  |1.8-7    |      0|        0|     0|
+|solrium                 |0.4.0    |      0|        0|     0|
+|solvebio                |0.3.0    |      0|        0|     0|
+|sparklyr                |0.5.5    |      0|        0|     0|
+|spocc                   |0.7.0    |      0|        0|     0|
+|statsgrokse             |0.1.4    |      0|        0|     0|
+|stmBrowser              |1.0      |      0|        0|     0|
+|stmCorrViz              |1.3      |      0|        0|     0|
+|stplanr                 |0.1.7-3  |      0|        1|     1|
+|sunburstR               |0.6.5    |      0|        0|     0|
+|sysfonts                |0.5      |      0|        0|     1|
+|taxize                  |0.8.4    |      0|        0|     0|
+|telegram                |0.6.0    |      0|        0|     0|
+|tensorflow              |0.8.1    |      0|        0|     0|
+|threejs                 |0.2.2    |      0|        0|     0|
+|tidyjson                |0.2.2    |      0|        0|     0|
+|tidyverse               |1.1.1    |      0|        0|     0|
+|timevis                 |0.4      |      0|        0|     0|
+|TMDb                    |1.0      |      0|        0|     1|
+|trackeR                 |0.0.5    |      0|        0|     0|
+|traits                  |0.2.0    |      0|        0|     0|
+|trelliscope             |0.9.7    |      0|        0|     1|
+|trelloR                 |0.1.0    |      0|        0|     0|
+|tubern                  |0.1.0    |      0|        0|     0|
+|twilio                  |0.1.0    |      0|        0|     0|
+|ubeR                    |0.1.4    |      0|        0|     0|
+|urlshorteneR            |0.9.2    |      0|        0|     0|
+|V8                      |1.5      |      1|        0|     0|
+|vegalite                |0.6.1    |      0|        0|     0|
+|vegdata                 |0.9      |      0|        0|     0|
+|visNetwork              |1.0.3    |      0|        0|     1|
+|vkR                     |0.1      |      0|        0|     0|
+|wbstats                 |0.1.1    |      0|        0|     0|
+|webchem                 |0.2      |      0|        0|     1|
+|webmockr                |0.1.0    |      0|        0|     0|
+|webshot                 |0.4.1    |      0|        0|     0|
+|webutils                |0.5      |      0|        0|     0|
+|wellknown               |0.1.0    |      0|        0|     0|
+|whoami                  |1.1.1    |      0|        0|     0|
+|WikidataQueryServiceR   |0.1.1    |      0|        0|     0|
+|WikidataR               |1.3.0    |      0|        0|     0|
+|wikipediatrend          |1.1.10   |      0|        0|     1|
+|WikipediR               |1.5.0    |      0|        0|     0|
+|wikitaxa                |0.1.4    |      0|        0|     0|
+|worrms                  |0.1.0    |      0|        0|     0|
+|WufooR                  |0.6.2    |      0|        0|     0|
+|x.ent                   |1.1.7    |      0|        0|     0|
+|XR                      |0.7      |      0|        0|     0|
+|yhatr                   |0.15.1   |      0|        0|     0|
+|yummlyr                 |0.1.1    |      0|        0|     0|
+|Zelig                   |5.1-1    |      0|        0|     0|
+|ZeligChoice             |0.9-5    |      0|        0|     0|
+|ZeligEI                 |0.1-1    |      0|        0|     0|
 
 ## ALA4R (1.5.6)
 Maintainer: Ben Raymond <ben_ala@untan.gl>
@@ -53,7 +411,18 @@ Bug reports: https://github.com/paulgovan/autodeskr/issues
 Maintainer: Ando Emerencia <ando.emerencia@gmail.com>  
 Bug reports: https://github.com/roqua/autovarcore/issues
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note 
+
+```
+checking compiled code ... NOTE
+File ‘autovarCore/libs/autovarCore.so’:
+  Found no calls to: ‘R_registerRoutines’, ‘R_useDynamicSymbols’
+
+It is good practice to register native routines and to disable symbol
+search.
+
+See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
+```
 
 ## AWR.Kinesis (1.7.3)
 Maintainer: Gergely Daroczi <gergely.daroczi@card.com>
@@ -146,7 +515,7 @@ Consider adding
 to your NAMESPACE file.
 ```
 
-## bigQueryR (0.2.0)
+## bigQueryR (0.3.1)
 Maintainer: Mark Edmondson <r@sunholo.com>  
 Bug reports: https://github.com/cloudyr/bigQueryR/issues
 
@@ -164,17 +533,25 @@ Bug reports: https://github.com/johndharrison/binman/issues
 
 0 errors | 0 warnings | 0 notes
 
-## binomen (0.1.0)
+## binomen (0.1.2)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/binomen/issues
 
 0 errors | 0 warnings | 0 notes
 
-## biomartr (0.4.0)
+## biomartr (0.5.1)
 Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>  
 Bug reports: https://github.com/HajkD/biomartr/issues
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 0 notes
+
+```
+checking package dependencies ... ERROR
+Packages required but not available: ‘biomaRt’ ‘Biostrings’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+```
 
 ## BIOMASS (1.1)
 Maintainer: Maxime REJOU-MECHAIN <maxime.rejou@gmail.com>
@@ -186,7 +563,7 @@ checking Rd cross-references ... NOTE
 Package unavailable to check Rd xrefs: ‘lmfor’
 ```
 
-## blscrapeR (2.1.2)
+## blscrapeR (2.1.4)
 Maintainer: Kris Eberwein <eberwein@knights.ucf.edu>  
 Bug reports: https://github.com/keberwein/blscrapeR/issues
 
@@ -203,12 +580,25 @@ checking package dependencies ... NOTE
 Package suggested but not available for checking: ‘sangerseqR’
 ```
 
-## BoSSA (2.0)
+## BoSSA (2.1)
 Maintainer: pierre lefeuvre <pierre.lefeuvre@cirad.fr>
 
-0 errors | 0 warnings | 0 notes
+0 errors | 1 warning  | 1 note 
 
-## broman (0.65-1)
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+Error: processing vignette 'bossa-analysis.Rmd' failed with diagnostics:
+there is no package called ‘BiocStyle’
+Execution halted
+
+
+checking package dependencies ... NOTE
+Packages suggested but not available for checking: ‘BiocStyle’ ‘phyloseq’
+```
+
+## broman (0.65-4)
 Maintainer: Karl W Broman <kbroman@biostat.wisc.edu>
 
 0 errors | 0 warnings | 0 notes
@@ -219,7 +609,7 @@ Bug reports: https://github.com/bearloga/cablecuttr/issues
 
 0 errors | 0 warnings | 0 notes
 
-## captr (0.2.0)
+## captr (0.3.0)
 Maintainer: Gaurav Sood <gsood07@gmail.com>  
 Bug reports: http://github.com/soodoku/captR/issues
 
@@ -253,7 +643,39 @@ Bug reports: https://github.com/hrbrmstr/censys/issues
 Maintainer: Bryan A. Hanson <hanson@depauw.edu>  
 Bug reports: https://github.com/bryanhanson/ChemoSpec/issues
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 2 notes
+
+```
+checking examples ... ERROR
+Running examples in ‘ChemoSpec-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clupaSpectra
+> ### Title: Hierarchical Cluster-Based Peak Alignment on a Spectra Object
+> ### Aliases: clupaSpectra
+> ### Keywords: utilities
+> 
+> ### ** Examples
+> 
+> 
+> data(alignMUD)
+> 
+> plotSpectra(alignMUD, which = 1:20, lab.pos = 4.5, offset = 0.1,
++   yrange = c(0, 1900), amp = 500, xlim = c(1.5, 1.8),
++   main = "Misaligned NMR Spectra (alignMUD)")
+> 
+> aMUD <- clupaSpectra(alignMUD)
+Error in clupaSpectra(alignMUD) : 
+  You need to install package speaq to use this function
+Execution halted
+
+checking package dependencies ... NOTE
+Package suggested but not available for checking: ‘speaq’
+
+checking Rd cross-references ... NOTE
+Packages unavailable to check Rd xrefs: ‘chemometrics’, ‘mvoutlier’
+```
 
 ## ckanr (0.1.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
@@ -261,7 +683,7 @@ Bug reports: http://www.github.com/ropensci/ckanr/issues
 
 0 errors | 0 warnings | 0 notes
 
-## clarifai (0.4.0)
+## clarifai (0.4.2)
 Maintainer: Gaurav Sood <gsood07@gmail.com>  
 Bug reports: http://github.com/soodoku/clarifai/issues
 
@@ -273,13 +695,7 @@ Bug reports: https://github.com/leeper/colourlovers/issues
 
 0 errors | 0 warnings | 0 notes
 
-## comtradr (0.0.1)
-Maintainer: Chris Muir <chrismuirRVA@gmail.com>  
-Bug reports: https://github.com/ChrisMuir/comtradr/issues
-
-0 errors | 0 warnings | 0 notes
-
-## configr (0.2.1)
+## configr (0.2.3)
 Maintainer: Jianfeng Li <lee_jianfeng@sjtu.edu.cn>  
 Bug reports: https://github.com/Miachol/configr/issues
 
@@ -289,7 +705,18 @@ Bug reports: https://github.com/Miachol/configr/issues
 Maintainer: Jim Hester <james.f.hester@gmail.com>  
 Bug reports: https://github.com/jimhester/covr/issues
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note 
+
+```
+checking compiled code ... NOTE
+File ‘covr/libs/covr.so’:
+  Found no calls to: ‘R_registerRoutines’, ‘R_useDynamicSymbols’
+
+It is good practice to register native routines and to disable symbol
+search.
+
+See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
+```
 
 ## cowsay (0.5.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
@@ -303,58 +730,42 @@ Bug reports: https://github.com/metacran/cranlogs/issues
 
 0 errors | 0 warnings | 0 notes
 
+## crminer (0.1.2)
+Maintainer: Scott Chamberlain <myrmecocystus+r@gmail.com>  
+Bug reports: https://github.com/ropensci/crminer/issues
+
+0 errors | 0 warnings | 0 notes
+
 ## crosstalk (1.0.0)
 Maintainer: Joe Cheng <joe@rstudio.com>  
 Bug reports: https://github.com/rstudio/crosstalk/issues
 
 0 errors | 0 warnings | 0 notes
 
-## crul (0.3.4)
+## crul (0.3.6)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/crul/issues
 
 0 errors | 0 warnings | 0 notes
 
-## crunch (1.15.2)
+## crunch (1.16.0)
 Maintainer: Neal Richardson <neal@crunch.io>  
 Bug reports: https://github.com/Crunch-io/rcrunch/issues
 
 0 errors | 0 warnings | 0 notes
 
-## curl (2.4)
+## curl (2.6)
 Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
 Bug reports: https://github.com/jeroen/curl/issues
 
-1 error  | 0 warnings | 0 notes
+0 errors | 0 warnings | 0 notes
 
-```
-checking tests ... ERROR
-  Running ‘testthat.R’ [3s/54s]
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  2. Error: Invalid domain raises an error (@test-certificates.R#6) --------------
-  URL using bad/illegal format or missing URL
-  1: expect_is(curl_fetch_memory(fake_url, handle = new_handle(ssl_verifyhost = FALSE))$status, 
-         "integer") at testthat/test-certificates.R:6
-  2: klass(object)
-  3: paste(class(x), collapse = "/")
-  4: curl_fetch_memory(fake_url, handle = new_handle(ssl_verifyhost = FALSE))
-  
-  testthat results ================================================================
-  OK: 144 SKIPPED: 0 FAILED: 2
-  1. Failure: Invalid domain raises an error (@test-certificates.R#5) 
-  2. Error: Invalid domain raises an error (@test-certificates.R#6) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
-
-## CytobankAPI (1.0.0)
+## CytobankAPI (1.0.1)
 Maintainer: Preston Ng <preston@cytobank.org>
 
 0 errors | 0 warnings | 0 notes
 
-## d3r (0.6.2)
+## d3r (0.6.5)
 Maintainer: Kent Russell <kent.russell@timelyportfolio.com>  
 Bug reports: https://github.com/timelyportfolio/d3r/issues
 
@@ -375,14 +786,14 @@ Last 13 lines of output:
   
   
   testthat results ================================================================
-  OK: 9 SKIPPED: 3 FAILED: 1
+  OK: 9 SKIPPED: 4 FAILED: 1
   1. Failure: d3_igraph works (@test_igraph.R#36) 
   
   Error: testthat unit tests failed
   Execution halted
 ```
 
-## daff (0.2.0)
+## daff (0.3.0)
 Maintainer: Edwin de Jonge <edwindjonge@gmail.com>
 
 0 errors | 0 warnings | 0 notes
@@ -405,25 +816,20 @@ Bug reports: https://github.com/boxuancui/DataExplorer/issues
 
 0 errors | 0 warnings | 0 notes
 
-## dataonderivatives (0.2.1)
-Maintainer: Imanuel Costigan <i.costigan@me.com>  
-Bug reports: https://github.com/imanuelcostigan/dataonderivatives/issues
-
-0 errors | 0 warnings | 1 note 
-
-```
-checking dependencies in R code ... NOTE
-Missing or unexported object: ‘readr::col_numeric’
-```
-
 ## dataone (2.0.1)
 Maintainer: Matthew B. Jones <jones@nceas.ucsb.edu>  
 Bug reports: https://github.com/DataONEorg/rdataone/issues
 
 0 errors | 0 warnings | 0 notes
 
-## datarobot (2.4.0)
-Maintainer: David Chudzicki <api-maintainer@datarobot.com>
+## dataRetrieval (2.7.2)
+Maintainer: Laura DeCicco <ldecicco@usgs.gov>  
+Bug reports: https://github.com/USGS-R/dataRetrieval/issues
+
+0 errors | 0 warnings | 0 notes
+
+## datarobot (2.6.0)
+Maintainer: Sergey Yurgenson <api-maintainer@datarobot.com>
 
 0 errors | 0 warnings | 0 notes
 
@@ -432,11 +838,37 @@ Maintainer: Niall McGearailt <niall@dukeanalytics.com>
 
 0 errors | 0 warnings | 0 notes
 
-## devtools (1.12.0)
+## devtools (1.13.1)
 Maintainer: Hadley Wickham <hadley@rstudio.com>  
 Bug reports: https://github.com/hadley/devtools/issues
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 1 note 
+
+```
+checking tests ... ERROR
+  Running ‘has-devel.R’
+  Running ‘test-that.R’ [46s/54s]
+Running the tests in ‘tests/test-that.R’ failed.
+Last 13 lines of output:
+  "rcpp_hello_world" not available for .Call() for package "testDllRcpp"
+  1: expect_true(is.list(rcpp_hello_world())) at testthat/test-dll.r:113
+  2: expect(identical(as.vector(object), TRUE), sprintf("%s isn't true.", lab), info = info)
+  3: as.expectation(exp, ..., srcref = srcref)
+  4: identical(as.vector(object), TRUE)
+  5: as.vector(object)
+  6: rcpp_hello_world()
+  
+  
+  testthat results ================================================================
+  OK: 391 SKIPPED: 9 FAILED: 1
+  1. Error: load_all() can compile and load DLLs linked to Rcpp (@test-dll.r#113) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+
+checking package dependencies ... NOTE
+Package suggested but not available for checking: ‘BiocInstaller’
+```
 
 ## diezeit (0.1-0)
 Maintainer: Christian Graul <christian.graul@gmail.com>
@@ -458,62 +890,24 @@ Bug reports: https://github.com/sckott/discgolf/issues
 ## dismo (1.1-4)
 Maintainer: Robert J. Hijmans <r.hijmans@gmail.com>
 
-1 error  | 1 warning  | 1 note 
+0 errors | 0 warnings | 2 notes
 
 ```
-checking examples ... ERROR
-Running examples in ‘dismo-Ex.R’ failed
-The error most likely occurred in:
-
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: maxent
-> ### Title: Maxent
-> ### Aliases: maxent maxent,missing,missing-method maxent,Raster,ANY-method
-> ###   maxent,SpatialGridDataFrame,ANY-method
-> ###   maxent,data.frame,vector-method MaxEnt-class MaxEntReplicates-class
-... 72 lines ...
-+ e3
-+ threshold(e3)
-+ 
-+ plot(e3, 'ROC')
-+ 
-+ }
-Loading required package: rJava
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-Warning: running command '/usr/libexec/java_home' had status 1
-No Java runtime present, requesting install.
-
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-1-DSDam
-2-SegLowFlow
-3-SegTSeas
-4-USAvgT
-5-DSMaxSlope
-fitting final gbm model with a fixed number of 1350 trees for Angaus
-gbm.interactions - version 2.9
-... 8 lines ...
-Loading required package: lattice
-Loading required package: splines
-Loading required package: parallel
-Error : .onAttach failed in attachNamespace() for 'gbm', details:
-  call: formatDL(nm, txt, indent = max(nchar(nm, "w")) + 3)
-  error: incorrect values of 'indent' and 'width'
-
-Error: processing vignette 'brt.Rnw' failed with diagnostics:
- chunk 12 (label = dismo-10) 
-Error : package or namespace load failed for ‘gbm’
-Execution halted
-
 checking dependencies in R code ... NOTE
 Unable to find any JVMs matching version "(null)".
 No Java runtime present, try --request to install.
-No Java runtime present, requesting install.
+
+checking compiled code ... NOTE
+File ‘dismo/libs/dismo.so’:
+  Found no calls to: ‘R_registerRoutines’, ‘R_useDynamicSymbols’
+
+It is good practice to register native routines and to disable symbol
+search.
+
+See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
 ```
 
-## distcomp (0.25.6)
+## distcomp (1.0-1)
 Maintainer: Balasubramanian Narasimhan <naras@stat.Stanford.EDU>
 
 0 errors | 0 warnings | 0 notes
@@ -521,6 +915,12 @@ Maintainer: Balasubramanian Narasimhan <naras@stat.Stanford.EDU>
 ## dlstats (0.0.9)
 Maintainer: Guangchuang Yu <guangchuangyu@gmail.com>  
 Bug reports: https://github.com/GuangchuangYu/dlstats/issues
+
+0 errors | 0 warnings | 0 notes
+
+## docuSignr (0.0.1)
+Maintainer: Carl Ganz <carl@cannadatasolutions.com>  
+Bug reports: https://github.com/CannaData/docuSignr/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -542,7 +942,7 @@ Bug reports: https://github.com/dirkschumacher/duckduckr/issues
 
 0 errors | 0 warnings | 0 notes
 
-## ECharts2Shiny (0.2.8)
+## ECharts2Shiny (0.2.11)
 Maintainer: Xiaodong Deng <xd_deng@hotmail.com>  
 Bug reports: https://github.com/XD-DENG/ECharts2Shiny/issues
 
@@ -556,6 +956,11 @@ Bug reports: https://github.com/ropensci/ecoengine/issues
 
 ## EcoGenetics (1.2.1)
 Maintainer: Leandro Roser <learoser@gmail.com>
+
+0 errors | 0 warnings | 0 notes
+
+## edpclient (0.1.0)
+Maintainer: Madeleine Thompson <madeleine@empirical.com>
 
 0 errors | 0 warnings | 0 notes
 
@@ -620,6 +1025,22 @@ Bug reports: https://github.com/ropengov/eurostat/issues
 
 0 errors | 0 warnings | 0 notes
 
+## EventStudy (0.30)
+Maintainer: Dr. Simon Mueller <simon.mueller@muon-stat.com>  
+Bug reports: https://github.com/EventStudyTools/api-wrapper.r/issues
+
+0 errors | 1 warning  | 0 notes
+
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+Error: processing vignette 'addin_eventstudy.Rmd' failed with diagnostics:
+there is no package called ‘prettydoc’
+Execution halted
+
+```
+
 ## exCon (0.2.1)
 Maintainer: Bryan A. Hanson <hanson@depauw.edu>  
 Bug reports: https://github.com/bryanhanson/exCon/issues
@@ -643,7 +1064,7 @@ Bug reports: https://github.com/ropensci/finch/issues
 
 0 errors | 0 warnings | 0 notes
 
-## fitbitScraper (0.1.7)
+## fitbitScraper (0.1.8)
 Maintainer: Cory Nissen <corynissen@gmail.com>
 
 0 errors | 1 warning  | 0 notes
@@ -652,17 +1073,12 @@ Maintainer: Cory Nissen <corynissen@gmail.com>
 checking re-building of vignette outputs ... WARNING
 Error in re-building vignettes:
   ...
-Quitting from lines 29-40 (fitbitScraper-examples.Rmd) 
+Quitting from lines 22-24 (fitbitScraper-examples.Rmd) 
 Error: processing vignette 'fitbitScraper-examples.Rmd' failed with diagnostics:
-Value for option cookie (10022) must be length-1 string
+login failed
 Execution halted
 
 ```
-
-## fitcoach (1.0)
-Maintainer: Niraj Juneja <njuneja@gmail.com>
-
-0 errors | 0 warnings | 0 notes
 
 ## flexdashboard (0.5)
 Maintainer: JJ Allaire <jj@rstudio.com>  
@@ -693,7 +1109,7 @@ Maintainer: Brian Lee Yung Rowe <r@zatonovo.com>
 
 0 errors | 0 warnings | 0 notes
 
-## GADMTools (2.0-1)
+## GADMTools (2.1-1)
 Maintainer: Jean Pierre Decorps <jp.decorps@epiconcept.fr>
 
 0 errors | 0 warnings | 0 notes
@@ -744,9 +1160,9 @@ Bug reports: http://www.github.com/ropenscilabs/geojsonlint/issues
 
 0 errors | 0 warnings | 0 notes
 
-## geoparser (0.1.0)
+## geoparser (0.1.1)
 Maintainer: Maëlle Salmon <maelle.salmon@yahoo.se>  
-Bug reports: http://github.com/ropenscilabs/geoparser/issues
+Bug reports: http://github.com/ropensci/geoparser/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -766,9 +1182,9 @@ Maintainer: Winston Chang <winston@rstudio.com>
 
 0 errors | 0 warnings | 0 notes
 
-## gistr (0.3.6)
+## gistr (0.4.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
-Bug reports: http://www.github.com/ropensci/gistr/issues
+Bug reports: https://github.com/ropensci/gistr/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -802,7 +1218,7 @@ Bug reports: https://github.com/MarkEdmondson1234/googleAuthR/issues
 
 0 errors | 0 warnings | 0 notes
 
-## googleCloudStorageR (0.2.0)
+## googleCloudStorageR (0.3.0)
 Maintainer: Mark Edmondson <r@sunholo.com>  
 Bug reports: https://github.com/cloudyr/googleCloudStorageR/issues
 
@@ -814,8 +1230,8 @@ Bug reports: https://github.com/cloudyr/googleComputeEngineR/issues
 
 0 errors | 0 warnings | 0 notes
 
-## googlesheets (0.2.1)
-Maintainer: Jennifer Bryan <jenny@stat.ubc.ca>  
+## googlesheets (0.2.2)
+Maintainer: Jennifer Bryan <jenny@rstudio.com>  
 Bug reports: https://github.com/jennybc/googlesheets/issues
 
 0 errors | 0 warnings | 0 notes
@@ -826,7 +1242,7 @@ Bug reports: https://github.com/mages/googleVis/issues
 
 0 errors | 0 warnings | 0 notes
 
-## googleway (1.0.0)
+## googleway (2.0.0)
 Maintainer: David Cooley <dcooley@symbolix.com.au>  
 Bug reports: https://github.com/SymbolixAU/googleway/issues
 
@@ -836,6 +1252,22 @@ Bug reports: https://github.com/SymbolixAU/googleway/issues
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
 Bug reports: https://github.com/ropensci/graphql/issues
 
+0 errors | 0 warnings | 1 note 
+
+```
+checking compiled code ... NOTE
+File ‘graphql/libs/graphql.so’:
+  Found no calls to: ‘R_registerRoutines’, ‘R_useDynamicSymbols’
+
+It is good practice to register native routines and to disable symbol
+search.
+
+See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
+```
+
+## gridSVG (1.5-1)
+Maintainer: Paul Murrell <paul@stat.auckland.ac.nz>
+
 0 errors | 0 warnings | 0 notes
 
 ## gym (0.1.0)
@@ -844,7 +1276,7 @@ Bug reports: https://github.com/paulhendricks/gym-R/issues
 
 0 errors | 0 warnings | 0 notes
 
-## h2o (3.10.3.6)
+## h2o (3.10.4.6)
 Maintainer: Tom Kraljevic <tomk@0xdata.com>  
 Bug reports: http://jira.h2o.ai
 
@@ -861,7 +1293,7 @@ The error most likely occurred in:
 > ### Aliases: aaa
 > 
 > ### ** Examples
-... 16 lines ...
+... 20 lines ...
 [1] TRUE
 [1] -1
 [1] "Failed to connect to localhost port 54321: Connection refused"
@@ -875,9 +1307,9 @@ Execution halted
 ** found \donttest examples: check also with --run-donttest
 
 checking installed package size ... NOTE
-  installed size is 62.4Mb
+  installed size is 64.1Mb
   sub-directories of 1Mb or more:
-    java  61.2Mb
+    java  62.9Mb
 ```
 
 ## hansard (0.4.0)
@@ -890,22 +1322,11 @@ Bug reports: https://github.com/EvanOdell/hansard/issues
 Maintainer: John Harrison <johndharrison0@gmail.com>  
 Bug reports: https://github.com/johndharrison/HARtools/issues
 
-0 errors | 1 warning  | 0 notes
+0 errors | 0 warnings | 0 notes
 
-```
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-Quitting from lines 67-70 (Basic_use.Rmd) 
-Error: processing vignette 'Basic_use.Rmd' failed with diagnostics:
-HTTP error 403.
-Execution halted
-
-```
-
-## HIBPwned (0.1.3)
+## HIBPwned (0.1.6)
 Maintainer: Steph Locke <stephanie.g.locke@gmail.com>  
-Bug reports: https://github.com/censornet/HIBPwned/issues
+Bug reports: https://github.com/stephlocke/HIBPwned/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -941,7 +1362,7 @@ Bug reports: https://github.com/sckott/httping/issues
 
 0 errors | 0 warnings | 0 notes
 
-## httptest (1.2.0)
+## httptest (1.3.0)
 Maintainer: Neal Richardson <neal.p.richardson@gmail.com>  
 Bug reports: https://github.com/nealrichardson/httptest/issues
 
@@ -989,29 +1410,41 @@ Bug reports: https://github.com/pablobarbera/instaR/issues
 Maintainer: David J. H. Shih <djh.shih@gmail.com>  
 Bug reports: https://bitbucket.org/djhshih/io/issues
 
+0 errors | 0 warnings | 1 note 
+
+```
+checking package dependencies ... NOTE
+Package suggested but not available for checking: ‘rhdf5’
+```
+
+## issueReporter (0.1.0)
+Maintainer: Michael Kirchner <michael@kirchner.io>  
+Bug reports: https://github.com/mkirch/issueReporter/issues
+
 0 errors | 0 warnings | 0 notes
 
 ## jose (0.1)
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
 Bug reports: https://github.com/jeroenooms/jose/issues
 
-0 errors | 0 warnings | 1 note 
-
-```
-checking dependencies in R code ... NOTE
-Unexported objects imported by ':::' calls:
-  ‘openssl:::derive_pubkey’ ‘openssl:::ecdsa_key_build’
-  ‘openssl:::ecdsa_pubkey_build’ ‘openssl:::pubkey_type’
-  ‘openssl:::read_input’ ‘openssl:::rsa_key_build’
-  ‘openssl:::rsa_pubkey_build’
-  See the note in ?`:::` about the use of this operator.
-```
+0 errors | 0 warnings | 0 notes
 
 ## jqr (0.2.4)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/jqr/issues
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note 
+
+```
+checking compiled code ... NOTE
+File ‘jqr/libs/jqr.so’:
+  Found no calls to: ‘R_registerRoutines’, ‘R_useDynamicSymbols’
+
+It is good practice to register native routines and to disable symbol
+search.
+
+See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
+```
 
 ## jSonarR (1.1.1)
 Maintainer: Dylan McCall <dylan@jsonar.com>
@@ -1028,13 +1461,13 @@ Consider adding
 to your NAMESPACE file.
 ```
 
-## jsonld (1.1)
-Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
+## jsonld (1.2)
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
 Bug reports: https://github.com/ropensci/jsonld/issues
 
 0 errors | 0 warnings | 0 notes
 
-## jug (0.1.6)
+## jug (0.1.7)
 Maintainer: Bart Smeets <bartsmeets86@gmail.com>
 
 0 errors | 0 warnings | 0 notes
@@ -1042,6 +1475,12 @@ Maintainer: Bart Smeets <bartsmeets86@gmail.com>
 ## junr (0.1.1)
 Maintainer: Frans van Dunné <frans@ixpantia.com>  
 Bug reports: https://github.com/fvd/junr/issues
+
+0 errors | 0 warnings | 0 notes
+
+## kgschart (1.2.3)
+Maintainer: Kota Mori <kmori05@gmail.com>  
+Bug reports: https://github.com/kota7/kgschart/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -1054,7 +1493,29 @@ Maintainer: Hiroaki Yutani <yutani.ini@gmail.com>
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: http://www.github.com/ropensci/lawn/issues
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+  Running ‘test-all.R’
+Running the tests in ‘tests/test-all.R’ failed.
+Last 13 lines of output:
+  Actual value: "c++ exception (unknown reason)"
+  
+  
+  2. Failure: lawn_centroid fails correctly (@test-centroid.R#50) ----------------
+  error$message does not match "Unexpected number".
+  Actual value: "c++ exception (unknown reason)"
+  
+  
+  testthat results ================================================================
+  OK: 805 SKIPPED: 0 FAILED: 2
+  1. Failure: lawn_centroid fails correctly (@test-centroid.R#47) 
+  2. Failure: lawn_centroid fails correctly (@test-centroid.R#50) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
 
 ## leafletCN (0.2.1)
 Maintainer: Dawei Lang <chiffonlang@icloud.com>
@@ -1070,6 +1531,12 @@ checking installed package size ... NOTE
 
 ## leafletR (0.4-0)
 Maintainer: Christian Graul <christian.graul@gmail.com>
+
+0 errors | 0 warnings | 0 notes
+
+## learnr (0.8)
+Maintainer: JJ Allaire <jj@rstudio.com>  
+Bug reports: https://github.com/rstudio/learnr/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -1106,9 +1573,15 @@ Maintainer: Norton Tim <tnorton@machi.na>
 
 0 errors | 0 warnings | 0 notes
 
-## manifestoR (1.2.3)
+## manifestoR (1.2.4)
 Maintainer: Jirka Lewandowski <jirka.lewandowski@wzb.eu>  
 Bug reports: https://github.com/ManifestoProject/manifestoR/issues
+
+0 errors | 0 warnings | 0 notes
+
+## mapr (0.3.4)
+Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
+Bug reports: https://github.com/ropensci/mapr/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -1124,9 +1597,11 @@ Bug reports: https://github.com/AndrewPoppe/melviewr/issues
 1 error  | 0 warnings | 0 notes
 
 ```
-checking whether package ‘melviewr’ can be installed ... ERROR
-Installation failed.
-See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/melviewr.Rcheck/00install.out’ for details.
+checking package dependencies ... ERROR
+Packages required but not available: ‘gWidgetsRGtk2’ ‘RGtk2’ ‘cairoDevice’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 ```
 
 ## metricsgraphics (0.9.0)
@@ -1135,21 +1610,21 @@ Bug reports: https://github.com/hrbrmstr/metricsgraphics/issues
 
 0 errors | 0 warnings | 0 notes
 
-## mnis (0.2.1)
+## mnis (0.2.3)
 Maintainer: Evan Odell <evanodell91@gmail.com>  
 Bug reports: https://github.com/EvanOdell/mnis/issues
 
 0 errors | 0 warnings | 0 notes
 
-## mongolite (1.1)
+## mongolite (1.2)
 Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
 Bug reports: https://github.com/jeroen/mongolite/issues
 
 0 errors | 0 warnings | 0 notes
 
-## monkeylearn (0.1.1)
+## monkeylearn (0.1.3)
 Maintainer: Maëlle Salmon <maelle.salmon@yahoo.se>  
-Bug reports: http://github.com/ropenscilabs/monkeylearn/issues
+Bug reports: http://github.com/ropensci/monkeylearn/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -1211,7 +1686,7 @@ Last 13 lines of output:
     Unable to parse coordinates returned MDSJ java code
   Calls: proximity.timeline -> network.layout.animate.MDSJ
   In addition: Warning message:
-  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpo4y4Xh/matrixa05858b86e5b.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//Rtmpo4y4Xh/coordsa058345545de.txt' had status 1 
+  running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 20 1 1 50 /var/folders/m5/mf16p5417vqbykm9jckq5_5w0000gn/T//RtmpExxLbL/matrix13a54589f1f74.txt /var/folders/m5/mf16p5417vqbykm9jckq5_5w0000gn/T//RtmpExxLbL/coords13a5436ca2620.txt' had status 1 
   Execution halted
 
 checking re-building of vignette outputs ... WARNING
@@ -1229,7 +1704,7 @@ Content type 'application/java-archive' length 18203 bytes (17 KB)
 
 Calculating layout for network slice from time  75 to 76
 No Java runtime present, requesting install.
-Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpAKA7SN/matrixa0d019d8b0cd.txt /var/folders/pv/clp8mkdn6qqf5d04qqfw4xj80000gn/T//RtmpAKA7SN/coordsa0d0613f6ffc.txt' had status 1
+Warning: running command 'java -cp  /Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java/:/Users/jeroen/workspace/jsonlite/revdep/checks/ndtv.Rcheck/ndtv/java//mdsj.jar MDSJWrapper 16 2 1 50 /var/folders/m5/mf16p5417vqbykm9jckq5_5w0000gn/T//Rtmp6yDyBO/matrix13b1530d751e9.txt /var/folders/m5/mf16p5417vqbykm9jckq5_5w0000gn/T//Rtmp6yDyBO/coords13b15842b10c.txt' had status 1
 
 Error: processing vignette 'ndtv.Rnw' failed with diagnostics:
  chunk 10 (label = calc_params) 
@@ -1266,22 +1741,17 @@ Bug reports: https://github.com/sckott/openadds/issues
 
 0 errors | 0 warnings | 0 notes
 
-## opencage (0.1.0)
+## opencage (0.1.2)
 Maintainer: Maëlle Salmon <maelle.salmon@yahoo.se>  
-Bug reports: http://github.com/ropenscilabs/opencage/issues
+Bug reports: http://github.com/ropensci/opencage/issues
 
 0 errors | 0 warnings | 0 notes
 
-## opencpu (1.6.1)
-Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
-Bug reports: https://github.com/jeroenooms/opencpu/issues
+## opencpu (2.0.1)
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
+Bug reports: https://github.com/opencpu/opencpu/issues
 
-0 errors | 0 warnings | 1 note 
-
-```
-checking package dependencies ... NOTE
-Package suggested but not available for checking: ‘RAppArmor’
-```
+0 errors | 0 warnings | 0 notes
 
 ## OpenML (1.3)
 Maintainer: Giuseppe Casalicchio <giuseppe.casalicchio@stat.uni-muenchen.de>  
@@ -1290,19 +1760,37 @@ Bug reports: https://github.com/openml/openml-r/issues
 0 errors | 0 warnings | 1 note 
 
 ```
-checking package dependencies ... NOTE
-Package suggested but not available for checking: ‘RWeka’
+checking dependencies in R code ... NOTE
+Unable to find any JVMs matching version "(null)".
+No Java runtime present, try --request to install.
 ```
 
 ## openssl (0.9.6)
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
 Bug reports: https://github.com/jeroenooms/openssl/issues
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note 
+
+```
+checking compiled code ... NOTE
+File ‘openssl/libs/openssl.so’:
+  Found no calls to: ‘R_registerRoutines’, ‘R_useDynamicSymbols’
+
+It is good practice to register native routines and to disable symbol
+search.
+
+See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
+```
 
 ## originr (0.2.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/originr/issues
+
+0 errors | 0 warnings | 0 notes
+
+## osmdata (0.0.1)
+Maintainer: Mark Padgham <mark.padgham@email.com>  
+Bug reports: https://github.com/osmdatar/osmdata/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -1335,7 +1823,13 @@ Bug reports: https://github.com/ropensci/pangaear/issues
 
 0 errors | 0 warnings | 0 notes
 
-## pdfetch (0.1.8)
+## parlitools (0.0.2)
+Maintainer: Evan Odell <evanodell91@gmail.com>  
+Bug reports: https://github.com/EvanOdell/parlitools/issues
+
+0 errors | 0 warnings | 0 notes
+
+## pdfetch (0.2.1)
 Maintainer: Abiel Reinhart <abielr@gmail.com>
 
 0 errors | 0 warnings | 0 notes
@@ -1345,7 +1839,7 @@ Maintainer: Marco Blume <marco.blume@pinnaclesports.com>
 
 0 errors | 0 warnings | 0 notes
 
-## pivottabler (0.1.0)
+## pivottabler (0.2.0)
 Maintainer: Christopher Bailiss <cbailiss@gmail.com>  
 Bug reports: https://github.com/cbailiss/pivottabler/issues
 
@@ -1363,13 +1857,13 @@ Bug reports: https://github.com/ropensci/pleiades/issues
 
 0 errors | 0 warnings | 0 notes
 
-## plotly (4.5.6)
+## plotly (4.7.0)
 Maintainer: Carson Sievert <cpsievert1@gmail.com>  
 Bug reports: https://github.com/ropensci/plotly/issues
 
 0 errors | 0 warnings | 0 notes
 
-## plumber (0.3.1)
+## plumber (0.3.2)
 Maintainer: Jeff Allen <cran@trestletech.com>
 
 0 errors | 0 warnings | 0 notes
@@ -1390,13 +1884,30 @@ Bug reports: https://github.com/rOpenGov/pollstR/issues
 Maintainer: Philippe Marchand <pmarchand@sesync.org>  
 Bug reports: https://github.com/SESYNC-ci/postGIStools/issues
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 0 notes
+
+```
+checking package dependencies ... ERROR
+Package required but not available: ‘RPostgreSQL’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+```
 
 ## protolite (1.6)
 Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
 Bug reports: https://github.com/jeroen/protolite/issues
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 1 note 
+
+```
+checking whether package ‘protolite’ can be installed ... ERROR
+Installation failed.
+See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/protolite.Rcheck/00install.out’ for details.
+
+checking package dependencies ... NOTE
+Package suggested but not available for checking: ‘RProtoBuf’
+```
 
 ## qiitr (0.1.0)
 Maintainer: Hiroaki Yutani <yutani.ini@gmail.com>  
@@ -1409,8 +1920,8 @@ Maintainer: Karl W Broman <kbroman@biostat.wisc.edu>
 
 0 errors | 0 warnings | 0 notes
 
-## qualtRics (0.3)
-Maintainer: Jasper Ginn <j.h.ginn@fgga.leidenuniv.nl>  
+## qualtRics (1.0)
+Maintainer: Jasper Ginn <jasperginn@gmail.com>  
 Bug reports: https://github.com/JasperHG90/qualtRics/issues
 
 0 errors | 0 warnings | 0 notes
@@ -1421,16 +1932,13 @@ Bug reports: https://github.com/quandl/quandl-r/issues
 
 0 errors | 0 warnings | 0 notes
 
-## quantmod (0.4-7)
+## quantmod (0.4-9)
 Maintainer: Joshua M. Ulrich <josh.m.ulrich@gmail.com>  
 Bug reports: https://github.com/joshuaulrich/quantmod/issues
 
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 1 note 
 
 ```
-checking package dependencies ... NOTE
-Package suggested but not available for checking: ‘its’
-
 checking R code for possible problems ... NOTE
 Found the following calls to attach():
 File ‘quantmod/R/attachSymbols.R’:
@@ -1439,9 +1947,15 @@ File ‘quantmod/R/attachSymbols.R’:
 See section ‘Good practice’ in ‘?attach’.
 ```
 
-## radiant.data (0.6.0)
+## radiant.data (0.8.1)
 Maintainer: Vincent Nijs <radiant@rady.ucsd.edu>  
 Bug reports: https://github.com/radiant-rstats/radiant.data/issues
+
+0 errors | 0 warnings | 0 notes
+
+## rAltmetric (0.7.0)
+Maintainer: Karthik Ram <karthik.ram@gmail.com>  
+Bug reports: https://github.com/ropensci/rAltmetric/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -1457,19 +1971,19 @@ Bug reports: https://github.com/bergant/rapiclient/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rbcb (0.1.0)
+## rbcb (0.1.1)
 Maintainer: Wilson Freitas <wilson.freitas@gmail.com>  
 Bug reports: https://github.com/wilsonfreitas/rbcb/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rbhl (0.3.0)
+## rbhl (0.8.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/rbhl/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rbison (0.5.0)
+## rbison (0.5.4)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/rbison/issues
 
@@ -1487,7 +2001,7 @@ Bug reports: https://github.com/gaborcsardi/rcorpora/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rcrossref (0.6.0)
+## rcrossref (0.7.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/rcrossref/issues
 
@@ -1517,7 +2031,13 @@ Bug reports: https://github.com/karthik/rdrop2/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rebird (0.3.0)
+## readtext (0.50)
+Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>  
+Bug reports: https://github.com/kbenoit/readtext/issues
+
+0 errors | 0 warnings | 0 notes
+
+## rebird (0.4.0)
 Maintainer: Sebastian Pardo <sebpardo@gmail.com>  
 Bug reports: http://github.com/ropensci/rebird/issues
 
@@ -1528,16 +2048,10 @@ Maintainer: Mukul Chaware <mukul.chaware13@gmail.com>
 
 0 errors | 0 warnings | 0 notes
 
-## red (1.0.0)
+## red (1.0.1)
 Maintainer: Pedro Cardoso <pedro.cardoso@helsinki.fi>
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking whether package ‘red’ can be installed ... ERROR
-Installation failed.
-See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/red.Rcheck/00install.out’ for details.
-```
+0 errors | 0 warnings | 0 notes
 
 ## refimpact (0.1.0)
 Maintainer: Perry Stephenson <perry.stephenson+cran@gmail.com>  
@@ -1562,9 +2076,9 @@ Bug reports: https://github.com/sckott/request/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rerddap (0.3.4)
+## rerddap (0.4.2)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
-Bug reports: http://www.github.com/ropensci/rerddap/issues
+Bug reports: https://github.com/ropensci/rerddap/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -1602,7 +2116,7 @@ Maintainer: Harry Peaker <harry.peaker@aridhia.com>
 
 0 errors | 0 warnings | 0 notes
 
-## rgbif (0.9.7)
+## rgbif (0.9.8)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/rgbif/issues
 
@@ -1641,7 +2155,7 @@ Maintainer: Jalpa Joshi Dave <jalpa@tatvic.com>
 
 0 errors | 0 warnings | 0 notes
 
-## RGoogleFit (0.2.0)
+## RGoogleFit (0.3.1)
 Maintainer: Marcin Szymanski <ms32035@gmail.com>
 
 0 errors | 0 warnings | 0 notes
@@ -1690,7 +2204,7 @@ Bug reports: http://github.com/ropenscilabs/riem/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rif (0.1.0)
+## rif (0.2.0)
 Maintainer: Scott Chamberlain <myrmecocystus+r@gmail.com>  
 Bug reports: https://github.com/ropensci/rif/issues
 
@@ -1707,7 +2221,7 @@ Bug reports: https://github.com/carlganz/rintrojs/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rio (0.4.16)
+## rio (0.5.0)
 Maintainer: Thomas J. Leeper <thosjleeper@gmail.com>  
 Bug reports: https://github.com/leeper/rio/issues
 
@@ -1737,7 +2251,7 @@ Bug reports: https://github.com/renkun-ken/rlist/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rmarkdown (1.4)
+## rmarkdown (1.5)
 Maintainer: JJ Allaire <jj@rstudio.com>
 
 0 errors | 0 warnings | 1 note 
@@ -1760,7 +2274,7 @@ Bug reports: https://github.com/nicolewhite/RNeo4j/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rnoaa (0.6.6)
+## rnoaa (0.7.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/rnoaa/issues
 
@@ -1771,7 +2285,7 @@ Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
 
 0 errors | 0 warnings | 0 notes
 
-## roadoi (0.1)
+## roadoi (0.2)
 Maintainer: Najko Jahn <najko.jahn@gmail.com>  
 Bug reports: https://github.com/njahn82/roadoi/issues
 
@@ -1783,9 +2297,36 @@ Bug reports: https://github.com/JohnCoene/rodham/issues
 
 0 errors | 0 warnings | 0 notes
 
-## ropenaq (0.1.3)
+## ropenaq (0.2.0)
 Maintainer: Maëlle Salmon <maelle.salmon@yahoo.se>  
-Bug reports: http://github.com/ropenscilabs/ropenaq/issues
+Bug reports: http://github.com/ropensci/ropenaq/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+  Running ‘testthat.R’ [2s/248s]
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  2: getResults(urlAQ, argsList)
+  3: getResults_bypage(urlAQ, argsList)
+  4: treat_res(res)
+  5: jsonlite::fromJSON(contentPage)
+  6: fromJSON_string(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
+         simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
+  7: parseJSON(txt, bigint_as_char)
+  8: parse_string(txt, bigint_as_char)
+  
+  testthat results ================================================================
+  OK: 6 SKIPPED: 16 FAILED: 1
+  1. Error: Queries work with spaces and accents (@test-buildQueries.R#56) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
+
+## ROpenDota (0.1.1)
+Maintainer: Rosdyana Kusuma <rosdyana.kusuma@gmail.com>
 
 0 errors | 0 warnings | 0 notes
 
@@ -1876,11 +2417,33 @@ Bug reports: https://github.com/ropensci/rsnps/issues
 
 0 errors | 0 warnings | 0 notes
 
-## RSocrata (1.7.1-24)
+## RSocrata (1.7.2-12)
 Maintainer: "Tom Schenk Jr." <developers@cityofchicago.org>  
 Bug reports: https://github.com/Chicago/RSocrata/issues
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+  Running ‘testthat.R’ [9s/76s]
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  2017-05-31 14:31:44.149 getResponse: Error in httr GET: 403  https://soda.demo.socrata.com/resource/a9g2-feh2.csv?$order=:id
+  2017-05-31 14:31:45.059 getResponse: Error in httr GET: 403  https://soda.demo.socrata.com/resource/a9g2-feh2.json?$order=:id
+  1. Failure: converts money fields to numeric (@test-all.R#471) -----------------
+  "numeric" not equal to class(df$Employee.Annual.Salary).
+  1/1 mismatches
+  x[1]: "numeric"
+  y[1]: "NULL"
+  
+  
+  testthat results ================================================================
+  OK: 156 SKIPPED: 0 FAILED: 1
+  1. Failure: converts money fields to numeric (@test-all.R#471) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
 
 ## rstatscn (1.1.1)
 Maintainer: Xuehui YANG <jianghang@bagualu.net>  
@@ -1899,7 +2462,7 @@ Bug reports: https://github.com/ropengov/rsunlight/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rtimes (0.3.0)
+## rtimes (0.4.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropengov/rtimes/issues
 
@@ -1911,7 +2474,7 @@ Bug reports: https://github.com/mkearney/rtweet/issues
 
 0 errors | 0 warnings | 0 notes
 
-## rtypeform (0.2.0)
+## rtypeform (0.3.0)
 Maintainer: Colin Gillespie <csgillespie@gmail.com>  
 Bug reports: https://github.com/csgillespie/rtypeform/issues
 
@@ -1989,61 +2552,31 @@ Bug reports: https://github.com/johndharrison/seleniumPipes/issues
 ## SensusR (2.0.0)
 Maintainer: Matthew S. Gerber <gerber.matthew@gmail.com>
 
-1 error  | 0 warnings | 0 notes
+0 errors | 0 warnings | 0 notes
 
-```
-checking examples ... ERROR
-Running examples in ‘SensusR-Ex.R’ failed
-The error most likely occurred in:
-
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: plot.LocationDatum
-> ### Title: Plot location data.
-> ### Aliases: plot.LocationDatum
-> 
-> ### ** Examples
-... 188 lines ...
-[1] "57% done merging data for WlanDatum (4 of 7)."
-[1] "71% done merging data for WlanDatum (5 of 7)."
-[1] "85% done merging data for WlanDatum (6 of 7)."
-[1] "100% done merging data for WlanDatum (7 of 7)."
-[1] "Creating data frame for WlanDatum."
-> plot(data$LocationDatum)
-Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=38.0676352725243,-78.9510441850485&zoom=10&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
-Information from URL : http://maps.googleapis.com/maps/api/geocode/json?address=38.0676352725243,-78.9510441850485&sensor=false
-Error: GeomRasterAnn was built with an incompatible version of ggproto.
-Please reinstall the package that provides this extension.
-Execution halted
-```
-
-## servr (0.5)
+## servr (0.6)
 Maintainer: Yihui Xie <xie@yihui.name>  
 Bug reports: https://github.com/yihui/servr/issues
 
 0 errors | 0 warnings | 0 notes
 
-## SGP (1.6-0.0)
+## SGP (1.7-0.0)
 Maintainer: Damian W. Betebenner <dbetebenner@nciea.org>  
 Bug reports: https://github.com/CenterForAssessment/SGP/issues
 
 0 errors | 0 warnings | 0 notes
 
-## shiny (1.0.1)
+## shiny (1.0.3)
 Maintainer: Winston Chang <winston@rstudio.com>  
 Bug reports: https://github.com/rstudio/shiny/issues
 
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 1 note 
 
 ```
 checking installed package size ... NOTE
   installed size is  7.4Mb
   sub-directories of 1Mb or more:
     www   6.2Mb
-
-checking dependencies in R code ... NOTE
-Missing or unexported objects:
-  ‘ggplot2::summarise_coord’ ‘ggplot2::summarise_layers’
-  ‘ggplot2::summarise_layout’
 ```
 
 ## shinybootstrap2 (0.2.1)
@@ -2131,13 +2664,13 @@ Maintainer: David Caplan <dcaplan@solvebio.com>
 
 0 errors | 0 warnings | 0 notes
 
-## sparklyr (0.5.3)
+## sparklyr (0.5.5)
 Maintainer: Javier Luraschi <javier@rstudio.com>  
 Bug reports: https://github.com/rstudio/sparklyr/issues
 
 0 errors | 0 warnings | 0 notes
 
-## spocc (0.6.0)
+## spocc (0.7.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/spocc/issues
 
@@ -2163,7 +2696,7 @@ Maintainer: Antonio Coppola <acoppola@alumni.harvard.edu>
 Maintainer: Robin Lovelace <rob00x@gmail.com>  
 Bug reports: https://github.com/ropensci/stplanr/issues
 
-0 errors | 1 warning  | 0 notes
+0 errors | 1 warning  | 1 note 
 
 ```
 checking re-building of vignette outputs ... WARNING
@@ -2171,11 +2704,23 @@ Error in re-building vignettes:
   ...
 Unable to find any JVMs matching version "(null)".
 No Java runtime present, try --request to install.
-No Java runtime present, requesting install.
+Quitting from lines 108-113 (introducing-stplanr.Rmd) 
+Error: processing vignette 'introducing-stplanr.Rmd' failed with diagnostics:
+OpenStreetMap package needed for this function to work. Please install it.
+Execution halted
 
+
+checking compiled code ... NOTE
+File ‘stplanr/libs/stplanr.so’:
+  Found no calls to: ‘R_registerRoutines’, ‘R_useDynamicSymbols’
+
+It is good practice to register native routines and to disable symbol
+search.
+
+See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
 ```
 
-## sunburstR (0.6.4)
+## sunburstR (0.6.5)
 Maintainer: Kent Russell <kent.russell@timelyportfolio.com>  
 Bug reports: https://github.com/timelyportfolio/sunburstR/issues
 
@@ -2185,39 +2730,34 @@ Bug reports: https://github.com/timelyportfolio/sunburstR/issues
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>  
 Bug reports: https://github.com/yixuan/sysfonts/issues
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note 
+
+```
+checking compiled code ... NOTE
+File ‘sysfonts/libs/sysfonts.so’:
+  Found no calls to: ‘R_registerRoutines’, ‘R_useDynamicSymbols’
+
+It is good practice to register native routines and to disable symbol
+search.
+
+See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
+```
 
 ## taxize (0.8.4)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/taxize/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-  Running ‘test-all.R’ [2s/187s]
-Running the tests in ‘tests/test-all.R’ failed.
-Last 13 lines of output:
-  
-  
-  3. Failure: taxon with no data returned from classification() works (@test-tax_name.R#54) 
-  `warnings` does not match "no hierarchy data found in ITIS".
-  Actual value: "Unknown or uninitialised column: 'itisTerms'."
-  
-  
-  testthat results ================================================================
-  OK: 25 SKIPPED: 151 FAILED: 3
-  1. Failure: taxon with no data returned from classification() works (@test-tax_name.R#42) 
-  2. Failure: taxon with no data returned from classification() works (@test-tax_name.R#48) 
-  3. Failure: taxon with no data returned from classification() works (@test-tax_name.R#54) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## telegram (0.6.0)
 Maintainer: Luca Braglia <lbraglia@gmail.com>  
 Bug reports: http://github.com/lbraglia/telegram/issues
+
+0 errors | 0 warnings | 0 notes
+
+## tensorflow (0.8.1)
+Maintainer: JJ Allaire <jj@rstudio.com>  
+Bug reports: https://github.com/rstudio/tensorflow/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -2227,20 +2767,10 @@ Bug reports: https://github.com/bwlewis/rthreejs/issues
 
 0 errors | 0 warnings | 0 notes
 
-## tidyjson (0.2.1)
-Maintainer: Jeremy Stanley <jeremy.stanley@gmail.com>
+## tidyjson (0.2.2)
+Maintainer: ORPHANED
 
-0 errors | 0 warnings | 1 note 
-
-```
-checking R code for possible problems ... NOTE
-read_json: no visible global function definition for ‘tail’
-Undefined global functions or variables:
-  tail
-Consider adding
-  importFrom("utils", "tail")
-to your NAMESPACE file.
-```
+0 errors | 0 warnings | 0 notes
 
 ## tidyverse (1.1.1)
 Maintainer: Hadley Wickham <hadley@rstudio.com>  
@@ -2281,36 +2811,7 @@ to your NAMESPACE file.
 Maintainer: Hannah Frick <h.frick@ucl.ac.uk>  
 Bug reports: https://github.com/hfrick/trackeR/issues
 
-0 errors | 1 warning  | 0 notes
-
-```
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-Loading required package: zoo
-
-Attaching package: 'zoo'
-
-The following objects are masked from 'package:base':
-
-    as.Date, as.Date.numeric
-
-Loading required package: ggplot2
-
-Attaching package: 'trackeR'
-
-The following object is masked from 'package:base':
-
-    append
-
-Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=57.157231,-2.104296&zoom=13&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
-Quitting from lines 90-91 (TourDetrackeR.Rmd) 
-Error: processing vignette 'TourDetrackeR.Rmd' failed with diagnostics:
-GeomRasterAnn was built with an incompatible version of ggproto.
-Please reinstall the package that provides this extension.
-Execution halted
-
-```
+0 errors | 0 warnings | 0 notes
 
 ## traits (0.2.0)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
@@ -2328,12 +2829,17 @@ Bug reports: https://github.com/delta-rho/trelliscope/issues
 checking dependencies in R code ... NOTE
 Unable to find any JVMs matching version "(null)".
 No Java runtime present, try --request to install.
-No Java runtime present, requesting install.
 ```
 
 ## trelloR (0.1.0)
 Maintainer: Jakub Chromec <chromec.jakub@gmail.com>  
 Bug reports: https://github.com/jchrom/trelloR/issues
+
+0 errors | 0 warnings | 0 notes
+
+## tubern (0.1.0)
+Maintainer: Gaurav Sood <gsood07@gmail.com>  
+Bug reports: http://github.com/soodoku/tubern/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -2354,11 +2860,17 @@ Bug reports: https://github.com/dmpe/urlshorteneR/issues
 
 0 errors | 0 warnings | 0 notes
 
-## V8 (1.4)
+## V8 (1.5)
 Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
 Bug reports: https://github.com/jeroen/v8/issues
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 0 notes
+
+```
+checking whether package ‘V8’ can be installed ... ERROR
+Installation failed.
+See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/V8.Rcheck/00install.out’ for details.
+```
 
 ## vegalite (0.6.1)
 Maintainer: Bob Rudis <bob@rudis.net>  
@@ -2406,17 +2918,22 @@ Bug reports: https://github.com/ropensci/webchem/issues
 checking dependencies in R code ... NOTE
 Unable to find any JVMs matching version "(null)".
 No Java runtime present, try --request to install.
-No Java runtime present, requesting install.
 ```
 
-## webshot (0.4.0)
+## webmockr (0.1.0)
+Maintainer: Scott Chamberlain <myrmecocystus+r@gmail.com>  
+Bug reports: https://github.com/ropensci/webmockr/issues
+
+0 errors | 0 warnings | 0 notes
+
+## webshot (0.4.1)
 Maintainer: Winston Chang <winston@rstudio.com>
 
 0 errors | 0 warnings | 0 notes
 
-## webutils (0.4)
-Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>  
-Bug reports: https://github.com/jeroenooms/webutils/issues
+## webutils (0.5)
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>  
+Bug reports: https://github.com/jeroen/webutils/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -2432,13 +2949,13 @@ Bug reports: https://github.com/gaborcsardi/whoami/issues
 
 0 errors | 0 warnings | 0 notes
 
-## WikidataQueryServiceR (0.1.0)
+## WikidataQueryServiceR (0.1.1)
 Maintainer: Mikhail Popov <mikhail@wikimedia.org>  
 Bug reports: https://github.com/bearloga/WikidataQueryServiceR/issues
 
 0 errors | 0 warnings | 0 notes
 
-## WikidataR (1.2.0)
+## WikidataR (1.3.0)
 Maintainer: Oliver Keyes <ironholds@gmail.com>  
 Bug reports: https://github.com/Ironholds/WikidataR/issues
 
@@ -2462,7 +2979,7 @@ Bug reports: https://github.com/Ironholds/WikipediR/issues
 
 0 errors | 0 warnings | 0 notes
 
-## wikitaxa (0.1.0)
+## wikitaxa (0.1.4)
 Maintainer: Scott Chamberlain <myrmecocystus+r@gmail.com>  
 Bug reports: https://github.com/ropensci/wikitaxa/issues
 
@@ -2474,30 +2991,24 @@ Bug reports: https://github.com/ropensci/worrms/issues
 
 0 errors | 0 warnings | 0 notes
 
-## WufooR (0.6.1)
+## WufooR (0.6.2)
 Maintainer: John Malc <cincenko@outlook.com>  
-Bug reports: http://github.com/dmpe/wufoor/issues
+Bug reports: https://github.com/dmpe/wufoor/issues
 
 0 errors | 0 warnings | 0 notes
 
-## x.ent (1.1.6)
+## x.ent (1.1.7)
 Maintainer: Tien T. Phan <phantien84@gmail.com>  
 Bug reports: https://github.com/win-stub/x.ent/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking whether package ‘x.ent’ can be installed ... ERROR
-Installation failed.
-See ‘/Users/jeroen/workspace/jsonlite/revdep/checks/x.ent.Rcheck/00install.out’ for details.
-```
+0 errors | 0 warnings | 0 notes
 
 ## XR (0.7)
 Maintainer: John Chambers <jmc@r-project.org>
 
 0 errors | 0 warnings | 0 notes
 
-## yhatr (0.15.0)
+## yhatr (0.15.1)
 Maintainer: Greg Lamp <greg@yhathq.com>
 
 0 errors | 0 warnings | 0 notes
@@ -2508,20 +3019,21 @@ Bug reports: https://github.com/RomanTsegelskyi/yummlyr/issues
 
 0 errors | 0 warnings | 0 notes
 
-## Zelig (5.0-17)
+## Zelig (5.1-1)
 Maintainer: Christopher Gandrud <zelig.zee@gmail.com>  
 Bug reports: https://github.com/IQSS/Zelig/issues
 
 0 errors | 0 warnings | 0 notes
 
-## ZeligChoice (0.9-4)
+## ZeligChoice (0.9-5)
 Maintainer: Christopher Gandrud <zelig.zee@gmail.com>  
 Bug reports: https://github.com/IQSS/Zelig/issues
 
 0 errors | 0 warnings | 0 notes
 
-## ZeligEI (0.1-0)
-Maintainer: James Honaker <zelig.zee@gmail.com>
+## ZeligEI (0.1-1)
+Maintainer: Christopher Gandrud <zelig.zee@gmail.com>  
+Bug reports: https://github.com/IQSS/ZeligEI/issues
 
 0 errors | 0 warnings | 0 notes
 
