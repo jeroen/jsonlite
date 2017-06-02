@@ -46,3 +46,13 @@ test_that("Force decimal works", {
   y2 <- fromJSON(toJSON(x1, digits = 9, always_decimal = TRUE), simplifyVector = FALSE)
   expect_identical(as.list(x1), y2)
 })
+
+test_that("Usnig significant digits", {
+  numbers <- rnorm(10)
+  digits <- sample(1:10, 1)
+  expect_equal(toJSON(numbers, digits=I(digits)), toJSON(numbers, digits=digits, use_signif=TRUE))
+
+  expect_equal(toJSON(1.2345, use_signif=TRUE, digits=4), "[1.234]")
+  expect_equal(toJSON(123456, use_signif=TRUE, digits=4), "[1.235e+05]")
+  expect_equal(toJSON(1.234e-5, use_signif=TRUE, digits=4), "[1.234e-05]")
+})
