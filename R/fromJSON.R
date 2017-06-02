@@ -37,6 +37,7 @@
 #' @param auto_unbox automatically \code{\link{unbox}} all atomic vectors of length 1. It is usually safer to avoid this and instead use the \code{\link{unbox}} function to unbox individual elements.
 #'   An exception is that objects of class \code{AsIs} (i.e. wrapped in \code{I()}) are not automatically unboxed. This is a way to mark single values as length-1 arrays.
 #' @param digits max number of decimal digits to print for numeric values. Use \code{I()} to specify significant digits. Use \code{NA} for max precision.
+#' @param use_signif Specify that significant digits should be used. Overides whether digits param is AsIs.
 #' @param force unclass/skip objects of classes with no defined JSON mapping
 #' @param pretty adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}
 #' @param ... arguments passed on to class specific \code{print} methods
@@ -122,4 +123,3 @@ fromJSON_string <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simp
     return(obj)
   }
 }
-

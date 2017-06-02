@@ -3,7 +3,7 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
   Date = c("ISO8601", "epoch"), POSIXt = c("string", "ISO8601", "epoch", "mongo"),
   factor = c("string", "integer"), complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
   null = c("list", "null"), na = c("null", "string"), auto_unbox = FALSE, digits = 4,
-  pretty = FALSE, force = FALSE, ...) {
+  use_signif = is(digits, "AsIs"), pretty = FALSE, force = FALSE, ...) {
 
   # validate args
   dataframe <- match.arg(dataframe)
@@ -30,7 +30,7 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
   # dispatch
   ans <- asJSON(x, dataframe = dataframe, Date = Date, POSIXt = POSIXt, factor = factor,
     complex = complex, raw = raw, matrix = matrix, auto_unbox = auto_unbox, digits = digits,
-    na = na, null = null, force = force, indent = indent, ...)
+    use_signif = use_signif, na = na, null = null, force = force, indent = indent, ...)
 
   #prettify with yajl
   if(is.numeric(pretty)) {

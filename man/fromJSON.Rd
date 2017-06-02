@@ -16,7 +16,8 @@ toJSON(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor",
   "ISO8601", "epoch", "mongo"), factor = c("string", "integer"),
   complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
   null = c("list", "null"), na = c("null", "string"), auto_unbox = FALSE,
-  digits = 4, pretty = FALSE, force = FALSE, ...)
+  digits = 4, use_signif = is(digits, "AsIs"), pretty = FALSE,
+  force = FALSE, ...)
 }
 \arguments{
 \item{txt}{a JSON string, URL or file}
@@ -55,6 +56,8 @@ toJSON(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor",
 An exception is that objects of class \code{AsIs} (i.e. wrapped in \code{I()}) are not automatically unboxed. This is a way to mark single values as length-1 arrays.}
 
 \item{digits}{max number of decimal digits to print for numeric values. Use \code{I()} to specify significant digits. Use \code{NA} for max precision.}
+
+\item{use_signif}{Specify that significant digits should be used. Overides whether digits param is AsIs.}
 
 \item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}}
 
