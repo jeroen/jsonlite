@@ -55,7 +55,8 @@
 #' toJSON(pi, digits=3)
 #' toJSON(pi, digits=I(3))
 #'
-#' \dontrun{retrieve data frame
+#' \dontrun{
+#' #retrieve data frame
 #' data1 <- fromJSON("https://api.github.com/users/hadley/orgs")
 #' names(data1)
 #' data1$login
