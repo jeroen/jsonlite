@@ -6,6 +6,17 @@ setMethod("asJSON", "ANY", function(x, force = FALSE, ...) {
     } else {
       stop("No method for S4 class:", class(x))
     }
+  } else if (R6::is.R6(x)) {
+    fields = names(x$.__enclos_env__$self) #names(get(class(x))$public_fields)
+    to.print = list()
+    if(is.function(x$print)) {
+      return(asJSON(x$print(...)))
+    } else {
+      for(f in fields) {
+        to.print[[f]] = x[[f]]
+      }
+      return(asJSON(to.print))
+    }
   } else if (length(class(x)) > 1) {
     # If an object has multiple classes, we recursively try the next class. This is
     # S3 style dispatching that doesn't work by default for formal method definitions
