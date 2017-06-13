@@ -12,7 +12,7 @@ R6.print <- function(...) {
   for(f in fields) {
     to.print[[f]] = self[[f]]
   }
-  print(to.print);
+  return(to.print);
 }
 
 test_that("Encoding R6 public properties", {
