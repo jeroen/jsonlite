@@ -36,7 +36,7 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
   if(is.numeric(pretty)) {
     prettify(ans, pretty)
   } else {
-    class(ans) <- "json"
+    class(ans) <- c("json", "character")
     return(ans)
   }
 }
