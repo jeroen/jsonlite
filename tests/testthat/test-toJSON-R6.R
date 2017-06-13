@@ -19,7 +19,6 @@ test_that("Encoding R6 public properties", {
   ## Example R6 class:
   ##  > https://github.com/wch/R6/blob/master/tests/testthat/test-portable.R
   AC = R6::R6Class("AC",
-    portable = T,
     cloneable = F,
     public = list(
       x = 1, z = 3,
