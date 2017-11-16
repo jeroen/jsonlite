@@ -1,6 +1,6 @@
 #' @rdname fromJSON
 toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor", "columnmajor"),
-  Date = c("ISO8601", "epoch"), POSIXt = c("string", "ISO8601", "epoch", "mongo"),
+  Date = c("ISO8601", "epoch"), POSIXt = c("string", "ISO8601", "epoch", "mongo"), difftime = c("string", "epoch"),
   factor = c("string", "integer"), complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
   null = c("list", "null"), na = c("null", "string"), auto_unbox = FALSE, digits = 4,
   pretty = FALSE, force = FALSE, ...) {
@@ -10,6 +10,7 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
   matrix <- match.arg(matrix)
   Date <- match.arg(Date)
   POSIXt <- match.arg(POSIXt)
+  difftime <- match.arg(difftime)
   factor <- match.arg(factor)
   complex <- match.arg(complex)
   raw <- match.arg(raw)
@@ -28,7 +29,7 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
   indent <- if (isTRUE(pretty)) 0L else NA_integer_
 
   # dispatch
-  ans <- asJSON(x, dataframe = dataframe, Date = Date, POSIXt = POSIXt, factor = factor,
+  ans <- asJSON(x, dataframe = dataframe, Date = Date, POSIXt = POSIXt, difftime = difftime, factor = factor,
     complex = complex, raw = raw, matrix = matrix, auto_unbox = auto_unbox, digits = digits,
     na = na, null = null, force = force, indent = indent, ...)
 
