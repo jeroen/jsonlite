@@ -29,6 +29,7 @@
 #' @param matrix how to encode matrices and higher dimensional arrays: must be one of 'rowmajor' or 'columnmajor'.
 #' @param Date how to encode Date objects: must be one of 'ISO8601' or 'epoch'
 #' @param POSIXt how to encode POSIXt (datetime) objects: must be one of 'string', 'ISO8601', 'epoch' or 'mongo'
+#' @param difftime how to encode difftime objects: must be either 'string' or 'epoch'
 #' @param factor how to encode factor objects: must be one of 'string' or 'integer'
 #' @param complex how to encode complex numbers: must be one of 'string' or 'list'
 #' @param raw how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'
