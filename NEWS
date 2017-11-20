@@ -1,3 +1,6 @@
+1.6
+ - Add asJSON method for hms
+
 1.5
  - Workaround for #180. fromJSON() first checks for literal json, then filename
  - Rename rbind.pages to rbind_pages to fix warning in R-devel (requested by CRAN)
