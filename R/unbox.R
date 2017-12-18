@@ -41,7 +41,7 @@ unbox <- function(x){
       stop("Tried to unbox dataframe with ", nrow(x), " rows.")
     }
   }
-  if(!is.vector(unclass(x)) || !is.atomic(x) || length(dim(x)) > 1){
+  if(is.null(x) || !is.atomic(x) || length(dim(x)) > 1){
     stop("Only atomic vectors of length 1 or data frames with 1 row can be unboxed.")
   }
   if(identical(length(x), 1L)){
