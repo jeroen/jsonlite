@@ -1,5 +1,6 @@
 language: r
 cache: packages
+fortran: false
 
 matrix:
   include:
