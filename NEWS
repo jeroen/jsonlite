@@ -1,6 +1,7 @@
 1.6
  - Add asJSON method for hms
  - Do not require is.vector() for unbox to support values with attributes e.g. tzone
+ - write_json now suppresses recoding of strings on windows, fixes #226
 
 1.5
  - Workaround for #180. fromJSON() first checks for literal json, then filename

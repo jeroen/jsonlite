@@ -25,5 +25,5 @@ read_json <- function(path, simplifyVector = FALSE, ...){
 #' @param ... additional arguments passed to \link{toJSON} or \link{fromJSON}
 write_json <- function(x, path, ...) {
   json <- jsonlite::toJSON(x, ...)
-  writeLines(json, path)
+  writeLines(json, path, useBytes = TRUE)
 }

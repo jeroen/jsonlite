@@ -10,16 +10,17 @@ test_that("test that non ascii characters are ok", {
 
   #create random strings
   objects <- list(
-    "Zürich",
+    enc2utf8("Zürich"),
+    enc2native("Maëlle"),
     "北京填鴨们",
     "ผัดไทย",
     "寿司",
     c("寿司", "Zürich", "foo", "bla\001\002\003bla"),
     rawToChar(as.raw(1:40))
-  );
+  )
 
   lapply(objects, function(x){
-    Encoding(x) <- "UTF-8"
+    #Encoding(x) <- "UTF-8"
     myjson <- toJSON(x, pretty=TRUE);
     expect_that(validate(myjson), is_true());
     expect_that(fromJSON(myjson), equals(x));
@@ -28,6 +29,12 @@ test_that("test that non ascii characters are ok", {
     prettyjson <- prettify(myjson);
     expect_that(validate(prettyjson), is_true());
     expect_that(fromJSON(prettyjson), equals(x));
+
+    #test encoding is preserved when roundtripping to disk
+    tmp <- tempfile()
+    write_json(x, tmp)
+    expect_that(read_json(tmp, simplifyVector = TRUE), equals(x));
+    unlink(tmp)
   });
 
   #Test escaped unicode characters
