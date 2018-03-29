@@ -83,7 +83,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   }
 
   # overload for URL or path
-  if (is.character(txt) && length(txt) == 1 && nchar(txt, type="bytes") < 1000 && !validate(txt)) {
+  if (is.character(txt) && length(txt) == 1 && nchar(txt, type="bytes") < 2084 && !validate(txt)) {
     if (grepl("^https?://", txt, useBytes=TRUE)) {
       loadpkg("curl")
       h <- curl::new_handle(useragent = paste("jsonlite /", R.version.string))
