@@ -20,6 +20,11 @@ pack <- function(obj, ...) {
     encoding.mode <- "namespace"
   }
 
+  # global environment, used in model objects
+  if (encoding.mode == "environment" && identical(obj, .GlobalEnv)) {
+    encoding.mode <- "globalenv"
+  }
+
   # Strip off 'class' from S4 attributes
   attrib <- attributes(obj)
   if(isS4(obj)){
@@ -33,6 +38,7 @@ pack <- function(obj, ...) {
     attributes = givename(lapply(attrib, pack, ...)),
     value = switch(encoding.mode,
       environment = NULL,
+      globalenv = NULL,
       externalptr = NULL,
       namespace = lapply(as.list(getNamespaceInfo(obj, "spec")), as.scalar),
       S4 = list(class = as.scalar(class(obj)),
@@ -78,6 +84,7 @@ unpack <- function(obj) {
   newdata <- c(
     list(.Data = switch(encoding.mode,
       environment = new.env(parent=emptyenv()),
+      globalenv = globalenv(),
       namespace = getNamespace(obj$value$name),
       externalptr = NULL,
       raw = base64_dec(obj$value),

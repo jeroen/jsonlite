@@ -23,6 +23,7 @@ test_that("Serializing Data Objects", {
     parse(text="rnorm(10);"),
     call("rnorm", n=10),
     emptyenv(),
+    globalenv(),
     `if`, #builtin
     `list`, #special
     getNamespace("graphics") #namespace
