@@ -1,1 +1,2 @@
 *.html linguist-documentation=true
+*.tex linguist-documentation=true
