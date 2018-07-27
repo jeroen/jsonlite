@@ -23,6 +23,7 @@
 #' @param simplifyVector coerce JSON arrays containing only primitives into an atomic vector
 #' @param simplifyDataFrame coerce JSON arrays containing only records (JSON objects) into a data frame
 #' @param simplifyMatrix coerce JSON arrays containing vectors of equal mode and dimension into matrix or array
+#' @param recursive simplify recursively
 #' @param flatten automatically \code{\link{flatten}} nested data frames into a single non-nested data frame
 #' @param x the object to be encoded
 #' @param dataframe how to encode data.frame objects: must be one of 'rows', 'columns' or 'values'
@@ -75,7 +76,7 @@
 #' identical(data3, flatten(data2))
 #' }
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, ...) {
+  simplifyMatrix = simplifyVector, recursive = TRUE, flatten = FALSE, ...) {
 
   # check type
   if (!is.character(txt) && !inherits(txt, "connection")) {
@@ -98,11 +99,11 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
 
   # call the actual function (with deprecated arguments)
   fromJSON_string(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
-    simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
+    simplifyMatrix = simplifyMatrix, recursive = TRUE, flatten = flatten, ...)
 }
 
 fromJSON_string <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, validate = TRUE, bigint_as_char = FALSE, ...){
+  simplifyMatrix = simplifyVector, recursive = TRUE, flatten = FALSE, unicode = TRUE, validate = TRUE, bigint_as_char = FALSE, ...){
 
   if(!missing(unicode)){
     message("Argument unicode has been deprecated. YAJL always parses unicode.")
@@ -118,7 +119,7 @@ fromJSON_string <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simp
   # post processing
   if (any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))) {
     return(simplify(obj, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
-      simplifyMatrix = simplifyMatrix, flatten = flatten, ...))
+      simplifyMatrix = simplifyMatrix, recursive = recursive, flatten = flatten, ...))
   } else {
     return(obj)
   }

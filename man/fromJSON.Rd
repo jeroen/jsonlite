@@ -9,7 +9,7 @@
 \title{Convert \R{} objects to/from JSON}
 \usage{
 fromJSON(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, ...)
+  simplifyMatrix = simplifyVector, recursive = TRUE, flatten = FALSE, ...)
 
 toJSON(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor",
   "columnmajor"), Date = c("ISO8601", "epoch"), POSIXt = c("string",
@@ -26,6 +26,8 @@ toJSON(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor",
 \item{simplifyDataFrame}{coerce JSON arrays containing only records (JSON objects) into a data frame}
 
 \item{simplifyMatrix}{coerce JSON arrays containing vectors of equal mode and dimension into matrix or array}
+
+\item{recursive}{simplify recursively}
 
 \item{flatten}{automatically \code{\link{flatten}} nested data frames into a single non-nested data frame}
 
@@ -93,7 +95,8 @@ fromJSON('{"city" : "Z\\\\u00FCrich"}')
 toJSON(pi, digits=3)
 toJSON(pi, digits=I(3))
 
-\dontrun{retrieve data frame
+\dontrun{
+#retrieve data frame
 data1 <- fromJSON("https://api.github.com/users/hadley/orgs")
 names(data1)
 data1$login

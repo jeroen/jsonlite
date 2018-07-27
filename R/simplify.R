@@ -1,6 +1,6 @@
 simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE,
   simplifyDate = simplifyVector, homoList = TRUE, flatten = FALSE, columnmajor = FALSE,
-  simplifySubMatrix = simplifyMatrix) {
+  simplifySubMatrix = simplifyMatrix, recursive = TRUE) {
 
   #This includes '[]' and '{}')
   if (!is.list(x) || !length(x)) {
@@ -9,7 +9,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
 
   # list can be a dataframe recordlist
   if (isTRUE(simplifyDataFrame) && is.recordlist(x)) {
-    mydf <- simplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix)
+    mydf <- simplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix, recursive = recursive)
     if(isTRUE(simplifyDate) && is.data.frame(mydf) && is.datelist(mydf)){
       return(parse_date(mydf[["$date"]]))
     }
@@ -21,9 +21,13 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     return(list_to_vec(x))
   }
 
+  out <- x
+
   # apply recursively
-  out <- lapply(x, simplify, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
-    simplifyMatrix = simplifySubMatrix, columnmajor = columnmajor, flatten = flatten)
+  if (isTRUE(recursive)) {
+    out <- lapply(x, simplify, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
+      simplifyMatrix = simplifySubMatrix, columnmajor = columnmajor, flatten = flatten)
+  }
 
   # fix for mongo style dates turning into scalars *after* simplifying
   # only happens when simplifyDataframe=FALSE
