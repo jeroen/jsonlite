@@ -1,6 +1,6 @@
 setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), collapse = TRUE,
   dataframe = c("rows", "columns", "values"), complex = "string", oldna = NULL, rownames = NULL,
-  keep_vec_names = FALSE, indent = NA_integer_, no_dots = FALSE, ...) {
+  keep_vec_names = FALSE, auto_unbox = FALSE, indent = NA_integer_, no_dots = FALSE, ...) {
 
   # Coerse pairlist if needed
   if (is.pairlist(x)) {
@@ -35,7 +35,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   # Column based is same as list. Do not pass collapse arg because it is a named list.
   if (dataframe == "columns") {
     return(asJSON(as.list(x), is_df = TRUE, na = na, dataframe = dataframe,
-      complex = complex, rownames = rownames, indent = indent, no_dots = no_dots, ...))
+      complex = complex, rownames = rownames, auto_unbox = auto_unbox, indent = indent, no_dots = no_dots, ...))
   }
 
   # Determine "oldna". This is needed when the data frame contains a list column
