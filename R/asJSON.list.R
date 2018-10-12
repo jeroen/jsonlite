@@ -1,5 +1,5 @@
 setMethod("asJSON", "list", function(x, collapse = TRUE, na = NULL, oldna = NULL,
-  is_df = FALSE, auto_unbox = FALSE, indent = NA_integer_, no_dots = FALSE, ...) {
+  is_df = FALSE, auto_unbox = FALSE, indent = NA_integer_, no_dots = FALSE, dup_names = FALSE, ...) {
 
   # reset na arg when called from data frame
   if(identical(na, "NA")){
@@ -41,7 +41,7 @@ setMethod("asJSON", "list", function(x, collapse = TRUE, na = NULL, oldna = NULL
       warning("collapse=FALSE called for named list.")
     }
     #in case of named list:
-    objnames <- deparse_vector(cleannames(names(x), no_dots = no_dots))
+    objnames <- deparse_vector(cleannames(names(x), no_dots = no_dots, dup_names = dup_names))
     collapse_object(objnames, tmp, indent)
   } else {
     #in case of unnamed list:
