@@ -1,6 +1,6 @@
 1.6
  - Add asJSON method for hms
- - Do not require is.vector() for unbox to support values with attributes e.g. tzone
+ - Do not require is.vector() for unbox to support values with attributes e.g. factor or tzone
  - write_json now suppresses recoding of strings on windows, fixes #226
 
 1.5
