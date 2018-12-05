@@ -2,7 +2,6 @@
 % Please edit documentation in R/rbind.pages.R
 \name{rbind_pages}
 \alias{rbind_pages}
-\alias{rbind.pages}
 \title{Combine pages into a single data frame}
 \usage{
 rbind_pages(pages)

@@ -4,7 +4,6 @@
 \alias{prettify, minify}
 \alias{prettify}
 \alias{minify}
-\alias{minify}
 \title{Prettify or minify a JSON string}
 \usage{
 prettify(txt, indent = 4)

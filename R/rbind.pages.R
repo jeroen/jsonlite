@@ -12,8 +12,7 @@
 #' has to be present in each of the individual data frames; missing columns will be filled
 #' up in \code{NA} values.
 #'
-#' @export rbind_pages rbind.pages
-#' @aliases rbind_pages rbind.pages
+#' @export
 #' @param pages a list of data frames, each representing a \emph{page} of data
 #' @examples # Basic example
 #' x <- data.frame(foo = rnorm(3), bar = c(TRUE, FALSE, TRUE))
@@ -85,9 +84,4 @@ rbind_pages <- function(pages){
 
   #out
   outdf
-}
-
-rbind.pages <- function(...){
-  .Deprecated('rbind_pages')
-  rbind_pages(...)
 }

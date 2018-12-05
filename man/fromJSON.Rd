@@ -5,18 +5,19 @@
 \alias{fromJSON}
 \alias{toJSON}
 \alias{jsonlite}
-\alias{toJSON}
 \title{Convert \R{} objects to/from JSON}
 \usage{
-fromJSON(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, ...)
+fromJSON(txt, simplifyVector = TRUE,
+  simplifyDataFrame = simplifyVector, simplifyMatrix = simplifyVector,
+  flatten = FALSE, ...)
 
-toJSON(x, dataframe = c("rows", "columns", "values"), matrix = c("rowmajor",
-  "columnmajor"), Date = c("ISO8601", "epoch"), POSIXt = c("string",
-  "ISO8601", "epoch", "mongo"), factor = c("string", "integer"),
-  complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
-  null = c("list", "null"), na = c("null", "string"), auto_unbox = FALSE,
-  digits = 4, pretty = FALSE, force = FALSE, ...)
+toJSON(x, dataframe = c("rows", "columns", "values"),
+  matrix = c("rowmajor", "columnmajor"), Date = c("ISO8601", "epoch"),
+  POSIXt = c("string", "ISO8601", "epoch", "mongo"),
+  factor = c("string", "integer"), complex = c("string", "list"),
+  raw = c("base64", "hex", "mongo"), null = c("list", "null"),
+  na = c("null", "string"), auto_unbox = FALSE, digits = 4,
+  pretty = FALSE, force = FALSE, ...)
 }
 \arguments{
 \item{txt}{a JSON string, URL or file}
@@ -93,7 +94,8 @@ fromJSON('{"city" : "Z\\\\u00FCrich"}')
 toJSON(pi, digits=3)
 toJSON(pi, digits=I(3))
 
-\dontrun{retrieve data frame
+\dontrun{
+#retrieve data frame
 data1 <- fromJSON("https://api.github.com/users/hadley/orgs")
 names(data1)
 data1$login
