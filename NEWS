@@ -1,4 +1,5 @@
 1.6
+ - Add parse_json() wrapper that does not guess if a string is actually a file/url
  - Add asJSON method for hms
  - Do not require is.vector() for unbox to support values with attributes e.g. factor or tzone
  - write_json now suppresses recoding of strings on windows, fixes #226
