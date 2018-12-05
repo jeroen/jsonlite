@@ -2,10 +2,13 @@
 % Please edit documentation in R/read_json.R
 \name{read_json}
 \alias{read_json}
+\alias{parse_json}
 \alias{write_json}
 \title{Read/write JSON}
 \usage{
 read_json(path, simplifyVector = FALSE, ...)
+
+parse_json(json, simplifyVector = FALSE, ...)
 
 write_json(x, path, ...)
 }
@@ -14,13 +17,16 @@ write_json(x, path, ...)
 
 \item{simplifyVector}{simplifies nested lists into vectors and data frames. See \link{fromJSON}.}
 
-\item{...}{additional arguments passed to \link{toJSON} or \link{fromJSON}}
+\item{...}{additional conversion arguments, see also \link{toJSON} or \link{fromJSON}}
+
+\item{json}{string with literal json or connection object to read from}
 
 \item{x}{an object to be serialized to JSON}
 }
 \description{
-Convenience wrappers around \link{toJSON} and \link{fromJSON} to read and
-write directly to/from disk.
+These functions are similar to \link{toJSON} and \link{fromJSON} except they
+explicitliy distinguish between path and literal input, and do not simplify
+by default.
 }
 \examples{
 tmp <- tempfile()

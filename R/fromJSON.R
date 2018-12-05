@@ -97,11 +97,11 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   }
 
   # call the actual function (with deprecated arguments)
-  fromJSON_string(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
+  parse_and_simplify(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
     simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
 }
 
-fromJSON_string <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
+parse_and_simplify <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
   simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, validate = TRUE, bigint_as_char = FALSE, ...){
 
   if(!missing(unicode)){

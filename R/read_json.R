@@ -1,10 +1,11 @@
 #' Read/write JSON
 #'
-#' Convenience wrappers around \link{toJSON} and \link{fromJSON} to read and
-#' write directly to/from disk.
+#' These functions are similar to \link{toJSON} and \link{fromJSON} except they
+#' explicitliy distinguish between path and literal input, and do not simplify
+#' by default.
 #'
-#' @rdname read_json
 #' @export
+#' @rdname read_json
 #' @param path file on disk
 #' @param simplifyVector simplifies nested lists into vectors and data frames. See \link{fromJSON}.
 #' @examples tmp <- tempfile()
@@ -16,13 +17,20 @@
 #' # A data frame
 #' read_json(tmp, simplifyVector = TRUE)
 read_json <- function(path, simplifyVector = FALSE, ...){
-  fromJSON(file(path), simplifyVector = simplifyVector, ...)
+  parse_json(file(path), simplifyVector = simplifyVector, ...)
 }
 
-#' @rdname read_json
 #' @export
+#' @rdname read_json
+#' @param json string with literal json or connection object to read from
+parse_json <- function(json, simplifyVector = FALSE, ...){
+  parse_and_simplify(json, simplifyVector = simplifyVector, ...)
+}
+
+#' @export
+#' @rdname read_json
 #' @param x an object to be serialized to JSON
-#' @param ... additional arguments passed to \link{toJSON} or \link{fromJSON}
+#' @param ... additional conversion arguments, see also \link{toJSON} or \link{fromJSON}
 write_json <- function(x, path, ...) {
   json <- jsonlite::toJSON(x, ...)
   writeLines(json, path, useBytes = TRUE)
