@@ -1,5 +1,6 @@
 language: r
 fortran: false
+latex: false
 
 matrix:
   include:
@@ -30,9 +31,6 @@ notifications:
   email:
     on_success: change
     on_failure: change
-
-before_install:
-  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo tlmgr install preprint; fi
 
 after_success:
   - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
