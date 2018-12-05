@@ -18,7 +18,7 @@ book. In practice this is often implemented using a \code{page} parameter in the
 \code{rbind_pages} function can be used to combine these pages back into a single dataset.
 }
 \details{
-The \code{\link{rbind_pages}} function generalizes \code{\link[base:rbind]{base::rbind}} and
+The \code{\link{rbind_pages}} function generalizes \code{\link[base:cbind]{base::rbind}} and
 \code{\link[plyr:rbind.fill]{plyr::rbind.fill}} with added support for nested data frames. Not each column
 has to be present in each of the individual data frames; missing columns will be filled
 up in \code{NA} values.
