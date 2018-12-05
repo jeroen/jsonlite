@@ -70,20 +70,20 @@ Below an example from the [ProPublica Nonprofit Explorer API](http://projects.pr
 
 ```{r, message=FALSE}
 #store all pages in a list first
-baseurl <- "https://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
+baseurl <- "https://projects.propublica.org/nonprofits/api/v2/search.json?order=revenue&sort_order=desc"
 pages <- list()
 for(i in 0:10){
   mydata <- fromJSON(paste0(baseurl, "&page=", i), flatten=TRUE)
   message("Retrieving page ", i)
-  pages[[i+1]] <- mydata$filings
+  pages[[i+1]] <- mydata$organizations
 }
 
 #combine all into one
-filings <- rbind_pages(pages)
+organizations <- rbind_pages(pages)
 
 #check output
-nrow(filings)
-filings[1:10, c("organization.sub_name", "organization.city", "totrevenue")]
+nrow(organizations)
+organizations[1:10, c("name", "city", "strein")]
 ```
 
 
@@ -115,24 +115,6 @@ reviews <- req$results
 colnames(reviews)
 reviews[1:5, c("display_title", "byline", "mpaa_rating")]
 
-```
-
-## Sunlight Foundation
-
-The Sunlight Foundation is a non-profit that helps to make government transparent and accountable through data, tools, policy and journalism. Register a free key at [here](http://sunlightfoundation.com/api/accounts/register/). An example key is provided.
-
-```{r}
-key <- "&apikey=39c83d5a4acc42be993ee637e2e4ba3d"
-
-#Find bills about drones
-drone_bills <- fromJSON(paste0("http://openstates.org/api/v1/bills/?q=drone", key))
-drone_bills$title <- substring(drone_bills$title, 1, 40)
-print(drone_bills[1:5, c("title", "state", "chamber", "type")])
-
-#Local legislators
-legislators <- fromJSON(paste0("http://congress.api.sunlightfoundation.com/",
-  "legislators/locate?latitude=42.96&longitude=-108.09", key))
-subset(legislators$results, select=c("last_name", "chamber", "term_start", "twitter_id"))
 ```
 
 ## Twitter

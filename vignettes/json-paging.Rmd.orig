@@ -43,28 +43,28 @@ The `mydata` object is a data frame which can be used directly for modeling or v
 A question that comes up frequently is how to combine pages of data. Most web APIs limit the amount of data that can be retrieved per request. If the client needs more data than what can fits in a single request, it needs to break down the data into multiple requests that each retrieve a fragment (page) of data, not unlike pages in a book. In practice this is often implemented using a `page` parameter in the API. Below an example from the [ProPublica Nonprofit Explorer API](http://projects.propublica.org/nonprofits/api) where we retrieve the first 3 pages of tax-exempt organizations in the USA, ordered by revenue:
 
 ```{r}
-baseurl <- "https://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
+baseurl <- "https://projects.propublica.org/nonprofits/api/v2/search.json?order=revenue&sort_order=desc"
 mydata0 <- fromJSON(paste0(baseurl, "&page=0"), flatten = TRUE)
 mydata1 <- fromJSON(paste0(baseurl, "&page=1"), flatten = TRUE)
 mydata2 <- fromJSON(paste0(baseurl, "&page=2"), flatten = TRUE)
 
-#The actual data is in the filings element
-mydata0$filings[1:10, c("organization.sub_name", "organization.city", "totrevenue")]
+#The actual data is in the organizations element
+mydata0$organizations[1:10, c("name", "city", "strein")]
 ```
 
-To analyze or visualize these data, we need to combine the pages into a single dataset. We can do this with the `rbind_pages` function. Note that in this example, the actual data is contained by the `filings` field:
+To analyze or visualize these data, we need to combine the pages into a single dataset. We can do this with the `rbind_pages` function. Note that in this example, the actual data is contained by the `organizations` field:
 
 ```{r}
 #Rows per data frame
-nrow(mydata0$filings)
+nrow(mydata0$organizations)
 
 #Combine data frames
-filings <- rbind_pages(
-  list(mydata0$filings, mydata1$filings, mydata2$filings)
+organizations <- rbind_pages(
+  list(mydata0$organizations, mydata1$organizations, mydata2$organizations)
 )
 
 #Total number of rows
-nrow(filings)
+nrow(organizations)
 ```
 
 ## Automatically combining many pages
@@ -73,20 +73,20 @@ We can write a simple loop that automatically downloads and combines many pages.
 
 ```{r, message=FALSE}
 #store all pages in a list first
-baseurl <- "https://projects.propublica.org/nonprofits/api/v1/search.json?order=revenue&sort_order=desc"
+baseurl <- "https://projects.propublica.org/nonprofits/api/v2/search.json?order=revenue&sort_order=desc"
 pages <- list()
 for(i in 0:20){
   mydata <- fromJSON(paste0(baseurl, "&page=", i))
   message("Retrieving page ", i)
-  pages[[i+1]] <- mydata$filings
+  pages[[i+1]] <- mydata$organizations
 }
 
 #combine all into one
-filings <- rbind_pages(pages)
+organizations <- rbind_pages(pages)
 
 #check output
-nrow(filings)
-colnames(filings)
+nrow(organizations)
+colnames(organizations)
 ```
 
-From here, we can go straight to analyzing the filings data without any further tedious data manipulation.
+From here, we can go straight to analyzing the organizations data without any further tedious data manipulation.
