@@ -8,8 +8,10 @@ SEXP R_validate(SEXP x) {
 
     /* test for BOM */
     if(json[0] == '\xEF' && json[1] == '\xBB' && json[2] == '\xBF'){
-      SEXP output = duplicate(ScalarLogical(0));
-      setAttrib(output, install("err"), mkString("JSON string contains UTF8 byte-order-mark."));
+      SEXP output = PROTECT(duplicate(ScalarLogical(0)));
+      SEXP msg = PROTECT(Rf_mkString("JSON string contains UTF8 byte-order-mark."));
+      setAttrib(output, install("err"), msg);
+      UNPROTECT(2);
       return(output);
     }
 
@@ -31,10 +33,12 @@ SEXP R_validate(SEXP x) {
     //error message
     if (stat != yajl_status_ok) {
         unsigned char* str = yajl_get_error(hand, 1, (const unsigned char*) json, rd);
-        SEXP errstr = mkString((const char *) str);
+        SEXP errstr = PROTECT(mkString((const char *) str));
+        SEXP offset = PROTECT(ScalarInteger(yajl_get_bytes_consumed(hand)));
         yajl_free_error(hand, str);
-        setAttrib(output, install("offset"), ScalarInteger(yajl_get_bytes_consumed(hand)));
+        setAttrib(output, install("offset"), offset);
         setAttrib(output, install("err"), errstr);
+        UNPROTECT(2);
     }
 
     /* return boolean vec (0 means no errors, means is valid) */
