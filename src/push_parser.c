@@ -18,7 +18,7 @@ SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
     PROTECT(Rf_allocVector(RAWSXP, 0)),
     PROTECT(Rf_ScalarInteger(bufsize))));
   while(1){
-    SEXP out = PROTECT(Rf_eval(call, R_GlobalEnv));
+    SEXP out = PROTECT(Rf_eval(call, R_BaseEnv));
     int len = Rf_length(out);
     if(len <= 0){
       UNPROTECT(1);
