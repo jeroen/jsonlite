@@ -6,35 +6,25 @@
 #include <yajl_parse.h>
 #include "push_parser.h"
 
-#if R_CONNECTIONS_VERSION != 1
-#error "Missing or unsupported connection API in R"
-#endif
-
-Rconnection get_connection(SEXP con) {
-#if defined(R_VERSION) && R_VERSION >= R_Version(3, 3, 0)
-  return R_GetConnection(con);
-# else
-  extern Rconnection getConnection(int) ;
-  if (!Rf_inherits(con, "connection"))
-    Rf_error("invalid connection");
-  return getConnection(Rf_asInteger(con));
-#endif
-}
-
-#define bufsize 1024
+#define bufsize 32768
 SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
-  Rconnection con = get_connection(sConn);
   int first = 1;
   char errbuf[bufsize];
-  unsigned char buf[bufsize];
-  unsigned char * ptr = buf;
   unsigned char * errstr;
   yajl_handle push_parser = push_parser_new();
+  SEXP call = PROTECT(Rf_lang4(
+    PROTECT(Rf_install("readBin")),
+    sConn,
+    PROTECT(Rf_allocVector(RAWSXP, 0)),
+    PROTECT(Rf_ScalarInteger(bufsize))));
   while(1){
-    R_CheckUserInterrupt();
-    int len = R_ReadConnection(con, ptr, bufsize);
-    if(len <= 0)
+    SEXP out = PROTECT(Rf_eval(call, R_GlobalEnv));
+    int len = Rf_length(out);
+    if(len <= 0){
+      UNPROTECT(1);
       break;
+    }
+    unsigned char * ptr = RAW(out);
 
     //strip off BOM
     if(first && len > 3 && ptr[0] == 239 && ptr[1] == 187 && ptr[2] == 191){
@@ -56,7 +46,9 @@ SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
       errstr = yajl_get_error(push_parser, 1, ptr, len);
       goto JSON_FAIL;
     }
+    UNPROTECT(1);
   }
+  UNPROTECT(4);
 
   /* complete parse */
   if (yajl_complete_parse(push_parser) != yajl_status_ok){
