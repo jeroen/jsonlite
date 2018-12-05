@@ -120,7 +120,7 @@ SEXP R_reformat(SEXP x, SEXP pretty, SEXP indent_string) {
     //error message
     if (stat != yajl_status_ok) {
       unsigned char* str = yajl_get_error(hand, 1, (const unsigned char*) json, rd);
-      output = mkString((const char*) str);
+      output = PROTECT(mkString((const char*) str));
       yajl_free_error(hand, str);
     } else {
       //create R object
@@ -132,7 +132,6 @@ SEXP R_reformat(SEXP x, SEXP pretty, SEXP indent_string) {
       output = PROTECT(allocVector(STRSXP, 1));
       SET_STRING_ELT(output, 0, mkCharCE((const char*) buf, CE_UTF8));
       setAttrib(output, R_ClassSymbol, mkString("json"));
-      UNPROTECT(1);
     }
 
     /* clean up */
@@ -144,6 +143,6 @@ SEXP R_reformat(SEXP x, SEXP pretty, SEXP indent_string) {
     SEXP vec = PROTECT(allocVector(VECSXP, 2));
     SET_VECTOR_ELT(vec, 0, ScalarInteger(stat));
     SET_VECTOR_ELT(vec, 1, output);
-    UNPROTECT(1);
+    UNPROTECT(2);
     return vec;
 }

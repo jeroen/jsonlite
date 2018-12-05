@@ -58,9 +58,10 @@ SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
 
   /* get output */
   yajl_val tree = push_parser_get(push_parser);
-  SEXP out = ParseValue(tree, asLogical(bigint_as_char));
+  SEXP out = PROTECT(ParseValue(tree, asLogical(bigint_as_char)));
   yajl_tree_free(tree);
   yajl_free(push_parser);
+  UNPROTECT(1);
   return out;
 
   JSON_FAIL:
