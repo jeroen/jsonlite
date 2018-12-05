@@ -124,3 +124,6 @@ parse_and_simplify <- function(txt, simplifyVector = TRUE, simplifyDataFrame = s
   }
 }
 
+
+# Backward compatiblity
+fromJSON_string <- parse_and_simplify
