@@ -12,6 +12,13 @@ install:
 
 # Adapt as necessary starting from here
 
+environment:
+  matrix:
+    - R_VERSION: stable
+      R_ARCH: x64
+    - R_VERSION: patched
+      R_ARCH: x64
+
 build_script:
   - travis-tool.sh install_deps
 
