@@ -29,16 +29,16 @@ x <- data.frame(foo = rnorm(3), bar = c(TRUE, FALSE, TRUE))
 y <- data.frame(foo = rnorm(2), col = c("blue", "red"))
 rbind_pages(list(x, y))
 
-\dontrun{
-baseurl <- "http://projects.propublica.org/nonprofits/api/v1/search.json"
+\donttest{
+baseurl <- "https://projects.propublica.org/nonprofits/api/v2/search.json"
 pages <- list()
 for(i in 0:20){
   mydata <- fromJSON(paste0(baseurl, "?order=revenue&sort_order=desc&page=", i))
   message("Retrieving page ", i)
-  pages[[i+1]] <- mydata$filings
+  pages[[i+1]] <- mydata$organizations
 }
-filings <- rbind_pages(pages)
-nrow(filings)
-colnames(filings)
+organizations <- rbind_pages(pages)
+nrow(organizations)
+colnames(organizations)
 }
 }
