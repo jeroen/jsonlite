@@ -21,9 +21,9 @@ SEXP C_row_collapse_object(SEXP names, SEXP m, SEXP indent){
       SET_STRING_ELT(vec, j, STRING_ELT(m, j*x + i));
     }
     if(asInteger(indent) == NA_INTEGER){
-      SET_STRING_ELT(out, i, asChar(C_collapse_object(names, vec)));
+      SET_STRING_ELT(out, i, STRING_ELT(C_collapse_object(names, vec), 0));
     } else {
-      SET_STRING_ELT(out, i, asChar(C_collapse_object_pretty(names, vec, indent)));
+      SET_STRING_ELT(out, i, STRING_ELT(C_collapse_object_pretty(names, vec, indent), 0));
     }
   }
   UNPROTECT(2);
@@ -45,9 +45,9 @@ SEXP C_row_collapse_array(SEXP m, SEXP indent){
       SET_STRING_ELT(vec, j, STRING_ELT(m, j*x + i));
     }
     if(asInteger(indent) == NA_INTEGER){
-      SET_STRING_ELT(out, i, asChar(C_collapse_array(vec)));
+      SET_STRING_ELT(out, i, STRING_ELT(C_collapse_array(vec), 0));
     } else {
-      SET_STRING_ELT(out, i, asChar(C_collapse_array_pretty_inner(vec, indent)));
+      SET_STRING_ELT(out, i, STRING_ELT(C_collapse_array_pretty_inner(vec, indent), 0));
     }
   }
   UNPROTECT(2);
