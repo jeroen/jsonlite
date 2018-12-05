@@ -1,3 +1,5 @@
+Meta
+doc
 .Rproj.user
 .Rhistory
 .RData
@@ -22,5 +24,4 @@ man/as.scalar.Rd
 vignettes/framed.sty
 vignettes/.DS_Store
 .DS_Store
-
 
