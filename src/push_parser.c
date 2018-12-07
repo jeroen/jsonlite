@@ -65,7 +65,7 @@ SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
   return out;
 
   JSON_FAIL:
-    strncpy(errbuf, (char *) errstr, bufsize);
+    strncpy(errbuf, (char *) errstr, bufsize - 1);
     yajl_free_error(push_parser, errstr);
     yajl_free(push_parser);
     Rf_error(errbuf);
