@@ -14,7 +14,7 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
     df <- data.frame("$date" = floor(unclass(x) * 1000), check.names = FALSE)
     if(inherits(x, "scalar"))
       class(df) <- c("scalar", class(df))
-    return(asJSON(df, digits = NA, always_decimal = FALSE, ...))
+    return(asJSON(df, collapse = FALSE, digits = NA, always_decimal = FALSE, ...))
   }
 
   # Epoch millis
