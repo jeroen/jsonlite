@@ -1,5 +1,6 @@
 setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch",
-  "mongo"), UTC = FALSE, digits, time_format = NULL, always_decimal = FALSE, ...) {
+  "mongo"), UTC = FALSE, digits, time_format = NULL, always_decimal = FALSE,
+  na = c("null", "string", "NA"), ...) {
   # note: UTC argument doesn't seem to be working consistently maybe use ?format
   # instead of ?as.character
 
@@ -14,7 +15,18 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
     df <- data.frame("$date" = floor(unclass(x) * 1000), check.names = FALSE)
     if(inherits(x, "scalar"))
       class(df) <- c("scalar", class(df))
-    return(asJSON(df, digits = NA, always_decimal = FALSE, ...))
+    tmp <- asJSON(df, digits = NA, always_decimal = FALSE, ...)
+    if (any(missings <- which(is.na(x)))) {
+      na <- match.arg(na)
+      if (na %in% c("null")) {
+        tmp[missings] <- "null"
+      } else if(na %in% "string") {
+        tmp[missings] <- "\"NA\""
+      } else {
+        tmp[missings] <- NA_character_
+      }
+    }
+    return(tmp)
   }
 
   # Epoch millis
