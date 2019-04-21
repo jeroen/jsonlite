@@ -31,7 +31,7 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
 
   # Epoch millis
   if (POSIXt == "epoch") {
-    return(asJSON(floor(unclass(as.POSIXct(x)) * 1000), digits = digits, always_decimal = FALSE, ...))
+    return(asJSON(floor(unclass(as.POSIXct(x)) * 1000), digits = digits, always_decimal = FALSE, na = na, ...))
   }
 
   # Strings
@@ -46,8 +46,8 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
   }
 
   if (isTRUE(UTC)) {
-    asJSON(as.character(x, format = time_format, tz = "UTC"), ...)
+    asJSON(as.character(x, format = time_format, tz = "UTC"), na = na, ...)
   } else {
-    asJSON(as.character(x, format = time_format), ...)
+    asJSON(as.character(x, format = time_format), na = na, ...)
   }
 })
