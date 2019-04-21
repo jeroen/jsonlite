@@ -19,9 +19,9 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
     if (any(missings <- which(is.na(x)))) {
       na <- match.arg(na)
       if (na %in% c("null")) {
-        tmp[missings] <- "null"
+        tmp <- gsub("{}","null", tmp, fixed = TRUE)
       } else if(na %in% "string") {
-        tmp[missings] <- "\"NA\""
+        tmp <- gsub("{}","\"NA\"", tmp, fixed = TRUE)
       } else {
         tmp[missings] <- NA_character_
       }
