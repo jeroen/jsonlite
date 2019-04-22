@@ -70,11 +70,10 @@ test_that("POSIXt NA values", {
     expect_that(toJSON(data.frame(foo=object), na="string"), equals("[{\"foo\":\"2013-06-17 22:33:44\"},{\"foo\":\"NA\"}]"));
   });
 
-  tzobject <- list(
+  tzobj <- list(
     c(objects[[3]], NA),
     c(objects[[4]], NA)
-  )
-
+  );
   lapply(tzobj, function(object) {
     expect_that(toJSON(object, POSIXt = "mongo"), equals("[{\"$date\":1371474224000},null]"));
     expect_that(toJSON(object, POSIXt = "mongo", na="string"), equals("[{\"$date\":1371474224000},\"NA\"]"));
