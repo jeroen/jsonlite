@@ -24,3 +24,10 @@ is.namedlist <- function(x) {
 is.unnamedlist <- function(x) {
   isTRUE(is.list(x) && is.null(names(x)))
 }
+
+is.mongoposixtlist <- function(x) {
+  isTRUE(is.list(x)) &&
+    unique(unlist(lapply(x,names))) == "$date" &&
+    all(sapply(x, length) == 1) &&
+    is.recordlist(x[sapply(lapply(x,names),length)])
+}

@@ -6,9 +6,8 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
   if (!is.list(x) || !length(x)) {
     return(x)
   }
-
-  # list can be a dataframe recordlist
-  if (isTRUE(simplifyDataFrame) && is.recordlist(x)) {
+  # list can be a dataframe recordlist or a mongo posixt recordlist
+  if (isTRUE(simplifyDataFrame) && (is.recordlist(x) || is.mongoposixtlist(x))) {
     mydf <- simplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix)
     if(isTRUE(simplifyDate) && is.data.frame(mydf) && is.datelist(mydf)){
       return(parse_date(mydf[["$date"]]))
