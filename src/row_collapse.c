@@ -4,7 +4,7 @@
 
 SEXP C_collapse_object(SEXP x, SEXP y);
 SEXP C_collapse_array(SEXP x);
-SEXP C_collapse_array_pretty_inner(SEXP x, SEXP indent);
+SEXP C_collapse_array_pretty_inner(SEXP x);
 SEXP C_collapse_object_pretty(SEXP x, SEXP y, SEXP indent);
 
 SEXP C_row_collapse_object(SEXP names, SEXP m, SEXP indent){
@@ -47,7 +47,7 @@ SEXP C_row_collapse_array(SEXP m, SEXP indent){
     if(asInteger(indent) == NA_INTEGER){
       SET_STRING_ELT(out, i, STRING_ELT(C_collapse_array(vec), 0));
     } else {
-      SET_STRING_ELT(out, i, STRING_ELT(C_collapse_array_pretty_inner(vec, indent), 0));
+      SET_STRING_ELT(out, i, STRING_ELT(C_collapse_array_pretty_inner(vec), 0));
     }
   }
   UNPROTECT(2);

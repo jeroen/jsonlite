@@ -1,3 +1,6 @@
+1.7
+ - Fix bug in C_collapse_array_pretty_inner declarationdetected by CRAN LTO
+
 1.6
  - Add parse_json() wrapper that does not guess if a string is actually a file/url
  - Fix a few rchk warnings (mostly false positives)
