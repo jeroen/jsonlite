@@ -69,6 +69,18 @@ test_that("POSIXt NA values", {
     expect_that(toJSON(data.frame(foo=object), na="null"), equals("[{\"foo\":\"2013-06-17 22:33:44\"},{\"foo\":null}]"));
     expect_that(toJSON(data.frame(foo=object), na="string"), equals("[{\"foo\":\"2013-06-17 22:33:44\"},{\"foo\":\"NA\"}]"));
   });
+
+  tzobj <- list(
+    c(objects[[3]], NA),
+    c(objects[[4]], NA)
+  );
+  lapply(tzobj, function(object) {
+    expect_that(toJSON(object, POSIXt = "mongo"), equals("[{\"$date\":1371474224000},null]"));
+    expect_that(toJSON(object, POSIXt = "mongo", na="string"), equals("[{\"$date\":1371474224000},\"NA\"]"));
+    expect_that(toJSON(data.frame(foo=object), POSIXt = "mongo"), equals("[{\"foo\":{\"$date\":1371474224000}},{}]"));
+    expect_that(toJSON(data.frame(foo=object), POSIXt = "mongo", na="null"), equals("[{\"foo\":{\"$date\":1371474224000}},{\"foo\":null}]"));
+    expect_that(toJSON(data.frame(foo=object), POSIXt = "mongo", na="string"), equals("[{\"foo\":{\"$date\":1371474224000}},{\"foo\":\"NA\"}]"));
+  })
 });
 
 test_that("Negative dates", {
