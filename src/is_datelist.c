@@ -12,6 +12,8 @@ SEXP C_is_datelist(SEXP x) {
     SEXP el = VECTOR_ELT(x, i);
     if(Rf_isNull(el))
       continue;
+    if(Rf_isString(el) && Rf_length(el) > 0 && !strcmp(CHAR(STRING_ELT(el, 0)), "NA"))
+      continue;
     if(Rf_isNumeric(el) && Rf_inherits(el, "POSIXct")){
       status = TRUE; //at least one date
     } else {
