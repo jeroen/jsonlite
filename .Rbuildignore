@@ -29,3 +29,5 @@ vignettes/framed.sty$
 ^docs$
 ^appveyor.yml$
 ^revdep$
+^CODE_OF_CONDUCT\.md$
+^\.github$
