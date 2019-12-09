@@ -3,7 +3,7 @@ toJSON <- function(x, dataframe = c("rows", "columns", "values"), matrix = c("ro
   Date = c("ISO8601", "epoch"), POSIXt = c("string", "ISO8601", "epoch", "mongo"),
   factor = c("string", "integer"), complex = c("string", "list"), raw = c("base64", "hex", "mongo"),
   null = c("list", "null"), na = c("null", "string"), auto_unbox = FALSE, digits = 4,
-  pretty = FALSE, force = FALSE, ...) {
+  pretty = FALSE, force = FALSE, json_verbatim = FALSE, ...) {
 
   # validate args
   dataframe <- match.arg(dataframe)

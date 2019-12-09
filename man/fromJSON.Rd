@@ -7,17 +7,33 @@
 \alias{jsonlite}
 \title{Convert \R{} objects to/from JSON}
 \usage{
-fromJSON(txt, simplifyVector = TRUE,
-  simplifyDataFrame = simplifyVector, simplifyMatrix = simplifyVector,
-  flatten = FALSE, ...)
+fromJSON(
+  txt,
+  simplifyVector = TRUE,
+  simplifyDataFrame = simplifyVector,
+  simplifyMatrix = simplifyVector,
+  flatten = FALSE,
+  ...
+)
 
-toJSON(x, dataframe = c("rows", "columns", "values"),
-  matrix = c("rowmajor", "columnmajor"), Date = c("ISO8601", "epoch"),
+toJSON(
+  x,
+  dataframe = c("rows", "columns", "values"),
+  matrix = c("rowmajor", "columnmajor"),
+  Date = c("ISO8601", "epoch"),
   POSIXt = c("string", "ISO8601", "epoch", "mongo"),
-  factor = c("string", "integer"), complex = c("string", "list"),
-  raw = c("base64", "hex", "mongo"), null = c("list", "null"),
-  na = c("null", "string"), auto_unbox = FALSE, digits = 4,
-  pretty = FALSE, force = FALSE, ...)
+  factor = c("string", "integer"),
+  complex = c("string", "list"),
+  raw = c("base64", "hex", "mongo"),
+  null = c("list", "null"),
+  na = c("null", "string"),
+  auto_unbox = FALSE,
+  digits = 4,
+  pretty = FALSE,
+  force = FALSE,
+  json_verbatim = FALSE,
+  ...
+)
 }
 \arguments{
 \item{txt}{a JSON string, URL or file}
@@ -60,6 +76,8 @@ An exception is that objects of class \code{AsIs} (i.e. wrapped in \code{I()}) a
 \item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}}
 
 \item{force}{unclass/skip objects of classes with no defined JSON mapping}
+
+\item{json_verbatim}{do not JSON encode a json character (i.e. a character coming from `toJSON()`) again but leave it as it is}
 }
 \description{
 These functions are used to convert between JSON data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}

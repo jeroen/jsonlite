@@ -39,6 +39,7 @@
 #' @param digits max number of decimal digits to print for numeric values. Use \code{I()} to specify significant digits. Use \code{NA} for max precision.
 #' @param force unclass/skip objects of classes with no defined JSON mapping
 #' @param pretty adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}
+#' @param json_verbatim do not JSON encode a json character (i.e. a character coming from `toJSON()`) again but leave it as it is
 #' @param ... arguments passed on to class specific \code{print} methods
 #' @references Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{https://arxiv.org/abs/1403.2805}
 #' @examples # Stringify some data
