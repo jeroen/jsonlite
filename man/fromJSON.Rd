@@ -13,6 +13,7 @@ fromJSON(
   simplifyDataFrame = simplifyVector,
   simplifyMatrix = simplifyVector,
   flatten = FALSE,
+  bigint_as_char = FALSE,
   ...
 )
 
@@ -45,6 +46,8 @@ toJSON(
 \item{simplifyMatrix}{coerce JSON arrays containing vectors of equal mode and dimension into matrix or array}
 
 \item{flatten}{automatically \code{\link{flatten}} nested data frames into a single non-nested data frame}
+
+\item{bigint_as_char}{read big integers as character}
 
 \item{...}{arguments passed on to class specific \code{print} methods}
 
