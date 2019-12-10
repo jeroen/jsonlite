@@ -68,3 +68,10 @@ vec_ptype2.json.json <- function(x, y, ...) {
 vec_ptype2.json.default <- function(x, y, ..., x_arg = "x", y_arg = "y") {
   vctrs::stop_incompatible_type(x, y, x_arg = x_arg, y_arg = y_arg)
 }
+
+
+#' @export
+pillar_shaft.json <- function(x, ...) {
+  out <- noquote(x)
+  pillar::new_pillar_shaft_simple(out, align = "right")
+}
