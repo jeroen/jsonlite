@@ -6,11 +6,11 @@
 #' @examples
 #' format_json_rowwise(mtcars[1:3, ])
 #' \dontrun{
-#'   dplyr::transmute(
-#'     iris,
-#'     Species,
-#'     json_col = format_json_rowwise(dplyr::tibble(Sepal.Length, Sepal.Width))
-#'   )
+#' dplyr::transmute(
+#'   iris,
+#'   Species,
+#'   json_col = format_json_rowwise(dplyr::tibble(Sepal.Length, Sepal.Width))
+#' )
 #' }
 format_json_rowwise <- function(df, matrix = c("rowmajor", "columnmajor"),
   Date = c("ISO8601", "epoch"), POSIXt = c("string", "ISO8601", "epoch", "mongo"),
