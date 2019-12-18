@@ -1,4 +1,5 @@
 #include <Rinternals.h>
+#include <string.h>
 
 //tests if all elements are either NULL or POSIXct, and at least one POSIXct
 SEXP C_is_datelist(SEXP x) {
