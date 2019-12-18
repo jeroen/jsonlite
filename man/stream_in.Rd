@@ -8,8 +8,7 @@
 \usage{
 stream_in(con, handler = NULL, pagesize = 500, verbose = TRUE, ...)
 
-stream_out(x, con = stdout(), pagesize = 500, verbose = TRUE,
-  prefix = "", ...)
+stream_out(x, con = stdout(), pagesize = 500, verbose = TRUE, prefix = "", ...)
 }
 \arguments{
 \item{con}{a \code{\link{connection}} object. If the connection is not open,

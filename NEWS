@@ -1,6 +1,7 @@
 1.7
  - Fix bug in C_collapse_array_pretty_inner declarationdetected by CRAN LTO
  - Better handing of NA in timestamps with POSIXt = 'mongo'
+ - The 'raw' parameter in toJSON gains options 'int' and 'js'
 
 1.6
  - Add parse_json() wrapper that does not guess if a string is actually a file/url
