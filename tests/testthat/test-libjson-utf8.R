@@ -22,12 +22,12 @@ test_that("test that non ascii characters are ok", {
   lapply(objects, function(x){
     #Encoding(x) <- "UTF-8"
     myjson <- toJSON(x, pretty=TRUE);
-    expect_that(validate(myjson), is_true());
+    expect_true(validate(myjson));
     expect_that(fromJSON(myjson), equals(x));
 
     #prettify needs to parse + output
     prettyjson <- prettify(myjson);
-    expect_that(validate(prettyjson), is_true());
+    expect_true(validate(prettyjson));
     expect_that(fromJSON(prettyjson), equals(x));
 
     #test encoding is preserved when roundtripping to disk

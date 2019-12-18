@@ -6,7 +6,7 @@ test_that("Test NA values", {
   x$mydf <- data.frame(col1=c(FALSE, NA, NA, TRUE), col2=c(1.23, NA, 23, NA))
   x$mydf$mylist <- list(c(TRUE, NA, FALSE, NA), NA, c("blabla", NA), c(NA,12,13,NA,NA,NA,1001))
 
-  expect_that(validate(toJSON(x)), is_true())
+  expect_true(validate(toJSON(x)))
   expect_that(fromJSON(toJSON(x)), equals(x))
   expect_that(fromJSON(toJSON(x, na="null")), equals(x))
 

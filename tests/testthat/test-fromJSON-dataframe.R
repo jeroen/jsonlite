@@ -50,7 +50,7 @@ test_that("nested matrix in data frame", {
   x <- data.frame(foo=1:2)
   x$bar <- matrix(c(1:5, NA), 2)
 
-  expect_that(validate(toJSON(x)), is_true())
+  expect_true(validate(toJSON(x)))
 
   y <- fromJSON(toJSON(x))
   expect_that(y, is_a("data.frame"))

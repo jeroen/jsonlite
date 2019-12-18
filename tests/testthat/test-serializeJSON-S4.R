@@ -40,5 +40,5 @@ test_that("Advanced S4 serialization", {
 
 test_that("Class loading errors", {
   expect_error(unserializeJSON('{"type":"S4","attributes":{},"value":{"class":"nonExitingClass","package":".GlobalEnv"}}'), "defined")
-  expect_error(unserializeJSON('{"type":"S4","attributes":{},"value":{"class":"nonExitingClass","package":"nopackage"}}'), "nopackage")
+  expect_error(expect_warning(unserializeJSON('{"type":"S4","attributes":{},"value":{"class":"nonExitingClass","package":"nopackage"}}')), "nopackage")
 })
