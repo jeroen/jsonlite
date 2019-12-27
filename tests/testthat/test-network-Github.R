@@ -49,7 +49,7 @@ test_that("Nested inconsistent (payload), one-to-many", {
 
   #this is dynamic, depends on data
   if(any(mydata$type == "PushEvent")){
-    expect_true(all(vapply(mydata$payload$commits, function(x){is.null(x) || is.data.frame(x)}, logical(1)))));
+    expect_true(all(vapply(mydata$payload$commits, function(x){is.null(x) || is.data.frame(x)}, logical(1))));
   }
 });
 
