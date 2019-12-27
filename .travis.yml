@@ -4,33 +4,8 @@ latex: false
 
 matrix:
   include:
-    - os: linux
-      r: oldrel
-    - os: linux
-      r: release
-    - os: linux
-      r: devel
-    - os: linux
-      dist: trusty
-      env: R_CODECOV=true
-      r_check_args: '--use-valgrind'
+    - r: oldrel
+    - r: release
+    - r: devel
     - os: osx
       brew_packages: yajl # only to test for conflicts
-
-addons:
-  apt:
-    packages:
-    - valgrind
-
-r_github_packages:
-  - jimhester/covr
-
-warnings_are_errors: true
-
-notifications:
-  email:
-    on_success: change
-    on_failure: change
-
-after_success:
-  - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
