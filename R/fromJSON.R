@@ -23,6 +23,7 @@
 #' @param simplifyVector coerce JSON arrays containing only primitives into an atomic vector
 #' @param simplifyDataFrame coerce JSON arrays containing only records (JSON objects) into a data frame
 #' @param simplifyMatrix coerce JSON arrays containing vectors of equal mode and dimension into matrix or array
+#' @param nesting allow data frames to contain other data frame as columns
 #' @param flatten automatically \code{\link{flatten}} nested data frames into a single non-nested data frame
 #' @param x the object to be encoded
 #' @param dataframe how to encode data.frame objects: must be one of 'rows', 'columns' or 'values'
@@ -75,7 +76,7 @@
 #' identical(data3, flatten(data2))
 #' }
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, ...) {
+  simplifyMatrix = simplifyVector, flatten = FALSE, nesting = TRUE, ...) {
 
   # check type
   if (!is.character(txt) && !inherits(txt, "connection")) {
@@ -98,7 +99,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
 
   # call the actual function (with deprecated arguments)
   parse_and_simplify(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
-    simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
+    simplifyMatrix = simplifyMatrix, nesting = nesting, flatten = flatten, ...)
 }
 
 parse_and_simplify <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,

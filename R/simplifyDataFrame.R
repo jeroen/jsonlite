@@ -1,4 +1,4 @@
-simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
+simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix, nesting) {
 
   # no records at all
   if (!length(recordlist)) {
@@ -26,8 +26,8 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
   columnlist <- transpose_list(recordlist, columns)
 
   # simplify vectors and nested data frames
-  columnlist <- lapply(columnlist, simplify, simplifyVector = TRUE, simplifyDataFrame = TRUE,
-    simplifyMatrix = FALSE, simplifySubMatrix = simplifyMatrix, flatten = flatten)
+  columnlist <- lapply(columnlist, simplify, simplifyMatrix = FALSE, simplifySubMatrix = simplifyMatrix,
+                       flatten = flatten, nesting = nesting, allowNestHere = nesting)
 
   # check that all elements have equal length
   columnlengths <- unlist(vapply(columnlist, function(z) {

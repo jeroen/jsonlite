@@ -1,6 +1,6 @@
 simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE,
   simplifyDate = simplifyVector, homoList = TRUE, flatten = FALSE, columnmajor = FALSE,
-  simplifySubMatrix = simplifyMatrix) {
+  simplifySubMatrix = simplifyMatrix, nesting = TRUE, allowNestHere = TRUE) {
 
   #This includes '[]' and '{}')
   if (!is.list(x) || !length(x)) {
@@ -8,8 +8,8 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
   }
 
   # list can be a dataframe recordlist
-  if (isTRUE(simplifyDataFrame) && is.recordlist(x)) {
-    mydf <- simplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix)
+  if (isTRUE(allowNestHere) && isTRUE(simplifyDataFrame) && is.recordlist(x)) {
+    mydf <- simplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix, nesting = nesting)
     if(isTRUE(simplifyDate) && is.data.frame(mydf) && is.datelist(mydf)){
       return(parse_date(mydf[["$date"]]))
     }
@@ -23,7 +23,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
 
   # apply recursively
   out <- lapply(x, simplify, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
-    simplifyMatrix = simplifySubMatrix, columnmajor = columnmajor, flatten = flatten)
+    simplifyMatrix = simplifySubMatrix, columnmajor = columnmajor, flatten = flatten, nesting = nesting)
 
   # fix for mongo style dates turning into scalars *after* simplifying
   # only happens when simplifyDataframe=FALSE
