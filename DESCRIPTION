@@ -6,8 +6,8 @@ NeedsCompilation: yes
 Depends:
     methods
 Author: Jeroen Ooms, Duncan Temple Lang, Lloyd Hilaiel
-URL: https://arxiv.org/abs/1403.2805,
-    https://www.opencpu.org/posts/jsonlite-a-smarter-json-encoder
+URL: https://arxiv.org/abs/1403.2805 (paper)
+    https://jeroen.cran.dev/jsonlite (docs)
 BugReports: http://github.com/jeroen/jsonlite/issues
 Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
 VignetteBuilder: knitr, R.rsp
