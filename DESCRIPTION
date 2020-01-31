@@ -3,9 +3,12 @@ Version: 1.6.1
 Title: A Robust, High Performance JSON Parser and Generator for R
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Depends:
-    methods
-Author: Jeroen Ooms, Duncan Temple Lang, Lloyd Hilaiel
+Depends: methods
+Authors@R: c(
+    person("Jeroen", "Ooms", role = c("aut", "cre"), email = "jeroen@berkeley.edu",
+      comment = c(ORCID = "0000-0002-4035-0289")),
+    person("Duncan", "Temple Lan", role = "ctb"),
+    person("Lloyd", "Hilaiel", role = "cph", comment="author of bundled libyajl"))
 URL: https://arxiv.org/abs/1403.2805 (paper)
     https://jeroen.cran.dev/jsonlite (docs)
 BugReports: http://github.com/jeroen/jsonlite/issues
