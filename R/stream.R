@@ -59,7 +59,7 @@
 #' # Trivial example
 #' mydata <- stream_in(url("http://httpbin.org/stream/100"))
 #'
-#' \donttest{
+#' \dontrun{
 #' #stream large dataset to file and back
 #' library(nycflights13)
 #' stream_out(flights, file(tmp <- tempfile()))
