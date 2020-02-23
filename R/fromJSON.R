@@ -77,6 +77,10 @@
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
   simplifyMatrix = simplifyVector, flatten = FALSE, ...) {
 
+  # empty JSON -> empty data.frame
+  if (is.na(txt) || is.null(txt) || (is.character(txt) & nzchar(txt)))
+    return(data.frame(NULL))
+
   # check type
   if (!is.character(txt) && !inherits(txt, "connection")) {
     stop("Argument 'txt' must be a JSON string, URL or file.")
