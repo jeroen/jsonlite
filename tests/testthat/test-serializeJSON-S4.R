@@ -32,6 +32,7 @@ test_that("Advanced S4 serialization", {
   data(meuse, package = 'sp', envir = environment())
   sp::coordinates(meuse) <- ~x+y
   sp::proj4string(meuse) <- sp::CRS("+init=epsg:28992")
+  attr(meuse@proj4string, 'comment') = NULL
   out <- jsonlite::unserializeJSON(jsonlite::serializeJSON(meuse))
   expect_is(out, "SpatialPointsDataFrame")
   expect_true(isS4(out))
