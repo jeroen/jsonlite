@@ -13,6 +13,7 @@ fromJSON(
   simplifyDataFrame = simplifyVector,
   simplifyMatrix = simplifyVector,
   flatten = FALSE,
+  naStrings = c("NA", "NaN", "Inf", "-Inf"),
   ...
 )
 
@@ -44,6 +45,8 @@ toJSON(
 \item{simplifyMatrix}{coerce JSON arrays containing vectors of equal mode and dimension into matrix or array}
 
 \item{flatten}{automatically \code{\link{flatten}} nested data frames into a single non-nested data frame}
+
+\item{naStrings}{which strings to treat as NA when 'simplifyVector' is 'TRUE'. Defaults to c("NA", "NaN", "Inf", "-Inf")}
 
 \item{...}{arguments passed on to class specific \code{print} methods}
 

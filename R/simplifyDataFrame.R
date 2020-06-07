@@ -1,4 +1,4 @@
-simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
+simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix, naStrings) {
 
   # no records at all
   if (!length(recordlist)) {
@@ -27,7 +27,8 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
 
   # simplify vectors and nested data frames
   columnlist <- lapply(columnlist, simplify, simplifyVector = TRUE, simplifyDataFrame = TRUE,
-    simplifyMatrix = FALSE, simplifySubMatrix = simplifyMatrix, flatten = flatten)
+    simplifyMatrix = FALSE, simplifySubMatrix = simplifyMatrix, flatten = flatten,
+    naStrings = naStrings)
 
   # check that all elements have equal length
   columnlengths <- unlist(vapply(columnlist, function(z) {
