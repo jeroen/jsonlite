@@ -32,6 +32,7 @@
 #' @param factor how to encode factor objects: must be one of 'string' or 'integer'
 #' @param complex how to encode complex numbers: must be one of 'string' or 'list'
 #' @param raw how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'
+#' @param naStrings which strings to treat as NA when 'simplifyVector' is 'TRUE'. Defaults to c("NA", "NaN", "Inf", "-Inf")
 #' @param null how to encode NULL values within a list: must be one of 'null' or 'list'
 #' @param na how to print NA values: must be one of 'null' or 'string'. Defaults are class specific
 #' @param auto_unbox automatically \code{\link{unbox}} all atomic vectors of length 1. It is usually safer to avoid this and instead use the \code{\link{unbox}} function to unbox individual elements.
@@ -75,7 +76,8 @@
 #' identical(data3, flatten(data2))
 #' }
 fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, ...) {
+  simplifyMatrix = simplifyVector, flatten = FALSE,
+  naStrings = c("NA", "NaN", "Inf", "-Inf"), ...) {
 
   # check type
   if (!is.character(txt) && !inherits(txt, "connection")) {
@@ -98,11 +100,13 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
 
   # call the actual function (with deprecated arguments)
   parse_and_simplify(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
-    simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
+    simplifyMatrix = simplifyMatrix, flatten = flatten, naStrings = naStrings, ...)
 }
 
-parse_and_simplify <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, validate = TRUE, bigint_as_char = FALSE, ...){
+parse_and_simplify <- function(txt, simplifyVector = TRUE,
+  simplifyDataFrame = simplifyVector, simplifyMatrix = simplifyVector,
+  flatten = FALSE, unicode = TRUE, validate = TRUE, bigint_as_char = FALSE,
+  naStrings = c("NA", "NaN", "Inf", "-Inf"), ...){
 
   if(!missing(unicode)){
     message("Argument unicode has been deprecated. YAJL always parses unicode.")
@@ -118,7 +122,7 @@ parse_and_simplify <- function(txt, simplifyVector = TRUE, simplifyDataFrame = s
   # post processing
   if (any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))) {
     return(simplify(obj, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
-      simplifyMatrix = simplifyMatrix, flatten = flatten, ...))
+      simplifyMatrix = simplifyMatrix, flatten = flatten, naStrings = naStrings, ...))
   } else {
     return(obj)
   }

@@ -14,7 +14,7 @@ extern SEXP C_escape_chars(SEXP);
 extern SEXP C_is_datelist(SEXP);
 extern SEXP C_is_recordlist(SEXP);
 extern SEXP C_is_scalarlist(SEXP);
-extern SEXP C_null_to_na(SEXP);
+extern SEXP C_null_to_na(SEXP, SEXP);
 extern SEXP C_row_collapse_array(SEXP, SEXP);
 extern SEXP C_row_collapse_object(SEXP, SEXP, SEXP);
 extern SEXP C_transpose_list(SEXP, SEXP);
@@ -37,7 +37,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"C_is_datelist",                 (DL_FUNC) &C_is_datelist,                 1},
   {"C_is_recordlist",               (DL_FUNC) &C_is_recordlist,               1},
   {"C_is_scalarlist",               (DL_FUNC) &C_is_scalarlist,               1},
-  {"C_null_to_na",                  (DL_FUNC) &C_null_to_na,                  1},
+  {"C_null_to_na",                  (DL_FUNC) &C_null_to_na,                  2},
   {"C_row_collapse_array",          (DL_FUNC) &C_row_collapse_array,          2},
   {"C_row_collapse_object",         (DL_FUNC) &C_row_collapse_object,         3},
   {"C_transpose_list",              (DL_FUNC) &C_transpose_list,              2},
