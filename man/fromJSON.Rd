@@ -132,3 +132,6 @@ identical(data3, flatten(data2))
 \references{
 Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{https://arxiv.org/abs/1403.2805}
 }
+\seealso{
+\code{\link{read_json}}, \code{\link{stream_in}}
+}

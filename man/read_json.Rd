@@ -38,3 +38,6 @@ read_json(tmp)
 # A data frame
 read_json(tmp, simplifyVector = TRUE)
 }
+\seealso{
+\code{\link{fromJSON}}, \code{\link{stream_in}}
+}

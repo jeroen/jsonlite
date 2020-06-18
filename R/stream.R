@@ -26,6 +26,9 @@
 #' example by writing output to another connection) results in a pipeline that can process an
 #' unlimited amount of data. See example.
 #'
+#' Note that a vector of JSON strings already in R can parsed with \code{stream_in} by
+#' creating a connection to it with \code{\link{textConnection}}.
+#'
 #' If a connection is not opened yet, \code{stream_in} and \code{stream_out}
 #' will automatically open and later close the connection. Because R destroys connections
 #' when they are closed, they cannot be reused. To use a single connection for multiple
@@ -48,6 +51,7 @@
 #' @rdname stream_in
 #' @references MongoDB export format: \url{http://docs.mongodb.org/manual/reference/program/mongoexport/#cmdoption--query}
 #' @references Documentation for the JSON Lines text file format: \url{http://jsonlines.org/}
+#' @seealso \code{\link{fromJSON}}, \code{\link{read_json}}
 #' @return The \code{stream_out} function always returns \code{NULL}.
 #' When no custom handler is specified, \code{stream_in} returns a data frame of all pages binded together.
 #' When a custom handler function is specified, \code{stream_in} always returns \code{NULL}.
