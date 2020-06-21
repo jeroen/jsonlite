@@ -9,29 +9,9 @@ setMethod("asJSON", "sfc", function(x, ...) {
   types <- sf::st_geometry_type(x)
   df <- structure(list(
     type = sf_to_titlecase(types),
-    coordinates = unclass(x)
+    coordinates = lapply(x, unclass)
   ), class = 'data.frame', row.names = seq_along(types))
   asJSON(df, ...)
-})
-
-setOldClass('XY')
-setMethod("asJSON", "XY", function(x, ...) {
-  asJSON(unclass(x), ...)
-})
-
-setOldClass('XY')
-setMethod("asJSON", "XYZ", function(x, ...) {
-  asJSON(unclass(x), ...)
-})
-
-setOldClass('XYM')
-setMethod("asJSON", "XYM", function(x, ...) {
-  asJSON(unclass(x)[,1:2, drop = FALSE], ...)
-})
-
-setOldClass('XYZM')
-setMethod("asJSON", "XYZM", function(x, ...) {
-  asJSON(unclass(x)[,1:3, drop = FALSE], ...)
 })
 
 # See sf::sf.tp
