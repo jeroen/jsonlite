@@ -9,3 +9,9 @@ matrix:
     - r: devel
     - os: osx
       brew_packages: yajl # only to test for conflicts
+
+addons:
+  apt:
+    packages:
+    - r-cran-sf
+    - r-cran-rgdal
