@@ -1,3 +1,7 @@
+1.7.0
+ - Add a simple toJSON() method for 'sf' that mimics geoJSON output.
+ - Fix a unit test due to a change in GDAL
+
 1.6.1
  - Fix bug in C_collapse_array_pretty_inner declarationdetected by CRAN LTO
  - Better handing of NA in timestamps with POSIXt = 'mongo'
