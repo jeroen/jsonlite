@@ -1,6 +1,7 @@
 language: r
 fortran: false
 latex: false
+cache: packages
 
 matrix:
   include:
@@ -13,5 +14,6 @@ matrix:
 addons:
   apt:
     packages:
-    - r-cran-sf
-    - r-cran-rgdal
+    - libgdal-dev
+    - libproj-dev
+    - libudunits2-dev
