@@ -9,10 +9,18 @@ setMethod("asJSON", "sfc", function(x, ...) {
   types <- sf::st_geometry_type(x)
   df <- structure(list(
     type = sf_to_titlecase(types),
-    coordinates = lapply(x, unclass)
+    coordinates = lapply(x, get_coordinates)
   ), class = 'data.frame', row.names = seq_along(types))
   asJSON(df, ...)
 })
+
+get_coordinates <- function(x){
+  supported <- toupper(c("Point", "LineString", "Polygon",
+    "MultiPoint", "MultiLineString", "MultiPolygon"))
+  if(inherits(x, supported)){
+    unclass(x)
+  }
+}
 
 # See sf::sf.tp
 sf_to_titlecase <- function(x){
