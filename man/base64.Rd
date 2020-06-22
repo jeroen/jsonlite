@@ -15,7 +15,7 @@ base64_enc(input)
 }
 \description{
 Simple in-memory base64 encoder and decoder. Used internally for converting
-raw vectors to text. Interchangable with encoder from \code{base64enc} or
+raw vectors to text. Interchangeable with encoder from \code{base64enc} or
 \code{openssl} package.
 }
 \examples{

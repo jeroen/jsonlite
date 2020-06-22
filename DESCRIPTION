@@ -35,3 +35,4 @@ Suggests:
     sf,
     sp
 RoxygenNote: 7.1.0
+Encoding: UTF-8

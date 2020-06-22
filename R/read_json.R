@@ -1,7 +1,7 @@
 #' Read/write JSON
 #'
 #' These functions are similar to \link{toJSON} and \link{fromJSON} except they
-#' explicitliy distinguish between path and literal input, and do not simplify
+#' explicitly distinguish between path and literal input, and do not simplify
 #' by default.
 #'
 #' @export
