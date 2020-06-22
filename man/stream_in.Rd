@@ -136,7 +136,7 @@ companies <- stream_in(unz(tmp, "companies.json"))
 }
 }
 \references{
-MongoDB export format: \url{http://docs.mongodb.org/manual/reference/program/mongoexport/#cmdoption--query}
+MongoDB export format: \url{https://docs.mongodb.com/manual/reference/program/mongoexport/}
 
 Documentation for the JSON Lines text file format: \url{http://jsonlines.org/}
 }
