@@ -1,8 +1,3 @@
-# Wrappers for common classes
-setMethod("asJSON", "ts", function(x, ...) {
-  asJSON(as.vector(x), ...)
-})
-
 # For 'sf' geometry columns; use same structure as GeoJSON
 setOldClass('sf')
 setMethod("asJSON", "sf", function(x, sf = c("dataframe", "features", "geojson"), ...) {
