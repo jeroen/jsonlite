@@ -18,14 +18,14 @@ setMethod("asJSON", "sf", function(x, sf = c("dataframe", "features", "geojson")
     features$properties = input[!is_sfc]
     features <- cbind(features, input[is_sfc])
     if(sf == 'features'){
-      asJSON(features, ...)
+      asJSON(features, sf = sf, ...)
     } else {
       output <- list(
         type = unbox('FeatureCollection'),
         name = unbox('sfdata'),
         features = features
       )
-      asJSON(output, ...)
+      asJSON(output, sf = sf, ...)
     }
   }
 })
