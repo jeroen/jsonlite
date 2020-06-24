@@ -20,20 +20,11 @@ setMethod("asJSON", "sf", function(x, sf = c("dataframe", "features", "geojson")
     if(sf == 'features'){
       asJSON(features, ...)
     } else {
-      output <- list(type = unbox('FeatureCollection'), name = unbox('sfdata'))
-      sf_column <- attr(x, 'sf_column')
-      if(!length(sf_column))
-        sf_column = 'geometry'
-      crsvalue <- attr(x[[sf_column]], 'crs')$input
-      if(length(crsvalue) && !is.na(crsvalue)){
-        output$crs = list(
-          type = unbox('name'),
-          properties = list(
-            name = unbox(paste0("urn:ogc:def:crs:EPSG::", crsvalue))
-          )
-        )
-      }
-      output$features = features
+      output <- list(
+        type = unbox('FeatureCollection'),
+        name = unbox('sfdata'),
+        features = features
+      )
       asJSON(output, ...)
     }
   }

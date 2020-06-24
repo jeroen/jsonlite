@@ -10,6 +10,7 @@ test_that("Writing SF objects", {
     sf::write_sf(sf_obj, tmp, driver = 'GeoJSON')
     geojson <- fromJSON(tmp)
     geojson_exact <- read_json(tmp)
+    geojson_exact$crs = NULL # We don't add CRS because it was deprecated in geojson spec
     expect_equal(sf_as_dataframe$geometry, geojson$features$geometry)
     expect_equal(sf_as_features, geojson$features)
     expect_equal(sf_as_geojson, geojson_exact)
