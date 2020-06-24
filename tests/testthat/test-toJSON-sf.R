@@ -1,12 +1,18 @@
 test_that("Writing SF objects", {
   skip_if_not(require(sf))
   compare_to_geojson_obj <- function(sf_obj){
-    out <- jsonlite::fromJSON(jsonlite::toJSON(sf_obj, digits = 8))
-    tmp <- tempfile(fileext = '.geojson')
+    sf_as_dataframe <- fromJSON(toJSON(sf_obj, digits = 8))
+    sf_as_features <- fromJSON(toJSON(sf_obj, sf = 'features', digits = 8))
+    geojson_string <- toJSON(sf_obj, sf = 'geojson', digits = 8)
+    sf_as_geojson <- parse_json(geojson_string)
+    tmp <- file.path(tempdir(), 'sfdata.geojson')
     on.exit(unlink(tmp))
     sf::write_sf(sf_obj, tmp, driver = 'GeoJSON')
-    geodata <- jsonlite::fromJSON(tmp)
-    expect_equal(out$geometry, geodata$features$geometry)
+    geojson <- fromJSON(tmp)
+    geojson_exact <- read_json(tmp)
+    expect_equal(sf_as_dataframe$geometry, geojson$features$geometry)
+    expect_equal(sf_as_features, geojson$features)
+    expect_equal(sf_as_geojson, geojson_exact)
   }
 
   compare_to_geojson_file <- function(file){
@@ -20,9 +26,9 @@ test_that("Writing SF objects", {
   #compare_to_geojson_file(system.file("examples", "us_states.topojson", package = "geojsonio"))
 
   # Test special types
-  outer = matrix(c(0,0,10,0,10,10,0,10,0,0),ncol=2, byrow=TRUE)
-  hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1),ncol=2, byrow=TRUE)
-  hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5),ncol=2, byrow=TRUE)
+  outer = matrix(c(0,0,10,0,10,10,0,10,0,0.0),ncol=2, byrow=TRUE)
+  hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1.0),ncol=2, byrow=TRUE)
+  hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5.0),ncol=2, byrow=TRUE)
   pts = list(outer, hole1, hole2)
   ml1 = st_multilinestring(pts)
   pl1 = st_polygon(pts)
@@ -30,9 +36,9 @@ test_that("Writing SF objects", {
   pol2 = list(outer + 12, hole1 + 12)
   pol3 = list(outer + 24)
   mpl1 = st_multipolygon(list(pol1,pol2,pol3))
-  p1 = st_point(1:2)
-  mp1 = st_multipoint(matrix(1:10, ncol = 2))
-  ls1 = st_linestring(matrix(1:10, ncol = 2))
+  p1 = st_point(as.double(1:2))
+  mp1 = st_multipoint(matrix(as.double(1:10), ncol = 2))
+  ls1 = st_linestring(matrix(as.double(1:10), ncol = 2))
   gcol = st_geometrycollection(list(p1, ls1, pl1, mp1))
   geometry = st_sfc(
     p1,
@@ -45,4 +51,11 @@ test_that("Writing SF objects", {
   )
   sf_obj <- st_sf(geometry)
   compare_to_geojson_obj(sf_obj)
+
+  # One very strict test
+  geojson_string <- toJSON(sf_obj, sf = 'geojson', always_decimal = TRUE, digits = 8)
+  tmp <- file.path(tempdir(), 'sfdata.geojson')
+  on.exit(unlink(tmp))
+  sf::write_sf(sf_obj, tmp, driver = 'GeoJSON')
+  expect_equal(minify(geojson_string), minify(readLines(tmp)))
 })
