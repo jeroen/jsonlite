@@ -1,6 +1,6 @@
 1.7.0
- - Add a simple toJSON() method for 'sf' that mimics geoJSON output.
- - Fix a unit test due to a change in GDAL
+ - Add support for 'sf' classes in toJSON() conform GeoJSON spec.
+ - Fix a unit test due to a change in rgdal
 
 1.6.1
  - Fix bug in C_collapse_array_pretty_inner declarationdetected by CRAN LTO
