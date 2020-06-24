@@ -5,7 +5,7 @@ cache: packages
 
 matrix:
   include:
-    - r: oldrel
+    - r: 3.3
     - r: release
     - r: devel
     - os: osx
