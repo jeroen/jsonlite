@@ -1,6 +1,6 @@
 ---
 title: "Fetching JSON data from REST APIs"
-date: "2020-06-24"
+date: "2020-06-25"
 output:
   html_document
 vignette: >
@@ -214,34 +214,6 @@ subset(category1, select = c("author", "title", "publisher"))
 5  David Baldacci        THE FORGOTTEN   Grand Central Publishing
 ```
 
-```r
-#movie reviews
-movie_key <- "&api-key=b75da00e12d54774a2d362adddcc9bef"
-url <- "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json?order=by-date"
-req <- fromJSON(paste0(url, movie_key))
-```
-
-```
-Error in open.connection(con, "rb"): HTTP error 401.
-```
-
-```r
-reviews <- req$results
-colnames(reviews)
-```
-
-```
-NULL
-```
-
-```r
-reviews[1:5, c("display_title", "byline", "mpaa_rating")]
-```
-
-```
-Error in reviews[1:5, c("display_title", "byline", "mpaa_rating")]: incorrect number of dimensions
-```
-
 ## Twitter
 
 The twitter API requires OAuth2 authentication. Some example code:
@@ -275,14 +247,14 @@ substring(tweets$text, 1, 100)
 ```
 
 ```
- [1] "Estimating Group Differences in Network Models using Moderation  {https://t.co/3ViArl9OZ2} #rstats #"
- [2] "Deep attractors: Where deep learning meets chaos  {https://t.co/u3HniDkjWw} #rstats #DataScience"    
- [3] "R Communities in South Africa  {https://t.co/cRBfDMPtBE} #rstats #DataScience"                       
- [4] "Interactively perform a spatial interpolation with the GUInterp Shiny interface  {https://t.co/jzidD"
- [5] "Advanced Modelling in R with CARET – a focus on supervised machine learning  {https://t.co/TSQtoxWrb"
- [6] "Color Bars  {https://t.co/HJ2Ip24rnb} #rstats #DataScience"                                          
- [7] "Why R? Webinar – Neural Networks for Modelling Molecular Interactions with Tensorflow  {https://t.co"
- [8] "COVID-19: False Positive Alarm  {https://t.co/0ufxeYAPQc} #rstats #DataScience"                      
- [9] "#27: R and CRAN Binaries for Ubuntu  {https://t.co/yi5Xi9xQT9} #rstats #DataScience"                 
-[10] "Consider a permutation test for a small pilot study  {https://t.co/oe6Lz4uSHi} #rstats #DataScience" 
+ [1] "https://t.co/Jac2KxZJkv in R: How to Make a Computer Vision Model within an R Environment  {https://"
+ [2] "Estimating Group Differences in Network Models using Moderation  {https://t.co/3ViArl9OZ2} #rstats #"
+ [3] "Deep attractors: Where deep learning meets chaos  {https://t.co/u3HniDkjWw} #rstats #DataScience"    
+ [4] "R Communities in South Africa  {https://t.co/cRBfDMPtBE} #rstats #DataScience"                       
+ [5] "Interactively perform a spatial interpolation with the GUInterp Shiny interface  {https://t.co/jzidD"
+ [6] "Advanced Modelling in R with CARET – a focus on supervised machine learning  {https://t.co/TSQtoxWrb"
+ [7] "Color Bars  {https://t.co/HJ2Ip24rnb} #rstats #DataScience"                                          
+ [8] "Why R? Webinar – Neural Networks for Modelling Molecular Interactions with Tensorflow  {https://t.co"
+ [9] "COVID-19: False Positive Alarm  {https://t.co/0ufxeYAPQc} #rstats #DataScience"                      
+[10] "#27: R and CRAN Binaries for Ubuntu  {https://t.co/yi5Xi9xQT9} #rstats #DataScience"                 
 ```

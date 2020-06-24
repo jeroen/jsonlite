@@ -106,15 +106,6 @@ req <- fromJSON(paste0(url, books_key))
 bestsellers <- req$results$list
 category1 <- bestsellers[[1, "books"]]
 subset(category1, select = c("author", "title", "publisher"))
-
-#movie reviews
-movie_key <- "&api-key=b75da00e12d54774a2d362adddcc9bef"
-url <- "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json?order=by-date"
-req <- fromJSON(paste0(url, movie_key))
-reviews <- req$results
-colnames(reviews)
-reviews[1:5, c("display_title", "byline", "mpaa_rating")]
-
 ```
 
 ## Twitter
