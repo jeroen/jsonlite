@@ -38,7 +38,7 @@ setMethod("asJSON", "sfc", function(x, ...) {
 
 geom_to_geojson <- function(x){
   val <- list(
-    type = unbox(sf_to_titlecase(sf::st_geometry_type(x)))
+    type = unbox(sf_to_titlecase(class(x)[2])) # see: sf::st_geometry_type
   )
   if(inherits(x, "GEOMETRYCOLLECTION")){
     val$geometries = lapply(x, geom_to_geojson)
