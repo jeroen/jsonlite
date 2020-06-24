@@ -19,6 +19,8 @@ test_that("Writing SF objects", {
   compare_to_geojson_file <- function(file){
     sf_obj <- sf::st_read(file, quiet = TRUE)
     compare_to_geojson_obj(sf_obj)
+    compare_to_geojson_obj(sf_obj[1,])
+    compare_to_geojson_obj(sf_obj[0,])
   }
 
   # Test with some standard data
@@ -26,10 +28,10 @@ test_that("Writing SF objects", {
   compare_to_geojson_file(system.file("shape/nc.shp", package = "sf"))
   #compare_to_geojson_file(system.file("examples", "us_states.topojson", package = "geojsonio"))
 
-  # Test special types
-  outer = matrix(c(0,0,10,0,10,10,0,10,0,0.0),ncol=2, byrow=TRUE)
-  hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1.0),ncol=2, byrow=TRUE)
-  hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5.0),ncol=2, byrow=TRUE)
+  # Test special types, from ?st examples
+  outer = matrix(c(0,0,10,0,10,10,0,10,0,0.0), ncol=2, byrow=TRUE)
+  hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1.0), ncol=2, byrow=TRUE)
+  hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5.0), ncol=2, byrow=TRUE)
   pts = list(outer, hole1, hole2)
   ml1 = st_multilinestring(pts)
   pl1 = st_polygon(pts)
