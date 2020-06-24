@@ -38,11 +38,3 @@ sf_to_titlecase <- function(x){
   matches <- match(as.character(x), toupper(sf_types))
   sf_types[matches]
 }
-
-get_coordinates <- function(x){
-  supported <- toupper(c("Point", "LineString", "Polygon",
-    "MultiPoint", "MultiLineString", "MultiPolygon"))
-  if(inherits(x, supported)){
-    unclass(x)
-  }
-}
