@@ -1,3 +1,7 @@
+1.7.1
+ - Always rename the 'sf_column' column to 'geometry' in toJSON(sf = 'geojson') because
+   that is what the spec says.
+
 1.7.0
  - Add support for 'sf' classes in toJSON() conform GeoJSON spec.
  - Fix a unit test due to a change in rgdal

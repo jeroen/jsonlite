@@ -5,13 +5,14 @@ setMethod("asJSON", "sf", function(x, sf = c("dataframe", "features", "geojson")
   if(sf == 'dataframe'){
     callNextMethod()
   } else {
-    is_sfc <- vapply(x, inherits, logical(1), 'sfc', USE.NAMES = FALSE)
-    if(sum(is_sfc) < 1)
-      stop("Failed to find the sfc column")
+    sf_column <- attr(x, 'sf_column')
+    if(!length(sf_column))
+      sf_column <- 'geometry'
+    geometry <- x[[sf_column]]
     input <- as.data.frame(x)
     features <- data.frame(type = rep('Feature', nrow(input)), stringsAsFactors = FALSE)
-    features$properties = input[!is_sfc]
-    features <- cbind(features, input[is_sfc])
+    features$properties = input[names(input) != sf_column]
+    features$geometry = geometry
     if(sf == 'features'){
       asJSON(features, sf = sf, ...)
     } else {

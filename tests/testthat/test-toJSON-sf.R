@@ -11,7 +11,7 @@ test_that("Writing SF objects", {
     geojson <- fromJSON(tmp)
     geojson_exact <- read_json(tmp)
     geojson_exact$crs = NULL # We don't add CRS because it was deprecated in geojson spec
-    expect_equal(sf_as_dataframe$geometry, geojson$features$geometry)
+    expect_equal(sf_as_dataframe[[attr(sf_obj, 'sf_column')]], geojson$features$geometry)
     expect_equal(sf_as_features, geojson$features)
     expect_equal(sf_as_geojson, geojson_exact)
   }
@@ -52,7 +52,7 @@ test_that("Writing SF objects", {
     mpl1,
     gcol
   )
-  sf_obj <- st_sf(geometry)
+  sf_obj <- st_sf(geoms = geometry)
   compare_to_geojson_obj(sf_obj)
 
   # One very strict test
