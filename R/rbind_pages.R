@@ -49,7 +49,7 @@ rbind_pages <- function(pages){
 
   # Extract data frame column names
   dfdf <- lapply(pages, vapply, is.data.frame, logical(1))
-  dfnames <- unique(names(which(unlist(dfdf))))
+  dfnames <- unique(names(which(unlist(unname(dfdf)))))
 
   # No sub data frames
   if(!length(dfnames)){
