@@ -2,6 +2,8 @@
  - Always rename the 'sf_column' column to 'geometry' in toJSON(sf = 'geojson') because
    that is what the spec says.
  - Add asJSON method for ITime.
+ - Fix toJSON() for encoding strings in multibyte locale on Windows
+ - serializeJSON() now supports S4 "pseudo-null" (i.e. empty slots)
 
 1.7.0
  - Add support for 'sf' classes in toJSON() conform GeoJSON spec.
