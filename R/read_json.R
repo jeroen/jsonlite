@@ -8,6 +8,7 @@
 #' @rdname read_json
 #' @param path file on disk
 #' @param simplifyVector simplifies nested lists into vectors and data frames. See \link{fromJSON}.
+#' @seealso \code{\link{fromJSON}}, \code{\link{stream_in}}
 #' @examples tmp <- tempfile()
 #' write_json(iris, tmp)
 #'
