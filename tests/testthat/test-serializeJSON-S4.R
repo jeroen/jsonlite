@@ -27,11 +27,18 @@ test_that("Serialize optional S4 fields", {
   removeClass("Trajectories")
 })
 
+test_that("Serialize pseudo-null (empty slot)", {
+  track <- setClass("track", slots = c(x="numeric", y="ANY"))
+  t1 <- new("track", x = 1:3)
+  t2 <- unserializeJSON(serializeJSON(t1))
+  expect_identical(t1, t2)
+})
 
 test_that("Advanced S4 serialization", {
   data(meuse, package = 'sp', envir = environment())
   sp::coordinates(meuse) <- ~x+y
   sp::proj4string(meuse) <- sp::CRS("+init=epsg:28992")
+  attr(meuse@proj4string, 'comment') = NULL
   out <- jsonlite::unserializeJSON(jsonlite::serializeJSON(meuse))
   expect_is(out, "SpatialPointsDataFrame")
   expect_true(isS4(out))

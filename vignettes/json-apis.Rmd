@@ -1,6 +1,6 @@
 ---
 title: "Fetching JSON data from REST APIs"
-date: "2018-12-05"
+date: "2020-06-25"
 output:
   html_document
 vignette: >
@@ -34,36 +34,36 @@ paste(format(gg_issues$user$login), ":", gg_issues$title)
 ```
 
 ```
- [1] "sebneus         : geom_raster plots differently to geom_tile"                                                         
- [2] "clauswilke      : fix nudging with multiple values. closes #2977"                                                     
- [3] "slowkow         : text is misplaced with position_dodge()"                                                            
- [4] "wongjingping    : Allow ggsave to create directory if path doesn't exist"                                             
- [5] "llrs            : Updating a theme to remove panel.grid.major.x"                                                      
- [6] "IndrajeetPatil  : feature request: `layer_data` returns a tibble"                                                     
- [7] "danielsjf       : Invalid filename error with ggsave after saving in a folder with a percentage sign (%)"             
- [8] "thomasp85       : No plyr"                                                                                            
- [9] "PaulLantos      : geom_sf layers do not align"                                                                        
-[10] "dpseidel        : Fix tick misalignment with secondary axes (#2978)"                                                  
-[11] "blueskypie      : possible bug in resolution() causes wrong height and width in geom_jitter()"                        
-[12] "jarauh          : Documentation of geom_bar: aesthetics \"weight\" is not mentioned"                                  
-[13] "clauswilke      : coord_sf() doesn't adjust line size for graticule lines"                                            
-[14] "anthonytw       : Secondary axis doesn't show axis ticks or labels with coord_trans"                                  
-[15] "lionel-         : Should we compact facet grid specs?"                                                                
-[16] "clauswilke      : coord_sf() drops axis labels if graticules don't extend all the way to the plot boundary"           
-[17] "ptoche          : breaks = NULL drops axis altogether"                                                                
-[18] "mbertolacci     : Ticks misaligned for sec_axis with some scale transformations and data in 3.1.0"                    
-[19] "steffilazerte   : Multiple nudge arguments results in warning"                                                        
-[20] "ptoche          : scale_x_discrete with numeric drops axis with no warning"                                           
-[21] "danielsjf       : geom_curve with curvature aesthetic"                                                                
-[22] "felipegerard    : Reference lines break facet_wrap when facets are the product of a function"                         
-[23] "hadley          : Update economics data"                                                                              
-[24] "hadley          : Ensure core developers are listed in chronological order"                                           
-[25] "RichardJActon   : Warn when a supplied mapping is going to be overwritten by geom_hline / vline / abline"             
-[26] "mkoohafkan      : using `stat_ydensity` with `geom = \"density\"`---scaling the density line similar to `geom_violin`"
-[27] "earthcli        : strange behavior with the margin of legend.text for R3.5"                                           
-[28] "rharfoot        : Vertical line and crossbar jitter being applied differently."                                       
-[29] "yutannihilation : Use .ignore_empty=\"all\" for enquos()"                                                             
-[30] "pank            : theme: Add different ticks length for different axes"                                               
+ [1] "ds-jim          : Nothing plotted with manual_scale when a named vector is used as the input."                  
+ [2] "thomasp85       : Should ggsave use ragg if available?"                                                         
+ [3] "jdsher          : Cannot override.aes with guide_bins?"                                                         
+ [4] "karawoo         : Combined facet labels aren't parsed when .multi_line = FALSE"                                 
+ [5] "mevers          : `coord_polar` causes error with `ggtext::element_markdown`"                                   
+ [6] "yutannihilation : WIP: Deprecate qplot()"                                                                       
+ [7] "tdhock          : Fix aes(groupS)"                                                                              
+ [8] "tdhock          : same argument/param in both stat and geom?"                                                   
+ [9] "tdhock          : undefined columns selected with groupS aes in custom geom"                                    
+[10] "SimonDedman     : geom_violin default adjust value for integers"                                                
+[11] "tdhock          : group column in built data even when aes(group) absent"                                       
+[12] "TylerGrantSmith : Add layer names"                                                                              
+[13] "krlmlr          : Support ptype argument for scale() functions"                                                 
+[14] "clauswilke      : Annotate all facets with axis ticks and labels for fixed scales"                              
+[15] "evodevosys      : theme_void() removes geom_segments (at least visually) when an alpha aesthetic is used"       
+[16] "hadley          : ggsave should use plot theme for default background"                                          
+[17] "yqgchen         : strip.text.y = element_blank() yields an error when there are multiple layers of strip labels"
+[18] "DrrDom          : Points fill in legend"                                                                        
+[19] "xvrdm           : WIP: Add scale_color_viridis_b"                                                               
+[20] "thomas-neitmann : `ggsave()` produces aliased png files on Windows"                                             
+[21] "atusy           : Export pch_table"                                                                             
+[22] "moodymudskipper : default xlim and ylim in qplot are not supportd when non missing"                             
+[23] "yutannihilation : Can geom_abline() draw lines a bit longer than the actual Coord range?"                       
+[24] "vitor-mendes-iq : scale_*_reverse() is ignored when limits are set on Coord"                                    
+[25] "LiRogers        : Justifying the legend with respect to the full plot area rather than the panel"               
+[26] "Shians          : scale_fill_steps produces unevenly spaced legend when limits are set"                         
+[27] "SimonDedman     : Add 'reverse' option to scale_y_date?"                                                        
+[28] "echasnovski     : Add `bounds` argument to `geom_density()`"                                                    
+[29] "swebs           : timezone parameter for scale_x_datetime has no effect"                                        
+[30] "jgjl            : Update stat_ecdf to work either on the x or the y aesthetic."                                 
 ```
 
 ## CitiBike NYC
@@ -78,14 +78,10 @@ colnames(stations)
 ```
 
 ```
- [1] "id"                    "stationName"          
- [3] "availableDocks"        "totalDocks"           
- [5] "latitude"              "longitude"            
- [7] "statusValue"           "statusKey"            
- [9] "availableBikes"        "stAddress1"           
-[11] "stAddress2"            "city"                 
-[13] "postalCode"            "location"             
-[15] "altitude"              "testStation"          
+ [1] "id"                    "stationName"           "availableDocks"        "totalDocks"           
+ [5] "latitude"              "longitude"             "statusValue"           "statusKey"            
+ [9] "availableBikes"        "stAddress1"            "stAddress2"            "city"                 
+[13] "postalCode"            "location"              "altitude"              "testStation"          
 [17] "lastCommunicationTime" "landMark"             
 ```
 
@@ -94,7 +90,7 @@ nrow(stations)
 ```
 
 ```
-[1] 813
+[1] 973
 ```
 
 ## Ergast
@@ -109,8 +105,8 @@ colnames(drivers)
 ```
 
 ```
-[1] "driverId"        "code"            "url"             "givenName"      
-[5] "familyName"      "dateOfBirth"     "nationality"     "permanentNumber"
+[1] "driverId"        "code"            "url"             "givenName"       "familyName"      "dateOfBirth"    
+[7] "nationality"     "permanentNumber"
 ```
 
 ```r
@@ -164,17 +160,17 @@ organizations[1:10, c("name", "city", "strein")]
 ```
 
 ```
-                           name         city     strein
-1                   00295 LOCAL        MEDIA 23-6420101
-2               007 BENEFIT LTD       RESTON 47-4146355
-3                   00736 LOCAL     BARTLETT 42-1693318
-4               03XX FOUNDATION       SANTEE 38-3915658
-5  05-THE FILSON CLUB ET AL TUW PHILADELPHIA 61-6125263
-6     06 UNITED SOCCER CLUB INC    REGO PARK 35-2518301
-7                 08 CHURCH INC  BAKERSFIELD 27-3924877
-8                1 1 FOUNDATION    PLACENTIA 47-4335155
-9                     1 BOX LLC     SOMERSET 81-3408531
-10       1 FAMILY 2GETHER 4EVER   PLAINFIELD 81-1287436
+                            name        city     strein
+1           0 DEBT EDUCATION INC  SANTA ROSA 46-4744976
+2                0 TOLERANCE INC     SUWANEE 27-2620044
+3                  0 U R PASSION   KENNEWICK 81-4045228
+4                00 MOVEMENT INC   PENSACOLA 82-4704419
+5                    00006 LOCAL       MEDIA 22-6062777
+6             0003 POSTAL FAMILY  CINCINNATI 31-0240910
+7                        0005 GA   HEPHZIBAH 58-1514574
+8  0005 WRIGHT-PATT CREDIT UNION BEAVERCREEK 31-0278870
+9                        0009 DE   GREENWOOD 26-4507405
+10               0011 CALIFORNIA      REDWAY 36-4654777
 ```
 
 
@@ -193,12 +189,10 @@ colnames(articles)
 ```
 
 ```
- [1] "web_url"          "snippet"          "print_page"      
- [4] "blog"             "source"           "multimedia"      
- [7] "headline"         "keywords"         "pub_date"        
-[10] "document_type"    "news_desk"        "byline"          
-[13] "type_of_material" "_id"              "word_count"      
-[16] "score"            "uri"              "section_name"    
+ [1] "abstract"         "web_url"          "snippet"          "lead_paragraph"   "print_section"   
+ [6] "print_page"       "source"           "multimedia"       "headline"         "keywords"        
+[11] "pub_date"         "document_type"    "news_desk"        "section_name"     "byline"          
+[16] "type_of_material" "_id"              "word_count"       "uri"              "subsection_name" 
 ```
 
 ```r
@@ -218,35 +212,6 @@ subset(category1, select = c("author", "title", "publisher"))
 3       E L James FIFTY SHADES OF GREY Knopf Doubleday Publishing
 4 Nicholas Sparks           SAFE HAVEN   Grand Central Publishing
 5  David Baldacci        THE FORGOTTEN   Grand Central Publishing
-```
-
-```r
-#movie reviews
-movie_key <- "&api-key=b75da00e12d54774a2d362adddcc9bef"
-url <- "http://api.nytimes.com/svc/movies/v2/reviews/dvd-picks.json?order=by-date"
-req <- fromJSON(paste0(url, movie_key))
-reviews <- req$results
-colnames(reviews)
-```
-
-```
- [1] "display_title"    "mpaa_rating"      "critics_pick"    
- [4] "byline"           "headline"         "summary_short"   
- [7] "publication_date" "opening_date"     "date_updated"    
-[10] "link"             "multimedia"      
-```
-
-```r
-reviews[1:5, c("display_title", "byline", "mpaa_rating")]
-```
-
-```
-       display_title        byline mpaa_rating
-1        Ben Is Back    A.O. SCOTT           R
-2              Tyrel   BILGE EBIRI            
-3        The Charmer WESLEY MORRIS            
-4 Head Full of Honey   BILGE EBIRI       PG-13
-5   Happy as Lazzaro    A.O. SCOTT       PG-13
 ```
 
 ## Twitter
@@ -282,14 +247,14 @@ substring(tweets$text, 1, 100)
 ```
 
 ```
- [1] "Trust in ML models. Slides from TWiML &amp; AI EMEA Meetup + iX Articles https://t.co/XUVyu5D5gW #rs"
- [2] "Solving #AdventOfCode day 3 and 4 with R https://t.co/lvZlUqMZhS #rstats #DataScience"               
- [3] "Automated Dashboard with various correlation visualizations in R https://t.co/hC36eeFQLR #rstats #Da"
- [4] "New R job: Adjunct Professor https://t.co/2K75pHzPey #rstats #DataScience #jobs"                     
- [5] "ggQC | ggplot Quality Control Charts – New Release https://t.co/ctfhMzMf3z #rstats #DataScience"     
- [6] "A Tidy Text Analysis of R Weekly Posts https://t.co/EAleVu4tjo #rstats #DataScience"                 
- [7] "Day 05 – little helper get_network https://t.co/whv74exvQS #rstats #DataScience"                     
- [8] "Community Call – Governance strategies for open source research software projects https://t.co/tkBpz"
- [9] "NBA Team Twitter Analysis Flexdashboard https://t.co/uSL2myAK0W #rstats #DataScience"                
-[10] "Bayesian Nonparametric Models in NIMBLE, Part 1: Density Estimation https://t.co/GZS0w3MwAI #rstats "
+ [1] "https://t.co/Jac2KxZJkv in R: How to Make a Computer Vision Model within an R Environment  {https://"
+ [2] "Estimating Group Differences in Network Models using Moderation  {https://t.co/3ViArl9OZ2} #rstats #"
+ [3] "Deep attractors: Where deep learning meets chaos  {https://t.co/u3HniDkjWw} #rstats #DataScience"    
+ [4] "R Communities in South Africa  {https://t.co/cRBfDMPtBE} #rstats #DataScience"                       
+ [5] "Interactively perform a spatial interpolation with the GUInterp Shiny interface  {https://t.co/jzidD"
+ [6] "Advanced Modelling in R with CARET – a focus on supervised machine learning  {https://t.co/TSQtoxWrb"
+ [7] "Color Bars  {https://t.co/HJ2Ip24rnb} #rstats #DataScience"                                          
+ [8] "Why R? Webinar – Neural Networks for Modelling Molecular Interactions with Tensorflow  {https://t.co"
+ [9] "COVID-19: False Positive Alarm  {https://t.co/0ufxeYAPQc} #rstats #DataScience"                      
+[10] "#27: R and CRAN Binaries for Ubuntu  {https://t.co/yi5Xi9xQT9} #rstats #DataScience"                 
 ```

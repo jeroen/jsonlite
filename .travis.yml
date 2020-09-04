@@ -1,11 +1,19 @@
 language: r
 fortran: false
 latex: false
+cache: packages
 
 matrix:
   include:
-    - r: oldrel
+    - r: 3.3
     - r: release
     - r: devel
     - os: osx
       brew_packages: yajl # only to test for conflicts
+
+addons:
+  apt:
+    packages:
+    - libgdal-dev
+    - libproj-dev
+    - libudunits2-dev

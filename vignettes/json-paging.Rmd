@@ -1,6 +1,6 @@
 ---
 title: "Combining pages of JSON data with jsonlite"
-date: "2018-12-05"
+date: "2020-06-25"
 output:
   html_document
 vignette: >
@@ -45,17 +45,17 @@ mydata0$organizations[1:10, c("name", "city", "strein")]
 ```
 
 ```
-                           name         city     strein
-1                   00295 LOCAL        MEDIA 23-6420101
-2               007 BENEFIT LTD       RESTON 47-4146355
-3                   00736 LOCAL     BARTLETT 42-1693318
-4               03XX FOUNDATION       SANTEE 38-3915658
-5  05-THE FILSON CLUB ET AL TUW PHILADELPHIA 61-6125263
-6     06 UNITED SOCCER CLUB INC    REGO PARK 35-2518301
-7                 08 CHURCH INC  BAKERSFIELD 27-3924877
-8                1 1 FOUNDATION    PLACENTIA 47-4335155
-9                     1 BOX LLC     SOMERSET 81-3408531
-10       1 FAMILY 2GETHER 4EVER   PLAINFIELD 81-1287436
+                            name        city     strein
+1           0 DEBT EDUCATION INC  SANTA ROSA 46-4744976
+2                0 TOLERANCE INC     SUWANEE 27-2620044
+3                  0 U R PASSION   KENNEWICK 81-4045228
+4                00 MOVEMENT INC   PENSACOLA 82-4704419
+5                    00006 LOCAL       MEDIA 22-6062777
+6             0003 POSTAL FAMILY  CINCINNATI 31-0240910
+7                        0005 GA   HEPHZIBAH 58-1514574
+8  0005 WRIGHT-PATT CREDIT UNION BEAVERCREEK 31-0278870
+9                        0009 DE   GREENWOOD 26-4507405
+10               0011 CALIFORNIA      REDWAY 36-4654777
 ```
 
 To analyze or visualize these data, we need to combine the pages into a single dataset. We can do this with the `rbind_pages` function. Note that in this example, the actual data is contained by the `organizations` field:
@@ -115,9 +115,8 @@ colnames(organizations)
 ```
 
 ```
- [1] "ein"           "strein"        "name"          "sub_name"     
- [5] "city"          "state"         "ntee_code"     "raw_ntee_code"
- [9] "subseccd"      "has_subseccd"  "have_filings"  "have_extracts"
+ [1] "ein"           "strein"        "name"          "sub_name"      "city"          "state"        
+ [7] "ntee_code"     "raw_ntee_code" "subseccd"      "has_subseccd"  "have_filings"  "have_extracts"
 [13] "have_pdfs"     "score"        
 ```
 

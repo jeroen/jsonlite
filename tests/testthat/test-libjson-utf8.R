@@ -10,12 +10,12 @@ test_that("test that non ascii characters are ok", {
 
   #create random strings
   objects <- list(
-    enc2utf8("Zürich"),
-    enc2native("Maëlle"),
-    "北京填鴨们",
-    "ผัดไทย",
-    "寿司",
-    c("寿司", "Zürich", "foo", "bla\001\002\003bla"),
+    enc2utf8("Z\u00fcrich"),
+    enc2native("Ma\u00eblle"),
+    "\u5317\u4eac\u586b\u9d28\u4eec",
+    "\u0e1c\u0e31\u0e14\u0e44\u0e17",
+    "\u5bff\u53f8",
+    c("\u5bff\u53f8", "Z\\u00fcrich", "foo", "bla\001\002\003bla"),
     rawToChar(as.raw(1:40))
   )
 

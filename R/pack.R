@@ -6,8 +6,8 @@ pack <- function(obj, ...) {
   encoding.mode <- typeof(obj)
 
   # null may not have attributes
-  if (encoding.mode == "NULL") {
-    return(list(type = as.scalar(encoding.mode)))
+  if (encoding.mode == "NULL" || identical(obj, as.name('\001NULL\001'))) {
+    return(list(type = as.scalar("NULL")))
   }
 
   # needed because formals become attributes, etc

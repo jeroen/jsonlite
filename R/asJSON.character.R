@@ -1,6 +1,10 @@
 setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "string", "NA"),
   auto_unbox = FALSE, keep_vec_names = FALSE, indent = NA_integer_, ...) {
 
+  # Needed for multi-byte Windows locales
+  # See: https://github.com/jeroen/jsonlite/issues/329
+  x <- enc2utf8(x)
+
   # shiny legacy exception
   if(isTRUE(keep_vec_names) && length(names(x))){
     warn_keep_vec_names()
