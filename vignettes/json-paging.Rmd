@@ -18,7 +18,7 @@ The [jsonlite](https://cran.r-project.org/package=jsonlite) package is a `JSON` 
 
 ## A bidirectional mapping
 
-One of the main strengths of `jsonlite` is that it implements a bidirectional [mapping](http://arxiv.org/abs/1403.2805) between JSON and data frames. Thereby it can convert nested collections of JSON records, as they often appear on the web, immediately into the appropriate R structure. For example to grab some data from ProPublica we can simply use:
+One of the main strengths of `jsonlite` is that it implements a bidirectional [mapping](https://arxiv.org/abs/1403.2805) between JSON and data frames. Thereby it can convert nested collections of JSON records, as they often appear on the web, immediately into the appropriate R structure. For example to grab some data from ProPublica we can simply use:
 
 
 ```r

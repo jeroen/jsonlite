@@ -1,7 +1,7 @@
 #' Unbox a vector or data frame
 #'
 #' This function marks an atomic vector or data frame as a
-#' \href{http://en.wikipedia.org/wiki/Singleton_(mathematics)}{singleton}, i.e.
+#' \href{https://en.wikipedia.org/wiki/Singleton_(mathematics)}{singleton}, i.e.
 #' a set with exactly 1 element. Thereby, the value will not turn into an
 #' \code{array} when encoded into JSON. This can only be done for
 #' atomic vectors of length 1, or data frames with exactly 1 row. To automatically
@@ -18,7 +18,7 @@
 #' @param x atomic vector of length 1, or data frame with 1 row.
 #' @return Returns a singleton version of \code{x}.
 #' @export
-#' @references \url{http://en.wikipedia.org/wiki/Singleton_(mathematics)}
+#' @references \url{https://en.wikipedia.org/wiki/Singleton_(mathematics)}
 #' @examples toJSON(list(foo=123))
 #' toJSON(list(foo=unbox(123)))
 #'

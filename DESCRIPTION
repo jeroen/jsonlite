@@ -9,7 +9,7 @@ Authors@R: c(
     person("Duncan", "Temple Lang", role = "ctb"),
     person("Lloyd", "Hilaiel", role = "cph", comment="author of bundled libyajl"))
 URL: https://arxiv.org/abs/1403.2805 (paper)
-BugReports: http://github.com/jeroen/jsonlite/issues
+BugReports: https://github.com/jeroen/jsonlite/issues
 Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
 VignetteBuilder: knitr, R.rsp
 Description: A reasonably fast JSON parser and generator, optimized for statistical 

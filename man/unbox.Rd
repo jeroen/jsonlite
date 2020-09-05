@@ -14,7 +14,7 @@ Returns a singleton version of \code{x}.
 }
 \description{
 This function marks an atomic vector or data frame as a
-\href{http://en.wikipedia.org/wiki/Singleton_(mathematics)}{singleton}, i.e.
+\href{https://en.wikipedia.org/wiki/Singleton_(mathematics)}{singleton}, i.e.
 a set with exactly 1 element. Thereby, the value will not turn into an
 \code{array} when encoded into JSON. This can only be done for
 atomic vectors of length 1, or data frames with exactly 1 row. To automatically
@@ -43,5 +43,5 @@ toJSON(list(rec=x))
 toJSON(list(rec=unbox(x)))
 }
 \references{
-\url{http://en.wikipedia.org/wiki/Singleton_(mathematics)}
+\url{https://en.wikipedia.org/wiki/Singleton_(mathematics)}
 }
