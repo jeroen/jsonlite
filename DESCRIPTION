@@ -28,7 +28,6 @@ Suggests:
     knitr,
     rmarkdown,
     R.rsp,
-    sf,
-    sp
+    sf
 RoxygenNote: 7.1.0
 Encoding: UTF-8

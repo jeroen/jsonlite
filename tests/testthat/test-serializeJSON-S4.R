@@ -34,17 +34,6 @@ test_that("Serialize pseudo-null (empty slot)", {
   expect_identical(t1, t2)
 })
 
-test_that("Advanced S4 serialization", {
-  data(meuse, package = 'sp', envir = environment())
-  sp::coordinates(meuse) <- ~x+y
-  sp::proj4string(meuse) <- sp::CRS("+init=epsg:28992")
-  attr(meuse@proj4string, 'comment') = NULL
-  out <- jsonlite::unserializeJSON(jsonlite::serializeJSON(meuse))
-  expect_is(out, "SpatialPointsDataFrame")
-  expect_true(isS4(out))
-  expect_identical(out, meuse)
-})
-
 test_that("Class loading errors", {
   expect_error(unserializeJSON('{"type":"S4","attributes":{},"value":{"class":"nonExitingClass","package":".GlobalEnv"}}'), "defined")
   expect_error(expect_warning(unserializeJSON('{"type":"S4","attributes":{},"value":{"class":"nonExitingClass","package":"nopackage"}}')), "nopackage")
