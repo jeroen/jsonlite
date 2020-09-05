@@ -1,8 +1,7 @@
 Package: jsonlite
 Version: 1.7.1
-Title: A Robust, High Performance JSON Parser and Generator for R
+Title: A Simple and Robust JSON Parser and Generator for R
 License: MIT + file LICENSE
-NeedsCompilation: yes
 Depends: methods
 Authors@R: c(
     person("Jeroen", "Ooms", role = c("aut", "cre"), email = "jeroen@berkeley.edu",
@@ -10,20 +9,17 @@ Authors@R: c(
     person("Duncan", "Temple Lang", role = "ctb"),
     person("Lloyd", "Hilaiel", role = "cph", comment="author of bundled libyajl"))
 URL: https://arxiv.org/abs/1403.2805 (paper)
-    https://jeroen.cran.dev/jsonlite (docs)
 BugReports: http://github.com/jeroen/jsonlite/issues
 Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
 VignetteBuilder: knitr, R.rsp
-Description: A fast JSON parser and generator optimized for statistical data
-    and the web. Started out as a fork of 'RJSONIO', but has been completely
-    rewritten in recent versions. The package offers flexible, robust, high
-    performance tools for working with JSON in R and is particularly powerful
-    for building pipelines and interacting with a web API. The implementation is
-    based on the mapping described in the vignette (Ooms, 2014). In addition to
-    converting JSON data from/to R objects, 'jsonlite' contains functions to
-    stream, validate, and prettify JSON data. The unit tests included with the
-    package verify that all edge cases are encoded and decoded consistently for
-    use with dynamic data in systems and applications.
+Description: A reasonably fast JSON parser and generator, optimized for statistical 
+    data and the web. Offers simple, flexible tools for working with JSON in R, and
+    is particularly powerful for building pipelines and interacting with a web API. 
+    The implementation is based on the mapping described in the vignette (Ooms, 2014).
+    In addition to converting JSON data from/to R objects, 'jsonlite' contains 
+    functions to stream, validate, and prettify JSON data. The unit tests included 
+    with the package verify that all edge cases are encoded and decoded consistently 
+    for use with dynamic data in systems and applications.
 Suggests:
     httr,
     curl,
