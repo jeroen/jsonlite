@@ -1,3 +1,6 @@
+1.7.2
+ - Special case 'blob' vctrs to prevent boxing of base64 output strings
+
 1.7.1
  - Always rename the 'sf_column' column to 'geometry' in toJSON(sf = 'geojson') because
    that is what the spec says.
