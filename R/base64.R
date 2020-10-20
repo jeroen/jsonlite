@@ -24,6 +24,8 @@ base64_dec <- function(input) {
 #' @rdname base64
 #' @useDynLib jsonlite R_base64_encode
 base64_enc <- function(input) {
+  if(is.null(input))
+    return(NA_character_)
   if(is.character(input)){
     input <- charToRaw(paste(input, collapse = "\n"))
   }
