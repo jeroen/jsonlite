@@ -72,7 +72,7 @@ simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix) {
     if(any(duplicated(rn))){
       warning('Duplicate names in "_row" field. Data frames must have unique row names.', call. = FALSE)
       if(is.character(rn)) {
-        row.names(columnlist)  <- make.unique(rn)
+        row.names(columnlist)  <- make.unique(rn, sep = "_")
       } else {
         row.names(columnlist) <- seq_len(n)
       }
