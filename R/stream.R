@@ -50,7 +50,7 @@
 #' @export stream_in stream_out
 #' @rdname stream_in
 #' @references MongoDB export format: \url{https://docs.mongodb.com/manual/reference/program/mongoexport/}
-#' @references Documentation for the JSON Lines text file format: \url{http://jsonlines.org/}
+#' @references Documentation for the JSON Lines text file format: \url{https://jsonlines.org/}
 #' @seealso \code{\link{fromJSON}}, \code{\link{read_json}}
 #' @return The \code{stream_out} function always returns \code{NULL}.
 #' When no custom handler is specified, \code{stream_in} returns a data frame of all pages binded together.
