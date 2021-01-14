@@ -11,7 +11,7 @@ setMethod("asJSON", "ANY", function(x, force = FALSE, ...) {
     # S3 style dispatching that doesn't work by default for formal method definitions
     # There should be a more native way to accomplish this
     return(asJSON(structure(x, class = class(x)[-1]), force = force, ...))
-  } else if (isTRUE(force) && existsMethod("asJSON", class(unclass(x)))) {
+  } else if (isTRUE(force) && existsMethod("asJSON", class(unclass(x))[1])) {
     # As a last resort we can force encoding using the unclassed object
     return(asJSON(unclass(x), force = force, ...))
   } else if (isTRUE(force)) {
