@@ -1,3 +1,4 @@
+setOldClass('blob')
 setMethod("asJSON", "blob", function(x, raw = "base64", ...){
   if(identical(raw, "base64")){
     str <- vapply(x, base64_enc, character(1))
