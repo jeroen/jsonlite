@@ -13,6 +13,7 @@ fromJSON(
   simplifyDataFrame = simplifyVector,
   simplifyMatrix = simplifyVector,
   flatten = FALSE,
+  nesting = TRUE,
   ...
 )
 
@@ -44,6 +45,8 @@ toJSON(
 \item{simplifyMatrix}{coerce JSON arrays containing vectors of equal mode and dimension into matrix or array}
 
 \item{flatten}{automatically \code{\link{flatten}} nested data frames into a single non-nested data frame}
+
+\item{nesting}{allow data frames to contain other data frame as columns}
 
 \item{...}{arguments passed on to class specific \code{print} methods}
 
