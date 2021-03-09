@@ -23,7 +23,7 @@ Description: A reasonably fast JSON parser and generator, optimized for statisti
 Suggests:
     httr,
     curl,
-    plyr,
+    vctrs,
     testthat,
     knitr,
     rmarkdown,

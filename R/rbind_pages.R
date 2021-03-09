@@ -32,56 +32,14 @@
 #' colnames(organizations)
 #' }
 rbind_pages <- function(pages){
-  #Load plyr
-  loadpkg("plyr")
+  loadpkg("vctrs")
 
   #validate input
   stopifnot(is.list(pages))
-
-  # edge case
-  if(!length(pages)){
-    return(data.frame())
-  }
 
   # All elements must be data frames or NULL.
   pages <- Filter(function(x) {!is.null(x)}, pages);
   stopifnot(all(vapply(pages, is.data.frame, logical(1))))
 
-  # Extract data frame column names
-  dfdf <- lapply(pages, vapply, is.data.frame, logical(1))
-  dfnames <- unique(names(which(unlist(unname(dfdf)))))
-
-  # No sub data frames
-  if(!length(dfnames)){
-    return(plyr::rbind.fill(pages))
-  }
-
-  # Extract the nested data frames
-  subpages <- lapply(dfnames, function(colname){
-    rbind_pages(lapply(pages, function(df) {
-      if(!is.null(df[[colname]]))
-        df[[colname]]
-      else
-        as.data.frame(matrix(nrow=nrow(df), ncol=0))
-    }))
-  })
-
-  # Remove data frame columns
-  pages <- lapply(pages, function(df){
-    issubdf <- vapply(df, is.data.frame, logical(1))
-    if(any(issubdf))
-      df[issubdf] <- rep(NA, nrow(df))
-    df
-  })
-
-  # Bind rows
-  outdf <- plyr::rbind.fill(pages)
-
-  # Combine wih sub dataframes
-  for(i in seq_along(subpages)){
-    outdf[[dfnames[i]]] <- subpages[[i]]
-  }
-
-  #out
-  outdf
+  do.call(vctrs::vec_rbind, pages)
 }
