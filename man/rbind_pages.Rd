@@ -18,10 +18,15 @@ book. In practice this is often implemented using a \code{page} parameter in the
 \code{rbind_pages} function can be used to combine these pages back into a single dataset.
 }
 \details{
-The \code{\link{rbind_pages}} function generalizes \code{\link[base:cbind]{base::rbind}} and
-\code{\link[plyr:rbind.fill]{plyr::rbind.fill}} with added support for nested data frames. Not each column
-has to be present in each of the individual data frames; missing columns will be filled
-up in \code{NA} values.
+The \code{rbind_pages} function uses \code{\link[vctrs:vec_rbind]{vctrs::vec_rbind}}
+to bind the pages together. This generalizes \code{\link[base:cbind]{base::rbind}} in two
+ways:
+
+\itemize{
+  \item Not each column has to be present in each of the individual data frames; missing
+  columns will be filled up in \code{NA} values.
+  \item Data frames can be nested (can contain other data frames).
+}
 }
 \examples{
 # Basic example
