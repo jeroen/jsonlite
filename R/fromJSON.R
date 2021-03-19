@@ -3,7 +3,8 @@
 #'
 #' The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions
 #' in packages \code{rjson} and \code{RJSONIO}. Our implementation uses an alternative, somewhat more consistent mapping
-#' between \R{} objects and JSON strings.
+#' between \R{} objects and JSON strings. Note also that \code{rjson::toJSON} with default arguments is more precisely replaced
+#' by \code{jsonlite::toJSON} using the arguments \code{digits = 15L} and \code{auto_unbox = TRUE}.
 #'
 #' The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions in this package use an
 #' alternative system to convert between \R{} objects and JSON, which supports more classes but is much more verbose.
