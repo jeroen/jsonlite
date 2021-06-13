@@ -11,11 +11,9 @@
 #' to bind the pages together. This generalizes [`base::rbind()`][base::cbind] in two
 #' ways:
 #'
-#' \itemize{
-#'   \item Not each column has to be present in each of the individual data frames; missing
+#' - Not each column has to be present in each of the individual data frames; missing
 #'   columns will be filled up in `NA` values.
-#'   \item Data frames can be nested (can contain other data frames).
-#' }
+#' - Data frames can be nested (can contain other data frames).
 #'
 #' @export
 #' @param pages a list of data frames, each representing a *page* of data
