@@ -28,7 +28,7 @@ control JSON formatting/parsing where applicable. Use with caution.}
 
 \item{x}{object to be streamed out. Currently only data frames are supported.}
 
-\item{prefix}{string to write before each line (use \code{"\u001e"} to write rfc7464 text sequences)}
+\item{prefix}{string to write before each line (use \code{"\\u001e"} to write rfc7464 text sequences)}
 }
 \value{
 The \code{stream_out} function always returns \code{NULL}.

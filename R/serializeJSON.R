@@ -41,7 +41,7 @@ serializeJSON <- function(x, digits = 8, pretty = FALSE) {
   return(ans)
 }
 
-#' @param txt a JSON string which was created using \code{serializeJSON}
+#' @param txt a JSON string which was created using `serializeJSON`
 #' @rdname serializeJSON
 unserializeJSON <- function(txt) {
   unpack(parseJSON(txt))
