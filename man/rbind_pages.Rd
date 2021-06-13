@@ -23,9 +23,9 @@ to bind the pages together. This generalizes \code{\link[base:cbind]{base::rbind
 ways:
 
 \itemize{
-  \item Not each column has to be present in each of the individual data frames; missing
-  columns will be filled up in \code{NA} values.
-  \item Data frames can be nested (can contain other data frames).
+\item Not each column has to be present in each of the individual data frames; missing
+columns will be filled up in \code{NA} values.
+\item Data frames can be nested (can contain other data frames).
 }
 }
 \examples{
