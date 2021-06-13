@@ -6,7 +6,7 @@
 #' `array` when encoded into JSON. This can only be done for
 #' atomic vectors of length 1, or data frames with exactly 1 row. To automatically
 #' unbox all vectors of length 1 within an object, use the `auto_unbox` argument
-#'in \code{\link{toJSON}}.
+#' in [toJSON()].
 #'
 #' It is usually recommended to avoid this function and stick with the default
 #' encoding schema for the various \R{} classes. The only use case for this function

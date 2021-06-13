@@ -7,8 +7,8 @@
 #' book. In practice this is often implemented using a `page` parameter in the API. The
 #' `rbind_pages` function can be used to combine these pages back into a single dataset.
 #'
-#' The `rbind_pages` function uses \code{\link[vctrs:vec_rbind]{vctrs::vec_rbind}}
-#' to bind the pages together. This generalizes \code{\link[base:cbind]{base::rbind}} in two
+#' The `rbind_pages` function uses [vctrs::vec_rbind()]
+#' to bind the pages together. This generalizes [`base::rbind()`][base::cbind] in two
 #' ways:
 #'
 #' \itemize{

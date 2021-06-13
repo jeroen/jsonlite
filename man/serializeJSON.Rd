@@ -14,14 +14,14 @@ unserializeJSON(txt)
 
 \item{digits}{max number of digits (after the dot) to print for numeric values}
 
-\item{pretty}{add indentation/whitespace to JSON output. See \code{\link{prettify}}}
+\item{pretty}{add indentation/whitespace to JSON output. See \code{\link[=prettify]{prettify()}}}
 
 \item{txt}{a JSON string which was created using \code{serializeJSON}}
 }
 \description{
-The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions convert between
+The \code{\link[=serializeJSON]{serializeJSON()}} and \code{\link[=unserializeJSON]{unserializeJSON()}} functions convert between
 \R{} objects to JSON data. Instead of using a class based mapping like
-\code{\link{toJSON}} and \code{\link{fromJSON}}, the serialize functions base the encoding
+\code{\link[=toJSON]{toJSON()}} and \code{\link[=fromJSON]{fromJSON()}}, the serialize functions base the encoding
 schema on the storage type, and capture all data and attributes from any object.
 Thereby the object can be restored almost perfectly from its JSON representation, but
 the resulting JSON output is very verbose. Apart from environments, all standard storage

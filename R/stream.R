@@ -1,9 +1,9 @@
 #' Streaming JSON input/output
 #'
 #' The `stream_in` and `stream_out` functions implement line-by-line processing
-#' of JSON data over a \code{\link{connection}}, such as a socket, url, file or pipe. JSON
+#' of JSON data over a [connection], such as a socket, url, file or pipe. JSON
 #' streaming requires the [ndjson](http://ndjson.org) format, which slightly differs
-#' from \code{\link{fromJSON}} and \code{\link{toJSON}}, see details.
+#' from [fromJSON()] and [toJSON()], see details.
 #'
 #' Because parsing huge JSON strings is difficult and inefficient, JSON streaming is done
 #' using **lines of minified JSON records**, a.k.a. [ndjson](http://ndjson.org).
@@ -12,7 +12,7 @@
 #' total stream combined is not valid JSON itself; only the individual lines are. Also note
 #' that because line-breaks are used as separators, prettified JSON is not permitted: the
 #' JSON lines *must* be minified. In this respect, the format is a bit different from
-#' \code{\link{fromJSON}} and \code{\link{toJSON}} where all lines are part of a single JSON
+#' [fromJSON()] and [toJSON()] where all lines are part of a single JSON
 #' structure with optional line breaks.
 #'
 #' The `handler` is a callback function which is called for each page (batch) of
@@ -27,7 +27,7 @@
 #' unlimited amount of data. See example.
 #'
 #' Note that a vector of JSON strings already in R can parsed with `stream_in` by
-#' creating a connection to it with \code{\link{textConnection}}.
+#' creating a connection to it with [textConnection()].
 #'
 #' If a connection is not opened yet, `stream_in` and `stream_out`
 #' will automatically open and later close the connection. Because R destroys connections
@@ -35,7 +35,7 @@
 #' calls to `stream_in` or `stream_out`, it needs to be opened
 #' beforehand. See example.
 #'
-#' @param con a \code{\link{connection}} object. If the connection is not open,
+#' @param con a [connection] object. If the connection is not open,
 #' `stream_in` and `stream_out` will automatically open
 #' and later close (and destroy) the connection. See details.
 #' @param handler a custom function that is called on each page of JSON data. If not specified,
@@ -44,14 +44,14 @@
 #' @param x object to be streamed out. Currently only data frames are supported.
 #' @param pagesize number of lines to read/write from/to the connection per iteration.
 #' @param verbose print some information on what is going on.
-#' @param ... arguments for \code{\link{fromJSON}} and \code{\link{toJSON}} that
+#' @param ... arguments for [fromJSON()] and [toJSON()] that
 #' control JSON formatting/parsing where applicable. Use with caution.
 #' @name stream_in, stream_out
 #' @export stream_in stream_out
 #' @rdname stream_in
 #' @references MongoDB export format: <https://docs.mongodb.com/manual/reference/program/mongoexport/>
 #' @references Documentation for the JSON Lines text file format: <https://jsonlines.org/>
-#' @seealso \code{\link{fromJSON}}, \code{\link{read_json}}
+#' @seealso [fromJSON()], [read_json()]
 #' @return The `stream_out` function always returns `NULL`.
 #' When no custom handler is specified, `stream_in` returns a data frame of all pages binded together.
 #' When a custom handler function is specified, `stream_in` always returns `NULL`.

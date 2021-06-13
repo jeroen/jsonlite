@@ -15,16 +15,16 @@ write_json(x, path, ...)
 \arguments{
 \item{path}{file on disk}
 
-\item{simplifyVector}{simplifies nested lists into vectors and data frames. See \link{fromJSON}.}
+\item{simplifyVector}{simplifies nested lists into vectors and data frames. See \code{\link[=fromJSON]{fromJSON()}}.}
 
-\item{...}{additional conversion arguments, see also \link{toJSON} or \link{fromJSON}}
+\item{...}{additional conversion arguments, see also \code{\link[=toJSON]{toJSON()}} or \code{\link[=fromJSON]{fromJSON()}}}
 
 \item{json}{string with literal json or connection object to read from}
 
 \item{x}{an object to be serialized to JSON}
 }
 \description{
-These functions are similar to \link{toJSON} and \link{fromJSON} except they
+These functions are similar to \code{\link[=toJSON]{toJSON()}} and \code{\link[=fromJSON]{fromJSON()}} except they
 explicitly distinguish between path and literal input, and do not simplify
 by default.
 }
@@ -39,5 +39,5 @@ read_json(tmp)
 read_json(tmp, simplifyVector = TRUE)
 }
 \seealso{
-\code{\link{fromJSON}}, \code{\link{stream_in}}
+\code{\link[=fromJSON]{fromJSON()}}, \code{\link[=stream_in]{stream_in()}}
 }
