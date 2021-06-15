@@ -1,60 +1,60 @@
 #' Streaming JSON input/output
 #'
-#' The \code{stream_in} and \code{stream_out} functions implement line-by-line processing
-#' of JSON data over a \code{\link{connection}}, such as a socket, url, file or pipe. JSON
-#' streaming requires the \href{http://ndjson.org}{ndjson} format, which slightly differs
-#' from \code{\link{fromJSON}} and \code{\link{toJSON}}, see details.
+#' The `stream_in` and `stream_out` functions implement line-by-line processing
+#' of JSON data over a [connection], such as a socket, url, file or pipe. JSON
+#' streaming requires the [ndjson](http://ndjson.org) format, which slightly differs
+#' from [fromJSON()] and [toJSON()], see details.
 #'
 #' Because parsing huge JSON strings is difficult and inefficient, JSON streaming is done
-#' using \strong{lines of minified JSON records}, a.k.a. \href{http://ndjson.org}{ndjson}.
-#' This is pretty standard: JSON databases such as \href{https://github.com/datproject/dat}{dat}
+#' using **lines of minified JSON records**, a.k.a. [ndjson](http://ndjson.org).
+#' This is pretty standard: JSON databases such as [dat](https://github.com/datproject/dat)
 #' or MongoDB use the same format to import/export datasets. Note that this means that the
 #' total stream combined is not valid JSON itself; only the individual lines are. Also note
 #' that because line-breaks are used as separators, prettified JSON is not permitted: the
-#' JSON lines \emph{must} be minified. In this respect, the format is a bit different from
-#' \code{\link{fromJSON}} and \code{\link{toJSON}} where all lines are part of a single JSON
+#' JSON lines *must* be minified. In this respect, the format is a bit different from
+#' [fromJSON()] and [toJSON()] where all lines are part of a single JSON
 #' structure with optional line breaks.
 #'
-#' The \code{handler} is a callback function which is called for each page (batch) of
-#' JSON data with exactly one argument (usually a data frame with \code{pagesize} rows).
-#' If \code{handler} is missing or \code{NULL}, a default handler is used which stores all
+#' The `handler` is a callback function which is called for each page (batch) of
+#' JSON data with exactly one argument (usually a data frame with `pagesize` rows).
+#' If `handler` is missing or `NULL`, a default handler is used which stores all
 #' intermediate pages of data, and at the very end binds all pages together into one single
-#' data frame that is returned by \code{stream_in}. When a custom \code{handler} function
-#' is specified, \code{stream_in} does not store any intermediate results and always returns
-#' \code{NULL}. It is then up to the \code{handler} to process or store data pages.
-#' A \code{handler} function that does not store intermediate results in memory (for
+#' data frame that is returned by `stream_in`. When a custom `handler` function
+#' is specified, `stream_in` does not store any intermediate results and always returns
+#' `NULL`. It is then up to the `handler` to process or store data pages.
+#' A `handler` function that does not store intermediate results in memory (for
 #' example by writing output to another connection) results in a pipeline that can process an
 #' unlimited amount of data. See example.
 #'
-#' Note that a vector of JSON strings already in R can parsed with \code{stream_in} by
-#' creating a connection to it with \code{\link{textConnection}}.
+#' Note that a vector of JSON strings already in R can parsed with `stream_in` by
+#' creating a connection to it with [textConnection()].
 #'
-#' If a connection is not opened yet, \code{stream_in} and \code{stream_out}
+#' If a connection is not opened yet, `stream_in` and `stream_out`
 #' will automatically open and later close the connection. Because R destroys connections
 #' when they are closed, they cannot be reused. To use a single connection for multiple
-#' calls to \code{stream_in} or \code{stream_out}, it needs to be opened
+#' calls to `stream_in` or `stream_out`, it needs to be opened
 #' beforehand. See example.
 #'
-#' @param con a \code{\link{connection}} object. If the connection is not open,
-#' \code{stream_in} and \code{stream_out} will automatically open
+#' @param con a [connection] object. If the connection is not open,
+#' `stream_in` and `stream_out` will automatically open
 #' and later close (and destroy) the connection. See details.
 #' @param handler a custom function that is called on each page of JSON data. If not specified,
 #' the default handler stores all pages and binds them into a single data frame that will be
-#' returned by \code{stream_in}. See details.
+#' returned by `stream_in`. See details.
 #' @param x object to be streamed out. Currently only data frames are supported.
 #' @param pagesize number of lines to read/write from/to the connection per iteration.
 #' @param verbose print some information on what is going on.
-#' @param ... arguments for \code{\link{fromJSON}} and \code{\link{toJSON}} that
+#' @param ... arguments for [fromJSON()] and [toJSON()] that
 #' control JSON formatting/parsing where applicable. Use with caution.
 #' @name stream_in, stream_out
 #' @export stream_in stream_out
 #' @rdname stream_in
-#' @references MongoDB export format: \url{https://docs.mongodb.com/manual/reference/program/mongoexport/}
-#' @references Documentation for the JSON Lines text file format: \url{https://jsonlines.org/}
-#' @seealso \code{\link{fromJSON}}, \code{\link{read_json}}
-#' @return The \code{stream_out} function always returns \code{NULL}.
-#' When no custom handler is specified, \code{stream_in} returns a data frame of all pages binded together.
-#' When a custom handler function is specified, \code{stream_in} always returns \code{NULL}.
+#' @references MongoDB export format: <https://docs.mongodb.com/manual/reference/program/mongoexport/>
+#' @references Documentation for the JSON Lines text file format: <https://jsonlines.org/>
+#' @seealso [fromJSON()], [read_json()]
+#' @return The `stream_out` function always returns `NULL`.
+#' When no custom handler is specified, `stream_in` returns a data frame of all pages binded together.
+#' When a custom handler function is specified, `stream_in` always returns `NULL`.
 #' @examples # compare formats
 #' x <- iris[1:3,]
 #' toJSON(x)
@@ -195,7 +195,7 @@ post_process <- function(x, simplifyVector = TRUE, simplifyDataFrame = simplifyV
 }
 
 #' @rdname stream_in
-#' @param prefix string to write before each line (use \code{"\u001e"} to write rfc7464 text sequences)
+#' @param prefix string to write before each line (use `"\u001e"` to write rfc7464 text sequences)
 stream_out <- function(x, con = stdout(), pagesize = 500, verbose = TRUE, prefix = "", ...) {
 
   if(!is(con, "connection")){

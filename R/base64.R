@@ -1,8 +1,8 @@
 #' Encode/decode base64
 #'
 #' Simple in-memory base64 encoder and decoder. Used internally for converting
-#' raw vectors to text. Interchangeable with encoder from \code{base64enc} or
-#' \code{openssl} package.
+#' raw vectors to text. Interchangeable with encoder from `base64enc` or
+#' `openssl` package.
 #'
 #' @param input string or raw vector to be encoded/decoded
 #' @export

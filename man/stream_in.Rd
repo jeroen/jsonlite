@@ -11,7 +11,7 @@ stream_in(con, handler = NULL, pagesize = 500, verbose = TRUE, ...)
 stream_out(x, con = stdout(), pagesize = 500, verbose = TRUE, prefix = "", ...)
 }
 \arguments{
-\item{con}{a \code{\link{connection}} object. If the connection is not open,
+\item{con}{a \link{connection} object. If the connection is not open,
 \code{stream_in} and \code{stream_out} will automatically open
 and later close (and destroy) the connection. See details.}
 
@@ -23,12 +23,12 @@ returned by \code{stream_in}. See details.}
 
 \item{verbose}{print some information on what is going on.}
 
-\item{...}{arguments for \code{\link{fromJSON}} and \code{\link{toJSON}} that
+\item{...}{arguments for \code{\link[=fromJSON]{fromJSON()}} and \code{\link[=toJSON]{toJSON()}} that
 control JSON formatting/parsing where applicable. Use with caution.}
 
 \item{x}{object to be streamed out. Currently only data frames are supported.}
 
-\item{prefix}{string to write before each line (use \code{"\u001e"} to write rfc7464 text sequences)}
+\item{prefix}{string to write before each line (use \code{"\\u001e"} to write rfc7464 text sequences)}
 }
 \value{
 The \code{stream_out} function always returns \code{NULL}.
@@ -37,9 +37,9 @@ When a custom handler function is specified, \code{stream_in} always returns \co
 }
 \description{
 The \code{stream_in} and \code{stream_out} functions implement line-by-line processing
-of JSON data over a \code{\link{connection}}, such as a socket, url, file or pipe. JSON
+of JSON data over a \link{connection}, such as a socket, url, file or pipe. JSON
 streaming requires the \href{http://ndjson.org}{ndjson} format, which slightly differs
-from \code{\link{fromJSON}} and \code{\link{toJSON}}, see details.
+from \code{\link[=fromJSON]{fromJSON()}} and \code{\link[=toJSON]{toJSON()}}, see details.
 }
 \details{
 Because parsing huge JSON strings is difficult and inefficient, JSON streaming is done
@@ -49,7 +49,7 @@ or MongoDB use the same format to import/export datasets. Note that this means t
 total stream combined is not valid JSON itself; only the individual lines are. Also note
 that because line-breaks are used as separators, prettified JSON is not permitted: the
 JSON lines \emph{must} be minified. In this respect, the format is a bit different from
-\code{\link{fromJSON}} and \code{\link{toJSON}} where all lines are part of a single JSON
+\code{\link[=fromJSON]{fromJSON()}} and \code{\link[=toJSON]{toJSON()}} where all lines are part of a single JSON
 structure with optional line breaks.
 
 The \code{handler} is a callback function which is called for each page (batch) of
@@ -64,7 +64,7 @@ example by writing output to another connection) results in a pipeline that can 
 unlimited amount of data. See example.
 
 Note that a vector of JSON strings already in R can parsed with \code{stream_in} by
-creating a connection to it with \code{\link{textConnection}}.
+creating a connection to it with \code{\link[=textConnection]{textConnection()}}.
 
 If a connection is not opened yet, \code{stream_in} and \code{stream_out}
 will automatically open and later close the connection. Because R destroys connections
@@ -144,5 +144,5 @@ MongoDB export format: \url{https://docs.mongodb.com/manual/reference/program/mo
 Documentation for the JSON Lines text file format: \url{https://jsonlines.org/}
 }
 \seealso{
-\code{\link{fromJSON}}, \code{\link{read_json}}
+\code{\link[=fromJSON]{fromJSON()}}, \code{\link[=read_json]{read_json()}}
 }

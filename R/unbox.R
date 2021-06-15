@@ -1,24 +1,24 @@
 #' Unbox a vector or data frame
 #'
 #' This function marks an atomic vector or data frame as a
-#' \href{https://en.wikipedia.org/wiki/Singleton_(mathematics)}{singleton}, i.e.
+#' [singleton](https://en.wikipedia.org/wiki/Singleton_(mathematics)), i.e.
 #' a set with exactly 1 element. Thereby, the value will not turn into an
-#' \code{array} when encoded into JSON. This can only be done for
+#' `array` when encoded into JSON. This can only be done for
 #' atomic vectors of length 1, or data frames with exactly 1 row. To automatically
-#' unbox all vectors of length 1 within an object, use the \code{auto_unbox} argument
-#'in \code{\link{toJSON}}.
+#' unbox all vectors of length 1 within an object, use the `auto_unbox` argument
+#' in [toJSON()].
 #'
 #' It is usually recommended to avoid this function and stick with the default
 #' encoding schema for the various \R{} classes. The only use case for this function
 #' is if you are bound to some specific predefined JSON structure (e.g. to
 #' submit to an API), which has no natural \R{} representation. Note that the default
 #' encoding for data frames naturally results in a collection of key-value pairs,
-#' without using \code{unbox}.
+#' without using `unbox`.
 #'
 #' @param x atomic vector of length 1, or data frame with 1 row.
-#' @return Returns a singleton version of \code{x}.
+#' @return Returns a singleton version of `x`.
 #' @export
-#' @references \url{https://en.wikipedia.org/wiki/Singleton_(mathematics)}
+#' @references <https://en.wikipedia.org/wiki/Singleton_(mathematics)>
 #' @examples toJSON(list(foo=123))
 #' toJSON(list(foo=unbox(123)))
 #'

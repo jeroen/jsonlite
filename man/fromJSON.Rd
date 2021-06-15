@@ -43,7 +43,7 @@ toJSON(
 
 \item{simplifyMatrix}{coerce JSON arrays containing vectors of equal mode and dimension into matrix or array}
 
-\item{flatten}{automatically \code{\link{flatten}} nested data frames into a single non-nested data frame}
+\item{flatten}{automatically \code{\link[=flatten]{flatten()}} nested data frames into a single non-nested data frame}
 
 \item{...}{arguments passed on to class specific \code{print} methods}
 
@@ -67,25 +67,25 @@ toJSON(
 
 \item{na}{how to print NA values: must be one of 'null' or 'string'. Defaults are class specific}
 
-\item{auto_unbox}{automatically \code{\link{unbox}} all atomic vectors of length 1. It is usually safer to avoid this and instead use the \code{\link{unbox}} function to unbox individual elements.
-An exception is that objects of class \code{AsIs} (i.e. wrapped in \code{I()}) are not automatically unboxed. This is a way to mark single values as length-1 arrays.}
+\item{auto_unbox}{automatically \code{\link[=unbox]{unbox()}} all atomic vectors of length 1. It is usually safer to avoid this and instead use the \code{\link[=unbox]{unbox()}} function to unbox individual elements.
+An exception is that objects of class \code{AsIs} (i.e. wrapped in \code{\link[=I]{I()}}) are not automatically unboxed. This is a way to mark single values as length-1 arrays.}
 
-\item{digits}{max number of decimal digits to print for numeric values. Use \code{I()} to specify significant digits. Use \code{NA} for max precision.}
+\item{digits}{max number of decimal digits to print for numeric values. Use \code{\link[=I]{I()}} to specify significant digits. Use \code{NA} for max precision.}
 
-\item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}}
+\item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link[=prettify]{prettify()}}}
 
 \item{force}{unclass/skip objects of classes with no defined JSON mapping}
 }
 \description{
-These functions are used to convert between JSON data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
+These functions are used to convert between JSON data and \R{} objects. The \code{\link[=toJSON]{toJSON()}} and \code{\link[=fromJSON]{fromJSON()}}
 functions use a class based mapping, which follows conventions outlined in this paper:  \url{https://arxiv.org/abs/1403.2805} (also available as vignette).
 }
 \details{
-The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions
+The \code{\link[=toJSON]{toJSON()}} and \code{\link[=fromJSON]{fromJSON()}} functions are drop-in replacements for the identically named functions
 in packages \code{rjson} and \code{RJSONIO}. Our implementation uses an alternative, somewhat more consistent mapping
 between \R{} objects and JSON strings.
 
-The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions in this package use an
+The \code{\link[=serializeJSON]{serializeJSON()}} and \code{\link[=unserializeJSON]{unserializeJSON()}} functions in this package use an
 alternative system to convert between \R{} objects and JSON, which supports more classes but is much more verbose.
 
 A JSON string is always unicode, using \code{UTF-8} by default, hence there is usually no need to escape any characters.
@@ -133,5 +133,5 @@ identical(data3, flatten(data2))
 Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{https://arxiv.org/abs/1403.2805}
 }
 \seealso{
-\code{\link{read_json}}, \code{\link{stream_in}}
+\code{\link[=read_json]{read_json()}}, \code{\link[=stream_in]{stream_in()}}
 }

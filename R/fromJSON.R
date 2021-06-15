@@ -1,18 +1,18 @@
-#' These functions are used to convert between JSON data and \R{} objects. The \code{\link{toJSON}} and \code{\link{fromJSON}}
-#' functions use a class based mapping, which follows conventions outlined in this paper:  \url{https://arxiv.org/abs/1403.2805} (also available as vignette).
+#' These functions are used to convert between JSON data and \R{} objects. The [toJSON()] and [fromJSON()]
+#' functions use a class based mapping, which follows conventions outlined in this paper:  <https://arxiv.org/abs/1403.2805> (also available as vignette).
 #'
-#' The \code{\link{toJSON}} and \code{\link{fromJSON}} functions are drop-in replacements for the identically named functions
-#' in packages \code{rjson} and \code{RJSONIO}. Our implementation uses an alternative, somewhat more consistent mapping
+#' The [toJSON()] and [fromJSON()] functions are drop-in replacements for the identically named functions
+#' in packages `rjson` and `RJSONIO`. Our implementation uses an alternative, somewhat more consistent mapping
 #' between \R{} objects and JSON strings.
 #'
-#' The \code{\link{serializeJSON}} and \code{\link{unserializeJSON}} functions in this package use an
+#' The [serializeJSON()] and [unserializeJSON()] functions in this package use an
 #' alternative system to convert between \R{} objects and JSON, which supports more classes but is much more verbose.
 #'
-#' A JSON string is always unicode, using \code{UTF-8} by default, hence there is usually no need to escape any characters.
+#' A JSON string is always unicode, using `UTF-8` by default, hence there is usually no need to escape any characters.
 #' However, the JSON format does support escaping of unicode characters, which are encoded using a backslash followed by
-#' a lower case \code{"u"} and 4 hex characters, for example: \code{"Z\\u00FCrich"}. The \code{fromJSON} function
+#' a lower case `"u"` and 4 hex characters, for example: `"Z\u00FCrich"`. The `fromJSON` function
 #' will parse such escape sequences but it is usually preferable to encode unicode characters in JSON using native
-#' \code{UTF-8} rather than escape sequences.
+#' `UTF-8` rather than escape sequences.
 #
 #' @rdname fromJSON
 #' @title Convert \R{} objects to/from JSON
@@ -23,7 +23,7 @@
 #' @param simplifyVector coerce JSON arrays containing only primitives into an atomic vector
 #' @param simplifyDataFrame coerce JSON arrays containing only records (JSON objects) into a data frame
 #' @param simplifyMatrix coerce JSON arrays containing vectors of equal mode and dimension into matrix or array
-#' @param flatten automatically \code{\link{flatten}} nested data frames into a single non-nested data frame
+#' @param flatten automatically [flatten()] nested data frames into a single non-nested data frame
 #' @param x the object to be encoded
 #' @param dataframe how to encode data.frame objects: must be one of 'rows', 'columns' or 'values'
 #' @param matrix how to encode matrices and higher dimensional arrays: must be one of 'rowmajor' or 'columnmajor'.
@@ -34,14 +34,14 @@
 #' @param raw how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'
 #' @param null how to encode NULL values within a list: must be one of 'null' or 'list'
 #' @param na how to print NA values: must be one of 'null' or 'string'. Defaults are class specific
-#' @param auto_unbox automatically \code{\link{unbox}} all atomic vectors of length 1. It is usually safer to avoid this and instead use the \code{\link{unbox}} function to unbox individual elements.
-#'   An exception is that objects of class \code{AsIs} (i.e. wrapped in \code{I()}) are not automatically unboxed. This is a way to mark single values as length-1 arrays.
-#' @param digits max number of decimal digits to print for numeric values. Use \code{I()} to specify significant digits. Use \code{NA} for max precision.
+#' @param auto_unbox automatically [unbox()] all atomic vectors of length 1. It is usually safer to avoid this and instead use the [unbox()] function to unbox individual elements.
+#'   An exception is that objects of class `AsIs` (i.e. wrapped in [I()]) are not automatically unboxed. This is a way to mark single values as length-1 arrays.
+#' @param digits max number of decimal digits to print for numeric values. Use [I()] to specify significant digits. Use `NA` for max precision.
 #' @param force unclass/skip objects of classes with no defined JSON mapping
-#' @param pretty adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link{prettify}}
-#' @param ... arguments passed on to class specific \code{print} methods
-#' @references Jeroen Ooms (2014). The \code{jsonlite} Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. \emph{arXiv:1403.2805}. \url{https://arxiv.org/abs/1403.2805}
-#' @seealso \code{\link{read_json}}, \code{\link{stream_in}}
+#' @param pretty adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See [prettify()]
+#' @param ... arguments passed on to class specific `print` methods
+#' @references Jeroen Ooms (2014). The `jsonlite` Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. *arXiv:1403.2805*. <https://arxiv.org/abs/1403.2805>
+#' @seealso [read_json()], [stream_in()]
 #' @examples # Stringify some data
 #' jsoncars <- toJSON(mtcars, pretty=TRUE)
 #' cat(jsoncars)
