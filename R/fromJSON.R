@@ -21,7 +21,9 @@
 #' @export fromJSON toJSON
 #' @param txt a JSON string, URL or file
 #' @param simplifyVector coerce JSON arrays containing only primitives into an atomic vector
-#' @param simplifyDataFrame coerce JSON arrays containing only records (JSON objects) into a data frame
+#' @param simplifyDataFrame coerce JSON arrays containing only records (JSON objects) into a data frame.
+#'   Can be `TRUE`, `FALSE` or a function with one argument, e.g. `tibble::as_tibble`.
+#'   If a function, all simplified data fraees are postprocessed with that function.
 #' @param simplifyMatrix coerce JSON arrays containing vectors of equal mode and dimension into matrix or array
 #' @param flatten automatically [flatten()] nested data frames into a single non-nested data frame
 #' @param x the object to be encoded

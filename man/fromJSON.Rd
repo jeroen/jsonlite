@@ -39,7 +39,9 @@ toJSON(
 
 \item{simplifyVector}{coerce JSON arrays containing only primitives into an atomic vector}
 
-\item{simplifyDataFrame}{coerce JSON arrays containing only records (JSON objects) into a data frame}
+\item{simplifyDataFrame}{coerce JSON arrays containing only records (JSON objects) into a data frame.
+Can be \code{TRUE}, \code{FALSE} or a function with one argument, e.g. \code{tibble::as_tibble}.
+If a function, all simplified data fraees are postprocessed with that function.}
 
 \item{simplifyMatrix}{coerce JSON arrays containing vectors of equal mode and dimension into matrix or array}
 
