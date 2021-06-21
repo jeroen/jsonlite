@@ -45,6 +45,64 @@ test_that("recover lists in data frames", {
   expect_that(fromJSON(toJSON(zz)), equals(zz))
 });
 
+test_that("recover nested data frames with custom class (#356)", {
+  quibble <- function(...) {
+    as_quibble(data.frame(...))
+  }
+  as_quibble <- function(x) {
+    class(x) <- c("quibble", class(x))
+    x
+  }
+
+  x1 <- x2 <- x3 <- x4 <- x5 <- x6 <- quibble(foo=c(1:2));
+  x2$bar <- c("jeroen", "eli");
+  x3$bar <- x4$bar <- x5$bar <- x6$bar <- quibble(name=c("jeroen", "eli"))
+  x4$bar$age <- x5$bar$age <- c(28, 24);  x6$bar$age <- c(28, NA);
+  x5$bar$food <- quibble(yum=c("Rice", "Pasta"));
+  x6$bar$food <- quibble(yum=c(NA, "Pasta"));
+
+  #add to list
+  objects <- list(x1, x2, x3, x4, x5, x6)
+
+  #test all but list
+  lapply(objects, function(object){
+    expect_that(fromJSON(toJSON(object), simplifyDataFrame = as_quibble), equals(object))
+    expect_that(fromJSON(toJSON(object, na="null"), simplifyDataFrame = as_quibble), equals(object))
+    expect_that(names(fromJSON(toJSON(object), simplifyDataFrame = as_quibble, flatten = TRUE)), equals(names(unlist(object[1,,drop=FALSE]))))
+  });
+
+  #test all in list
+  expect_that(fromJSON(toJSON(objects), simplifyDataFrame = as_quibble), equals(objects))
+});
+
+test_that("recover lists in data frames with custom class (#356)", {
+  quibble <- function(...) {
+    as_quibble(data.frame(...))
+  }
+  as_quibble <- function(x) {
+    class(x) <- c("quibble", class(x))
+    x
+  }
+
+  x <- quibble(author = c("Homer", "Virgil", "Jeroen"));
+  x$poems = list(c("Iliad", "Odyssey"), c("Eclogues", "Georgics", "Aeneid"), character());
+
+  y <- quibble(author = c("Homer", "Virgil", "Jeroen"));
+  y$poems = list(
+    quibble(title=c("Iliad", "Odyssey"), year=c(-1194, -800)),
+    quibble(title=c("Eclogues", "Georgics", "Aeneid"), year=c(-44, -29, -19)),
+    quibble()
+  );
+
+  z <- list(x=x, y=y);
+  zz <- list(x,y);
+
+  expect_that(fromJSON(toJSON(x), simplifyDataFrame = as_quibble), equals(x))
+  expect_that(fromJSON(toJSON(y), simplifyDataFrame = as_quibble), equals(y))
+  expect_that(fromJSON(toJSON(z), simplifyDataFrame = as_quibble), equals(z))
+  expect_that(fromJSON(toJSON(zz), simplifyDataFrame = as_quibble), equals(zz))
+});
+
 #note: nested matrix does not perfectly restore
 test_that("nested matrix in data frame", {
   x <- data.frame(foo=1:2)
