@@ -1,4 +1,4 @@
-simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE,
+simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = identity, simplifyMatrix = TRUE,
   simplifyDate = simplifyVector, homoList = TRUE, flatten = FALSE, columnmajor = FALSE,
   simplifySubMatrix = simplifyMatrix) {
 
@@ -8,8 +8,8 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
   }
 
   # list can be a dataframe recordlist
-  if (isTRUE(simplifyDataFrame) && is.recordlist(x)) {
-    mydf <- simplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix)
+  if (!is.null(simplifyDataFrame) && is.recordlist(x)) {
+    mydf <- simplifyDataFrame(simplifyDataFrame_(x, flatten = flatten, simplifyMatrix = simplifySubMatrix, simplifyDataFrame = simplifyDataFrame))
     if(isTRUE(simplifyDate) && is.data.frame(mydf) && is.datelist(mydf)){
       return(parse_date(mydf[["$date"]]))
     }
@@ -66,7 +66,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
       # if all the others look like data frames, coerse to data frames!
       if (all(vapply(out[!isemptylist], is.data.frame, logical(1)))) {
         for (i in which(isemptylist)) {
-        out[[i]] <- data.frame()
+          out[[i]] <- simplifyDataFrame(data.frame())
         }
         return(out)
       }
