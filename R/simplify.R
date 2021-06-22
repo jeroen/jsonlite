@@ -13,7 +13,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
 
   # list can be a dataframe recordlist
   if (!is.null(simplifyDataFrame) && is.recordlist(x)) {
-    mydf <- coerceDataFrame(simplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix, simplifyDataFrame = simplifyDataFrame))
+    mydf <- coerceDataFrame(doSimplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix, simplifyDataFrame = simplifyDataFrame))
     if(isTRUE(simplifyDate) && is.data.frame(mydf) && is.datelist(mydf)){
       return(parse_date(mydf[["$date"]]))
     }
