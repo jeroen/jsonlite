@@ -1,4 +1,4 @@
-doSimplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix, simplifyDataFrame) {
+simplifyDataFrame <- function(recordlist, columns, flatten, simplifyMatrix, simplifyDataFrame) {
 
   # no records at all
   if (!length(recordlist)) {
