@@ -9,7 +9,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = identity, sim
 
   # list can be a dataframe recordlist
   if (!is.null(simplifyDataFrame) && is.recordlist(x)) {
-    mydf <- simplifyDataFrame(simplifyDataFrame_(x, flatten = flatten, simplifyMatrix = simplifySubMatrix, simplifyDataFrame = simplifyDataFrame))
+    mydf <- simplifyDataFrame(doSimplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix, simplifyDataFrame = simplifyDataFrame))
     if(isTRUE(simplifyDate) && is.data.frame(mydf) && is.datelist(mydf)){
       return(parse_date(mydf[["$date"]]))
     }
