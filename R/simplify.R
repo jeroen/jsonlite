@@ -1,10 +1,18 @@
-simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = identity, simplifyMatrix = TRUE,
+simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE,
   simplifyDate = simplifyVector, homoList = TRUE, flatten = FALSE, columnmajor = FALSE,
   simplifySubMatrix = simplifyMatrix) {
 
   #This includes '[]' and '{}')
   if (!is.list(x) || !length(x)) {
     return(x)
+  }
+
+  # support function in simplifyDataFrame
+  # avoid rigorous argument checks for compatibility
+  if (isTRUE(simplifyDataFrame)) {
+    simplifyDataFrame <- identity
+  } else if (!is.function(simplifyDataFrame)) {
+    simplifyDataFrame <- NULL
   }
 
   # list can be a dataframe recordlist

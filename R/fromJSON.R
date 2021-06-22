@@ -107,14 +107,6 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
 parse_and_simplify <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
   simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, validate = TRUE, bigint_as_char = FALSE, ...){
 
-  # support function in simplifyDataFrame
-  # avoid rigorous argument checks for compatibility
-  if (isTRUE(simplifyDataFrame)) {
-    simplifyDataFrame <- identity
-  } else if (!is.function(simplifyDataFrame)) {
-    simplifyDataFrame <- NULL
-  }
-
   if(!missing(unicode)){
     message("Argument unicode has been deprecated. YAJL always parses unicode.")
   }
@@ -127,7 +119,7 @@ parse_and_simplify <- function(txt, simplifyVector = TRUE, simplifyDataFrame = s
   obj <- parseJSON(txt, bigint_as_char)
 
   # post processing
-  if (any(isTRUE(simplifyVector), !is.null(simplifyDataFrame), isTRUE(simplifyMatrix))) {
+  if (any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))) {
     return(simplify(obj, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
       simplifyMatrix = simplifyMatrix, flatten = flatten, ...))
   } else {
