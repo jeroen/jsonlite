@@ -7,17 +7,13 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
     return(x)
   }
 
-  # support function in simplifyDataFrame
-  # avoid rigorous argument checks for compatibility
-  if (isTRUE(simplifyDataFrame)) {
-    simplifyDataFrame <- identity
-  } else if (!is.function(simplifyDataFrame)) {
-    simplifyDataFrame <- NULL
-  }
+  # Input: `TRUE`, a function, or anything else
+  # Output: a function or `NULL`
+  coerceDataFrame <- getCoerceDataFrame(simplifyDataFrame)
 
   # list can be a dataframe recordlist
   if (!is.null(simplifyDataFrame) && is.recordlist(x)) {
-    mydf <- simplifyDataFrame(doSimplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix, simplifyDataFrame = simplifyDataFrame))
+    mydf <- coerceDataFrame(doSimplifyDataFrame(x, flatten = flatten, simplifyMatrix = simplifySubMatrix, simplifyDataFrame = simplifyDataFrame))
     if(isTRUE(simplifyDate) && is.data.frame(mydf) && is.datelist(mydf)){
       return(parse_date(mydf[["$date"]]))
     }
@@ -74,7 +70,7 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
       # if all the others look like data frames, coerse to data frames!
       if (all(vapply(out[!isemptylist], is.data.frame, logical(1)))) {
         for (i in which(isemptylist)) {
-          out[[i]] <- simplifyDataFrame(data.frame())
+          out[[i]] <- coerceDataFrame(data.frame())
         }
         return(out)
       }
@@ -98,6 +94,18 @@ simplify <- function(x, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplif
 
   # return object
   return(out)
+}
+
+getCoerceDataFrame <- function(simplifyDataFrame) {
+  # support function in simplifyDataFrame
+  # avoid rigorous argument checks for compatibility
+  if (isTRUE(simplifyDataFrame)) {
+    identity
+  } else if (is.function(simplifyDataFrame)) {
+    simplifyDataFrame
+  } else {
+    NULL
+  }
 }
 
 is.matrixlist <- function(x) {
