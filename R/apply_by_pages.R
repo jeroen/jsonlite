@@ -4,6 +4,10 @@ apply_by_pages <- function(x, FUN, pagesize, verbose, ...){
   npages <- nr %/% pagesize;
   lastpage <- nr %% pagesize;
 
+  `[.json` <- function(x, i) {
+    structure(NextMethod("["), class = c("json", "character"))
+  }
+
   out <- as.list(rep(NA, npages + as.logical(lastpage)))
   for(i in seq_len(npages)){
     from <- pagesize * (i-1) + 1;
