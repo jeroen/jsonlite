@@ -38,3 +38,33 @@ test_that("Class loading errors", {
   expect_error(unserializeJSON('{"type":"S4","attributes":{},"value":{"class":"nonExitingClass","package":".GlobalEnv"}}'), "defined")
   expect_error(expect_warning(unserializeJSON('{"type":"S4","attributes":{},"value":{"class":"nonExitingClass","package":"nopackage"}}')), "nopackage")
 })
+
+
+# S4 extending various SEXP types
+test_that("Serializing S4 extending SEXPTYPE", {
+
+  objects <- list(
+    NULL,
+    readBin(system.file(package="base", "Meta/package.rds"), "raw", 999),
+    c(TRUE, FALSE, NA, FALSE),
+    c(1L, NA, 9999999),
+    c(round(pi, 4), NA, NaN, Inf, -Inf),
+    c("foo", NA, "bar"),
+    complex(real=1:10, imaginary=1001:1010),
+    expression("to be or not to be"),
+    expression(foo),
+    parse(text="rnorm(10);"),
+    list("1", "2", "3"),
+    mtcars,
+    base::matrix(nrow=100, ncol=100)
+  )
+
+  lapply(objects, function(object){
+    setClass("Complexo", contains = c(class(object)))
+    complex1 <- new("Complexo", object)
+    c1 = serializeJSON(complex1)
+    c2 = unserializeJSON(c1)
+    expect_identical(complex1, c2)
+  })
+
+})
