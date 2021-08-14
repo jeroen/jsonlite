@@ -5,17 +5,6 @@ pack <- function(obj, ...) {
   # encode by storage mode
   encoding.mode <- typeof(obj)
 
-  # Strip off 'class' from S4 attributes
-  attrib <- attributes(obj)
-  if(isS4(obj)){
-    encoding.mode <- "S4"
-    if (".Data" %in% slotNames(obj)) {
-      attrib[[".Data"]] = obj@.Data
-    }
-    attrib <- attrib[slotNames(obj)]
-    names(attrib) <- slotNames(obj)
-  }
-
   # null may not have attributes
   if (encoding.mode == "NULL" || identical(obj, as.name('\001NULL\001'))) {
     return(list(type = as.scalar("NULL")))
@@ -29,6 +18,17 @@ pack <- function(obj, ...) {
   # special exception
   if (encoding.mode == "environment" && isNamespace(obj)) {
     encoding.mode <- "namespace"
+  }
+
+  # Strip off 'class' from S4 attributes
+  attrib <- attributes(obj)
+  if(isS4(obj)){
+    encoding.mode <- "S4"
+    if (".Data" %in% slotNames(obj)) {
+      attrib[[".Data"]] = obj@.Data
+    }
+    attrib <- attrib[slotNames(obj)]
+    names(attrib) <- slotNames(obj)
   }
 
   # encode recursively
