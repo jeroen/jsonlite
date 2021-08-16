@@ -23,6 +23,10 @@ pack <- function(obj, ...) {
   # Strip off 'class' from S4 attributes
   attrib <- attributes(obj)
   if(isS4(obj)){
+    encoding.mode <- "S4"
+    if (".Data" %in% slotNames(obj)) {
+      attrib[[".Data"]] = obj@.Data
+    }
     attrib <- attrib[slotNames(obj)]
     names(attrib) <- slotNames(obj)
   }
