@@ -88,7 +88,9 @@ SEXP C_collapse_array_pretty_inner(SEXP x) {
   }
 
   // n-1 ", " separators
-  nchar_total += (len-1)*2;
+  if(len){
+    nchar_total += (len-1)*2;
+  }
 
   //outer parentheses plus terminator
   nchar_total += 3;

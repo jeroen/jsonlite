@@ -1,3 +1,6 @@
+1.7.3
+ _ Fix memory bug in toJSON(pretty=TRUE) for 0-length vectors
+
 1.7.2
  - Special case 'blob' vctrs to prevent boxing of base64 output strings
  - Fix a unit test for new stricter all.equal() for environments in base-R
