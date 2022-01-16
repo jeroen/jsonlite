@@ -45,8 +45,8 @@ paste(format(gg_issues$user$login), ":", gg_issues$title)
 A single public API that shows location, status and current availability for all stations in the New York City bike sharing imitative.
 
 ```{r}
-citibike <- fromJSON("http://citibikenyc.com/stations/json")
-stations <- citibike$stationBeanList
+citibike <- fromJSON("https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
+stations <- citibike$data$stations
 colnames(stations)
 nrow(stations)
 ```

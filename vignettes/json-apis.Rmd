@@ -1,6 +1,6 @@
 ---
 title: "Fetching JSON data from REST APIs"
-date: "2020-06-25"
+date: "2022-01-16"
 output:
   html_document
 vignette: >
@@ -34,36 +34,36 @@ paste(format(gg_issues$user$login), ":", gg_issues$title)
 ```
 
 ```
- [1] "ds-jim          : Nothing plotted with manual_scale when a named vector is used as the input."                  
- [2] "thomasp85       : Should ggsave use ragg if available?"                                                         
- [3] "jdsher          : Cannot override.aes with guide_bins?"                                                         
- [4] "karawoo         : Combined facet labels aren't parsed when .multi_line = FALSE"                                 
- [5] "mevers          : `coord_polar` causes error with `ggtext::element_markdown`"                                   
- [6] "yutannihilation : WIP: Deprecate qplot()"                                                                       
- [7] "tdhock          : Fix aes(groupS)"                                                                              
- [8] "tdhock          : same argument/param in both stat and geom?"                                                   
- [9] "tdhock          : undefined columns selected with groupS aes in custom geom"                                    
-[10] "SimonDedman     : geom_violin default adjust value for integers"                                                
-[11] "tdhock          : group column in built data even when aes(group) absent"                                       
-[12] "TylerGrantSmith : Add layer names"                                                                              
-[13] "krlmlr          : Support ptype argument for scale() functions"                                                 
-[14] "clauswilke      : Annotate all facets with axis ticks and labels for fixed scales"                              
-[15] "evodevosys      : theme_void() removes geom_segments (at least visually) when an alpha aesthetic is used"       
-[16] "hadley          : ggsave should use plot theme for default background"                                          
-[17] "yqgchen         : strip.text.y = element_blank() yields an error when there are multiple layers of strip labels"
-[18] "DrrDom          : Points fill in legend"                                                                        
-[19] "xvrdm           : WIP: Add scale_color_viridis_b"                                                               
-[20] "thomas-neitmann : `ggsave()` produces aliased png files on Windows"                                             
-[21] "atusy           : Export pch_table"                                                                             
-[22] "moodymudskipper : default xlim and ylim in qplot are not supportd when non missing"                             
-[23] "yutannihilation : Can geom_abline() draw lines a bit longer than the actual Coord range?"                       
-[24] "vitor-mendes-iq : scale_*_reverse() is ignored when limits are set on Coord"                                    
-[25] "LiRogers        : Justifying the legend with respect to the full plot area rather than the panel"               
-[26] "Shians          : scale_fill_steps produces unevenly spaced legend when limits are set"                         
-[27] "SimonDedman     : Add 'reverse' option to scale_y_date?"                                                        
-[28] "echasnovski     : Add `bounds` argument to `geom_density()`"                                                    
-[29] "swebs           : timezone parameter for scale_x_datetime has no effect"                                        
-[30] "jgjl            : Update stat_ecdf to work either on the x or the y aesthetic."                                 
+ [1] "petres               : Inconsistency in `scale_` functions for args `values` and `labels` for `NA` values"                                                
+ [2] "PursuitOfDataScience : Update data.R"                                                                                                                     
+ [3] "cmaimone             : scale_x_datetime limits with histogram/stat_bin: warning message about missing values"                                             
+ [4] "tomsaunders98        : Add options to guide_colourstep"                                                                                                   
+ [5] "teunbrand            : Duplicated aes warning with multiple modified aesthetics"                                                                          
+ [6] "krlmlr               : Support scale functions in packages not attached via scale_type()"                                                                 
+ [7] "elong0527            : Shall `NextMethod` be used in `$<-.uneval`"                                                                                        
+ [8] "bkmgit               : Update presidential terms dataset"                                                                                                 
+ [9] "bkmgit               : Presidents terms"                                                                                                                  
+[10] "coolbutuseless       : Export `datetime_scale`"                                                                                                           
+[11] "davidhodge931        : Create one single legend for a numeric colour variable coloured and filled along a gradient of colours with different alpha values"
+[12] "yutannihilation      : Use pak in R-CMD-check.yaml"                                                                                                       
+[13] "hadley               : Option to make default colour schemes accessible?"                                                                                 
+[14] "davidhodge931        : scale_fill_gradientn and scale_colour_gradientn should support na.translate"                                                       
+[15] "davidhodge931        : should legend styling elements within guide_* instead be within theme?"                                                            
+[16] "markjrieke           : `geom_ribbon`: aesthetics can not vary with a ribbon"                                                                              
+[17] "bkmgit               : Dataset licenses"                                                                                                                  
+[18] "jxu                  : geom_segment example confusing"                                                                                                    
+[19] "twest820             : alpha legend keys darken when geom_ribbons share an alpha value"                                                                   
+[20] "WillForan            : discarded breaks in scale_x_continuous(trans=\"log10\") w/ min(x)==0"                                                              
+[21] "billdenney           : na.rm is ignored with geom_area"                                                                                                   
+[22] "hugesingleton        : Is it possible to make the width of geom_boxplot and binwidth in geom_density, and position \"mapable\" in aes()?"                 
+[23] "bersbersbers         : Fix warning in geom_violin with draw_quantiles"                                                                                    
+[24] "eliocamp             : `geom_contour()` documentation states false precedence of bin and binwidth parameters"                                             
+[25] "jtlandis             : Unexpected results using `guides(x = guide_axis(position = ...))`"                                                                 
+[26] "albert-ying          : Smarter axis label -- allow string manipulate function in `labs` or `theme`"                                                       
+[27] "Cumol                : Width argument to geom_errorbar not passed on when using stat_summary_bin"                                                         
+[28] "twest820             : apparently spurious is.na() warning on use of language in label"                                                                   
+[29] "benjaminrich         : Add `trans` option in `annotation_logticks()`"                                                                                     
+[30] "benjaminrich         : `annotation_logticks()` with secondary axis"                                                                                       
 ```
 
 ## CitiBike NYC
@@ -72,17 +72,16 @@ A single public API that shows location, status and current availability for all
 
 
 ```r
-citibike <- fromJSON("http://citibikenyc.com/stations/json")
-stations <- citibike$stationBeanList
+citibike <- fromJSON("https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
+stations <- citibike$data$stations
 colnames(stations)
 ```
 
 ```
- [1] "id"                    "stationName"           "availableDocks"        "totalDocks"           
- [5] "latitude"              "longitude"             "statusValue"           "statusKey"            
- [9] "availableBikes"        "stAddress1"            "stAddress2"            "city"                 
-[13] "postalCode"            "location"              "altitude"              "testStation"          
-[17] "lastCommunicationTime" "landMark"             
+ [1] "electric_bike_surcharge_waiver" "eightd_station_services"        "lat"                            "external_id"                   
+ [5] "station_type"                   "name"                           "short_name"                     "station_id"                    
+ [9] "rental_methods"                 "rental_uris"                    "has_kiosk"                      "region_id"                     
+[13] "capacity"                       "legacy_id"                      "lon"                            "eightd_has_key_dispenser"      
 ```
 
 ```r
@@ -90,7 +89,7 @@ nrow(stations)
 ```
 
 ```
-[1] 973
+[1] 1598
 ```
 
 ## Ergast
@@ -105,8 +104,8 @@ colnames(drivers)
 ```
 
 ```
-[1] "driverId"        "code"            "url"             "givenName"       "familyName"      "dateOfBirth"    
-[7] "nationality"     "permanentNumber"
+[1] "driverId"        "code"            "url"             "givenName"       "familyName"      "dateOfBirth"     "nationality"    
+[8] "permanentNumber"
 ```
 
 ```r
@@ -163,14 +162,14 @@ organizations[1:10, c("name", "city", "strein")]
                             name        city     strein
 1           0 DEBT EDUCATION INC  SANTA ROSA 46-4744976
 2                0 TOLERANCE INC     SUWANEE 27-2620044
-3                  0 U R PASSION   KENNEWICK 81-4045228
-4                00 MOVEMENT INC   PENSACOLA 82-4704419
-5                    00006 LOCAL       MEDIA 22-6062777
-6             0003 POSTAL FAMILY  CINCINNATI 31-0240910
-7                        0005 GA   HEPHZIBAH 58-1514574
-8  0005 WRIGHT-PATT CREDIT UNION BEAVERCREEK 31-0278870
-9                        0009 DE   GREENWOOD 26-4507405
-10               0011 CALIFORNIA      REDWAY 36-4654777
+3                00 MOVEMENT INC   PENSACOLA 82-4704419
+4                    00006 LOCAL       MEDIA 22-6062777
+5             0003 POSTAL FAMILY  CINCINNATI 31-0240910
+6                        0005 GA   HEPHZIBAH 58-1514574
+7  0005 WRIGHT-PATT CREDIT UNION BEAVERCREEK 31-0278870
+8                        0009 DE   GREENWOOD 26-4507405
+9                0011 CALIFORNIA      REDWAY 36-4654777
+10                   00141 LOCAL       MEDIA 94-0507697
 ```
 
 
@@ -189,10 +188,9 @@ colnames(articles)
 ```
 
 ```
- [1] "abstract"         "web_url"          "snippet"          "lead_paragraph"   "print_section"   
- [6] "print_page"       "source"           "multimedia"       "headline"         "keywords"        
-[11] "pub_date"         "document_type"    "news_desk"        "section_name"     "byline"          
-[16] "type_of_material" "_id"              "word_count"       "uri"              "subsection_name" 
+ [1] "abstract"         "web_url"          "snippet"          "lead_paragraph"   "print_section"    "print_page"       "source"          
+ [8] "multimedia"       "headline"         "keywords"         "pub_date"         "document_type"    "news_desk"        "section_name"    
+[15] "byline"           "type_of_material" "_id"              "word_count"       "uri"              "subsection_name" 
 ```
 
 ```r
@@ -247,14 +245,14 @@ substring(tweets$text, 1, 100)
 ```
 
 ```
- [1] "https://t.co/Jac2KxZJkv in R: How to Make a Computer Vision Model within an R Environment  {https://"
- [2] "Estimating Group Differences in Network Models using Moderation  {https://t.co/3ViArl9OZ2} #rstats #"
- [3] "Deep attractors: Where deep learning meets chaos  {https://t.co/u3HniDkjWw} #rstats #DataScience"    
- [4] "R Communities in South Africa  {https://t.co/cRBfDMPtBE} #rstats #DataScience"                       
- [5] "Interactively perform a spatial interpolation with the GUInterp Shiny interface  {https://t.co/jzidD"
- [6] "Advanced Modelling in R with CARET – a focus on supervised machine learning  {https://t.co/TSQtoxWrb"
- [7] "Color Bars  {https://t.co/HJ2Ip24rnb} #rstats #DataScience"                                          
- [8] "Why R? Webinar – Neural Networks for Modelling Molecular Interactions with Tensorflow  {https://t.co"
- [9] "COVID-19: False Positive Alarm  {https://t.co/0ufxeYAPQc} #rstats #DataScience"                      
-[10] "#27: R and CRAN Binaries for Ubuntu  {https://t.co/yi5Xi9xQT9} #rstats #DataScience"                 
+ [1] "Surface reconstruction with R(CGAL)  {https://t.co/Kou9gFUmod} #rstats #DataScience"                 
+ [2] "A dashboard illustrating bivariate time series forecasting with `ahead`  {https://t.co/HYS6UIKMgl} #"
+ [3] "Handling Categorical Data in R – Part 4  {https://t.co/aZa7O7Ppxd} #rstats #DataScience"             
+ [4] "Solving the ‘preserving the sum after rounding’ problem for a soccer waffle viz  {https://t.co/uNtOL"
+ [5] "Community Management Transition for rOpenSci. A Message from Stefanie Butland  {https://t.co/r7YuZjV"
+ [6] "New R job: Data Services Specialist https://t.co/sy2goVMxbq #rstats #DataScience #jobs"              
+ [7] "RTutor: Gasoline Taxes and Consumer Behavior  {https://t.co/nIxUNfihoK} #rstats #DataScience"        
+ [8] "Shinywordle: A shiny app to solve the game Worldle and the power of regular expressions  {https://t."
+ [9] "10 New books added to Big Book of R  {https://t.co/jD0IYutHTN} #rstats #DataScience"                 
+[10] "Clipping an isosurface to a ball, and more  {https://t.co/Yz0qbSB3IB} #rstats #DataScience"          
 ```
