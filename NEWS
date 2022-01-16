@@ -1,6 +1,8 @@
 1.7.3
- - Fix memory bug in toJSON(pretty=TRUE) for 0-length vectors
- - Fix citibike example in API vignette  
+ - Fix memory bug in toJSON(pretty=TRUE) for 0-length vectors (#366)
+ - Ported rbind_pages() to use vctrs::vec_rbind (#352)
+ - Fix error serializing S4 class extending SEXPTYPE for certain types (#364)
+ - Fix citibike example in API vignette
 
 1.7.2
  - Special case 'blob' vctrs to prevent boxing of base64 output strings
