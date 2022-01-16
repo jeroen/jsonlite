@@ -20,4 +20,4 @@ Have a look at the [vignette](https://cran.r-project.org/web/packages/jsonlite/v
 
 ## Code of Conduct
 
-Please note that the jsonlite project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/1/0/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+Please note that the jsonlite project is released with a [Contributor Code of Conduct](https://www.contributor-covenant.org/version/1/0/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
