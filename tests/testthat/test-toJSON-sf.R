@@ -1,5 +1,5 @@
 test_that("Writing SF objects", {
-  skip_if_not(require(sf))
+  skip_if_not_installed("sf")
   compare_to_geojson_obj <- function(sf_obj){
     sf_as_dataframe <- fromJSON(toJSON(sf_obj, digits = 8))
     sf_as_features <- fromJSON(toJSON(sf_obj, sf = 'features', digits = 8))
