@@ -1,5 +1,5 @@
 test_that("Writing SF objects", {
-  skip_if_not(require(sf))
+  skip_if_not_installed("sf")
   compare_to_geojson_obj <- function(sf_obj){
     sf_as_dataframe <- fromJSON(toJSON(sf_obj, digits = 8))
     sf_as_features <- fromJSON(toJSON(sf_obj, sf = 'features', digits = 8))
@@ -33,17 +33,17 @@ test_that("Writing SF objects", {
   hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1.0), ncol=2, byrow=TRUE)
   hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5.0), ncol=2, byrow=TRUE)
   pts = list(outer, hole1, hole2)
-  ml1 = st_multilinestring(pts)
-  pl1 = st_polygon(pts)
+  ml1 = sf::st_multilinestring(pts)
+  pl1 = sf::st_polygon(pts)
   pol1 = list(outer, hole1, hole2)
   pol2 = list(outer + 12, hole1 + 12)
   pol3 = list(outer + 24)
-  mpl1 = st_multipolygon(list(pol1,pol2,pol3))
-  p1 = st_point(as.double(1:2))
-  mp1 = st_multipoint(matrix(as.double(1:10), ncol = 2))
-  ls1 = st_linestring(matrix(as.double(1:10), ncol = 2))
-  gcol = st_geometrycollection(list(p1, ls1, pl1, mp1))
-  geometry = st_sfc(
+  mpl1 = sf::st_multipolygon(list(pol1,pol2,pol3))
+  p1 = sf::st_point(as.double(1:2))
+  mp1 = sf::st_multipoint(matrix(as.double(1:10), ncol = 2))
+  ls1 = sf::st_linestring(matrix(as.double(1:10), ncol = 2))
+  gcol = sf::st_geometrycollection(list(p1, ls1, pl1, mp1))
+  geometry = sf::st_sfc(
     p1,
     mp1,
     ls1,
@@ -52,7 +52,7 @@ test_that("Writing SF objects", {
     mpl1,
     gcol
   )
-  sf_obj <- st_sf(geoms = geometry)
+  sf_obj <- sf::st_sf(geoms = geometry)
   compare_to_geojson_obj(sf_obj)
 
   # One very strict test
