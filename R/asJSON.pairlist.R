@@ -1,4 +1,4 @@
-setOldClass("pairlist")
+#setOldClass("pairlist")
 setMethod("asJSON", "pairlist", function(x, ...) {
   asJSON(as.vector(x, mode = "list"), ...)
 })
