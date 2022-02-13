@@ -39,6 +39,5 @@ asjson_numeric_fun <- function(x, digits = 5, use_signif = is(digits, "AsIs"),
 }
 
 # This is for the bit64 package
-setOldClass("integer64")
 setMethod("asJSON", "numeric", asjson_numeric_fun)
 setMethod("asJSON", "integer64", asjson_numeric_fun)

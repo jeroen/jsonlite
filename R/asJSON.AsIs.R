@@ -1,4 +1,3 @@
-setOldClass("AsIs")
 setMethod("asJSON", "AsIs", function(x, auto_unbox = FALSE, ...) {
 
   # Strip off the AsIs class so we can dispatch to other asJSON methods.
