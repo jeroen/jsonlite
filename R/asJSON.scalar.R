@@ -1,4 +1,3 @@
-setOldClass("scalar")
 setMethod("asJSON", "scalar", function(x, collapse, ...) {
   # TODO: There must be a way to do this with NextMethod()
   if (length(class(x)) > 1) {

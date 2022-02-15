@@ -22,3 +22,8 @@ test_that("Encoding raw vector", {
   expect_equal(toJSON(x, raw = 'js'), '{"myraw":(new Uint8Array([98,108,97]))}')
 
 })
+
+test_that("Encoding blob vector", {
+  x <- structure(list(raw(2), raw(3)), class = c("blob", "list"))
+  expect_equal(toJSON(x), '["AAA=","AAAA"]')
+})

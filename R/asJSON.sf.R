@@ -1,5 +1,4 @@
 # For 'sf' geometry columns; use same structure as GeoJSON
-setOldClass('sf')
 setMethod("asJSON", "sf", function(x, sf = c("dataframe", "features", "geojson"), ...) {
   sf <- match.arg(sf)
   if(sf == 'dataframe'){
@@ -26,7 +25,6 @@ setMethod("asJSON", "sf", function(x, sf = c("dataframe", "features", "geojson")
   }
 })
 
-setOldClass('sfc')
 setMethod("asJSON", "sfc", function(x, ...) {
   y <- lapply(unclass(x), geom_to_geojson)
   asJSON(y, ...)
