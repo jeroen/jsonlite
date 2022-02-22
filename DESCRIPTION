@@ -1,5 +1,5 @@
 Package: jsonlite
-Version: 1.8.9000
+Version: 1.8.0.9000
 Title: A Simple and Robust JSON Parser and Generator for R
 License: MIT + file LICENSE
 Depends: methods
