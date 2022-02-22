@@ -12,7 +12,7 @@ as_gzjson_raw(x, ...)
 
 as_gzjson_b64(x, ...)
 
-parse_gzjson_raw(buf, simplifyVector = TRUE, ...)
+parse_gzjson_raw(buf, ...)
 
 parse_gzjson_b64(b64, ...)
 }
@@ -22,8 +22,6 @@ parse_gzjson_b64(b64, ...)
 \item{...}{passed down to \link{toJSON} or \link{fromJSON}}
 
 \item{buf}{raw vector with gzip compressed data}
-
-\item{simplifyVector}{passed to \link{fromJSON}}
 
 \item{b64}{base64 encoded string containing gzipped json data}
 }

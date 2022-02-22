@@ -21,7 +21,6 @@ book. In practice this is often implemented using a \code{page} parameter in the
 The \code{rbind_pages} function uses \code{\link[vctrs:vec_bind]{vctrs::vec_rbind()}}
 to bind the pages together. This generalizes \code{\link[base:cbind]{base::rbind()}} in two
 ways:
-
 \itemize{
 \item Not each column has to be present in each of the individual data frames; missing
 columns will be filled up in \code{NA} values.

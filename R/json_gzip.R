@@ -33,10 +33,9 @@ as_gzjson_b64 <- function(x, ...){
 #' @export
 #' @rdname gzjson
 #' @param buf  raw vector with gzip compressed data
-#' @param simplifyVector passed to [fromJSON]
-parse_gzjson_raw <- function(buf, simplifyVector = TRUE, ...){
+parse_gzjson_raw <- function(buf, ...){
   json <- rawToChar(memDecompress(buf, 'gzip'))
-  parse_json(json, simplifyVector = simplifyVector, ...)
+  fromJSON(json, ...)
 }
 
 #' @export

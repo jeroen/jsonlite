@@ -44,7 +44,7 @@ from \code{\link[=fromJSON]{fromJSON()}} and \code{\link[=toJSON]{toJSON()}}, se
 \details{
 Because parsing huge JSON strings is difficult and inefficient, JSON streaming is done
 using \strong{lines of minified JSON records}, a.k.a. \href{http://ndjson.org}{ndjson}.
-This is pretty standard: JSON databases such as \href{https://github.com/dat-ecosystem-archive/dat}{dat}
+This is pretty standard: JSON databases such as \href{https://github.com/datproject/dat}{dat}
 or MongoDB use the same format to import/export datasets. Note that this means that the
 total stream combined is not valid JSON itself; only the individual lines are. Also note
 that because line-breaks are used as separators, prettified JSON is not permitted: the
@@ -139,7 +139,7 @@ companies <- stream_in(unz(tmp, "companies.json"))
 }
 }
 \references{
-MongoDB export format: \url{https://docs.mongodb.com/database-tools/mongoexport/}
+MongoDB export format: \url{https://docs.mongodb.com/manual/reference/program/mongoexport/}
 
 Documentation for the JSON Lines text file format: \url{https://jsonlines.org/}
 }
