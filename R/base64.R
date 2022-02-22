@@ -39,15 +39,15 @@ base64_enc <- function(input) {
 
 #' @export
 #' @rdname base64
-base64url_enc <- function(bin){
-  text <- base64_enc(bin)
+base64url_enc <- function(input){
+  text <- base64_enc(input)
   sub("=+$", "", chartr('+/', '-_', text))
 }
 
 #' @export
 #' @rdname base64
-base64url_dec <- function(text){
-  text <- fix_padding(chartr('-_', '+/', text))
+base64url_dec <- function(input){
+  text <- fix_padding(chartr('-_', '+/', input))
   base64_dec(text)
 }
 

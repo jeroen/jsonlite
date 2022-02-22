@@ -12,9 +12,9 @@ base64_dec(input)
 
 base64_enc(input)
 
-base64url_enc(bin)
+base64url_enc(input)
 
-base64url_dec(text)
+base64url_dec(input)
 }
 \arguments{
 \item{input}{string or raw vector to be encoded/decoded}
