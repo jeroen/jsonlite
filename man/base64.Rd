@@ -30,7 +30,7 @@ that substitute characters \verb{+/}  for \verb{-_} respectively, such that the 
 does not require URL-encoding. See also section 5 of rfc4648.
 }
 \examples{
-str <- base64url_enc(serialize(iris, NULL))
-out <- unserialize(base64url_dec(str))
+str <- base64_enc(serialize(iris, NULL))
+out <- unserialize(base64_dec(str))
 stopifnot(identical(out, iris))
 }

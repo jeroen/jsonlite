@@ -3,18 +3,18 @@
 \name{gzjson}
 \alias{gzjson}
 \alias{as_gzjson_raw}
-\alias{parse_gzjson_raw}
 \alias{as_gzjson_b64}
+\alias{parse_gzjson_raw}
 \alias{parse_gzjson_b64}
 \title{Gzipped JSON}
 \usage{
 as_gzjson_raw(x, ...)
 
-parse_gzjson_raw(buf, simplifyVector = TRUE, ...)
-
 as_gzjson_b64(x, ...)
 
-parse_gzjson_b64(b64)
+parse_gzjson_raw(buf, simplifyVector = TRUE, ...)
+
+parse_gzjson_b64(b64, ...)
 }
 \arguments{
 \item{x}{R data object to be converted to JSON}
@@ -31,6 +31,12 @@ parse_gzjson_b64(b64)
 Wrapper to generate and parse gzipped JSON, in order to save some disk or
 network space. This is mainly effective for larger json objects with many
 repeated keys, as is common in serialized data frames.
+}
+\details{
+The \link{as_gzjson_raw} and \link{parse_gzjson_raw} functions work with raw (binary)
+vectors of compressed data. To use this in a place where only text is allowed
+you can wrap the output again in \link{base64} as done by \link{as_gzjson_b64} and
+\link{parse_gzjson_b64}. This increases the size again with about 33\%.
 }
 \examples{
 str <- as_gzjson_b64(iris[1:5,])
