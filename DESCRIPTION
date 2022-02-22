@@ -1,5 +1,5 @@
 Package: jsonlite
-Version: 1.8.0
+Version: 1.8.9000
 Title: A Simple and Robust JSON Parser and Generator for R
 License: MIT + file LICENSE
 Depends: methods
@@ -29,6 +29,6 @@ Suggests:
     rmarkdown,
     R.rsp,
     sf
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
