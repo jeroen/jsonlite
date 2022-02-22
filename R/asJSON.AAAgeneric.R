@@ -4,7 +4,6 @@ setGeneric("asJSON", function(x, ...) {
 
 if(getRversion() < 4){
   setOldClass("AsIs")
-  setOldClass(c("blob", "vctrs_list_of", "vctrs_vctr"))
   setOldClass("integer64")
   setOldClass(c("hms", "difftime"))
   setOldClass("ITime")
