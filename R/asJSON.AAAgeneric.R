@@ -6,10 +6,10 @@ if(getRversion() < 4){
   setOldClass("AsIs")
   setOldClass("integer64")
   setOldClass(c("hms", "difftime"))
-  setOldClass('ITime')
+  setOldClass("ITime")
   setOldClass("json")
   setOldClass("pairlist")
   setOldClass("scalar")
-  setOldClass('sf')
-  setOldClass('sfc')
+  setOldClass("sf")
+  setOldClass("sfc")
 }
