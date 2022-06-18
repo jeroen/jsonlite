@@ -21,9 +21,11 @@ test_that("fromJSON date objects", {
   expect_equal(xct, xlt)
   expect_true(unbox(xct[1]) == unbox(xlt[1]))
   xct3un <- unbox(xct[3])
-  expect_true(is.na(xct3un) && is(xct3un,"scalar") && is(xct3un,"POSIXt"))
+  expect_true(is.na(xct3un) && inherits(xct3un,"scalar") &&
+              inherits(xct3un,"POSIXt"))
   xlt3un <- unbox(xlt[3])
-  expect_true(is.na(xlt3un) && is(xlt3un,"scalar") && is(xlt3un,"POSIXt"))
+  expect_true(is.na(xlt3un) && inherits(xlt3un,"scalar") &&
+              inherits(xlt3un,"POSIXt"))
 
   expect_equal(toJSON(xct,POSIXt="mongo"),toJSON(xlt,POSIXt="mongo"))
   expect_equal(toJSON(unbox(xct[1]),POSIXt="mongo"),
