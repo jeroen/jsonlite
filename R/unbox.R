@@ -41,7 +41,7 @@ unbox <- function(x){
       stop("Tried to unbox dataframe with ", nrow(x), " rows.")
     }
   }
-  if (length(x) == 1L && is(x,"POSIXt")) {
+  if (length(x) == 1L && inherits(x,"POSIXt")) {
     return (as.scalar(x))
   }
   if(is.null(x) || !is.atomic(x) || length(dim(x)) > 1){
