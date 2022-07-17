@@ -41,7 +41,7 @@ SEXP C_transpose_list(SEXP x, SEXP names) {
         } else if (strcmp_result > 0){
           low = mid + 1;
         } else {
-          if (high == 0) {
+          if (mid == 0) {
             break;
           }
           high = mid - 1;
