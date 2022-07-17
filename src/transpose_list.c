@@ -28,7 +28,7 @@ SEXP C_transpose_list(SEXP x, SEXP names) {
       size_t low = 0;
       size_t high = ncol - 1;
       size_t mid;
-      while(1){
+      while(low <= high){
         mid = (low + high) / 2;
         const char * targetname = CHAR(STRING_ELT(names, mid));
 
@@ -41,12 +41,10 @@ SEXP C_transpose_list(SEXP x, SEXP names) {
         } else if (strcmp_result > 0){
           low = mid + 1;
         } else {
+          if (high == 0) {
+            break;
+          }
           high = mid - 1;
-        }
-
-        if (low > high) {
-          // No match to be found
-          break;
         }
       }
     }
