@@ -86,7 +86,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   # overload for URL or path
   if (is.character(txt) && length(txt) == 1 && nchar(txt, type="bytes") < 2084 && !validate(txt)) {
     if (grepl("^https?://", txt, useBytes=TRUE)) {
-      txt <- if(getRversion() < 4){
+      txt <- if(R.version$major < 4){
         base::url(txt)
       } else {
         base::url(txt, headers = c(Accept = "application/json, text/*, */*"))
