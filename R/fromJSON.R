@@ -86,10 +86,7 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   # overload for URL or path
   if (is.character(txt) && length(txt) == 1 && nchar(txt, type="bytes") < 2084 && !validate(txt)) {
     if (grepl("^https?://", txt, useBytes=TRUE)) {
-      loadpkg("curl")
-      h <- curl::new_handle(useragent = paste("jsonlite /", R.version.string))
-      curl::handle_setheaders(h, Accept = "application/json, text/*, */*")
-      txt <- curl::curl(txt, handle = h)
+      txt <- base::url(txt, headers = c(Accept = "application/json, text/*, */*"))
     } else if (file.exists(txt)) {
       # With files we can never know for sure the encoding. Lets try UTF8 first.
       # txt <- raw_to_json(readBin(txt, raw(), file.info(txt)$size));

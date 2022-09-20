@@ -22,7 +22,6 @@ Description: A reasonably fast JSON parser and generator, optimized for statisti
     for use with dynamic data in systems and applications.
 Suggests:
     httr,
-    curl,
     vctrs,
     testthat,
     knitr,
