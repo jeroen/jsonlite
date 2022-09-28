@@ -7,8 +7,8 @@
 #'
 #' Because parsing huge JSON strings is difficult and inefficient, JSON streaming is done
 #' using **lines of minified JSON records**, a.k.a. [ndjson](http://ndjson.org).
-#' This is pretty standard: JSON databases such as [dat](https://github.com/datproject/dat)
-#' or MongoDB use the same format to import/export datasets. Note that this means that the
+#' This is pretty standard: JSON databases such as MongoDB use the same format to
+#' import/export datasets. Note that this means that the
 #' total stream combined is not valid JSON itself; only the individual lines are. Also note
 #' that because line-breaks are used as separators, prettified JSON is not permitted: the
 #' JSON lines *must* be minified. In this respect, the format is a bit different from
