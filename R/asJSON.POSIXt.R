@@ -28,9 +28,9 @@ setMethod("asJSON", "POSIXt", function(x, POSIXt = c("string", "ISO8601", "epoch
   }
 
   if (isTRUE(UTC)) {
-    asJSON(as.character(x, format = time_format, tz = "UTC"), ...)
+    asJSON(format(x, format = time_format, tz = "UTC"), ...)
   } else {
-    asJSON(as.character(x, format = time_format), ...)
+    asJSON(format(x, format = time_format), ...)
   }
 })
 
