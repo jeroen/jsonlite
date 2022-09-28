@@ -1,5 +1,6 @@
 1.8.1
  - Use base::url instead of curl::curl for downloading URLs in fromJSON
+ - Fix for breaking change 82904 in base-R  (changed default as.character.POSIX behavior)
 
 1.8.0
  - Remove all calls to setOldClass() for R >= 4.0 (#378)
