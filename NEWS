@@ -1,3 +1,6 @@
+1.8.2
+ - Also fix breaking change in base_r for as.character.Date
+
 1.8.1
  - Use base::url instead of curl::curl for downloading URLs in fromJSON
  - Fix for breaking change 82904 in base-R  (changed default as.character.POSIX behavior)

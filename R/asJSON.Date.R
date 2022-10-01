@@ -5,7 +5,7 @@ setMethod("asJSON", "Date", function(x, Date = c("ISO8601", "epoch"), always_dec
 
   # select a schema
   output <- switch(Date,
-    ISO8601 = as.character(x),
+    ISO8601 = format(x),
     epoch = unclass(x),
     default = stop("Invalid argument for 'Date':", Date)
   )
