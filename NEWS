@@ -1,3 +1,6 @@
+1.8.3
+ - Fix strict-prototypes warning
+
 1.8.2
  - Also fix breaking change in base_r for as.character.Date
 

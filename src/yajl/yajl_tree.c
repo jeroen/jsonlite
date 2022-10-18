@@ -520,7 +520,7 @@ void yajl_tree_free (yajl_val v)
 yajl_callbacks mem_callbacks;
 context_t mem_ctx;
 
-yajl_handle push_parser_new () {
+yajl_handle push_parser_new (void) {
 
   /* init callback handlers */
   yajl_callbacks *callbacks = &mem_callbacks;
