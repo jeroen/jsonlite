@@ -161,7 +161,7 @@ size_t modp_dtoa(double value, char* str, int prec)
 	   which can be 100s of characters overflowing your buffers == bad
 	   */
 	if (value > thres_max) {
-		sprintf(str, "%e", neg ? -value : value);
+		snprintf(str, 13, "%e", neg ? -value : value);
 		return strlen(str);
 	}
 
@@ -265,7 +265,7 @@ size_t modp_dtoa2(double value, char* str, int prec)
 	   which can be 100s of characters overflowing your buffers == bad
 	   */
 	if (value > thres_max) {
-		sprintf(str, "%e", neg ? -value : value);
+	  snprintf(str, 13, "%e", neg ? -value : value);
 		return strlen(str);
 	}
 

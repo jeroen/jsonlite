@@ -87,7 +87,7 @@ SEXP C_escape_chars_one(SEXP x) {
       default:
         //control characters need explicit \u00xx escaping
         if (*cur >= 0x00 && *cur <= 0x1f){
-          sprintf(outcur, "\\u%04x", *cur);
+          snprintf(outcur, 7, "\\u%04x", *cur);
           outcur += 5; //extra length
           break;
         }

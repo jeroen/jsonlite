@@ -81,7 +81,7 @@ SEXP C_collapse_array_pretty_inner(SEXP x) {
     error("x must character vector.");
 
   //calculate required space
-  int len = length(x);
+  size_t len = Rf_length(x);
   size_t nchar_total = 0;
   for (int i=0; i<len; i++) {
     nchar_total += strlen(translateCharUTF8(STRING_ELT(x, i)));
