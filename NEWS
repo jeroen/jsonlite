@@ -1,3 +1,6 @@
+1.8.4
+  - Replace sprintf with snprintf for CRAN
+
 1.8.3
  - Fix strict-prototypes warning
 
