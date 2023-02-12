@@ -27,7 +27,7 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP
     }
   } else if(isReal(x)) {
     int precision = asInteger(digits);
-    int sig_digits = signif ? ceil(fmin(15, precision)) : 0;
+    int sig_digits = signif ? ceil(fmin(17, precision)) : 0;
     double * xreal = REAL(x);
     for (int i=0; i<len; i++) {
       double val = xreal[i];
@@ -51,7 +51,7 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP
         }
       } else {
         if(precision == NA_INTEGER){
-          snprintf(buf, 32, "%.15g", val);
+          snprintf(buf, 32, "%.17g", val);
         } else if(signif){
           //use signifant digits rather than decimal digits
           snprintf(buf, 32, "%.*g", sig_digits, val);
@@ -63,7 +63,7 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP
           //fall back on sprintf (includes scientific notation)
           //limit total precision to 15 significant digits to avoid noise
           //funky formula is mostly to convert decimal digits into significant digits
-          int decimals = ceil(fmin(15, fmax(1, log10(fabs(val))) + precision));
+          int decimals = ceil(fmin(17, fmax(1, log10(fabs(val))) + precision));
           snprintf(buf, 32, "%.*g", decimals, val);
         }
         //if always_decimal = TRUE, then append .0 to whole numbers
