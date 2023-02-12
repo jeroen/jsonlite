@@ -1,3 +1,6 @@
+1.8.5
+  - Max digits in toJSON() raised from 15 to 17 (see #412)
+
 1.8.4
   - Replace sprintf with snprintf for CRAN
 

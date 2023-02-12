@@ -61,7 +61,6 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP
           modp_dtoa2(val, buf, precision);
         } else {
           //fall back on sprintf (includes scientific notation)
-          //limit total precision to 15 significant digits to avoid noise
           //funky formula is mostly to convert decimal digits into significant digits
           int decimals = ceil(fmin(17, fmax(1, log10(fabs(val))) + precision));
           snprintf(buf, 32, "%.*g", decimals, val);
