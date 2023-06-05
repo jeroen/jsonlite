@@ -79,7 +79,7 @@ toJSON(x)
 stream_out(x)
 
 # Trivial example
-mydata <- stream_in(url("http://httpbin.org/stream/100"))
+mydata <- stream_in(url("https://jeroen.github.io/data/iris.json"))
 
 \dontrun{
 #stream large dataset to file and back
@@ -90,10 +90,10 @@ unlink(tmp)
 all.equal(flights2, as.data.frame(flights))
 
 # stream over HTTP
-diamonds2 <- stream_in(url("http://jeroen.github.io/data/diamonds.json"))
+diamonds2 <- stream_in(url("https://jeroen.github.io/data/diamonds.json"))
 
 # stream over HTTP with gzip compression
-flights3 <- stream_in(gzcon(url("http://jeroen.github.io/data/nycflights13.json.gz")))
+flights3 <- stream_in(gzcon(url("https://jeroen.github.io/data/nycflights13.json.gz")))
 all.equal(flights3, as.data.frame(flights))
 
 # stream over HTTPS (HTTP+SSL) via curl
@@ -108,7 +108,7 @@ all.equal(flights5, as.data.frame(flights))
 # Full JSON IO stream from URL to file connection.
 # Calculate delays for flights over 1000 miles in batches of 5k
 library(dplyr)
-con_in <- gzcon(url("http://jeroen.github.io/data/nycflights13.json.gz"))
+con_in <- gzcon(url("https://jeroen.github.io/data/nycflights13.json.gz"))
 con_out <- file(tmp <- tempfile(), open = "wb")
 stream_in(con_in, handler = function(df){
   df <- dplyr::filter(df, distance > 1000)
