@@ -97,8 +97,8 @@ is.matrixlist <- function(x) {
     && length(x)
     && is.null(names(x))
     && all(vapply(x, is.atomic, logical(1)))
-    && all.identical(vapply(x, length, integer(1)))
-    #&& all.identical(vapply(x, mode, character(1))) #this fails for: [ [ 1, 2 ], [ "NA", "NA" ] ]
+    && all_identical(vapply(x, length, integer(1)))
+    #&& all_identical(vapply(x, mode, character(1))) #this fails for: [ [ 1, 2 ], [ "NA", "NA" ] ]
   );
 }
 
@@ -107,7 +107,7 @@ is.arraylist <- function(x) {
     && length(x)
     && is.null(names(x))
     && all(vapply(x, is.array, logical(1)))
-    && all.identical(vapply(x, function(y){paste(dim(y), collapse="-")}, character(1)))
+    && all_identical(vapply(x, function(y){paste(dim(y), collapse="-")}, character(1)))
   );
 }
 
@@ -130,7 +130,7 @@ parse_date <- function(x){
   }
 }
 
-all.identical <- function(x){
+all_identical <- function(x){
   if(!length(x)) return(FALSE)
   for(i in x){
     if(x[1] != i) return(FALSE)
