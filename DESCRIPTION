@@ -8,7 +8,8 @@ Authors@R: c(
       comment = c(ORCID = "0000-0002-4035-0289")),
     person("Duncan", "Temple Lang", role = "ctb"),
     person("Lloyd", "Hilaiel", role = "cph", comment="author of bundled libyajl"))
-URL: https://arxiv.org/abs/1403.2805 (paper)
+URL: https://jeroen.r-universe.dev/jsonlite
+    https://arxiv.org/abs/1403.2805
 BugReports: https://github.com/jeroen/jsonlite/issues
 Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
 VignetteBuilder: knitr, R.rsp
