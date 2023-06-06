@@ -29,3 +29,8 @@ apply_by_pages2 <- function(x, FUN, pagesize, verbose, ...){
   }
   invisible()
 }
+
+#' @export
+`[.json` <- function(x, i) {
+  structure(NextMethod("["), class = c("json", "character"))
+}

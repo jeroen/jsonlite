@@ -1,3 +1,6 @@
+1.8.6
+  - Add method [.json such that subsetting keeps json class
+
 1.8.5
   - Max digits in toJSON() raised from 15 to 17 (see #412)
   - Remove online example from flaky httpbin server
