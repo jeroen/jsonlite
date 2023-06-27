@@ -11,6 +11,7 @@ test_that("Encoding Numbers", {
   expect_that(toJSON(c(pi, NA), na="null", digits=5), equals("[3.14159,null]"));
   expect_that(toJSON(c(pi, NA), na="null", digits=5), equals("[3.14159,null]"));
   expect_that(toJSON(c(1478002353.51369, -521997646.486311) * 1000, digits = 0), equals("[1478002353514,-521997646486]"));
+  expect_that(toJSON(list(a=c(0.1)), digits = NA), equals('{"a":[0.1]}'));
 });
 
 test_that("Encoding Numbers in Data Frame", {

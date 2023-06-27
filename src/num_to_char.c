@@ -51,7 +51,7 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP
         }
       } else {
         if(precision == NA_INTEGER){
-          snprintf(buf, 32, "%.17g", val);
+          snprintf(buf, 32, "%.15g", val);
         } else if(signif){
           //use signifant digits rather than decimal digits
           snprintf(buf, 32, "%.*g", sig_digits, val);
