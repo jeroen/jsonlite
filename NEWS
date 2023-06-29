@@ -1,5 +1,6 @@
 1.8.7
   - toJSON(digits = NA) once again prints 15 digits max
+  - Fix getRversion type (requested by CRAN)
 
 1.8.6
   - Add method [.json such that subsetting keeps json class
