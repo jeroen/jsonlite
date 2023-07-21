@@ -1,4 +1,4 @@
-context("libjson Validator")
+
 
 test_that("test that the validator properly deals with escaped characters", {
 

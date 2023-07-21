@@ -1,4 +1,4 @@
-context("toJSON NA values")
+
 
 test_that("Test NA values", {
   options(stringsAsFactors=FALSE)

@@ -1,4 +1,4 @@
-context("toJSON zerovec")
+
 
 test_that("Encoding Factor Objects", {
   expect_that(toJSON(character()), is_identical_to("[]"))

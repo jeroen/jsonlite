@@ -1,4 +1,4 @@
-context("toJSON Factor")
+
 
 test_that("Encoding Factor Objects", {
   expect_that(fromJSON(toJSON(iris$Species)), is_identical_to(as.character(iris$Species)));

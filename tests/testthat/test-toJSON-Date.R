@@ -1,4 +1,4 @@
-context("toJSON Date")
+
 object <- as.Date("1985-06-18");
 
 test_that("Encoding Date Objects", {

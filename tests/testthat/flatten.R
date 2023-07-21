@@ -1,4 +1,4 @@
-context("flatten")
+
 
 test_that("flattening", {
   x <- list(test = data.frame(foo=1:3))

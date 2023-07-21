@@ -1,4 +1,4 @@
-context("Serializing S4 objects")
+
 
 test_that("Simple S4 serialization", {
   setClass("myClass", slots = list(name = "character"))

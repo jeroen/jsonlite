@@ -1,4 +1,4 @@
-context("fromJSON Matrix")
+
 
 # Note about numeric precision
 # In the unit tests we use digits=10. Lowever values will result in problems for some datasets

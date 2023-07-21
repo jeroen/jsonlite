@@ -1,4 +1,4 @@
-context("Github API")
+
 
 test_that("Non Nested", {
   mydata <- fromJSON("https://api.github.com/users/hadley/orgs");

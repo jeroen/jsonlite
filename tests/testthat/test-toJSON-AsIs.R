@@ -1,4 +1,4 @@
-context("toJSON AsIs")
+
 
 test_that("Encoding AsIs", {
   expect_that(toJSON(list(1), auto_unbox=TRUE), equals("[1]"));

@@ -1,4 +1,4 @@
-context("toJSON Matrix")
+
 
 test_that("Encoding a Matrix", {
   expect_that(toJSON(matrix(1)), equals("[[1]]"));

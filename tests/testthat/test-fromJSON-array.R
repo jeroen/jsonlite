@@ -1,4 +1,4 @@
-context("fromJSON Array")
+
 
 test_that("fromJSON Array, row major", {
 

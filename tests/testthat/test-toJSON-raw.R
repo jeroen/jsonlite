@@ -1,4 +1,4 @@
-context("toJSON raw")
+
 
 test_that("Encoding raw vector", {
   x <- list(myraw = charToRaw("bla"))

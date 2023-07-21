@@ -1,4 +1,4 @@
-context("toJSON POSIXt")
+
 
 objects <- list(
   as.POSIXlt("2013-06-17 22:33:44"),

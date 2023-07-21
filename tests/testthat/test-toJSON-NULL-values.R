@@ -1,4 +1,4 @@
-context("toJSON NULL values")
+
 
 test_that("Test NULL values", {
   namedlist <- structure(list(), .Names = character(0));
