@@ -19,6 +19,6 @@ test_that("Serializing Functions", {
   lapply(objects, function(object){
     fun <- unserializeJSON(serializeJSON(object))
     environment(fun) <- environment(object)
-    expect_that(fun, equals(object))
+    expect_equal(fun, object);
   })
 })
