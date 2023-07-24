@@ -1,4 +1,4 @@
-context("libjson Escaping")
+
 
 test_that("escaping and parsing of special characters", {
 
@@ -11,11 +11,11 @@ test_that("escaping and parsing of special characters", {
   #generate 1000 random strings
   for(i in 1:200){
     x <- createstring(i);
-    expect_that(x, equals(fromJSON(toJSON(x))));
-    expect_that(x, equals(fromJSON(toJSON(x, pretty=TRUE))));
+    expect_equal(x, fromJSON(toJSON(x)));
+    expect_equal(x, fromJSON(toJSON(x, pretty=TRUE)));
 
     y <- setNames(list(123), x)
-    expect_that(x, equals(fromJSON(toJSON(x, pretty=TRUE))));
+    expect_equal(x, fromJSON(toJSON(x, pretty=TRUE)));
   }
 
 });

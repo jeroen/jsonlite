@@ -1,6 +1,6 @@
 #test serializeJSON
 
-context("Serializing Data Types")
+
 
 # Note about numeric precision
 # In the unit tests we use digits=10. Lowever values will result in problems for some datasets
@@ -30,10 +30,10 @@ test_that("Serializing Data Objects", {
 
   #test all but list
   lapply(objects, function(object){
-    expect_that(unserializeJSON(serializeJSON(object)), equals(object))
+    expect_equal(unserializeJSON(serializeJSON(object)), object);
   });
 
   #test all in list
-  expect_that(unserializeJSON(serializeJSON(objects)), equals(objects))
+  expect_equal(unserializeJSON(serializeJSON(objects)), objects);
 });
 

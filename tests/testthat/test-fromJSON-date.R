@@ -1,19 +1,19 @@
-context("fromJSON date objects")
+
 
 test_that("fromJSON date objects", {
 
   x <- Sys.time() + c(1, 2, NA, 3)
   mydf <- data.frame(x=x)
-  expect_that(fromJSON(toJSON(x, POSIXt="mongo")), is_a("POSIXct"))
-  expect_that(fromJSON(toJSON(x, POSIXt="mongo")), equals(x))
-  #expect_that(fromJSON(toJSON(x, POSIXt="mongo", na="string")), is_a("POSIXct"))
-  expect_that(fromJSON(toJSON(x, POSIXt="mongo", na="null")), is_a("POSIXct"))
+  expect_s3_class(fromJSON(toJSON(x, POSIXt="mongo")), "POSIXct");
+  expect_equal(fromJSON(toJSON(x, POSIXt="mongo")), x);
+  #expect_s3_class(fromJSON(toJSON(x, POSIXt="mongo", na="string")), "POSIXct");
+  expect_s3_class(fromJSON(toJSON(x, POSIXt="mongo", na="null")), "POSIXct");
 
-  expect_that(fromJSON(toJSON(mydf, POSIXt="mongo")), is_a("data.frame"))
-  expect_that(fromJSON(toJSON(mydf, POSIXt="mongo"))$x, is_a("POSIXct"))
-  #expect_that(fromJSON(toJSON(mydf, POSIXt="mongo", na="string"))$x, is_a("POSIXct"))
-  expect_that(fromJSON(toJSON(mydf, POSIXt="mongo", na="null"))$x, is_a("POSIXct"))
-  expect_that(fromJSON(toJSON(mydf, POSIXt="mongo"))$x, equals(x))
+  expect_s3_class(fromJSON(toJSON(mydf, POSIXt="mongo")), "data.frame");
+  expect_s3_class(fromJSON(toJSON(mydf, POSIXt="mongo"))$x, "POSIXct");
+  #expect_s3_class(fromJSON(toJSON(mydf, POSIXt="mongo", na="string"))$x, "POSIXct");
+  expect_s3_class(fromJSON(toJSON(mydf, POSIXt="mongo", na="null"))$x, "POSIXct");
+  expect_equal(fromJSON(toJSON(mydf, POSIXt="mongo"))$x, x);
 
   xct <- as.POSIXct(x)
   xlt <- as.POSIXlt(x)

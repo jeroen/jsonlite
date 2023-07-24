@@ -1,4 +1,4 @@
-context("toJSON raw")
+
 
 test_that("Encoding raw vector", {
   x <- list(myraw = charToRaw("bla"))
@@ -6,8 +6,8 @@ test_that("Encoding raw vector", {
   x$mydf$bar <- as.character.hexmode(charToRaw("bla"))
 
   y <- fromJSON(toJSON(x))
-  expect_that(x$mydf$bar, is_identical_to(y$mydf$bar))
-  expect_that(y$myraw, is_identical_to("Ymxh"))
+  expect_identical(x$mydf$bar, y$mydf$bar);
+  expect_identical(y$myraw, "Ymxh");
 
   # Serialize raw as int
   y <- fromJSON(toJSON(x, raw = 'int'))

@@ -1,6 +1,6 @@
 #test serializeJSON
 
-context("Serializing Functions")
+
 
 # Note about numeric precision
 # In the unit tests we use digits=10. Lowever values will result in problems for some datasets
@@ -19,6 +19,6 @@ test_that("Serializing Functions", {
   lapply(objects, function(object){
     fun <- unserializeJSON(serializeJSON(object))
     environment(fun) <- environment(object)
-    expect_that(fun, equals(object))
+    expect_equal(fun, object);
   })
 })

@@ -1,23 +1,23 @@
-context("toJSON zerovec")
+
 
 test_that("Encoding Factor Objects", {
-  expect_that(toJSON(character()), is_identical_to("[]"))
-  expect_that(toJSON(logical()), is_identical_to("[]"))
-  expect_that(toJSON(complex()), is_identical_to("[]"))
-  expect_that(toJSON(complex(), complex="list"), is_identical_to("{\"real\":[],\"imaginary\":[]}"))
-  expect_that(toJSON(double()), is_identical_to("[]"))
-  expect_that(toJSON(integer()), is_identical_to("[]"))
-  expect_that(toJSON(list()), is_identical_to("[]"))
-  expect_that(toJSON(factor()), is_identical_to("[]"))
-  expect_that(toJSON(factor(levels=c("foo", "bar"))), is_identical_to("[]"))
-  expect_that(toJSON(matrix(nrow=0, ncol=0)), is_identical_to("[]"))
-  expect_that(toJSON(as.matrix(numeric())), is_identical_to("[]"))
-  expect_that(toJSON(data.frame()), is_identical_to("[]"))
-  expect_that(toJSON(data.frame(foo=vector())), is_identical_to("[]"))  
-  expect_that(toJSON(data.frame(foo=vector(), bar=logical())), is_identical_to("[]"))
-  expect_that(toJSON(Sys.time()[0], POSIXt="string"), is_identical_to("[]"))
-  expect_that(toJSON(Sys.time()[0], POSIXt="epoch"), is_identical_to("[]")) 
-  expect_that(toJSON(Sys.time()[0], POSIXt="mongo"), is_identical_to("[]")) 
-  expect_that(toJSON(Sys.time()[0], POSIXt="ISO8601"), is_identical_to("[]")) 
-  expect_that(toJSON(as.Date(Sys.time())[0], POSIXt="ISO8601"), is_identical_to("[]"))
+  expect_identical(toJSON(character()), "[]");
+  expect_identical(toJSON(logical()), "[]");
+  expect_identical(toJSON(complex()), "[]");
+  expect_identical(toJSON(complex(), complex="list"), "{\"real\":[],\"imaginary\":[]}");
+  expect_identical(toJSON(double()), "[]");
+  expect_identical(toJSON(integer()), "[]");
+  expect_identical(toJSON(list()), "[]");
+  expect_identical(toJSON(factor()), "[]");
+  expect_identical(toJSON(factor(levels=c("foo", "bar"))), "[]");
+  expect_identical(toJSON(matrix(nrow=0, ncol=0)), "[]");
+  expect_identical(toJSON(as.matrix(numeric())), "[]");
+  expect_identical(toJSON(data.frame()), "[]");
+  expect_identical(toJSON(data.frame(foo=vector())), "[]");
+  expect_identical(toJSON(data.frame(foo=vector(), bar=logical())), "[]");
+  expect_identical(toJSON(Sys.time()[0], POSIXt="string"), "[]");
+  expect_identical(toJSON(Sys.time()[0], POSIXt="epoch"), "[]");
+  expect_identical(toJSON(Sys.time()[0], POSIXt="mongo"), "[]");
+  expect_identical(toJSON(Sys.time()[0], POSIXt="ISO8601"), "[]");
+  expect_identical(toJSON(as.Date(Sys.time())[0], POSIXt="ISO8601"), "[]");
 });

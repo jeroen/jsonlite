@@ -1,4 +1,4 @@
-context("toJSON NA values")
+
 
 test_that("Test NA values", {
   options(stringsAsFactors=FALSE)
@@ -7,7 +7,7 @@ test_that("Test NA values", {
   x$mydf$mylist <- list(c(TRUE, NA, FALSE, NA), NA, c("blabla", NA), c(NA,12,13,NA,NA,NA,1001))
 
   expect_true(validate(toJSON(x)))
-  expect_that(fromJSON(toJSON(x)), equals(x))
-  expect_that(fromJSON(toJSON(x, na="null")), equals(x))
+  expect_equal(fromJSON(toJSON(x)), x);
+  expect_equal(fromJSON(toJSON(x, na="null")), x);
 
 });

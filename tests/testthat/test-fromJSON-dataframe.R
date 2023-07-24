@@ -1,4 +1,4 @@
-context("fromJSON dataframes")
+
 
 options(stringsAsFactors=FALSE);
 
@@ -16,13 +16,13 @@ test_that("recover nested data frames", {
 
   #test all but list
   lapply(objects, function(object){
-    expect_that(fromJSON(toJSON(object)), equals(object))
-    expect_that(fromJSON(toJSON(object, na="null")), equals(object))
-    expect_that(names(fromJSON(toJSON(object), flatten = TRUE)), equals(names(unlist(object[1,,drop=FALSE]))))
+    expect_equal(fromJSON(toJSON(object)), object);
+    expect_equal(fromJSON(toJSON(object, na="null")), object);
+    expect_equal(names(fromJSON(toJSON(object), flatten = TRUE)), names(unlist(object[1,,drop=FALSE])));
   });
 
   #test all in list
-  expect_that(fromJSON(toJSON(objects)), equals(objects))
+  expect_equal(fromJSON(toJSON(objects)), objects);
 });
 
 test_that("recover lists in data frames", {
@@ -39,10 +39,10 @@ test_that("recover lists in data frames", {
   z <- list(x=x, y=y);
   zz <- list(x,y);
 
-  expect_that(fromJSON(toJSON(x)), equals(x))
-  expect_that(fromJSON(toJSON(y)), equals(y))
-  expect_that(fromJSON(toJSON(z)), equals(z))
-  expect_that(fromJSON(toJSON(zz)), equals(zz))
+  expect_equal(fromJSON(toJSON(x)), x);
+  expect_equal(fromJSON(toJSON(y)), y);
+  expect_equal(fromJSON(toJSON(z)), z);
+  expect_equal(fromJSON(toJSON(zz)), zz);
 });
 
 #note: nested matrix does not perfectly restore
@@ -53,7 +53,7 @@ test_that("nested matrix in data frame", {
   expect_true(validate(toJSON(x)))
 
   y <- fromJSON(toJSON(x))
-  expect_that(y, is_a("data.frame"))
-  expect_that(names(x), equals(names(y)))
-  expect_that(length(y[[1,"bar"]]), equals(3))
+  expect_s3_class(y, "data.frame");
+  expect_equal(names(x), names(y));
+  expect_equal(length(y[[1,"bar"]]), 3);
 });
