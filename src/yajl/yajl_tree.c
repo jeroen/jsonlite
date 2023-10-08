@@ -456,6 +456,9 @@ yajl_val yajl_tree_parse (const char *input,
              YA_FREE(&(handle->alloc), internal_err_str);
         }
         yajl_free (handle);
+	//If the requested memory is not released in time, it will cause memory leakage
+	if(ctx.root)
+	     yajl_tree_free(ctx.root);
         return NULL;
     }
 
