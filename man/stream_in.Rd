@@ -38,12 +38,12 @@ When a custom handler function is specified, \code{stream_in} always returns \co
 \description{
 The \code{stream_in} and \code{stream_out} functions implement line-by-line processing
 of JSON data over a \link{connection}, such as a socket, url, file or pipe. JSON
-streaming requires the \href{http://ndjson.org}{ndjson} format, which slightly differs
+streaming requires the \href{https://ndjson.org}{ndjson} format, which slightly differs
 from \code{\link[=fromJSON]{fromJSON()}} and \code{\link[=toJSON]{toJSON()}}, see details.
 }
 \details{
 Because parsing huge JSON strings is difficult and inefficient, JSON streaming is done
-using \strong{lines of minified JSON records}, a.k.a. \href{http://ndjson.org}{ndjson}.
+using \strong{lines of minified JSON records}, a.k.a. \href{https://ndjson.org}{ndjson}.
 This is pretty standard: JSON databases such as MongoDB use the same format to
 import/export datasets. Note that this means that the
 total stream combined is not valid JSON itself; only the individual lines are. Also note
