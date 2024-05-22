@@ -21,6 +21,7 @@ Description: A reasonably fast JSON parser and generator, optimized for statisti
     functions to stream, validate, and prettify JSON data. The unit tests included 
     with the package verify that all edge cases are encoded and decoded consistently 
     for use with dynamic data in systems and applications.
+Imports:
 Suggests:
     httr,
     vctrs,
@@ -28,7 +29,8 @@ Suggests:
     knitr,
     rmarkdown,
     R.rsp,
-    sf
-RoxygenNote: 7.2.3
+    sf,
+    vctrs 
+RoxygenNote: 7.3.1
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
