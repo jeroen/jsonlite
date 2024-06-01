@@ -7,7 +7,7 @@
 \usage{
 serializeJSON(x, digits = 8, pretty = FALSE)
 
-unserializeJSON(txt)
+unserializeJSON(txt, encoding_modes = NULL)
 }
 \arguments{
 \item{x}{an \R{} object to be serialized}
@@ -17,6 +17,9 @@ unserializeJSON(txt)
 \item{pretty}{add indentation/whitespace to JSON output. See \code{\link[=prettify]{prettify()}}}
 
 \item{txt}{a JSON string which was created using \code{serializeJSON}}
+
+\item{encoding_modes}{An optional list of allowed encoding modes when
+deserializing JSON into R objects.}
 }
 \description{
 The \code{\link[=serializeJSON]{serializeJSON()}} and \code{\link[=unserializeJSON]{unserializeJSON()}} functions convert between

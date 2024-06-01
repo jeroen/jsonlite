@@ -13,6 +13,8 @@
 #' @param x an \R{} object to be serialized
 #' @param digits max number of digits (after the dot) to print for numeric values
 #' @param pretty add indentation/whitespace to JSON output. See [prettify()]
+#' @param encoding_modes An optional list of allowed encoding modes when
+#'   deserializing JSON into R objects.
 #' @note JSON is a text based format which leads to loss of precision when printing numbers.
 #' @examples jsoncars <- serializeJSON(mtcars)
 #' mtcars2 <- unserializeJSON(jsoncars)
@@ -43,6 +45,6 @@ serializeJSON <- function(x, digits = 8, pretty = FALSE) {
 
 #' @param txt a JSON string which was created using `serializeJSON`
 #' @rdname serializeJSON
-unserializeJSON <- function(txt) {
-  unpack(parseJSON(txt))
+unserializeJSON <- function(txt, encoding_modes = NULL) {
+  unpack(parseJSON(txt), encoding_modes = encoding_modes)
 }

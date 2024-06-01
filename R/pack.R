@@ -62,9 +62,19 @@ pack <- function(obj, ...) {
   )
 }
 
-unpack <- function(obj) {
+unpack <- function(obj, encoding_modes) {
 
   encoding.mode <- obj$type
+
+  if (!is.null(encoding_modes) && !(encoding.mode %in% encoding_modes)) {
+    stop(
+      sprintf(
+        "Encoding mode '%s' is not one of %s",
+        encoding.mode,
+        paste("'", encoding_modes, "'", collapse = ", ")
+      )
+    )
+  }
 
   # functions are special
   if (encoding.mode == "NULL") {
@@ -73,7 +83,7 @@ unpack <- function(obj) {
 
   if(identical(encoding.mode, "S4")){
     obj_class <- load_s4_class(obj$value$class, package = obj$value$package)
-    obj_data <- lapply(obj$attributes, unpack)
+    obj_data <- lapply(obj$attributes, unpack, encoding_modes = encoding_modes)
     if(!length(obj_class))
       obj_class <- obj$value$class
     return(do.call(new, c(Class = obj_class, obj_data)))
@@ -91,18 +101,18 @@ unpack <- function(obj) {
       double = as.double(list_to_vec(obj$value)),
       character = as.character(list_to_vec(obj$value)),
       complex = as.complex(list_to_vec(obj$value)),
-      list = lapply(obj$value, unpack),
-      pairlist = lapply(obj$value, unpack),
+      list = lapply(obj$value, unpack, encoding_modes = encoding_modes),
+      pairlist = lapply(obj$value, unpack, encoding_modes = encoding_modes),
       symbol = makesymbol(x = unlist(obj$value)),
       name = makesymbol(x = unlist(obj$value)),
       expression = parse(text = obj$value),
       language = as.call(parse(text = unlist(obj$value)))[[1]],
       special = unserialize(base64_dec(obj$value)),
       builtin = unserialize(base64_dec(obj$value)),
-      closure = lapply(obj$value, unpack),
+      closure = lapply(obj$value, unpack, encoding_modes = encoding_modes),
       stop("Switch falling through for encode.mode: ", encoding.mode)
     )
-  ), lapply(obj$attributes, unpack))
+  ), lapply(obj$attributes, unpack, encoding_modes = encoding_modes))
 
   # this is for serializing functions arguments: as.list(lm)$data
   if (identical(newdata[[1]], substitute())) {
