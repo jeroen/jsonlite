@@ -71,7 +71,7 @@ unpack <- function(obj, encoding_modes) {
       sprintf(
         "Encoding mode '%s' is not one of %s",
         encoding.mode,
-        paste("'", encoding_modes, "'", collapse = ", ")
+        paste0("'", encoding_modes, "'", collapse = ", ")
       )
     )
   }

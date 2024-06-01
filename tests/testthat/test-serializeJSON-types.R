@@ -35,5 +35,24 @@ test_that("Serializing Data Objects", {
 
   #test all in list
   expect_equal(unserializeJSON(serializeJSON(objects)), objects);
-});
+})
 
+test_that("Serializing Data Objects with encoding_modes", {
+  objects <- list(character(), logical(), new.env(parent=emptyenv()))
+
+  expect_equal(
+    unserializeJSON(
+      serializeJSON(objects),
+      encoding_modes = c("list", "character", "logical", "environment")
+    ),
+    objects
+  )
+
+  expect_error(
+    unserializeJSON(
+      serializeJSON(objects),
+      encoding_modes = c("list", "character", "logical")
+    ),
+    "Encoding mode 'environment' is not one of 'list', 'character', 'logical'"
+  )
+})
