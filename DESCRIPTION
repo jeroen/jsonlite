@@ -4,14 +4,14 @@ Title: A Simple and Robust JSON Parser and Generator for R
 License: MIT + file LICENSE
 Depends: methods
 Authors@R: c(
-    person("Jeroen", "Ooms", role = c("aut", "cre"), email = "jeroen@berkeley.edu",
+    person("Jeroen", "Ooms", role = c("aut", "cre"), email = "jeroenooms@gmail.com",
       comment = c(ORCID = "0000-0002-4035-0289")),
     person("Duncan", "Temple Lang", role = "ctb"),
     person("Lloyd", "Hilaiel", role = "cph", comment="author of bundled libyajl"))
 URL: https://jeroen.r-universe.dev/jsonlite
     https://arxiv.org/abs/1403.2805
 BugReports: https://github.com/jeroen/jsonlite/issues
-Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
+Maintainer: Jeroen Ooms <jeroenooms@gmail.com>
 VignetteBuilder: knitr, R.rsp
 Description: A reasonably fast JSON parser and generator, optimized for statistical 
     data and the web. Offers simple, flexible tools for working with JSON in R, and
