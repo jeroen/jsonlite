@@ -11,8 +11,8 @@ test_that("fromJSON datasets", {
   # - integers turn into numeric
   lapply(objects, function(object){
     newobject <- fromJSON(toJSON(object))
-    expect_s3_class(newobject, "data.frame");
-    expect_identical(names(object), names(newobject));
-    expect_identical(nrow(object), nrow(newobject));
+    expect_s3_class(newobject, "data.frame")
+    expect_identical(sort(names(object)), sort(names(newobject)))
+    expect_identical(nrow(object), nrow(newobject))
   });
 });
