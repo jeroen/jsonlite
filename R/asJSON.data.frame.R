@@ -72,7 +72,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   #create a matrix of json elements
   dfnames <- deparse_vector(cleannames(names(x), no_dots = no_dots))
   out <- vapply(x, asJSON, character(nrow(x)), collapse=FALSE, complex = complex, na = na,
-    oldna = oldna, rownames = rownames, dataframe = dataframe, indent = indent + 2L,
+    oldna = oldna, rownames = rownames, dataframe = dataframe, indent = indent_increment(indent),
     no_dots = no_dots, ..., USE.NAMES = FALSE)
 
   # This would be another way of doing the missing values
@@ -91,7 +91,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   # note: special row_collapse functions because apply is slow!
   tmp <- if(dataframe == "rows" && (length(dfnames) == ncol(out))) {
     #apply(out, 1, collapse_object, x = dfnames, indent = indent + 2L);
-    row_collapse_object(dfnames, out, indent = indent + 2L)
+    row_collapse_object(dfnames, out, indent = indent_increment(indent))
   } else {
     # for dataframe = "values"
     #apply(out, 1, collapse, indent = indent);

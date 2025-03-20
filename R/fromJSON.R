@@ -38,7 +38,7 @@
 #'   An exception is that objects of class `AsIs` (i.e. wrapped in [I()]) are not automatically unboxed. This is a way to mark single values as length-1 arrays.
 #' @param digits max number of decimal digits to print for numeric values. Use [I()] to specify significant digits. Use `NA` for max precision.
 #' @param force unclass/skip objects of classes with no defined JSON mapping
-#' @param pretty adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See [prettify()]
+#' @param pretty adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent (default is 2). See also [prettify()].
 #' @param ... arguments passed on to class specific `print` methods
 #' @references Jeroen Ooms (2014). The `jsonlite` Package: A Practical and Consistent Mapping Between JSON Data and \R{} Objects. *arXiv:1403.2805*. <https://arxiv.org/abs/1403.2805>
 #' @seealso [read_json()], [stream_in()]
