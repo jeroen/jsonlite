@@ -35,8 +35,22 @@
 serializeJSON <- function(x, digits = 8, pretty = FALSE) {
   # just to verify that obj exists
   is(x)
+
+  # default is 2 spaces
+  if(isTRUE(pretty)){
+    pretty <- 2L
+  }
+
+  # Start with indent of 0
+  indent <- if(is.numeric(pretty)){
+    stopifnot(pretty < 20)
+    structure(0L, indent_spaces = as.integer(pretty))
+  } else {
+    NA_integer_
+  }
+
   # we pass arguments both to asJSON as well as packaging object.
-  ans <- asJSON(pack(x), digits = digits, indent = if (isTRUE(pretty)) 0L else NA_integer_)
+  ans <- asJSON(pack(x), digits = digits, indent = indent)
   class(ans) <- "json"
   return(ans)
 }
