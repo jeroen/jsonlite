@@ -18,4 +18,4 @@ $(STATLIB): $(LIBYAJL)
 	$(AR) rcs $(STATLIB) $(LIBYAJL)
 
 cleanup: $(SHLIB)
-	rm -f $(LIBYAJL) $(STATLIB)
+	@rm -f $(LIBYAJL) $(STATLIB)

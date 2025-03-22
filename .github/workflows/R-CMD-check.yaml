@@ -17,6 +17,7 @@ jobs:
       matrix:
         config:
           - {os: macOS-latest,    r: 'release'}
+          - {os: macOS-15,        r: 'next'}
           - {os: windows-2022,    r: 'devel'}
           - {os: windows-latest,  r: '4.1'}
           - {os: windows-latest,  r: '3.6'}
@@ -47,3 +48,5 @@ jobs:
           extra-packages: rcmdcheck
 
       - uses: r-lib/actions/check-r-package@v2
+        env:
+          MAKEFLAGS: -j4
