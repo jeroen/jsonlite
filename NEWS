@@ -2,6 +2,7 @@
   - Output for toJSON(x, pretty = p) where p is a number has changed: now uses
     the same r-based indent system as for pretty = TRUE. To get the old format,
     run json output through prettify().
+  - Fix an ubsan warning in prettify/minify in libyajl
 
 1.9.1
   - Fix a unit test in R 4.5 due to the new 'penguins_raw' dataset
