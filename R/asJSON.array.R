@@ -11,13 +11,13 @@ asjson_array_fun <- function(x, collapse = TRUE, na = NULL, oldna = NULL,
 
   # 1D arrays are vectors
   if(length(dim(x)) < 2){
-    return(asJSON(c(x), matrix = matrix, na = na, indent = indent + 2L, ...))
+    return(asJSON(c(x), matrix = matrix, na = na, indent = indent_increment(indent), ...))
   }
 
   # if collapse == FALSE, then this matrix is nested inside a data frame,
   # and therefore row major must be forced to match dimensions
   if(identical(matrix, "columnmajor") && collapse == FALSE){
-    return(apply(x, 1, asJSON, matrix = matrix, na = na, indent = indent + 2L, ...))
+    return(apply(x, 1, asJSON, matrix = matrix, na = na, indent = indent_increment(indent), ...))
   }
 
   # dont pass auto_unbox (never unbox within matrix)
@@ -25,7 +25,7 @@ asjson_array_fun <- function(x, collapse = TRUE, na = NULL, oldna = NULL,
   dim(m) <- dim(x)
   tmp <- if(length(dim(x)) == 2 && identical(matrix, "rowmajor")){
     # Faster special case for 2D matrices
-    row_collapse(m, indent = indent + 2L)
+    row_collapse(m, indent = indent_increment(indent))
   } else {
     collapse_array(m, columnmajor = identical(matrix, "columnmajor"), indent = indent)
   }

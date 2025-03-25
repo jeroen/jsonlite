@@ -72,7 +72,7 @@ An exception is that objects of class \code{AsIs} (i.e. wrapped in \code{\link[=
 
 \item{digits}{max number of decimal digits to print for numeric values. Use \code{\link[=I]{I()}} to specify significant digits. Use \code{NA} for max precision.}
 
-\item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link[=prettify]{prettify()}}}
+\item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent (default is 2). See also \code{\link[=prettify]{prettify()}}.}
 
 \item{force}{unclass/skip objects of classes with no defined JSON mapping}
 }

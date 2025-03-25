@@ -1,5 +1,7 @@
-1.9.2
-  - Cleanup after build; fix parallel make
+2.0.0
+  - Output for toJSON(x, pretty = p) where p is a number has changed: now uses
+    the same r-based indent system as for pretty = TRUE. To get the old format,
+    run json output through prettify().
 
 1.9.1
   - Fix a unit test in R 4.5 due to the new 'penguins_raw' dataset

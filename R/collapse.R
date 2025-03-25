@@ -28,7 +28,7 @@ collapse_array <- function(x, columnmajor = FALSE, indent){
   # Collapse higher dimensions
   for(i in rev(seq_along(dim(x)))[-1]) {
     dim <- 1:(length(dim(x))-1) + as.numeric(columnmajor)
-    x <- apply(x, dim, collapse, inner = FALSE, indent = indent + 2L * i)
+    x <- apply(x, dim, collapse, inner = FALSE, indent = indent_increment(indent) * i)
   }
   x
 }
