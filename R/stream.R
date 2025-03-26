@@ -49,7 +49,7 @@
 #' @name stream_in, stream_out
 #' @export stream_in stream_out
 #' @rdname stream_in
-#' @references MongoDB export format: <https://docs.mongodb.com/manual/reference/program/mongoexport/>
+#' @references MongoDB export format: <https://www.mongodb.com/docs/database-tools/mongoexport/>
 #' @references Documentation for the JSON Lines text file format: <https://jsonlines.org/>
 #' @seealso [fromJSON()], [read_json()]
 #' @return The `stream_out` function always returns `NULL`.
