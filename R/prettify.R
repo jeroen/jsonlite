@@ -6,15 +6,18 @@
 #' @aliases minify prettify
 #' @export prettify minify
 #' @param txt JSON string
-#' @param indent number of spaces to indent
+#' @param indent number of spaces to indent. Use a negative number for tabs instead of spaces.
 #' @useDynLib jsonlite R_reformat
 #' @examples myjson <- toJSON(cars)
 #' cat(myjson)
 #' prettify(myjson)
 #' minify(myjson)
 prettify <- function(txt, indent = 4) {
+  stopifnot(is.numeric(indent))
   txt <- paste(txt, collapse = "\n")
-  reformat(txt, TRUE, indent_string = paste(rep(" ", as.integer(indent)), collapse=""))
+  indent_char <- ifelse(indent > 0, " ", "\t")
+  indent_string <- paste(rep(indent_char, as.integer(abs(indent))), collapse="")
+  reformat(txt, TRUE, indent_string)
 }
 
 #' @rdname prettify

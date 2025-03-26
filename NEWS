@@ -2,6 +2,8 @@
   - Output for toJSON(x, pretty = p) where p is a number has changed: now uses
     the same r-based indent system as for pretty = TRUE. To get the old format,
     run json output through prettify().
+  - Both toJSON() and prettify() support now can use tabs instead of spaces by
+    setting a negative number as indent/pretty argument.
   - Fix an ubsan warning in prettify/minify in libyajl
 
 1.9.1

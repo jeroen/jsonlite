@@ -13,7 +13,7 @@ minify(txt)
 \arguments{
 \item{txt}{JSON string}
 
-\item{indent}{number of spaces to indent}
+\item{indent}{number of spaces to indent. Use a negative number for tabs instead of spaces.}
 }
 \description{
 Prettify adds indentation to a JSON string; minify removes all indentation/whitespace.

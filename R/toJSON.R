@@ -47,7 +47,7 @@ indent_init <- function(pretty){
 
   # Start with indent of 0
   if(is.numeric(pretty)){
-    stopifnot(pretty < 20)
+    stopifnot(abs(pretty) < 20)
     structure(0L, indent_spaces = as.integer(pretty))
   } else {
     NA_integer_
@@ -55,9 +55,9 @@ indent_init <- function(pretty){
 }
 
 indent_increment <- function(indent){
-  spaces <- attr(indent, 'indent_spaces')
-  if(length(spaces)){
-    indent + spaces
+  indent_spaces <- attr(indent, 'indent_spaces')
+  if(length(indent_spaces)){
+    indent + abs(indent_spaces)
   } else {
     NA_integer_
   }

@@ -3,8 +3,8 @@
 #include <stdlib.h>
 
 /* a function to insert n spaces */
-static void append_whitespace(char** cur, size_t n){
-  memset(*cur, ' ', n);
+static void append_whitespace(char** cur, size_t n, char indent_char){
+  memset(*cur, indent_char, n);
   *cur += n;
 }
 
@@ -20,13 +20,17 @@ static void append_text(char **cur, const char* val, int n){
 SEXP C_collapse_object_pretty(SEXP x, SEXP y, SEXP indent) {
   if (!isString(x) || !isString(y))
     error("x and y must character vectors.");
-
   int ni = asInteger(indent);
   int spaces = asInteger(Rf_getAttrib(indent, Rf_install("indent_spaces")));
   if(ni == NA_INTEGER)
     error("indent must not be NA");
   if(spaces == NA_INTEGER)
     error("ni_inside must not be NA");
+  char indent_char = ' ';
+  if(spaces < 0){
+    spaces = -1 * spaces;
+    indent_char = '\t';
+  }
 
   int len = length(x);
   if (len != length(y))
@@ -57,7 +61,7 @@ SEXP C_collapse_object_pretty(SEXP x, SEXP y, SEXP indent) {
   for (int i=0; i<len; i++) {
     if(STRING_ELT(y, i) == NA_STRING) continue;
     append_text(cur, "\n", 1);
-    append_whitespace(cur, ni + spaces);
+    append_whitespace(cur, ni + spaces, indent_char);
     append_text(cur, translateCharUTF8(STRING_ELT(x, i)), -1);
     append_text(cur, ": ", 2);
     append_text(cur, translateCharUTF8(STRING_ELT(y, i)), -1);
@@ -67,7 +71,7 @@ SEXP C_collapse_object_pretty(SEXP x, SEXP y, SEXP indent) {
   //finalize object
   if(cursor != start){
     cursor[-1] = '\n';
-    append_whitespace(cur, ni);
+    append_whitespace(cur, ni, indent_char);
   }
   append_text(cur, "}\0", 2);
 
@@ -139,6 +143,11 @@ SEXP C_collapse_array_pretty_outer(SEXP x, SEXP indent) {
     error("indent must not be NA");
   if(spaces == NA_INTEGER)
     error("spaces must not be NA");
+  char indent_char = ' ';
+  if(spaces < 0){
+    spaces = -1 * spaces;
+    indent_char = '\t';
+  }
 
   //calculate required space
   size_t nchar_total = 0;
@@ -164,7 +173,7 @@ SEXP C_collapse_array_pretty_outer(SEXP x, SEXP indent) {
   //copy everything
   for (int i=0; i<len; i++) {
     append_text(cur, "\n", 1);
-    append_whitespace(cur, ni + spaces);
+    append_whitespace(cur, ni + spaces, indent_char);
     append_text(cur, translateCharUTF8(STRING_ELT(x, i)), -1);
     append_text(cur, ",", 1);
   }
@@ -172,7 +181,7 @@ SEXP C_collapse_array_pretty_outer(SEXP x, SEXP indent) {
   //remove trailing ", "
   if(cursor != start){
     cursor[-1] = '\n';
-    append_whitespace(cur, ni);
+    append_whitespace(cur, ni, indent_char);
   }
 
   //finish up
