@@ -1,4 +1,4 @@
-toJSON <- function(...){
+toJSON <- function(...) {
   unclass(jsonlite::toJSON(...))
 }
 

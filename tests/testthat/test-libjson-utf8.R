@@ -5,9 +5,7 @@ context("libjson UTF-8 characters")
 # \u00F8 however this is mostly for legacy purposes. Using actual UTF-8 characters
 # is easier and more efficient.
 
-
 test_that("test that non ascii characters are ok", {
-
   #create random strings
   objects <- list(
     enc2utf8("Z\u00fcrich"),
@@ -19,30 +17,29 @@ test_that("test that non ascii characters are ok", {
     rawToChar(as.raw(1:40))
   )
 
-  lapply(objects, function(x){
+  lapply(objects, function(x) {
     #Encoding(x) <- "UTF-8"
-    myjson <- toJSON(x, pretty=TRUE);
-    expect_true(validate(myjson));
-    expect_equal(fromJSON(myjson), x);
+    myjson <- toJSON(x, pretty = TRUE)
+    expect_true(validate(myjson))
+    expect_equal(fromJSON(myjson), x)
 
     #prettify needs to parse + output
-    prettyjson <- prettify(myjson);
-    expect_true(validate(prettyjson));
-    expect_equal(fromJSON(prettyjson), x);
+    prettyjson <- prettify(myjson)
+    expect_true(validate(prettyjson))
+    expect_equal(fromJSON(prettyjson), x)
 
     #test encoding is preserved when roundtripping to disk
     tmp <- tempfile()
     write_json(x, tmp)
-    expect_equal(read_json(tmp, simplifyVector = TRUE), x);
+    expect_equal(read_json(tmp, simplifyVector = TRUE), x)
     unlink(tmp)
-  });
+  })
 
   #Test escaped unicode characters
-  expect_equal(fromJSON('["Z\\u00FCrich"]'), "Z\u00fcrich");
-  expect_equal(fromJSON(prettify('["Z\\u00FCrich"]')), "Z\u00fcrich");
+  expect_equal(fromJSON('["Z\\u00FCrich"]'), "Z\u00fcrich")
+  expect_equal(fromJSON(prettify('["Z\\u00FCrich"]')), "Z\u00fcrich")
 
-  expect_equal(length(unique(fromJSON('["Z\\u00FCrich", "Z\u00fcrich"]'))), 1L);
-  expect_equal(fromJSON('["\\u586B"]'), "\u586b");
-  expect_equal(fromJSON(prettify('["\\u586B"]')), "\u586B");
-
-});
+  expect_equal(length(unique(fromJSON('["Z\\u00FCrich", "Z\u00fcrich"]'))), 1L)
+  expect_equal(fromJSON('["\\u586B"]'), "\u586b")
+  expect_equal(fromJSON(prettify('["\\u586B"]')), "\u586B")
+})

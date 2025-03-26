@@ -1,6 +1,6 @@
 test_that("Writing SF objects", {
   skip_if_not_installed("sf")
-  compare_to_geojson_obj <- function(sf_obj){
+  compare_to_geojson_obj <- function(sf_obj) {
     sf_as_dataframe <- fromJSON(toJSON(sf_obj, digits = 8))
     sf_as_features <- fromJSON(toJSON(sf_obj, sf = 'features', digits = 8))
     geojson_string <- toJSON(sf_obj, sf = 'geojson', digits = 8)
@@ -16,11 +16,11 @@ test_that("Writing SF objects", {
     expect_equal(sf_as_geojson, geojson_exact)
   }
 
-  compare_to_geojson_file <- function(file){
+  compare_to_geojson_file <- function(file) {
     sf_obj <- sf::st_read(file, quiet = TRUE)
     compare_to_geojson_obj(sf_obj)
-    compare_to_geojson_obj(sf_obj[1,])
-    compare_to_geojson_obj(sf_obj[0,])
+    compare_to_geojson_obj(sf_obj[1, ])
+    compare_to_geojson_obj(sf_obj[0, ])
   }
 
   # Test with some standard data
@@ -29,16 +29,16 @@ test_that("Writing SF objects", {
   #compare_to_geojson_file(system.file("examples", "us_states.topojson", package = "geojsonio"))
 
   # Test special types, from ?st examples
-  outer = matrix(c(0,0,10,0,10,10,0,10,0,0.0), ncol=2, byrow=TRUE)
-  hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1.0), ncol=2, byrow=TRUE)
-  hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5.0), ncol=2, byrow=TRUE)
+  outer = matrix(c(0, 0, 10, 0, 10, 10, 0, 10, 0, 0.0), ncol = 2, byrow = TRUE)
+  hole1 = matrix(c(1, 1, 1, 2, 2, 2, 2, 1, 1, 1.0), ncol = 2, byrow = TRUE)
+  hole2 = matrix(c(5, 5, 5, 6, 6, 6, 6, 5, 5, 5.0), ncol = 2, byrow = TRUE)
   pts = list(outer, hole1, hole2)
   ml1 = sf::st_multilinestring(pts)
   pl1 = sf::st_polygon(pts)
   pol1 = list(outer, hole1, hole2)
   pol2 = list(outer + 12, hole1 + 12)
   pol3 = list(outer + 24)
-  mpl1 = sf::st_multipolygon(list(pol1,pol2,pol3))
+  mpl1 = sf::st_multipolygon(list(pol1, pol2, pol3))
   p1 = sf::st_point(as.double(1:2))
   mp1 = sf::st_multipoint(matrix(as.double(1:10), ncol = 2))
   ls1 = sf::st_linestring(matrix(as.double(1:10), ncol = 2))

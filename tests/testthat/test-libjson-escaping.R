@@ -1,24 +1,20 @@
-
-
 test_that("escaping and parsing of special characters", {
-
   #create random strings
-  mychars <- c('a', 'b', " ", '"', "\\", "\t", "\n", "'", "/", "#", "$");
-  createstring <- function(length){
-    paste(mychars[ceiling(runif(length, 0, length(mychars)))], collapse="")
+  mychars <- c('a', 'b', " ", '"', "\\", "\t", "\n", "'", "/", "#", "$")
+  createstring <- function(length) {
+    paste(mychars[ceiling(runif(length, 0, length(mychars)))], collapse = "")
   }
 
   #generate 1000 random strings
-  for(i in 1:200){
-    x <- createstring(i);
-    expect_equal(x, fromJSON(toJSON(x)));
-    expect_equal(x, fromJSON(toJSON(x, pretty=TRUE)));
+  for (i in 1:200) {
+    x <- createstring(i)
+    expect_equal(x, fromJSON(toJSON(x)))
+    expect_equal(x, fromJSON(toJSON(x, pretty = TRUE)))
 
     y <- setNames(list(123), x)
-    expect_equal(x, fromJSON(toJSON(x, pretty=TRUE)));
+    expect_equal(x, fromJSON(toJSON(x, pretty = TRUE)))
   }
-
-});
+})
 
 test_that("escape solidus", {
   expect_equal(toJSON("foo/bar/baz"), '["foo/bar/baz"]')

@@ -5,6 +5,7 @@
   - Both toJSON() and prettify() support now can use tabs instead of spaces by
     setting a negative number as indent/pretty argument.
   - Fix an ubsan warning in prettify/minify in libyajl
+  - Reformatted code with air
 
 1.9.1
   - Fix a unit test in R 4.5 due to the new 'penguins_raw' dataset

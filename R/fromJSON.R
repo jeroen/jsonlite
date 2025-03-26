@@ -75,18 +75,16 @@
 #' data3 <- fromJSON("https://api.github.com/users/hadley/repos", flatten = TRUE)
 #' identical(data3, flatten(data2))
 #' }
-fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, ...) {
-
+fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, simplifyMatrix = simplifyVector, flatten = FALSE, ...) {
   # check type
   if (!is.character(txt) && !inherits(txt, "connection")) {
     stop("Argument 'txt' must be a JSON string, URL or file.")
   }
 
   # overload for URL or path
-  if (is.character(txt) && length(txt) == 1 && nchar(txt, type="bytes") < 2084 && !validate(txt)) {
-    if (grepl("^https?://", txt, useBytes=TRUE)) {
-      txt <- if(R.version$major < 4){
+  if (is.character(txt) && length(txt) == 1 && nchar(txt, type = "bytes") < 2084 && !validate(txt)) {
+    if (grepl("^https?://", txt, useBytes = TRUE)) {
+      txt <- if (R.version$major < 4) {
         base::url(txt)
       } else {
         base::url(txt, headers = c(Accept = "application/json, text/*, */*"))
@@ -99,18 +97,15 @@ fromJSON <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVec
   }
 
   # call the actual function (with deprecated arguments)
-  parse_and_simplify(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
-    simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
+  parse_and_simplify(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
 }
 
-parse_and_simplify <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector,
-  simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, validate = TRUE, bigint_as_char = FALSE, ...){
-
-  if(!missing(unicode)){
+parse_and_simplify <- function(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, simplifyMatrix = simplifyVector, flatten = FALSE, unicode = TRUE, validate = TRUE, bigint_as_char = FALSE, ...) {
+  if (!missing(unicode)) {
     message("Argument unicode has been deprecated. YAJL always parses unicode.")
   }
 
-  if(!missing(validate)){
+  if (!missing(validate)) {
     message("Argument validate has been deprecated. YAJL automatically validates json while parsing.")
   }
 
@@ -119,8 +114,7 @@ parse_and_simplify <- function(txt, simplifyVector = TRUE, simplifyDataFrame = s
 
   # post processing
   if (any(isTRUE(simplifyVector), isTRUE(simplifyDataFrame), isTRUE(simplifyMatrix))) {
-    return(simplify(obj, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame,
-      simplifyMatrix = simplifyMatrix, flatten = flatten, ...))
+    return(simplify(obj, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, simplifyMatrix = simplifyMatrix, flatten = flatten, ...))
   } else {
     return(obj)
   }

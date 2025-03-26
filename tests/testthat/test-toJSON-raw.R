@@ -1,13 +1,11 @@
-
-
 test_that("Encoding raw vector", {
   x <- list(myraw = charToRaw("bla"))
-  x$mydf <- data.frame(foo=1:3)
+  x$mydf <- data.frame(foo = 1:3)
   x$mydf$bar <- as.character.hexmode(charToRaw("bla"))
 
   y <- fromJSON(toJSON(x))
-  expect_identical(x$mydf$bar, y$mydf$bar);
-  expect_identical(y$myraw, "Ymxh");
+  expect_identical(x$mydf$bar, y$mydf$bar)
+  expect_identical(y$myraw, "Ymxh")
 
   # Serialize raw as int
   y <- fromJSON(toJSON(x, raw = 'int'))
@@ -20,7 +18,6 @@ test_that("Encoding raw vector", {
   # Serialize raw as JavaScript
   x <- list(myraw = charToRaw("bla"))
   expect_equal(toJSON(x, raw = 'js'), '{"myraw":(new Uint8Array([98,108,97]))}')
-
 })
 
 test_that("Encoding blob vector", {

@@ -1,12 +1,11 @@
 context("rbind_pages")
 
-options(stringsAsFactors=FALSE)
+options(stringsAsFactors = FALSE)
 
 test_that("handles named list argument", {
   x <- data.frame(foo = c(1:2))
-  x$bar <- data.frame(name = c("jeroen", "eli"),
-                     age  = c(28, 24))
-  x  <- rep(list(x), 4)
+  x$bar <- data.frame(name = c("jeroen", "eli"), age = c(28, 24))
+  x <- rep(list(x), 4)
   xn <- setNames(x, letters[1:4])
 
   expect_equal(rbind_pages(xn), rbind_pages(x))
@@ -20,8 +19,8 @@ test_that("handles empty input", {
 })
 
 test_that("handles regular data frames", {
-  x <- data.frame(a=1:2, b=3:4)
-  y <- data.frame(c=5:6, d=7:8)
+  x <- data.frame(a = 1:2, b = 3:4)
+  y <- data.frame(c = 5:6, d = 7:8)
 
   xy <- rbind_pages(list(x, y))
 
@@ -33,15 +32,15 @@ test_that("handles regular data frames", {
 
 test_that("rejects non-NULL, non-data frame inputs", {
   x <- 1:4
-  y <- data.frame(a=1:4)
+  y <- data.frame(a = 1:4)
   expect_error(rbind_pages(list(x, y)))
 })
 
 test_that("handles nested data frames", {
   # need to construct this carefully to avoid data.frame() unnesting inputs
-  dfx <- data.frame(a=1:2)
-  dfx$df1 <- data.frame(b=3:4)
-  dfx$df1$df2 <- data.frame(c=5:6, d=7:8)
+  dfx <- data.frame(a = 1:2)
+  dfx$df1 <- data.frame(b = 3:4)
+  dfx$df1$df2 <- data.frame(c = 5:6, d = 7:8)
 
   out <- rbind_pages(list(dfx, dfx))
 
