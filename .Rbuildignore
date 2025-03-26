@@ -31,3 +31,5 @@ vignettes/framed.sty$
 ^revdep$
 ^CODE_OF_CONDUCT\.md$
 ^\.github$
+^air.toml$
+
