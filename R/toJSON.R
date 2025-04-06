@@ -27,9 +27,9 @@ toJSON <- function(
   null <- match.arg(null)
 
   # Temp workaround for 'mongopipe' unit test
-  if (pretty == 2 && identical(x, list()) && identical(Sys.getenv('TESTTHAT_PKG'), 'mongopipe')) {
-    return('[\n\n]')
-  }
+  # if (pretty == 2 && identical(x, list()) && identical(Sys.getenv('TESTTHAT_PKG'), 'mongopipe')) {
+  #  return('[\n\n]')
+  # }
 
   # force
   x <- force(x)
