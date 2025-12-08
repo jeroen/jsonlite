@@ -1,6 +1,6 @@
 setMethod("asJSON", "function", function(x, collapse = TRUE, fun = c("source", "list"), ...) {
   # validate
-  fun <- match.arg(fun)
+  fun <- match.arg(fun, c("source", "list"))
 
   if (fun == "source") {
     return(asJSON(deparse(x), ...))

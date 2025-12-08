@@ -1,6 +1,6 @@
 # For 'sf' geometry columns; use same structure as GeoJSON
 setMethod("asJSON", "sf", function(x, sf = c("dataframe", "features", "geojson"), ...) {
-  sf <- match.arg(sf)
+  sf <- match.arg(sf, c("dataframe", "features", "geojson"))
   if (sf == 'dataframe') {
     callNextMethod()
   } else {

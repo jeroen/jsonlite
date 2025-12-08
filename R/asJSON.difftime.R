@@ -3,7 +3,7 @@ setMethod("asJSON", "ts", function(x, ...) {
 })
 
 setMethod("asJSON", "hms", function(x, hms = c("string", "secs"), ...) {
-  hms <- match.arg(hms)
+  hms <- match.arg(hms, c("string", "secs"))
   output <- switch(hms, string = as.character(x), secs = as.numeric(x, units = "secs"))
   output[is.na(x)] <- NA
   asJSON(output, ...)

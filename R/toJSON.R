@@ -17,14 +17,14 @@ toJSON <- function(
   ...
 ) {
   # validate args
-  dataframe <- match.arg(dataframe)
-  matrix <- match.arg(matrix)
-  Date <- match.arg(Date)
-  POSIXt <- match.arg(POSIXt)
-  factor <- match.arg(factor)
-  complex <- match.arg(complex)
-  raw <- match.arg(raw)
-  null <- match.arg(null)
+  dataframe <- match.arg(dataframe, c("rows", "columns", "values"))
+  matrix <- match.arg(matrix, c("rowmajor", "columnmajor"))
+  Date <- match.arg(Date, c("ISO8601", "epoch"))
+  POSIXt <- match.arg(POSIXt, c("string", "ISO8601", "epoch", "mongo"))
+  factor <- match.arg(factor, c("string", "integer"))
+  complex <- match.arg(complex, c("string", "list"))
+  raw <- match.arg(raw, c("base64", "hex", "mongo", "int", "js"))
+  null <- match.arg(null, c("list", "null"))
 
   # Temp workaround for 'mongopipe' unit test
   # if (pretty == 2 && identical(x, list()) && identical(Sys.getenv('TESTTHAT_PKG'), 'mongopipe')) {
@@ -36,7 +36,7 @@ toJSON <- function(
 
   #this is just to check, we keep method-specific defaults
   if (!missing(na)) {
-    na <- match.arg(na)
+    na <- match.arg(na, c("null", "string"))
   } else {
     na <- NULL
   }

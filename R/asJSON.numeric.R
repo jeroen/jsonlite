@@ -4,7 +4,7 @@ asjson_numeric_fun <- function(x, digits = 5, use_signif = is(digits, "AsIs"), n
     return(asJSON(as.list(x), digits = digits, use_signif = use_signif, na = na, auto_unbox = TRUE, collapse = collapse, ...))
   }
 
-  na <- match.arg(na)
+  na <- match.arg(na, c("string", "null", "NA"))
   na_as_string <- switch(na, "string" = TRUE, "null" = FALSE, "NA" = NA, stop("invalid na_as_string"))
 
   # old R implementation

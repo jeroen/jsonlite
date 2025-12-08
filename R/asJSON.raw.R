@@ -8,7 +8,7 @@ setMethod("asJSON", "blob", function(x, raw = "base64", ...) {
 
 setMethod("asJSON", "raw", function(x, raw = c("base64", "hex", "mongo", "int", "js"), ...) {
   # validate
-  raw <- match.arg(raw)
+  raw <- match.arg(raw, c("base64", "hex", "mongo", "int", "js"))
 
   # encode based on schema
   if (raw == "mongo") {

@@ -5,7 +5,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
   }
 
   # Validate some args
-  dataframe <- match.arg(dataframe)
+  dataframe <- match.arg(dataframe, c("rows", "columns", "values"))
   has_names <- identical(length(names(x)), ncol(x))
 
   # Default to adding row names only if they are strings and not just stringified numbers
@@ -43,7 +43,7 @@ setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), co
 
   # Set default for row based, don't do it earlier because it will affect 'oldna' or dataframe="columns"
   if (dataframe == "rows" && has_names) {
-    na <- match.arg(na)
+    na <- match.arg(na, c("NA", "null", "string"))
   }
 
   # no records

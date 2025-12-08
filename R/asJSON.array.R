@@ -1,5 +1,5 @@
 asjson_array_fun <- function(x, collapse = TRUE, na = NULL, oldna = NULL, matrix = c("rowmajor", "columnmajor"), auto_unbox = FALSE, keep_vec_names = FALSE, indent = NA_integer_, ...) {
-  matrix <- match.arg(matrix)
+  matrix <- match.arg(matrix, c("rowmajor", "columnmajor"))
 
   # reset na arg when called from data frame
   if (identical(na, "NA")) {

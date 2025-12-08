@@ -5,7 +5,7 @@ setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "stri
   }
 
   # validate arg
-  na <- match.arg(na)
+  na <- match.arg(na, c("null", "string", "NA"))
 
   # json true/false
   tmp <- ifelse(x, "true", "false")
