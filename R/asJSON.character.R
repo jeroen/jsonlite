@@ -1,4 +1,4 @@
-setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "string", "NA"), auto_unbox = FALSE, keep_vec_names = FALSE, indent = NA_integer_, ...) {
+setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "string", "NA", "null_specials"), auto_unbox = FALSE, keep_vec_names = FALSE, indent = NA_integer_, ...) {
   # Needed for multi-byte Windows locales
   # See: https://github.com/jeroen/jsonlite/issues/329
   x <- enc2utf8(x)
@@ -21,7 +21,7 @@ setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "st
   # validate NA
   if (any(missings <- which(is.na(x)))) {
     na <- match.arg(na)
-    if (na %in% c("null")) {
+    if (na %in% c("null", "null_specials")) {
       tmp[missings] <- "null"
     } else if (na %in% "string") {
       tmp[missings] <- "\"NA\""
