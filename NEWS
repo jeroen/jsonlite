@@ -1,3 +1,6 @@
+2.0.1
+  - Remove linebreaks from as_gzjson_b64()
+
 2.0.0
   - Output for toJSON(x, pretty = p) where p is a number has changed: now uses
     the same r-based indent system as for pretty = TRUE. To get the old format,

@@ -27,7 +27,7 @@ as_gzjson_raw <- function(x, ...) {
 #' @rdname gzjson
 as_gzjson_b64 <- function(x, ...) {
   buf <- as_gzjson_raw(x = x, ...)
-  base64_enc(buf)
+  gsub("\n", "", base64_enc(buf), fixed = TRUE)
 }
 
 #' @export
