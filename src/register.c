@@ -21,7 +21,7 @@ extern SEXP C_transpose_list(SEXP, SEXP);
 extern SEXP R_base64_decode(SEXP);
 extern SEXP R_base64_encode(SEXP);
 extern SEXP R_integer64_to_char(SEXP, SEXP);
-extern SEXP R_num_to_char(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP R_num_to_char(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP R_parse(SEXP, SEXP);
 extern SEXP R_parse_connection(SEXP, SEXP);
 extern SEXP R_reformat(SEXP, SEXP, SEXP);
@@ -44,7 +44,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"R_base64_decode",               (DL_FUNC) &R_base64_decode,               1},
   {"R_base64_encode",               (DL_FUNC) &R_base64_encode,               1},
   {"R_integer64_to_char",           (DL_FUNC) &R_integer64_to_char,           2},
-  {"R_num_to_char",                 (DL_FUNC) &R_num_to_char,                 5},
+  {"R_num_to_char",                 (DL_FUNC) &R_num_to_char,                 6},
   {"R_parse",                       (DL_FUNC) &R_parse,                       2},
   {"R_parse_connection",            (DL_FUNC) &R_parse_connection,            2},
   {"R_reformat",                    (DL_FUNC) &R_reformat,                    3},

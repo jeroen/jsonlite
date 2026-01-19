@@ -1,4 +1,4 @@
-setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string"), collapse = TRUE, dataframe = c("rows", "columns", "values"), complex = "string", oldna = NULL, rownames = NULL, keep_vec_names = FALSE, indent = NA_integer_, no_dots = FALSE, ...) {
+setMethod("asJSON", "data.frame", function(x, na = c("NA", "null", "string", "null_specials"), collapse = TRUE, dataframe = c("rows", "columns", "values"), complex = "string", oldna = NULL, rownames = NULL, keep_vec_names = FALSE, indent = NA_integer_, no_dots = FALSE, ...) {
   # Coerse pairlist if needed
   if (is.pairlist(x)) {
     x <- as.vector(x, mode = "list")

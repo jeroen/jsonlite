@@ -33,7 +33,7 @@
 #' @param complex how to encode complex numbers: must be one of 'string' or 'list'
 #' @param raw how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'
 #' @param null how to encode NULL values within a list: must be one of 'null' or 'list'
-#' @param na how to print NA values: must be one of 'null' or 'string'. Defaults are class specific
+#' @param na how to print NA values: must be one of 'null', 'string', or 'null_specials'. Defaults are class specific, and 'null_specials' only applies to 'numeric'
 #' @param auto_unbox automatically [unbox()] all atomic vectors of length 1. It is usually safer to avoid this and instead use the [unbox()] function to unbox individual elements.
 #'   An exception is that objects of class `AsIs` (i.e. wrapped in [I()]) are not automatically unboxed. This is a way to mark single values as length-1 arrays.
 #' @param digits max number of decimal digits to print for numeric values. Use [I()] to specify significant digits. Use `NA` for max precision.

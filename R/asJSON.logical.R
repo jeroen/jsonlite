@@ -1,4 +1,4 @@
-setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "string", "NA"), auto_unbox = FALSE, keep_vec_names = FALSE, indent = NA_integer_, ...) {
+setMethod("asJSON", "logical", function(x, collapse = TRUE, na = c("null", "string", "NA", "null_specials"), auto_unbox = FALSE, keep_vec_names = FALSE, indent = NA_integer_, ...) {
   # shiny legacy exception
   if (isTRUE(keep_vec_names) && length(names(x))) {
     return(asJSON(as.list(x), collapse = collapse, na = na, auto_unbox = TRUE, ...))
