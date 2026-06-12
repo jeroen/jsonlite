@@ -182,10 +182,16 @@ yajl_gen_free(yajl_gen g)
     }
 
 #define INCREMENT_DEPTH \
-    if (++(g->depth) >= YAJL_MAX_DEPTH) return yajl_max_depth_exceeded;
+    do { \
+        if (g->depth >= YAJL_MAX_DEPTH - 1) return yajl_max_depth_exceeded; \
+        g->depth++; \
+    } while (0)
 
 #define DECREMENT_DEPTH \
-  if (--(g->depth) >= YAJL_MAX_DEPTH) return yajl_gen_generation_complete;
+    do { \
+        if (g->depth == 0) return yajl_gen_generation_complete; \
+        g->depth--; \
+    } while (0)
 
 #define APPENDED_ATOM \
     switch (g->state[g->depth]) {                   \
