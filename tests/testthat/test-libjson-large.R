@@ -27,3 +27,9 @@ test_that("integer overflow handling", {
   # Extreme overflow
   expect_type(fromJSON("9223372036854775833333388", bigint_as_char = TRUE), "double")
 })
+
+test_that("invalid number formats", {
+  expect_error(fromJSON("-+123"), "lexical error")
+  expect_error(fromJSON("+-123"), "lexical error")
+  expect_error(fromJSON("+123"), "lexical error")
+})
