@@ -31,5 +31,6 @@ test_that("integer overflow handling", {
 test_that("invalid number formats", {
   expect_error(fromJSON("-+123"), "lexical error")
   expect_error(fromJSON("+-123"), "lexical error")
+  # RFC 8259, Section 6: leading '+' is not valid
   expect_error(fromJSON("+123"), "lexical error")
 })
