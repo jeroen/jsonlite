@@ -25,11 +25,8 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 #include <assert.h>
 #include <math.h>
-
-#define MAX_VALUE_TO_MULTIPLY ((LLONG_MAX / 10) + (LLONG_MAX % 10))
 
  /* same semantics as strtol */
 long long
@@ -44,7 +41,7 @@ yajl_parse_integer(const unsigned char *number, unsigned int length)
     }
 
     if (*pos == '-') { pos++; sign = -1; }
-    if (*pos == '+') { pos++; }
+    else if (*pos == '+') { pos++; }
 
     while (pos < number + length) {
         if (*pos < '0' || *pos > '9') {
