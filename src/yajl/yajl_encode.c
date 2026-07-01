@@ -75,16 +75,18 @@ yajl_string_encode(const yajl_print_t print,
     print(ctx, (const char *) (str + beg), end - beg);
 }
 
-static void hexToDigit(unsigned int * val, const unsigned char * hex)
+static int hexToDigit(unsigned int * val, const unsigned char * hex)
 {
     unsigned int i;
     for (i=0;i<4;i++) {
         unsigned char c = hex[i];
-        if (c >= 'A') c = (c & ~0x20) - 7;
-        c -= '0';
-        assert(!(c & 0xF0));
+        if (c >= 'a' && c <= 'f') c = c - 'a' + 10;
+        else if (c >= 'A' && c <= 'F') c = c - 'A' + 10;
+        else if (c >= '0' && c <= '9') c = c - '0';
+        else return 0;
         *val = (*val << 4) | c;
     }
+    return 1;
 }
 
 static void Utf32toUtf8(unsigned int codepoint, char * utf8Buf) 
@@ -135,19 +137,27 @@ void yajl_string_decode(yajl_buf buf, const unsigned char * str,
                 case 't': unescaped = "\t"; break;
                 case 'u': {
                     unsigned int codepoint = 0;
-                    hexToDigit(&codepoint, str + ++end);
-                    end+=3;
+                    if (end + 4 >= len || !hexToDigit(&codepoint, str + ++end)) {
+                        unescaped = "?";
+                        /* jump past anything remaining if hex was truncated/invalid */
+                        end += 3;
+                        break;
+                    }
+                    end += 3;
                     /* check if this is a surrogate */
                     if ((codepoint & 0xFC00) == 0xD800) {
-                        if (end + 2 < len && str[end + 1] == '\\' && str[end + 2] == 'u') {
-                            end++;
+                        if (end + 6 < len && str[end + 1] == '\\' && str[end + 2] == 'u') {
                             unsigned int surrogate = 0;
-                            hexToDigit(&surrogate, str + end + 2);
-                            codepoint =
-                                (((codepoint & 0x3F) << 10) | 
-                                 ((((codepoint >> 6) & 0xF) + 1) << 16) | 
-                                 (surrogate & 0x3FF));
-                            end += 5;
+                            if (hexToDigit(&surrogate, str + end + 3) && (surrogate & 0xFC00) == 0xDC00) {
+                                codepoint =
+                                    (((codepoint & 0x3F) << 10) | 
+                                     ((((codepoint >> 6) & 0xF) + 1) << 16) | 
+                                     (surrogate & 0x3FF));
+                                end += 6;
+                            } else {
+                                unescaped = "?";
+                                break;
+                            }
                         } else {
                             unescaped = "?";
                             break;
@@ -166,7 +176,8 @@ void yajl_string_decode(yajl_buf buf, const unsigned char * str,
                     break;
                 }
                 default:
-                    assert("this should never happen" == NULL);
+                    unescaped = "?";
+                    break;
             }
             yajl_buf_append(buf, unescaped, (unsigned int)strlen(unescaped));
             beg = ++end;

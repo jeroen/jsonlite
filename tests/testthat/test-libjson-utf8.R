@@ -42,4 +42,12 @@ test_that("test that non ascii characters are ok", {
   expect_equal(length(unique(fromJSON('["Z\\u00FCrich", "Z\u00fcrich"]'))), 1L)
   expect_equal(fromJSON('["\\u586B"]'), "\u586b")
   expect_equal(fromJSON(prettify('["\\u586B"]')), "\u586B")
+
+  # Invalid surrogate and unicode decoding (should not crash)
+  expect_equal(fromJSON('["\\udbbb\\\\Lbbbb"]'), "?\\Lbbbb")
+  expect_equal(fromJSON('["\\udbbb\\u005c"]'), "?\\")
+  expect_error(fromJSON('["\\udbbb\\u005g"]'), "lexical error")
+  expect_error(fromJSON('["\\udbbb\\u00"]'), "lexical error")
+  expect_error(fromJSON('["\\u00"]'), "lexical error")
+  expect_error(fromJSON('["\\u005g"]'), "lexical error")
 })
