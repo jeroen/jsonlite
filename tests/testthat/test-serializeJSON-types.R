@@ -33,3 +33,11 @@ test_that("Serializing Data Objects", {
   #test all in list
   expect_equal(unserializeJSON(serializeJSON(objects)), objects)
 })
+
+test_that("serializeJSON/unserializeJSON round-trip works for data.table (externalptr attribute)", {
+  skip_if_not_installed("data.table")
+  dt <- data.table::data.table(mtcars)
+  result <- unserializeJSON(serializeJSON(dt))
+  expect_s3_class(result, "data.table")
+  expect_equal(as.data.frame(result), as.data.frame(dt))
+})
