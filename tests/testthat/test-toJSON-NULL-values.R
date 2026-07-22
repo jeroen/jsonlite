@@ -1,5 +1,5 @@
 test_that("Test NULL values", {
-  namedlist <- structure(list(), .Names = character(0))
+  namedlist <- structure(list(), names = character(0))
   x <- NULL
   y <- list(a = NULL, b = NA)
   z <- list(a = 1, b = character(0))

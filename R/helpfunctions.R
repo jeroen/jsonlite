@@ -3,7 +3,7 @@
 # definition.
 
 S4tolist <- function(x) {
-  structure(lapply(slotNames(x), slot, object = x), .Names = slotNames(x))
+  structure(lapply(slotNames(x), slot, object = x), names = slotNames(x))
 }
 
 # ENCODING TOOLS
