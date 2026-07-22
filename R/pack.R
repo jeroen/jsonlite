@@ -69,6 +69,10 @@ unpack <- function(obj) {
     return(NULL)
   }
 
+  if (encoding.mode == "externalptr") {
+    return(NULL)
+  }
+
   if (identical(encoding.mode, "S4")) {
     obj_class <- load_s4_class(obj$value$class, package = obj$value$package)
     obj_data <- lapply(obj$attributes, unpack)
