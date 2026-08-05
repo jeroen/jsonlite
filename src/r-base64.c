@@ -26,8 +26,9 @@ SEXP R_base64_decode(SEXP buf){
   unsigned char * out = base64_decode(RAW(buf), len, &outlen);
   if(out == NULL)
     Rf_error("Error in base64 decode");
-  SEXP res = allocVector(RAWSXP, outlen);
+  SEXP res = PROTECT(allocVector(RAWSXP, outlen));
   memcpy(RAW(res), out, outlen);
   free(out);
+  UNPROTECT(1);
   return res;
 }

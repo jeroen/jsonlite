@@ -12,11 +12,9 @@ SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
   char errbuf[bufsize];
   unsigned char * errstr;
   yajl_handle push_parser = push_parser_new();
-  SEXP call = PROTECT(Rf_lang4(
-    PROTECT(Rf_install("readBin")),
-    sConn,
-    PROTECT(Rf_allocVector(RAWSXP, 0)),
-    PROTECT(Rf_ScalarInteger(bufsize))));
+  SEXP what = PROTECT(Rf_allocVector(RAWSXP, 0));
+  SEXP n = PROTECT(Rf_ScalarInteger(bufsize));
+  SEXP call = PROTECT(Rf_lang4(Rf_install("readBin"), sConn, what, n));
   while(1){
     SEXP out = PROTECT(Rf_eval(call, R_BaseEnv));
     int len = Rf_length(out);
@@ -44,11 +42,12 @@ SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
     /* parse and check for errors */
     if (yajl_parse(push_parser, ptr, len) != yajl_status_ok){
       errstr = yajl_get_error(push_parser, 1, ptr, len);
+      UNPROTECT(4);
       goto JSON_FAIL;
     }
     UNPROTECT(1);
   }
-  UNPROTECT(4);
+  UNPROTECT(3);
 
   /* complete parse */
   if (yajl_complete_parse(push_parser) != yajl_status_ok){
@@ -66,6 +65,7 @@ SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
 
   JSON_FAIL:
     strncpy(errbuf, (char *) errstr, bufsize - 1);
+    errbuf[bufsize - 1] = '\0';
     yajl_free_error(push_parser, errstr);
     yajl_free(push_parser);
     Rf_error("%s", errbuf);
