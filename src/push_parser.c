@@ -42,7 +42,6 @@ SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
     /* parse and check for errors */
     if (yajl_parse(push_parser, ptr, len) != yajl_status_ok){
       errstr = yajl_get_error(push_parser, 1, ptr, len);
-      UNPROTECT(4);
       goto JSON_FAIL;
     }
     UNPROTECT(1);

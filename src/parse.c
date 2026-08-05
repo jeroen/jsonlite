@@ -37,9 +37,8 @@ SEXP R_parse(SEXP x, SEXP bigint_as_char) {
     if (!node) {
       Rf_errorcall(R_NilValue, "%s", errbuf);
     }
-    SEXP out = PROTECT(ParseValue(node, bigint));
+    SEXP out = ParseValue(node, bigint);
     yajl_tree_free(node);
-    UNPROTECT(1);
     return(out);
 }
 

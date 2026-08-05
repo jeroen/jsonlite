@@ -20,14 +20,11 @@ SEXP C_row_collapse_object(SEXP names, SEXP m, SEXP indent){
     for(int j = 0; j < y; j++) {
       SET_STRING_ELT(vec, j, STRING_ELT(m, j*x + i));
     }
-    SEXP str;
     if(asInteger(indent) == NA_INTEGER){
-      str = PROTECT(C_collapse_object(names, vec));
+      SET_STRING_ELT(out, i, STRING_ELT(C_collapse_object(names, vec), 0));
     } else {
-      str = PROTECT(C_collapse_object_pretty(names, vec, indent));
+      SET_STRING_ELT(out, i, STRING_ELT(C_collapse_object_pretty(names, vec, indent), 0));
     }
-    SET_STRING_ELT(out, i, STRING_ELT(str, 0));
-    UNPROTECT(1);
   }
   UNPROTECT(2);
   return out;
@@ -47,14 +44,11 @@ SEXP C_row_collapse_array(SEXP m, SEXP indent){
     for(int j = 0; j < y; j++) {
       SET_STRING_ELT(vec, j, STRING_ELT(m, j*x + i));
     }
-    SEXP str;
     if(asInteger(indent) == NA_INTEGER){
-      str = PROTECT(C_collapse_array(vec));
+      SET_STRING_ELT(out, i, STRING_ELT(C_collapse_array(vec), 0));
     } else {
-      str = PROTECT(C_collapse_array_pretty_inner(vec));
+      SET_STRING_ELT(out, i, STRING_ELT(C_collapse_array_pretty_inner(vec), 0));
     }
-    SET_STRING_ELT(out, i, STRING_ELT(str, 0));
-    UNPROTECT(1);
   }
   UNPROTECT(2);
   return out;
