@@ -25,11 +25,8 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 #include <assert.h>
 #include <math.h>
-
-#define MAX_VALUE_TO_MULTIPLY ((LLONG_MAX / 10) + (LLONG_MAX % 10))
 
  /* same semantics as strtol */
 long long
@@ -38,27 +35,37 @@ yajl_parse_integer(const unsigned char *number, unsigned int length)
     long long ret  = 0;
     long sign = 1;
     const unsigned char *pos = number;
+
+    if (length == 0) {
+        return 0;
+    }
+
     if (*pos == '-') { pos++; sign = -1; }
-    if (*pos == '+') { pos++; }
+    else if (*pos == '+') { pos++; }
 
     while (pos < number + length) {
-        if ( ret > MAX_VALUE_TO_MULTIPLY ) {
-            errno = ERANGE;
-            return sign == 1 ? LLONG_MAX : LLONG_MIN;
-        }
-        ret *= 10;
-        if (LLONG_MAX - ret < (*pos - '0')) {
-            errno = ERANGE;
-            return sign == 1 ? LLONG_MAX : LLONG_MIN;
-        }
         if (*pos < '0' || *pos > '9') {
             errno = ERANGE;
             return sign == 1 ? LLONG_MAX : LLONG_MIN;
         }
-        ret += (*pos++ - '0');
+        int digit = *pos - '0';
+        if (sign == 1) {
+            if (ret > LLONG_MAX / 10 || (ret == LLONG_MAX / 10 && digit > (int)(LLONG_MAX % 10))) {
+                errno = ERANGE;
+                return LLONG_MAX;
+            }
+            ret = ret * 10 + digit;
+        } else {
+            if (ret < LLONG_MIN / 10 || (ret == LLONG_MIN / 10 && -digit < (int)(LLONG_MIN % 10))) {
+                errno = ERANGE;
+                return LLONG_MIN;
+            }
+            ret = ret * 10 - digit;
+        }
+        pos++;
     }
 
-    return sign * ret;
+    return ret;
 }
 
 unsigned char *
