@@ -2,6 +2,7 @@
   - AI generated fixes for unlikely edge cases: #464 #465 #466 #469
   - Fix note on deprecated structure(.Names) param in r-devel
   - Remove linebreaks from as_gzjson_b64()
+  - Remove vignette copy of paper, add link to DOI in description
 
 2.0.0
   - Output for toJSON(x, pretty = p) where p is a number has changed: now uses

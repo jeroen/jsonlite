@@ -12,7 +12,7 @@ URL: https://jeroen.r-universe.dev/jsonlite
     https://arxiv.org/abs/1403.2805
 BugReports: https://github.com/jeroen/jsonlite/issues
 Maintainer: Jeroen Ooms <jeroenooms@gmail.com>
-VignetteBuilder: knitr, jsonlite
+VignetteBuilder: knitr
 Description: A reasonably fast JSON parser and generator, optimized for statistical 
     data and the web. Offers simple, flexible tools for working with JSON in R, and
     is particularly powerful for building pipelines and interacting with a web API. 
@@ -23,7 +23,6 @@ Description: A reasonably fast JSON parser and generator, optimized for statisti
     encoded and decoded consistently for use with dynamic data in systems and 
     applications.
 Suggests:
-    httr,
     vctrs,
     testthat,
     knitr,
