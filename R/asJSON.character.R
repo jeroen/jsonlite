@@ -5,7 +5,7 @@ setMethod("asJSON", "character", function(x, collapse = TRUE, na = c("null", "st
 
   # shiny legacy exception
   if (isTRUE(keep_vec_names) && length(names(x))) {
-    return(asJSON(as.list(x), na = na, auto_unbox = TRUE, collapse = collapse, ...))
+    return(asJSON(as.list(x), na = na, auto_unbox = TRUE, collapse = collapse, indent = indent, ...))
   }
 
   # vectorized escaping

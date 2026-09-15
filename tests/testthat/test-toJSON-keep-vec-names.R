@@ -29,3 +29,24 @@ test_that("keep_vec_names with data frames", {
   expect_equal(toJSON3(data.frame(x = c(a = 1), y = 2)), '{"x":[1],"y":[2]}')
   expect_equal(toJSON3(data.frame(x = c(a = 1, b = 2), y = c(c = 3, d = 4))), '{"x":[1,2],"y":[3,4]}')
 })
+
+test_that("keep_vec_names respects pretty and always_decimal", {
+  # The same JSON object built through the list path is the oracle: these
+  # re-dispatch to it, so they must produce identical output.
+  expect_equal(
+    toJSON(c(a = 1, b = 2), keep_vec_names = TRUE, auto_unbox = TRUE, pretty = TRUE),
+    toJSON(list(a = 1, b = 2), auto_unbox = TRUE, pretty = TRUE)
+  )
+  expect_equal(
+    toJSON(c(a = "x", b = "y"), keep_vec_names = TRUE, auto_unbox = TRUE, pretty = TRUE),
+    toJSON(list(a = "x", b = "y"), auto_unbox = TRUE, pretty = TRUE)
+  )
+  expect_equal(
+    toJSON(c(a = TRUE, b = FALSE), keep_vec_names = TRUE, auto_unbox = TRUE, pretty = TRUE),
+    toJSON(list(a = TRUE, b = FALSE), auto_unbox = TRUE, pretty = TRUE)
+  )
+  expect_equal(
+    toJSON(c(a = 1, b = 2), keep_vec_names = TRUE, auto_unbox = TRUE, always_decimal = TRUE),
+    toJSON(list(a = 1, b = 2), auto_unbox = TRUE, always_decimal = TRUE)
+  )
+})
