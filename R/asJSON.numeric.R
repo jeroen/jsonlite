@@ -1,7 +1,7 @@
 asjson_numeric_fun <- function(x, digits = 5, use_signif = is(digits, "AsIs"), na = c("string", "null", "NA"), auto_unbox = FALSE, collapse = TRUE, keep_vec_names = FALSE, indent = NA_integer_, always_decimal = FALSE, ...) {
   # shiny legacy exception
   if (isTRUE(keep_vec_names) && length(names(x))) {
-    return(asJSON(as.list(x), digits = digits, use_signif = use_signif, na = na, auto_unbox = TRUE, collapse = collapse, ...))
+    return(asJSON(as.list(x), digits = digits, use_signif = use_signif, na = na, auto_unbox = TRUE, collapse = collapse, indent = indent, always_decimal = always_decimal, ...))
   }
 
   na <- match.arg(na)
