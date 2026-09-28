@@ -14,6 +14,11 @@ test_that("keep_vec_names with named vectors", {
 
   # Some other types
   expect_equal(toJSON2(factor(c(a = "x"))), '{"a":"x"}')
+  expect_equal(
+    toJSON(factor(c(a = "x", b = "y")), factor = "integer", keep_vec_names = TRUE, auto_unbox = TRUE),
+    '{"a":1,"b":2}'
+  )
+  expect_equal(toJSON(factor(c(a = "x", b = "y")), factor = "integer"), '[1,2]')
   expect_equal(toJSON2(c(a = as.Date("2015-01-01"))), '{"a":"2015-01-01"}')
   expect_equal(toJSON2(c(a = as.POSIXct("2015-01-01 3:00:00"))), '{"a":"2015-01-01 03:00:00"}')
   expect_equal(toJSON2(c(a = as.POSIXlt("2015-01-01 3:00:00"))), '{"a":"2015-01-01 03:00:00"}')
