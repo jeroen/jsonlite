@@ -5,7 +5,7 @@ setMethod("asJSON", "factor", function(x, factor = c("string", "integer"), keep_
   # dispatch
   if (factor == "integer") {
     # encode factor as enum
-    asJSON(unclass(x), ...)
+    asJSON(unclass(x), keep_vec_names = keep_vec_names, ...)
   } else {
     # encode as strings
     xc <- as.character(x)
