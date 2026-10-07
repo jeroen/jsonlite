@@ -9,7 +9,7 @@ toJSON <- function(
   complex = c("string", "list"),
   raw = c("base64", "hex", "mongo", "int", "js"),
   null = c("list", "null"),
-  na = c("null", "string"),
+  na = c("null", "string", "null_specials"),
   auto_unbox = FALSE,
   digits = 4,
   pretty = FALSE,

@@ -231,6 +231,13 @@ toJSON(c(3.14, NA, NaN, 21, Inf, -Inf))
 toJSON(c(3.14, NA, NaN, 21, Inf, -Inf), na="null")
 @
 
+An alternative representation allows \texttt{NA} values to display as the literal \texttt{null} and \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} to be displayed as strings. While \JSON does not support the latter tokens as specific values, the consumer of the data needs to know how to interpret these strings, though they are handled intuitively in \R.
+
+<<>>=
+#Extended, non-default behavior
+toJSON(c(3.14, NA, NaN, 21, Inf, -Inf), na="null_specials")
+@
+
 \subsubsection{Special vector types: dates, times, factor, complex}
 
 Besides missing values, \JSON also lacks native support for some of the basic vector types in \R that frequently appear in data sets. These include vectors of class \texttt{Date}, \texttt{POSIXt} (timestamps), \texttt{factors} and \texttt{complex} vectors. By default, the \jsonlite package coerces these types to strings (using \texttt{as.character}):
