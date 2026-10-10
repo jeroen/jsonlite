@@ -1,5 +1,6 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
+#include <math.h>
 #include <stdlib.h>
 #include "modp_numtoa.h"
 
