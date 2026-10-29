@@ -74,41 +74,6 @@ static yajl_val value_alloc (yajl_type type)
     return (v);
 }
 
-static void yajl_object_free (yajl_val v)
-{
-    size_t i;
-
-    if (!YAJL_IS_OBJECT(v)) return;
-
-    for (i = 0; i < v->u.object.len; i++)
-    {
-        free((char *) v->u.object.keys[i]);
-        v->u.object.keys[i] = NULL;
-        yajl_tree_free (v->u.object.values[i]);
-        v->u.object.values[i] = NULL;
-    }
-
-    free((void*) v->u.object.keys);
-    free(v->u.object.values);
-    free(v);
-}
-
-static void yajl_array_free (yajl_val v)
-{
-    size_t i;
-
-    if (!YAJL_IS_ARRAY(v)) return;
-
-    for (i = 0; i < v->u.array.len; i++)
-    {
-        yajl_tree_free (v->u.array.values[i]);
-        v->u.array.values[i] = NULL;
-    }
-
-    free(v->u.array.values);
-    free(v);
-}
-
 /*
  * Parsing nested objects and arrays is implemented using a stack. When a new
  * object or array starts (a curly or a square opening bracket is read), an
@@ -154,6 +119,15 @@ static yajl_val context_pop(context_t *ctx)
     free (stack);
 
     return (v);
+}
+
+/* Frees partially constructed values after a parse error */
+static void context_free(context_t *ctx)
+{
+    while (ctx->stack != NULL)
+        yajl_tree_free(context_pop(ctx));
+    yajl_tree_free(ctx->root);
+    ctx->root = NULL;
 }
 
 static int object_add_keyval(context_t *ctx,
@@ -456,14 +430,8 @@ yajl_val yajl_tree_parse (const char *input,
              snprintf(error_buffer, error_buffer_size, "%s", internal_err_str);
              YA_FREE(&(handle->alloc), internal_err_str);
         }
-        while(ctx.stack != NULL) {
-             yajl_val v = context_pop(&ctx);
-             yajl_tree_free(v);
-        }
+        context_free(&ctx);
         yajl_free (handle);
-        //If the requested memory is not released in time, it will cause memory leakage
-        if(ctx.root)
-             yajl_tree_free(ctx.root);
         return NULL;
     }
 
@@ -493,32 +461,72 @@ yajl_val yajl_tree_get(yajl_val n, const char ** path, yajl_type type)
     return n;
 }
 
-void yajl_tree_free (yajl_val v)
+/*
+ * Iterative rather than recursive (change by jeroen) such that very deeply
+ * nested trees can be freed without overflowing the C stack. Child values
+ * of objects and arrays are collected in a heap-allocated todo list.
+ */
+static void yajl_tree_free_one (yajl_val v, yajl_val **todo, size_t *len, size_t *cap)
 {
-    if (v == NULL) return;
+    yajl_val *children = NULL;
+    size_t i, n = 0;
 
     if (YAJL_IS_STRING(v))
     {
         free(v->u.string);
-        free(v);
     }
     else if (YAJL_IS_NUMBER(v))
     {
         free(v->u.number.r);
-        free(v);
     }
-    else if (YAJL_GET_OBJECT(v))
+    else if (YAJL_IS_OBJECT(v))
     {
-        yajl_object_free(v);
+        for (i = 0; i < v->u.object.len; i++)
+            free((char *) v->u.object.keys[i]);
+        free((void*) v->u.object.keys);
+        children = v->u.object.values;
+        n = v->u.object.len;
     }
-    else if (YAJL_GET_ARRAY(v))
+    else if (YAJL_IS_ARRAY(v))
     {
-        yajl_array_free(v);
+        children = v->u.array.values;
+        n = v->u.array.len;
     }
-    else /* if (yajl_t_true or yajl_t_false or yajl_t_null) */
+    free(v);
+
+    for (i = 0; i < n; i++)
     {
-        free(v);
+        if (children[i] == NULL)
+            continue;
+        if (*len == *cap)
+        {
+            size_t newcap = *cap ? 2 * *cap : 64;
+            yajl_val *tmp = realloc(*todo, newcap * sizeof(**todo));
+            if (tmp == NULL)
+            {
+                /* out of memory: fall back to recursion for this child */
+                yajl_tree_free(children[i]);
+                continue;
+            }
+            *todo = tmp;
+            *cap = newcap;
+        }
+        (*todo)[(*len)++] = children[i];
     }
+    free(children);
+}
+
+void yajl_tree_free (yajl_val v)
+{
+    yajl_val *todo = NULL;
+    size_t len = 0, cap = 0;
+
+    while (v != NULL)
+    {
+        yajl_tree_free_one(v, &todo, &len, &cap);
+        v = len ? todo[--len] : NULL;
+    }
+    free(todo);
 }
 
 /*
@@ -559,4 +567,10 @@ yajl_handle push_parser_new (void) {
 yajl_val push_parser_get(yajl_handle handle){
   context_t *ctx = (context_t*) handle->ctx;
   return ctx->root;
+}
+
+void push_parser_free(yajl_handle handle){
+  context_t *ctx = (context_t*) handle->ctx;
+  context_free(ctx);
+  yajl_free(handle);
 }
