@@ -56,16 +56,13 @@ SEXP R_parse_connection(SEXP sConn, SEXP bigint_as_char){
 
   /* get output */
   yajl_val tree = push_parser_get(push_parser);
-  SEXP out = PROTECT(ParseValue(tree, asLogical(bigint_as_char)));
-  yajl_tree_free(tree);
   yajl_free(push_parser);
-  UNPROTECT(1);
-  return out;
+  return ParseTree(tree, asLogical(bigint_as_char));
 
   JSON_FAIL:
     strncpy(errbuf, (char *) errstr, bufsize - 1);
     errbuf[bufsize - 1] = '\0';
     yajl_free_error(push_parser, errstr);
-    yajl_free(push_parser);
+    push_parser_free(push_parser);
     Rf_error("%s", errbuf);
 }
