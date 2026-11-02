@@ -12,6 +12,29 @@
 static SEXP ParseObject(yajl_val node, int bigint);
 static SEXP ParseArray(yajl_val node, int bigint);
 SEXP ParseValue(yajl_val node, int bigint);
+SEXP ParseTree(yajl_val node, int bigint);
+
+/* Converts the tree to R objects and always frees the tree afterwards,
+   also when an R error occurs (e.g. C stack overflow for deeply nested json) */
+typedef struct {
+  yajl_val node;
+  int bigint;
+} parse_tree_data;
+
+static SEXP parse_tree_fun(void *data){
+  parse_tree_data *d = data;
+  return ParseValue(d->node, d->bigint);
+}
+
+static void parse_tree_free(void *data){
+  parse_tree_data *d = data;
+  yajl_tree_free(d->node);
+}
+
+SEXP ParseTree(yajl_val node, int bigint){
+  parse_tree_data data = {node, bigint};
+  return R_ExecWithCleanup(parse_tree_fun, &data, parse_tree_free, &data);
+}
 
 SEXP R_parse(SEXP x, SEXP bigint_as_char) {
     /* get data from R */
@@ -37,12 +60,12 @@ SEXP R_parse(SEXP x, SEXP bigint_as_char) {
     if (!node) {
       Rf_errorcall(R_NilValue, "%s", errbuf);
     }
-    SEXP out = ParseValue(node, bigint);
-    yajl_tree_free(node);
-    return(out);
+    return ParseTree(node, bigint);
 }
 
 SEXP ParseValue(yajl_val node, int bigint){
+  /* raise a catchable R error instead of crashing on deeply nested json */
+  R_CheckStack();
   if(YAJL_IS_NULL(node)){
     return R_NilValue;
   }

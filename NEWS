@@ -1,4 +1,5 @@
 2.0.1
+  - Raise a catchable error instead of crashing on extremely deeply nested json
   - AI generated fixes for unlikely edge cases: #464 #465 #466 #469
   - Fix note on deprecated structure(.Names) param in r-devel
   - Remove linebreaks from as_gzjson_b64()
