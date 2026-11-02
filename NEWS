@@ -1,4 +1,4 @@
-2.0.1
+2.1.0
   - AI generated fixes for unlikely edge cases: #464 #465 #466 #469
   - Fix note on deprecated structure(.Names) param in r-devel
   - Remove linebreaks from as_gzjson_b64()
