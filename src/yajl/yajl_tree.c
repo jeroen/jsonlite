@@ -50,6 +50,7 @@ struct stack_elem_s
 struct context_s
 {
     stack_elem_t *stack;
+    size_t depth;
     yajl_val root;
     char *errbuf;
     size_t errbuf_size;
@@ -120,9 +121,19 @@ static int context_push(context_t *ctx, yajl_val v)
 {
     stack_elem_t *stack;
 
+    if (ctx->depth >= YAJL_MAX_DEPTH)
+    {
+        yajl_tree_free(v);
+        RETURN_ERROR(ctx, EOVERFLOW, "Maximum JSON nesting depth (%d) exceeded",
+                     YAJL_MAX_DEPTH);
+    }
+
     stack = malloc (sizeof (*stack));
     if (stack == NULL)
+    {
+        yajl_tree_free(v);
         RETURN_ERROR (ctx, ENOMEM, "Out of memory");
+    }
     memset (stack, 0, sizeof (*stack));
 
     assert ((ctx->stack == NULL)
@@ -132,6 +143,7 @@ static int context_push(context_t *ctx, yajl_val v)
     stack->value = v;
     stack->next = ctx->stack;
     ctx->stack = stack;
+    ctx->depth++;
 
     return (0);
 }
@@ -147,6 +159,7 @@ static yajl_val context_pop(context_t *ctx)
 
     stack = ctx->stack;
     ctx->stack = stack->next;
+    ctx->depth--;
 
     v = stack->value;
 
@@ -154,6 +167,15 @@ static yajl_val context_pop(context_t *ctx)
     free (stack);
 
     return (v);
+}
+
+static void context_free(context_t *ctx)
+{
+    while (ctx->stack != NULL)
+        yajl_tree_free(context_pop(ctx));
+
+    yajl_tree_free(ctx->root);
+    ctx->root = NULL;
 }
 
 static int object_add_keyval(context_t *ctx,
@@ -428,7 +450,7 @@ yajl_val yajl_tree_parse (const char *input,
     yajl_handle handle;
     yajl_status status;
     char * internal_err_str;
-	context_t ctx = { NULL, NULL, NULL, 0 };
+	context_t ctx = { 0 };
 
 	ctx.errbuf = error_buffer;
 	ctx.errbuf_size = error_buffer_size;
@@ -449,21 +471,15 @@ yajl_val yajl_tree_parse (const char *input,
     }
     //end of fix
     if (status != yajl_status_ok) {
-        if (error_buffer != NULL && error_buffer_size > 0) {
+        if (error_buffer != NULL && error_buffer_size > 0 && error_buffer[0] == '\0') {
                internal_err_str = (char *) yajl_get_error(handle, 1,
                      (const unsigned char *) input,
                      strlen(input));
              snprintf(error_buffer, error_buffer_size, "%s", internal_err_str);
              YA_FREE(&(handle->alloc), internal_err_str);
         }
-        while(ctx.stack != NULL) {
-             yajl_val v = context_pop(&ctx);
-             yajl_tree_free(v);
-        }
+        context_free(&ctx);
         yajl_free (handle);
-        //If the requested memory is not released in time, it will cause memory leakage
-        if(ctx.root)
-             yajl_tree_free(ctx.root);
         return NULL;
     }
 
@@ -559,4 +575,10 @@ yajl_handle push_parser_new (void) {
 yajl_val push_parser_get(yajl_handle handle){
   context_t *ctx = (context_t*) handle->ctx;
   return ctx->root;
+}
+
+void push_parser_free(yajl_handle handle){
+  context_t *ctx = (context_t*) handle->ctx;
+  context_free(ctx);
+  yajl_free(handle);
 }
