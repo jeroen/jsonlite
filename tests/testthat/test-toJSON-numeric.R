@@ -45,3 +45,11 @@ test_that("Force decimal works", {
   y2 <- fromJSON(toJSON(x1, digits = 9, always_decimal = TRUE), simplifyVector = FALSE)
   expect_identical(as.list(x1), y2)
 })
+
+test_that("Null specials works", {
+  x <- c(3, NA, Inf, -Inf, NaN)
+  expect_equal(toJSON(x), "[3,\"NA\",\"Inf\",\"-Inf\",\"NaN\"]")
+  expect_equal(toJSON(x, na = "string"), "[3,\"NA\",\"Inf\",\"-Inf\",\"NaN\"]")
+  expect_equal(toJSON(x, na = "null"), "[3,null,null,null,null]")
+  expect_equal(toJSON(x, na = "null_specials"), "[3,null,\"Inf\",\"-Inf\",\"NaN\"]")
+})

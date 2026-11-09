@@ -3,9 +3,10 @@
 #include <stdlib.h>
 #include "modp_numtoa.h"
 
-SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP always_decimal) {
+SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP always_decimal, SEXP na_specials) {
   int len = length(x);
   int na_string = asLogical(na_as_string);
+  int na_spec = asLogical(na_specials);
   int signif = asLogical(use_signif);
   int always_dec = asLogical(always_decimal);
   char buf[32];
@@ -29,6 +30,7 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP
     int precision = asInteger(digits);
     int sig_digits = signif ? ceil(fmin(17, precision)) : 0;
     double * xreal = REAL(x);
+    // assured from call from R, if na_specials is true then na_string is false
     for (int i=0; i<len; i++) {
       double val = xreal[i];
       if(!R_FINITE(val)){
@@ -37,6 +39,18 @@ SEXP R_num_to_char(SEXP x, SEXP digits, SEXP na_as_string, SEXP use_signif, SEXP
         } else if(na_string){
           if(ISNA(val)){
             SET_STRING_ELT(out, i, mkChar("\"NA\""));
+          } else if(ISNAN(val)){
+            SET_STRING_ELT(out, i, mkChar("\"NaN\""));
+          } else if(val == R_PosInf){
+            SET_STRING_ELT(out, i, mkChar("\"Inf\""));
+          } else if(val == R_NegInf){
+            SET_STRING_ELT(out, i, mkChar("\"-Inf\""));
+          } else {
+            error("Unrecognized non finite value.");
+          }
+        } else if(na_spec){
+          if(ISNA(val)){
+            SET_STRING_ELT(out, i, mkChar("null"));
           } else if(ISNAN(val)){
             SET_STRING_ELT(out, i, mkChar("\"NaN\""));
           } else if(val == R_PosInf){
