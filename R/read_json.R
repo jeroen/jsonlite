@@ -1,4 +1,4 @@
-#' Read/write JSON
+#' Read, parse, and write JSON
 #'
 #' These functions are similar to [toJSON()] and [fromJSON()] except they
 #' explicitly distinguish between path and literal input, and do not simplify
@@ -6,6 +6,7 @@
 #'
 #' @export
 #' @rdname read_json
+#' @name read_json, parse_json, write_json
 #' @param path file on disk
 #' @param simplifyVector simplifies nested lists into vectors and data frames. See [fromJSON()].
 #' @seealso [fromJSON()], [stream_in()]
