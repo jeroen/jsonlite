@@ -15,6 +15,10 @@
 #' [fromJSON()] and [toJSON()] where all lines are part of a single JSON
 #' structure with optional line breaks.
 #'
+#' For numeric columns, `stream_out()` defaults to `digits = 5`.
+#' [toJSON()] defaults to `digits = 4`. Set the same `digits` value for
+#' both functions to match their numeric precision.
+#'
 #' The `handler` is a callback function which is called for each page (batch) of
 #' JSON data with exactly one argument (usually a data frame with `pagesize` rows).
 #' If `handler` is missing or `NULL`, a default handler is used which stores all
@@ -114,10 +118,13 @@
 #' daily14f <- flatten(daily14)
 #' filter(daily14f, city.name == "Berlin")$data[[1]]
 #'
-#' # Stream import large data from zip file
-#' tmp <- tempfile()
-#' download.file("http://jsonstudio.com/wp-content/uploads/2014/02/companies.zip", tmp)
-#' companies <- stream_in(unz(tmp, "companies.json"))
+#' # Stream data from a ZIP archive (requires the zip command)
+#' jsonfile <- tempfile(fileext = ".ndjson")
+#' zipfile <- tempfile(fileext = ".zip")
+#' stream_out(iris, file(jsonfile))
+#' zip(zipfile, jsonfile, flags = "-jq")
+#' iris_from_zip <- stream_in(unz(zipfile, basename(jsonfile)))
+#' unlink(c(jsonfile, zipfile))
 #' }
 stream_in <- function(con, handler = NULL, pagesize = 500, verbose = TRUE, ...) {
   # Maybe also handle URLs here in future.
