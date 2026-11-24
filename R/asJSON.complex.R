@@ -5,12 +5,18 @@ setMethod("asJSON", "complex", function(x, digits = 5, collapse = TRUE, complex 
 
   #turn into strings
   if (complex == "string") {
+    finite <- is.finite(x)
+    if (isTRUE(is.na(digits))) {
+      # Format components independently to retain all double precision.
+      mystring <- structure(character(length(x)), names = names(x))
+      mystring[finite] <- sprintf("%.17g%+.17gi", Re(x[finite]), Im(x[finite]))
+      mystring[!finite] <- prettyNum(x = x[!finite], digits = 17L)
+    } else {
+      mystring <- prettyNum(x = x, digits = digits)
+    }
     #default NA is "NA"
-    mystring <- prettyNum(x = x, digits = digits)
-    if (any(missings <- which(!is.finite(x)))) {
-      if (na %in% c("null", "NA")) {
-        mystring[missings] <- NA_character_
-      }
+    if (na %in% c("null", "NA")) {
+      mystring[!finite] <- NA_character_
     }
     asJSON(mystring, collapse = collapse, na = na, ...)
   } else {
